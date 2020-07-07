@@ -5,6 +5,11 @@
 
 ## Ontologi
 
-* Nivå
+* Nivå (Level)
  * Utgangspunktet for generering av oppgaver
- * Angir regneart, interval og delelighet
+ * Angir regneart, interval, delelighet, samt hvilken av delene som skal være ukjent
+* Sesjon (Session)
+
+
+## Begrensninger
+
