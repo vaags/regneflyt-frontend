@@ -1,40 +1,13 @@
 <script>
-	import Button from './components/Button.svelte';
+	import Menu from './components/Menu.svelte';
 
-	export let name;
+	function startGame(event) {
 
-	let count = 0;
-
-	function handleClick() {
-		count += 1;
+		console.log('starting game with lenght:', event.detail.length)
 	}
 </script>
 
-<main>
-	<h1>Hello {name}!</h1>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
-
-	<Button on:click={handleClick} label="Click me {count}" />
+<main class="container mx-auto px-8 py-4">
+	<h1 class="text-center text-4xl mb-8">Regneflyt</h1>
+	<Menu on:newGame={startGame} />
 </main>
-
-<style>
-	main {
-		text-align: center;
-		padding: 1em;
-		max-width: 240px;
-		margin: 0 auto;
-	}
-
-	h1 {
-		color: #ff3e00;
-		text-transform: uppercase;
-		font-size: 4em;
-		font-weight: 100;
-	}
-
-	@media (min-width: 640px) {
-		main {
-			max-width: none;
-		}
-	}
-</style>
