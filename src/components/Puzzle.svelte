@@ -1,22 +1,54 @@
 <script>
-    import { onMount } from 'svelte';
+    import { createEventDispatcher, onMount } from 'svelte';
     import Button from './widgets/Button.svelte';
 
-    let partOne;
-    let partTwo;
-    let answer;
+    const dispatch = createEventDispatcher();
+
+    let puzzle = {
+        partOne: undefined,
+        partTwo: undefined,
+        answer: undefined,
+        isCorrect: undefined
+    }
 
     let input;
+    let validationError = false;
+
+    $: displayError = !puzzle.answer && validationError;
 
     function generatePuzzle() {
-        partOne = getRandomNumber()
-        partTwo = getRandomNumber()
-        answer = undefined
+        puzzle.partOne = getRandomNumber()
+        puzzle.partTwo = getRandomNumber()
+        puzzle.answer = undefined,
+        puzzle.isCorrect = undefined
         input.focus()
     }
 
     function getRandomNumber() {
         return Math.ceil(Math.random() * 20)
+    }
+
+    function completePuzzle() {
+        if (!puzzleIsValid()) {
+            return;
+        }
+
+        puzzle.isCorrect = puzzle.partOne + puzzle.partTwo == puzzle.answer;
+
+        dispatch('addPuzzle', { puzzle });
+        generatePuzzle()
+    }
+
+    function puzzleIsValid() {
+        if (!puzzle.answer) {
+            validationError = true;
+            input.focus()
+            return;
+        }
+
+        validationError = false;
+
+        return !validationError;
     }
 
     onMount(() => {
@@ -26,16 +58,18 @@
 </script>
 
 <div class="text-center">
-    <p class="text-5xl mb-4">{partOne} + {partTwo} = <span class="text-blue-600">{answer || "?"}</span></p>
+    <p class="text-5xl mb-4">{puzzle.partOne} + {puzzle.partTwo} = <span class="{ displayError ? "text-red-600" : "text-blue-600" }">{puzzle.answer || "?"}</span></p>
     <form class="mb-4">
         <input
             bind:this={input}
-            bind:value={answer}
+            bind:value={puzzle.answer}
             class="text-xl border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none"
             type="number"
             required
             max="9999"
             >
+        <div class="mt-4">
+            <Button on:click="{completePuzzle}" label="Next" isBig="true" color="{displayError ? "red" : "green"}" />
+        </div>
     </form>
-    <Button on:click="{generatePuzzle}" label="Next" isBig="true" />
 </div>

@@ -6,7 +6,7 @@
 </script>
 
 <button
-    on:click
+    on:click|preventDefault
     class="bg-{color}-500
            hover:bg-{color}-700
            text-{textColor}
