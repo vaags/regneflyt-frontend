@@ -1,13 +1,13 @@
 <script>
     import { createEventDispatcher } from 'svelte';
-    import Button from './Button.svelte';
+    import Button from './widgets/Button.svelte';
 
     const dispatch = createEventDispatcher();
-    let selectedLength = 5;
+    export let length;
 
     function startQuiz() {
         dispatch('startQuiz', {
-            length: selectedLength
+            length
         });
     }
 
@@ -15,7 +15,10 @@
 
 
 <div>
-    <input class="w-full" type="range" min="1" max="60" step="1" bind:value={selectedLength}>
-    <p>{selectedLength}</p>
-    <Button on:click={startQuiz} label="Start new game" />
+    <p>Select game length:</p>
+    <div>
+        <input class="w-full" type="range" min="1" max="30" step="1" bind:value={length}>
+        <span>{length}</span>
+    </div>
+    <Button on:click={startQuiz} label="Start" />
 </div>
