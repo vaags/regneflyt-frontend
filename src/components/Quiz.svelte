@@ -28,17 +28,15 @@
 </script>
 
 <div>
-    Hello from Quiz compontent.
-
     <Puzzle />
 
-    <div class="mt-2">
+    <div class="mt-8">
         {#if showWarning}
             <p class="mb-2">Are you sure you want to quit?</p>
-            <Button on:click={abortQuiz} label="Yes" />
+            <Button on:click={abortQuiz} label="Yes" color="red" />
             <Button on:click={toggleWarning} label="No" />
         {:else}
-            <Button on:click={toggleWarning} label="Quit" />
+            <Button on:click={toggleWarning} label="Quit" color="gray" />
         {/if}
     </div>
 </div>

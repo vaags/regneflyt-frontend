@@ -2,6 +2,7 @@
     export let label = "[Label]";
     export let color = "blue";
     export let textColor = "white";
+    export let isBig = false;
 </script>
 
 <button
@@ -9,9 +10,10 @@
     class="bg-{color}-500
            hover:bg-{color}-700
            text-{textColor}
-           font-bold
+           {isBig ? "text-xl" : ""}
+           font-medium
            py-2
-           px-4
+           px-{isBig ? 6 : 4}
            rounded
            ">
     {label}
