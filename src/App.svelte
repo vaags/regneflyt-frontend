@@ -28,8 +28,8 @@
 	}
 </script>
 
-<main class="container mx-auto px-8 py-4 text-center">
-	<h1 class="text-4xl mb-8">Regneflyt</h1>
+<main class="container mx-auto px-8 py-4">
+	<h1 class="text-4xl mb-8 text-center">Regneflyt</h1>
 	{#if quiz.isCompleted}
 		<Results on:resetQuiz={resetQuiz} />
 	{:else if quiz.isStarted}

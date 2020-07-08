@@ -1,5 +1,5 @@
 <script>
-    import { createEventDispatcher, onMount, onDestroy } from 'svelte';
+    import { createEventDispatcher, onDestroy } from 'svelte';
     import Button from './widgets/Button.svelte';
 
     export let length;
