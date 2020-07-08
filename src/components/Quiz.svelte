@@ -1,5 +1,6 @@
 <script>
     import { createEventDispatcher, onDestroy } from 'svelte';
+    import Puzzle from './Puzzle.svelte';
     import Button from './widgets/Button.svelte';
 
     export let length;
@@ -9,12 +10,10 @@
     let showWarning = false;
 
     onDestroy(() => {
-        console.log('clearing interval');
         clearInterval(interval);
     });
 
     function abortQuiz() {
-        console.log('aborting');
         dispatch('abortQuiz');
     }
 
@@ -30,6 +29,8 @@
 
 <div>
     Hello from Quiz compontent.
+
+    <Puzzle />
 
     <div class="mt-2">
         {#if showWarning}

@@ -6,12 +6,14 @@
 	let quiz = {
 		length: 5,
 		isStarted: false,
-		isCompleted: false
+		isCompleted: false,
+		showAlernateGreeting: false
 	}
 
 	function startQuiz(event) {
 		quiz.length = event.detail.length
 		quiz.isStarted = true;
+		quiz.showAlernateGreeting = true;
 	}
 
 	function abortQuiz(event) {
@@ -33,8 +35,14 @@
 	{#if quiz.isCompleted}
 		<Results on:resetQuiz={resetQuiz} />
 	{:else if quiz.isStarted}
-		<Quiz length="{quiz.length}" on:abortQuiz={abortQuiz} on:completeQuiz={completeQuiz} />
+		<Quiz
+			length="{quiz.length}"
+			on:abortQuiz={abortQuiz}
+			on:completeQuiz={completeQuiz} />
 	{:else}
-		<Menu length="{quiz.length}" on:startQuiz={startQuiz} />
+		<Menu
+			showAlernateGreeting="{quiz.showAlernateGreeting}"
+			length="{quiz.length}"
+			on:startQuiz={startQuiz} />
 	{/if}
 </main>

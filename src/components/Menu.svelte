@@ -5,6 +5,7 @@
 
     const dispatch = createEventDispatcher();
     export let length;
+    export let showAlernateGreeting;
 
     function startQuiz() {
         dispatch('startQuiz', {
@@ -16,11 +17,11 @@
 
 
 <div>
-    <Alert message="Let's do some arithmetic!" />
-    <p class="mt-4">Length (in minutes):</p>
+    <Alert message="{ showAlernateGreeting ? 'Ready for some more?' : 'Let’s do some arithmetic!' }" />
+    <p class="mt-4">Length:</p>
     <div>
         <input class="w-full" type="range" min="1" max="30" step="1" bind:value={length}>
-        <span>{length}</span>
+        <span>{length} minutes</span>
     </div>
     <Button on:click={startQuiz} label="Start" />
 </div>
