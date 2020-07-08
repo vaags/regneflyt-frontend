@@ -58,12 +58,12 @@
 </script>
 
 <div class="text-center">
-    <p class="text-5xl mb-4">{puzzle.partOne} + {puzzle.partTwo} = <span class="{ displayError ? "text-red-600" : "text-blue-600" }">{puzzle.answer || "?"}</span></p>
+    <p class="text-5xl mb-4">{puzzle.partOne} + {puzzle.partTwo} = <span class="text-blue-600">{puzzle.answer || "?"}</span></p>
     <form class="mb-4">
         <input
             bind:this={input}
             bind:value={puzzle.answer}
-            class="text-xl border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none"
+            class="text-xl border {displayError ? 'border-red-600' : ''} rounded w-50 py-2 px-3 leading-tight focus:outline-none"
             type="number"
             required
             max="9999"
