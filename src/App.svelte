@@ -10,6 +10,8 @@
 		showAlernateGreeting: false
 	}
 
+	let puzzleSet;
+
 	function startQuiz(event) {
 		quiz.length = event.detail.length
 		quiz.isStarted = true;
@@ -22,6 +24,7 @@
 
 	function completeQuiz(event) {
 		quiz.isCompleted = true;
+		puzzleSet = event.detail.puzzleSet;
 	}
 
 	function resetQuiz() {
@@ -33,7 +36,9 @@
 <main class="container mx-auto px-3 py-4">
 	<h1 class="text-4xl mb-8 text-center">Regneflyt</h1>
 	{#if quiz.isCompleted}
-		<Results on:resetQuiz={resetQuiz} />
+		<Results
+			puzzleSet={puzzleSet}
+			on:resetQuiz={resetQuiz} />
 	{:else if quiz.isStarted}
 		<Quiz
 			length="{quiz.length}"

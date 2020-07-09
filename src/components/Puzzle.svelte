@@ -8,11 +8,13 @@
         partOne: undefined,
         partTwo: undefined,
         answer: undefined,
+        duration: undefined,
         isCorrect: undefined
     }
 
     let input;
     let validationError = false;
+    let startTime;
 
     $: displayError = !puzzle.answer && validationError;
 
@@ -22,6 +24,7 @@
         puzzle.answer = undefined,
         puzzle.isCorrect = undefined
         input.focus()
+        startTime = Date.now();
     }
 
     function getRandomNumber() {
@@ -34,8 +37,9 @@
         }
 
         puzzle.isCorrect = puzzle.partOne + puzzle.partTwo == puzzle.answer;
+        puzzle.duration = (Date.now() - startTime) / 1000;
 
-        dispatch('addPuzzle', { puzzle });
+        dispatch('addPuzzle', { puzzle: {...puzzle} });
         generatePuzzle()
     }
 
@@ -58,15 +62,14 @@
 </script>
 
 <div class="text-center">
-    <p class="text-5xl mb-4">{puzzle.partOne} + {puzzle.partTwo} = <span class="text-blue-600">{puzzle.answer || "?"}</span></p>
+    <p class="text-5xl mb-4">{puzzle.partOne} + {puzzle.partTwo} = <span class="text-blue-600">?</span></p>
     <form class="mb-4">
         <input
             bind:this={input}
             bind:value={puzzle.answer}
-            class="text-xl border {displayError ? 'border-red-600' : ''} rounded w-50 py-2 px-3 leading-tight focus:outline-none"
+            class="text-5xl border {displayError ? 'border-red-600' : ''} rounded w-40 py-2 px-3 leading-tight focus:outline-none"
             type="number"
             required
-            max="9999"
             >
         <div class="mt-4">
             <Button on:click="{completePuzzle}" label="Next" isBig="true" color="{displayError ? "red" : "green"}" />

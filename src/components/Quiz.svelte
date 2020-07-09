@@ -20,12 +20,12 @@
 
     function completeQuiz() {
         console.log('completing');
-        dispatch('completeQuiz');
+        dispatch('completeQuiz', { puzzleSet });
     }
 
     function addPuzzle(event) {
-        puzzleSet.push(event.detail.puzzle);
-        console.log('added puzzle to set', event.detail.puzzle);
+        puzzleSet = [...puzzleSet, event.detail.puzzle];
+        console.log('added puzzle to puzzleSet', puzzleSet);
     }
 
     function toggleWarning() {
@@ -37,6 +37,7 @@
     <Puzzle on:addPuzzle={addPuzzle} />
 
     <div class="mt-8">
+        <Button on:click={completeQuiz} label="Complete" />
         {#if showWarning}
             <p class="mb-2">Are you sure you want to quit?</p>
             <Button on:click={abortQuiz} label="Yes" color="red" />
