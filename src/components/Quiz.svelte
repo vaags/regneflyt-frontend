@@ -1,17 +1,23 @@
 <script>
-    import { createEventDispatcher, onDestroy } from 'svelte';
+    import { createEventDispatcher, onDestroy, onMount } from 'svelte';
     import Puzzle from './Puzzle.svelte';
     import Button from './widgets/Button.svelte';
 
     export let length;
+    export let operators;
 
     const dispatch = createEventDispatcher();
     const interval = setTimeout(completeQuiz, length * 60000);
     let showWarning = false;
     let puzzleSet = [];
+    let activeOperator;
 
     onDestroy(() => {
         clearInterval(interval);
+    });
+
+    onMount(() => {
+        setOperator();
     });
 
     function abortQuiz() {
@@ -19,13 +25,25 @@
     }
 
     function completeQuiz() {
-        console.log('completing');
         dispatch('completeQuiz', { puzzleSet });
     }
 
     function addPuzzle(event) {
         puzzleSet = [...puzzleSet, event.detail.puzzle];
-        console.log('added puzzle to puzzleSet', puzzleSet);
+        console.log('added puzzle:', event.detail.puzzle);
+        setOperator();
+    }
+
+    function setOperator() {
+        if (operators.length) {
+            var random = Math.ceil(Math.random() * operators.length)
+    
+            activeOperator = operators[random - 1];
+        } else {
+            activeOperator = operators[0]
+        }
+
+        console.log('active operator:', activeOperator)
     }
 
     function toggleWarning() {
@@ -34,7 +52,11 @@
 </script>
 
 <div>
-    <Puzzle on:addPuzzle={addPuzzle} />
+    {#if activeOperator}
+        <Puzzle
+            operator={activeOperator}
+            on:addPuzzle={addPuzzle} />
+    {/if}
 
     <div class="mt-8">
         <Button on:click={completeQuiz} label="Complete" />

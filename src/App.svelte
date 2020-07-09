@@ -7,13 +7,15 @@
 		length: 5,
 		isStarted: false,
 		isCompleted: false,
-		showAlernateGreeting: false
+		showAlernateGreeting: false,
+		operators: ['addition']
 	}
 
 	let puzzleSet;
 
 	function startQuiz(event) {
 		quiz.length = event.detail.length
+		quiz.operators = event.detail.operators
 		quiz.isStarted = true;
 		quiz.showAlernateGreeting = true;
 	}
@@ -41,13 +43,15 @@
 			on:resetQuiz={resetQuiz} />
 	{:else if quiz.isStarted}
 		<Quiz
-			length="{quiz.length}"
+			length={quiz.length}
+			operators={quiz.operators}
 			on:abortQuiz={abortQuiz}
 			on:completeQuiz={completeQuiz} />
 	{:else}
 		<Menu
-			showAlernateGreeting="{quiz.showAlernateGreeting}"
-			length="{quiz.length}"
+			showAlernateGreeting={quiz.showAlernateGreeting}
+			length={quiz.length}
+			operators={quiz.operators}
 			on:startQuiz={startQuiz} />
 	{/if}
 </main>

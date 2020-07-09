@@ -1,15 +1,19 @@
 <script>
     import { createEventDispatcher, onMount } from 'svelte';
     import Button from './widgets/Button.svelte';
+    import Operator from './widgets/Operator.svelte';
 
     const dispatch = createEventDispatcher();
+
+    export let operator;
 
     let puzzle = {
         partOne: undefined,
         partTwo: undefined,
         answer: undefined,
         duration: undefined,
-        isCorrect: undefined
+        isCorrect: undefined,
+        operator: undefined
     }
 
     let input;
@@ -22,7 +26,9 @@
         puzzle.partOne = getRandomNumber()
         puzzle.partTwo = getRandomNumber()
         puzzle.answer = undefined,
-        puzzle.isCorrect = undefined
+        puzzle.isCorrect = undefined,
+        puzzle.duration = undefined,
+        puzzle.operator = operator;
         input.focus()
         startTime = Date.now();
     }
@@ -36,11 +42,24 @@
             return;
         }
 
-        puzzle.isCorrect = puzzle.partOne + puzzle.partTwo == puzzle.answer;
+        puzzle.isCorrect = evaluateAnswer();
         puzzle.duration = (Date.now() - startTime) / 1000;
 
         dispatch('addPuzzle', { puzzle: {...puzzle} });
         generatePuzzle()
+    }
+
+    function evaluateAnswer() {
+        switch (operator) {
+            case 'addition':
+                return puzzle.partOne + puzzle.partTwo == puzzle.answer;
+            case 'subtraction':
+                return puzzle.partOne - puzzle.partTwo == puzzle.answer;
+            case 'multiplication':
+                return puzzle.partOne * puzzle.partTwo == puzzle.answer;
+            case 'division':
+                return puzzle.partOne / puzzle.partTwo == puzzle.answer;
+        }
     }
 
     function puzzleIsValid() {
@@ -57,12 +76,13 @@
 
     onMount(() => {
         generatePuzzle()
+        console.log('operator is set to:', operator)
     })
 
 </script>
 
 <div class="text-center">
-    <p class="text-5xl mb-4">{puzzle.partOne} + {puzzle.partTwo} = <span class="text-blue-600">?</span></p>
+    <p class="text-5xl mb-4">{puzzle.partOne} <Operator operator={operator} /> {puzzle.partTwo} = <span class="text-blue-600">?</span></p>
     <form class="mb-4">
         <input
             bind:this={input}
