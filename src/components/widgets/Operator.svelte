@@ -2,12 +2,12 @@
     export let operator;
 </script>
 
-{#if operator == 'addition'}
+{#if operator == 'addisjon'}
     <span>+</span>
-{:else if operator == 'subtraction'}
+{:else if operator == 'subtraksjon'}
     <span>-</span>
-{:else if operator == 'multiplication'}
+{:else if operator == 'multiplikasjon'}
     <span>x</span>
-{:else if operator == 'division'}
+{:else if operator == 'divisjon'}
     <span>/</span>
 {/if}

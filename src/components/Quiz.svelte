@@ -59,13 +59,13 @@
     {/if}
 
     <div class="mt-8">
-        <Button on:click={completeQuiz} label="Complete" />
+        <Button on:click={completeQuiz} label="Fullfør" />
         {#if showWarning}
-            <p class="mb-2">Are you sure you want to quit?</p>
-            <Button on:click={abortQuiz} label="Yes" color="red" />
-            <Button on:click={toggleWarning} label="No" />
+            <p class="mb-2">Er du sikker på at du vil avbryte?</p>
+            <Button on:click={abortQuiz} label="ja" color="red" />
+            <Button on:click={toggleWarning} label="Nei" />
         {:else}
-            <Button on:click={toggleWarning} label="Quit" color="gray" />
+            <Button on:click={toggleWarning} label="Avbryt" color="gray" />
         {/if}
     </div>
 </div>

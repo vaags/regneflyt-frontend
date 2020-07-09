@@ -10,10 +10,10 @@
     let validationError = false;
 
     let operatorMenu = [
-        'Addition',
-        'Subtraction',
-        'Multiplication',
-        'Division'
+        'Addisjon',
+        'Subtraksjon',
+        'Multiplikasjon',
+        'Divisjon'
     ]
 
     function startQuiz() {
@@ -34,14 +34,14 @@
 
 
 <div>
-    <Alert message="{ showAlernateGreeting ? 'Ready for some more?' : 'Let’s do some arithmetic!' }" />
+    <Alert message="{ showAlernateGreeting ? 'Er du klar for mer?' : 'La oss gjøre litt hoderegning!' }" />
     <div class="my-8">
-        <p class="mt-8">Length:</p>
+        <p class="mt-8">Lengde:</p>
         <input class="w-full" type="range" min="1" max="30" step="1" bind:value={length}>
-        <span>{length} {length == 1 ? "minute" : "minutes"}</span>
+        <span>{length} {length == 1 ? "minutt" : "minutter"}</span>
     </div>
     <div class="my-8">
-        <p>Operators:</p>
+        <p>Operatorer:</p>
         {#each operatorMenu as operator}
             <label class="block">
                 <input type=checkbox bind:group={operators} value={operator.toLowerCase()}>

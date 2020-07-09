@@ -8,7 +8,7 @@
 		isStarted: false,
 		isCompleted: false,
 		showAlernateGreeting: false,
-		operators: ['addition']
+		operators: ['addisjon']
 	}
 
 	let puzzleSet;

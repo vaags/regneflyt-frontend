@@ -51,13 +51,13 @@
 
     function evaluateAnswer() {
         switch (operator) {
-            case 'addition':
+            case 'addisjon':
                 return puzzle.partOne + puzzle.partTwo == puzzle.answer;
-            case 'subtraction':
+            case 'subtraksjon':
                 return puzzle.partOne - puzzle.partTwo == puzzle.answer;
-            case 'multiplication':
+            case 'multiplikasjon':
                 return puzzle.partOne * puzzle.partTwo == puzzle.answer;
-            case 'division':
+            case 'divisjon':
                 return puzzle.partOne / puzzle.partTwo == puzzle.answer;
         }
     }
@@ -92,7 +92,7 @@
             required
             >
         <div class="mt-4">
-            <Button on:click="{completePuzzle}" label="Next" isBig="true" color="{displayError ? "red" : "green"}" />
+            <Button on:click="{completePuzzle}" label="Neste oppgave" isBig="true" color="{displayError ? "red" : "green"}" />
         </div>
     </form>
 </div>
