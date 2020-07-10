@@ -13,3 +13,19 @@
         * Er tidsbegrenset i minutter
 * Oppgave (Puzzle)
     * Er knyttet til en definisjon og en sesjon
+
+## Todo
+
+### Lite jobb
+
+* Nummerert resultatliste
+* Oppsummering av tid
+
+### Middels jobb
+
+* Tallvariasjon per del
+* Tallvariasjon for svaret
+
+### Mye jobb
+
+* Eksport og sending av resultater på mail.
