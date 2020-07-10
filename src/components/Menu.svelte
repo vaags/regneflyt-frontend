@@ -1,6 +1,7 @@
 <script>
     import { createEventDispatcher } from 'svelte';
     import Button from './widgets/Button.svelte';
+    import Range from './widgets/Range.svelte';
     import Alert from './widgets/Alert.svelte';
 
     const dispatch = createEventDispatcher();
@@ -50,49 +51,35 @@
     <div class="card">
         <h2>Intervall &ndash; første del</h2>
         <div>
-            <label>Fra og med<br />
-                <input
-                    class="w-3/4 md:w-1/2"
-                    type="range" min="0"
+            <label>Fra og med:<br />
+                <Range
                     max={quiz.partOne.maxValue}
-                    step="1"
-                    bind:value={quiz.partOne.minValue}>
+                    bind:value={quiz.partOne.minValue}
+                />
             </label>
-            <div class="text-blue-800 mb-4">{quiz.partOne.minValue}</div>
             <label>Til og med<br />
-                <input
-                    class="w-3/4 md:w-1/2"
-                    type="range"
+                <Range
                     min={quiz.partOne.minValue}
-                    max="100"
-                    step="1"
-                    bind:value={quiz.partOne.maxValue}>
+                    bind:value={quiz.partOne.maxValue}
+                />
             </label>
-            <div class="text-blue-800">{quiz.partOne.maxValue}</div>
         </div>
     </div>
     <div class="card">
         <h2>Intervall &ndash; andre del</h2>
         <div>
             <label>Fra og med<br />
-                <input
-                    class="w-3/4 md:w-1/2"
-                    type="range" min="0"
+                <Range
                     max={quiz.partTwo.maxValue}
-                    step="1"
-                    bind:value={quiz.partTwo.minValue}>
+                    bind:value={quiz.partTwo.minValue}
+                />
             </label>
-            <div class="text-blue-800 mb-4">{quiz.partTwo.minValue}</div>
             <label>Til og med<br />
-                <input
-                    class="w-3/4 md:w-1/2"
-                    type="range"
+                <Range
                     min={quiz.partTwo.minValue}
-                    max="100"
-                    step="1"
-                    bind:value={quiz.partTwo.maxValue}>
+                    bind:value={quiz.partTwo.maxValue}
+                />
             </label>
-            <div class="text-blue-800">{quiz.partTwo.maxValue}</div>
         </div>
     </div>
 </form>

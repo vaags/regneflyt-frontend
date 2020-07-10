@@ -88,11 +88,11 @@
 <div class="card">
     <h2>Oppgave {puzzleNumber}</h2>
     <form>
-        <p class="text-2xl font-bold mb-4">{puzzle.partOne} <Operator operator={operator} /> {puzzle.partTwo} = 
+        <p class="text-2xl mb-4">{puzzle.partOne} <Operator operator={operator} /> {puzzle.partTwo} = 
         <input
             bind:this={input}
             bind:value={puzzle.answer}
-            class="font-bold border {displayError ? 'border-red-600' : ''} rounded w-24 py-2 px-3 leading-tight focus:outline-none"
+            class="border {displayError ? 'border-red-600' : ''} rounded w-24 py-2 px-3 leading-tight focus:outline-none"
             type="number"
             placeholder="?"
             required
