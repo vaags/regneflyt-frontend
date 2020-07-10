@@ -25,6 +25,7 @@
 
 * Tallvariasjon per del
 * Tallvariasjon for svaret
+* Holde styr på hver omgang av spillet (vis Quiz 1, 2, 3 osv)
 
 ### Mye jobb
 
