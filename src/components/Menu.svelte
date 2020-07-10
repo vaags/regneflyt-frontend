@@ -57,7 +57,6 @@
         <Button
             on:click={startQuiz}
             label="Start"
-            color="{validationError ? 'red' : 'green'}"
-            isBig="true" />
+            color="{validationError ? 'red' : 'green'}" />
     </div>
 </form>

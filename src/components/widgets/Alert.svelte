@@ -4,7 +4,7 @@
     export let color = "blue";
 </script>
 
-<div class="mb-4 bg-{color}-100 border-l-4 border-{color}-500 text-{color}-700 p-4" role="alert">
+<div class="mb-4 bg-{color}-100 border-l-4 border-{color}-500 text-{color}-800 p-4" role="alert">
   {#if heading}
     <p class="font-bold">{heading}</p>
   {/if}

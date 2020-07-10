@@ -84,19 +84,30 @@
 
 </script>
 
-<div class="border rounded px-4 pt-2 pb-3">
+<div class="border rounded px-4 pt-2">
     <h2 class="mb-3 text-xl font-thin">Oppgave {puzzleNumber}</h2>
     <form class="mb-4">
-        <p class="text-5xl mb-4">{puzzle.partOne} <Operator operator={operator} /> {puzzle.partTwo} = <span class="text-blue-600">?</span></p>
+        <p class="text-3xl font-light mb-4">{puzzle.partOne} <Operator operator={operator} /> {puzzle.partTwo} = 
         <input
             bind:this={input}
             bind:value={puzzle.answer}
-            class="text-3xl border {displayError ? 'border-red-600' : ''} rounded w-40 py-2 px-3 leading-tight focus:outline-none"
+            class="font-light border {displayError ? 'border-red-600' : ''} rounded w-24 py-2 px-3 leading-tight focus:outline-none"
             type="number"
+            placeholder="?"
             required
             >
+        </p>
         <div class="mt-4">
-            <Button on:click="{completePuzzle}" label="Send" isBig="true" color="{displayError ? "red" : "green"}" />
+            <Button on:click="{completePuzzle}" label="Send" color="{displayError ? "red" : "green"}" />
         </div>
     </form>
 </div>
+
+<style>
+    /* Remove arrows from number input */
+    input[type=number]::-webkit-inner-spin-button, 
+    input[type=number]::-webkit-outer-spin-button { 
+        -webkit-appearance: none; 
+        margin: 0; 
+    }
+</style>

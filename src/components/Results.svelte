@@ -20,21 +20,18 @@
         <Alert color="yellow" message="Ingen fullførte oppgaver ble funnet." />
     {:else}
 
-        <table class="table-auto my-4">
+        <table class="table-auto">
             <thead>
-                <tr class="text-gray-800">
-                    <th class="pr-4 py-2">Oppgave</th>
-                    <th class="px-4 py-2">Svar</th>
-                    <th class="px-4 py-2">Vurdering</th>
-                    <th class="px-4 py-2">Tidsbruk</th>
+                <tr>
+                    <th class="text-left py-2 font-light" colspan="2">Svar</th>
+                    <th class="font-light px-3 py-2">Tidsbruk</th>
                 </tr>
             </thead>
             <tbody>
                 {#each puzzleSet as puzzle}
                     <tr>
-                        <td class="border-t pr-4 py-2">{puzzle.partOne} <Operator operator={puzzle.operator} /> {puzzle.partTwo} = ?</td>
-                        <td class="border-t px-4 py-2">{puzzle.answer}</td>
-                        <td class="border-t px-4 py-2">
+                        <td class="border-t pr-3 py-2 whitespace-no-wrap">{puzzle.partOne} <Operator operator={puzzle.operator} /> {puzzle.partTwo} = <span class="">{puzzle.answer}</span></td>
+                        <td class="border-t px-3 py-2">
                             {#if puzzle.isCorrect}
                                 <span class="text-green-500">Riktig</span>
                             {:else}
@@ -45,8 +42,8 @@
                     </tr>
                 {/each}
                 <tr>
-                    <td class="border-t-2 px-4 py-2" colspan="3"></td>
-                    <td class="border-t-2 px-4 py-2 font-bold">-</td>
+                    <td class="border-t-2 px-3 py-2" colspan="2"></td>
+                    <td class="border-t-2 px-3 py-2 font-bold">-</td>
                 </tr>
             </tbody>
         </table>

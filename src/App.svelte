@@ -13,11 +13,13 @@
 	}
 
 	let puzzleSet;
+	let displayGreeting = true;
 
 	function startQuiz(event) {
 		console.log('starting quiz', event.detail.quiz)
 		quiz = event.detail.quiz
 		quiz.isStarted = true;
+		displayGreeting = false;
 	}
 
 	function abortQuiz(event) {
@@ -35,8 +37,16 @@
 	}
 </script>
 
-<main class="container max-w-2xl mx-auto px-3 pt-1 pb-4">
+<main class="container max-w-xl mx-auto px-3 pt-1 pb-4">
 	<h1 class="text-3xl font-light text-orange-700 mb-2 text-right">Regneflyt</h1>
+	{#if displayGreeting}
+		<div class="mb-4 border rounded px-4 pt-2 pb-3 text-blue-700">
+			<p class="mb-2">
+			Regneflyt trener deg i hoderegning.
+			</p>
+			<p>Velg hvordan du ønsker å trene nedenfor. Når tiden er ute vil du få en vurdering.</p>
+		</div>
+	{/if}
 	{#if quiz.isCompleted}
 		<Results
 			puzzleSet={puzzleSet}
