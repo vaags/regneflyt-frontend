@@ -44,9 +44,9 @@
 </script>
 
 <main class="container max-w-xl mx-auto px-3 pt-1 pb-4">
-	<h1 class="text-3xl font-light text-orange-700 mb-2 text-right">Regneflyt</h1>
+	<h1 class="text-3xl font-light text-orange-600 mb-2 text-right">Regneflyt</h1>
 	{#if displayGreeting}
-		<div class="mb-4 border rounded px-4 pt-2 pb-3 text-blue-700">
+		<div class="card text-blue-700">
 			<p class="mb-2">
 			Regneflyt trener deg i hoderegning.
 			</p>

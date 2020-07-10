@@ -59,7 +59,7 @@
             on:addPuzzle={addPuzzle} />
     {/if}
 
-    <div class="mt-4 float-right text-right">
+    <div class="text-right">
         {#if showWarning}
             <p class="mb-2">Er du sikker på at du vil avbryte?</p>
             <Button on:click={abortQuiz} label="ja" color="red" />

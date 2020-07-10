@@ -41,4 +41,8 @@
     @apply bg-yellow-100 border-yellow-500 text-yellow-800;
 }
 
+.card {
+    @apply mb-3 border rounded px-4 pt-2 pb-3 bg-white
+}
+
 @tailwind utilities;

@@ -7,6 +7,7 @@
     on:click|preventDefault
     class="text-white
            font-light
+           text-xl
            py-1
            px-4
            rounded

@@ -85,7 +85,7 @@
 
 </script>
 
-<div class="border rounded px-4 pt-2">
+<div class="card">
     <h2 class="mb-3 text-xl font-thin">Oppgave {puzzleNumber}</h2>
     <form class="mb-4">
         <p class="text-3xl font-light mb-4">{puzzle.partOne} <Operator operator={operator} /> {puzzle.partTwo} = 
@@ -98,9 +98,7 @@
             required
             >
         </p>
-        <div class="mt-4">
-            <Button on:click="{completePuzzle}" label="Send" color="{displayError ? "red" : "green"}" />
-        </div>
+        <Button on:click="{completePuzzle}" label="Send" color="{displayError ? "red" : "green"}" />
     </form>
 </div>
 

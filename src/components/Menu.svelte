@@ -29,12 +29,12 @@
 </script>
 
 <form>
-    <div class="mb-4 border rounded px-4 pt-2 pb-3">
+    <div class="card">
         <h2 class="mb-3 text-xl font-thin">Varighet</h2>
         <input class="w-3/4 md:w-1/2" type="range" min="1" max="30" step="1" bind:value={quiz.duration}>
         <div class="text-blue-800">{quiz.duration} {quiz.duration > 1 ? "minutter" : "minutt"}</div>
     </div>
-    <div class="mb-4 border rounded px-4 pt-2 pb-3">
+    <div class="card">
         <h2 class="mb-3 text-xl font-thin">Regnearter</h2>
         {#each operatorMenu as operator}
             <label class="block">
@@ -43,7 +43,7 @@
             </label>
         {/each}
     </div>
-    <div class="mb-4 border rounded px-4 pt-2 pb-3">
+    <div class="card">
         <h2 class="mb-3 text-xl font-thin">Tallvariasjon &ndash; første del</h2>
         <div>
             <label>Minste mulige tall<br />
@@ -67,7 +67,7 @@
             <div class="text-blue-800">{quiz.partOne.maxValue}</div>
         </div>
     </div>
-    <div class="mb-4 border rounded px-4 pt-2 pb-3">
+    <div class="card">
         <h2 class="mb-3 text-xl font-thin">Tallvariasjon &ndash; andre del</h2>
         <div>
             <label>Minste mulige tall<br />
