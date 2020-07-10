@@ -7,7 +7,6 @@
 		length: 5,
 		isStarted: false,
 		isCompleted: false,
-		showAlernateGreeting: false,
 		operators: ['addisjon']
 	}
 
@@ -36,7 +35,7 @@
 </script>
 
 <main class="container mx-auto px-3 py-4">
-	<h1 class="text-4xl mb-8 text-center">Regneflyt</h1>
+	<h1 class="text-5xl font-light mb-8 text-center">Regneflyt</h1>
 	{#if quiz.isCompleted}
 		<Results
 			puzzleSet={puzzleSet}
@@ -49,7 +48,6 @@
 			on:completeQuiz={completeQuiz} />
 	{:else}
 		<Menu
-			showAlernateGreeting={quiz.showAlernateGreeting}
 			length={quiz.length}
 			operators={quiz.operators}
 			on:startQuiz={startQuiz} />

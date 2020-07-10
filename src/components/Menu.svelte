@@ -5,7 +5,6 @@
 
     const dispatch = createEventDispatcher();
     export let length;
-    export let showAlernateGreeting;
     export let operators;
     let validationError = false;
 
@@ -34,22 +33,21 @@
 
 
 <div>
-    <Alert message="{ showAlernateGreeting ? 'Er du klar for mer?' : 'La oss gjøre litt hoderegning!' }" />
-    <div class="my-8">
-        <p class="mt-8">Lengde:</p>
-        <input class="w-full" type="range" min="1" max="30" step="1" bind:value={length}>
-        <span>{length} {length == 1 ? "minutt" : "minutter"}</span>
+    <div class="mb-4 border rounded px-4 pt-2 pb-3">
+        <p class="mb-2 text-xl font-thin">Varighet</p>
+        <input class="w-3/4 md:w-1/2 float-left mt-1" type="range" min="1" max="30" step="1" bind:value={length}>
+        <span class="text-blue-700 ml-2">{length} min</span>
     </div>
-    <div class="my-8">
-        <p>Operatorer:</p>
+    <div class="mb-4 border rounded px-4 pt-2 pb-3">
+        <p class="mb-2 text-xl font-thin">Regnearter</p>
         {#each operatorMenu as operator}
             <label class="block">
-                <input type=checkbox bind:group={operators} value={operator.toLowerCase()}>
-                {operator}
+                <input type="checkbox" bind:group={operators} value={operator.toLowerCase()}>
+                    <span class="pl-1">{operator}</span>
             </label>
         {/each}
     </div>
-    <div class="text-center">
+    <div>
         <Button
             on:click={startQuiz}
             label="Start"
