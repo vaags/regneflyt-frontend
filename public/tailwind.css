@@ -46,7 +46,11 @@
 }
 
 .card > h2 {
-    @apply mb-3 text-2xl font-thin
+    @apply mb-3 text-3xl font-thin;
+}
+
+.validation-error-border {
+    @apply border-red-600;
 }
 
 @tailwind utilities;

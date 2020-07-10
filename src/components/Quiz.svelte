@@ -10,6 +10,7 @@
     let showWarning = false;
     let puzzleSet = [];
     let activeOperator;
+    const isLocalhost = location.hostname === "localhost";
 
     onDestroy(() => {
         clearInterval(interval);
@@ -65,7 +66,9 @@
             <Button on:click={abortQuiz} label="ja" color="red" />
             <Button on:click={toggleWarning} label="Nei" />
         {:else}
-            <Button on:click={completeQuiz} label="Fullfør" />
+            {#if isLocalhost}
+                <Button on:click={completeQuiz} label="Fullfør" />
+            {/if}
             <Button on:click={toggleWarning} label="Avbryt" color="gray" />
         {/if}
     </div>

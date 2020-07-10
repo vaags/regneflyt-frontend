@@ -8,7 +8,7 @@
     class="text-white
            font-light
            text-2xl
-           pb-1
+           py-1
            px-4
            rounded
            btn-{color}
