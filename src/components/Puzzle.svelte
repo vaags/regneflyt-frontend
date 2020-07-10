@@ -86,13 +86,13 @@
 </script>
 
 <div class="card">
-    <h2 class="mb-3 text-xl font-thin">Oppgave {puzzleNumber}</h2>
+    <h2>Oppgave {puzzleNumber}</h2>
     <form>
-        <p class="text-3xl font-light mb-4">{puzzle.partOne} <Operator operator={operator} /> {puzzle.partTwo} = 
+        <p class="text-2xl font-bold mb-4">{puzzle.partOne} <Operator operator={operator} /> {puzzle.partTwo} = 
         <input
             bind:this={input}
             bind:value={puzzle.answer}
-            class="font-light border {displayError ? 'border-red-600' : ''} rounded w-24 py-2 px-3 leading-tight focus:outline-none"
+            class="font-bold border {displayError ? 'border-red-600' : ''} rounded w-24 py-2 px-3 leading-tight focus:outline-none"
             type="number"
             placeholder="?"
             required

@@ -34,12 +34,12 @@
         label="Start"
         color="{validationError ? 'red' : 'green'}" />
     <div class="card mt-3">
-        <h2 class="mb-3 text-xl font-thin">Varighet</h2>
+        <h2>Varighet</h2>
         <input class="w-3/4 md:w-1/2" type="range" min="1" max="30" step="1" bind:value={quiz.duration}>
         <div class="text-blue-800">{quiz.duration} {quiz.duration > 1 ? "minutter" : "minutt"}</div>
     </div>
     <div class="card">
-        <h2 class="mb-3 text-xl font-thin">Regnearter</h2>
+        <h2>Regnearter</h2>
         {#each operatorMenu as operator}
             <label class="block">
                 <input type="checkbox" bind:group={quiz.operators} value={operator.toLowerCase()}>
@@ -48,7 +48,7 @@
         {/each}
     </div>
     <div class="card">
-        <h2 class="mb-3 text-xl font-thin">Intervall &ndash; første del</h2>
+        <h2>Intervall &ndash; første del</h2>
         <div>
             <label>Fra og med<br />
                 <input
@@ -72,7 +72,7 @@
         </div>
     </div>
     <div class="card">
-        <h2 class="mb-3 text-xl font-thin">Intervall &ndash; andre del</h2>
+        <h2>Intervall &ndash; andre del</h2>
         <div>
             <label>Fra og med<br />
                 <input

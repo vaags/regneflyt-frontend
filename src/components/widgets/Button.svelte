@@ -7,8 +7,8 @@
     on:click|preventDefault
     class="text-white
            font-light
-           text-xl
-           py-1
+           text-2xl
+           pb-1
            px-4
            rounded
            btn-{color}

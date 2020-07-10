@@ -15,7 +15,7 @@
 </script>
 
 <div class="card">
-    <h2 class="mb-3 text-xl font-thin">Resultater</h2>
+    <h2>Resultater</h2>
     {#if !puzzleSet || !puzzleSet.length}
         <Alert color="yellow" message="Ingen fullførte oppgaver ble funnet." />
     {:else}
