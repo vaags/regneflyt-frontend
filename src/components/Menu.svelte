@@ -29,7 +29,11 @@
 </script>
 
 <form>
-    <div class="card">
+    <Button
+        on:click={startQuiz}
+        label="Start"
+        color="{validationError ? 'red' : 'green'}" />
+    <div class="card mt-3">
         <h2 class="mb-3 text-xl font-thin">Varighet</h2>
         <input class="w-3/4 md:w-1/2" type="range" min="1" max="30" step="1" bind:value={quiz.duration}>
         <div class="text-blue-800">{quiz.duration} {quiz.duration > 1 ? "minutter" : "minutt"}</div>
@@ -44,9 +48,9 @@
         {/each}
     </div>
     <div class="card">
-        <h2 class="mb-3 text-xl font-thin">Tallvariasjon &ndash; første del</h2>
+        <h2 class="mb-3 text-xl font-thin">Intervall &ndash; første del</h2>
         <div>
-            <label>Minste mulige tall<br />
+            <label>Fra og med<br />
                 <input
                     class="w-3/4 md:w-1/2"
                     type="range" min="0"
@@ -55,7 +59,7 @@
                     bind:value={quiz.partOne.minValue}>
             </label>
             <div class="text-blue-800 mb-4">{quiz.partOne.minValue}</div>
-            <label>Største mulige tall<br />
+            <label>Til og med<br />
                 <input
                     class="w-3/4 md:w-1/2"
                     type="range"
@@ -68,9 +72,9 @@
         </div>
     </div>
     <div class="card">
-        <h2 class="mb-3 text-xl font-thin">Tallvariasjon &ndash; andre del</h2>
+        <h2 class="mb-3 text-xl font-thin">Intervall &ndash; andre del</h2>
         <div>
-            <label>Minste mulige tall<br />
+            <label>Fra og med<br />
                 <input
                     class="w-3/4 md:w-1/2"
                     type="range" min="0"
@@ -79,7 +83,7 @@
                     bind:value={quiz.partTwo.minValue}>
             </label>
             <div class="text-blue-800 mb-4">{quiz.partTwo.minValue}</div>
-            <label>Største mulige tall<br />
+            <label>Til og med<br />
                 <input
                     class="w-3/4 md:w-1/2"
                     type="range"
@@ -90,11 +94,5 @@
             </label>
             <div class="text-blue-800">{quiz.partTwo.maxValue}</div>
         </div>
-    </div>
-    <div>
-        <Button
-            on:click={startQuiz}
-            label="Start"
-            color="{validationError ? 'red' : 'green'}" />
     </div>
 </form>

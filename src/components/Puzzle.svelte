@@ -87,7 +87,7 @@
 
 <div class="card">
     <h2 class="mb-3 text-xl font-thin">Oppgave {puzzleNumber}</h2>
-    <form class="mb-4">
+    <form>
         <p class="text-3xl font-light mb-4">{puzzle.partOne} <Operator operator={operator} /> {puzzle.partTwo} = 
         <input
             bind:this={input}
