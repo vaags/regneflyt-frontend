@@ -3,11 +3,10 @@
     import Puzzle from './Puzzle.svelte';
     import Button from './widgets/Button.svelte';
 
-    export let length;
-    export let operators;
+    export let quiz;
 
     const dispatch = createEventDispatcher();
-    const interval = setTimeout(completeQuiz, length * 60000);
+    const interval = setTimeout(completeQuiz, quiz.duration * 60000);
     let showWarning = false;
     let puzzleSet = [];
     let activeOperator;
@@ -35,15 +34,15 @@
     }
 
     function setOperator() {
-        if (operators.length) {
-            var random = Math.ceil(Math.random() * operators.length)
+        if (quiz.operators.length > 1) {
+            var random = Math.ceil(Math.random() * quiz.operators.length)
     
-            activeOperator = operators[random - 1];
+            activeOperator = quiz.operators[random - 1];
+            console.log('active operator:', activeOperator)
         } else {
-            activeOperator = operators[0]
+            activeOperator = quiz.operators[0]
         }
 
-        console.log('active operator:', activeOperator)
     }
 
     function toggleWarning() {
@@ -55,16 +54,18 @@
     {#if activeOperator}
         <Puzzle
             operator={activeOperator}
+            minValue={quiz.minValue}
+            maxValue={quiz.maxValue}
             on:addPuzzle={addPuzzle} />
     {/if}
 
-    <div class="mt-8">
-        <Button on:click={completeQuiz} label="Fullfør" />
+    <div class="mt-4 float-right text-right">
         {#if showWarning}
             <p class="mb-2">Er du sikker på at du vil avbryte?</p>
             <Button on:click={abortQuiz} label="ja" color="red" />
             <Button on:click={toggleWarning} label="Nei" />
         {:else}
+            <Button on:click={completeQuiz} label="Fullfør" />
             <Button on:click={toggleWarning} label="Avbryt" color="gray" />
         {/if}
     </div>

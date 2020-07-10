@@ -6,6 +6,9 @@
     const dispatch = createEventDispatcher();
 
     export let operator;
+    export let minValue;
+    export let maxValue;
+    let puzzleNumber = 0;
 
     let puzzle = {
         partOne: undefined,
@@ -29,12 +32,13 @@
         puzzle.isCorrect = undefined,
         puzzle.duration = undefined,
         puzzle.operator = operator;
+        puzzleNumber++;
         input.focus()
         startTime = Date.now();
     }
 
     function getRandomNumber() {
-        return Math.ceil(Math.random() * 20)
+        return Math.floor(Math.random() * (maxValue - minValue + 1)) + minValue;
     }
 
     function completePuzzle() {
@@ -52,18 +56,18 @@
     function evaluateAnswer() {
         switch (operator) {
             case 'addisjon':
-                return puzzle.partOne + puzzle.partTwo == puzzle.answer;
+                return puzzle.partOne + puzzle.partTwo === puzzle.answer;
             case 'subtraksjon':
-                return puzzle.partOne - puzzle.partTwo == puzzle.answer;
+                return puzzle.partOne - puzzle.partTwo === puzzle.answer;
             case 'multiplikasjon':
-                return puzzle.partOne * puzzle.partTwo == puzzle.answer;
+                return puzzle.partOne * puzzle.partTwo === puzzle.answer;
             case 'divisjon':
-                return puzzle.partOne / puzzle.partTwo == puzzle.answer;
+                return puzzle.partOne / puzzle.partTwo === puzzle.answer;
         }
     }
 
     function puzzleIsValid() {
-        if (!puzzle.answer) {
+        if (puzzle.answer == undefined) {
             validationError = true;
             input.focus()
             return;
@@ -76,23 +80,23 @@
 
     onMount(() => {
         generatePuzzle()
-        console.log('operator is set to:', operator)
     })
 
 </script>
 
-<div class="text-center">
-    <p class="text-5xl mb-4">{puzzle.partOne} <Operator operator={operator} /> {puzzle.partTwo} = <span class="text-blue-600">?</span></p>
+<div class="border rounded px-4 pt-2 pb-3 text-center">
+    <h2 class="mb-3 text-xl font-thin">Oppgave {puzzleNumber}</h2>
     <form class="mb-4">
+        <p class="text-5xl mb-4">{puzzle.partOne} <Operator operator={operator} /> {puzzle.partTwo} = <span class="text-blue-600">?</span></p>
         <input
             bind:this={input}
             bind:value={puzzle.answer}
-            class="text-5xl border {displayError ? 'border-red-600' : ''} rounded w-40 py-2 px-3 leading-tight focus:outline-none"
+            class="text-3xl border {displayError ? 'border-red-600' : ''} rounded w-40 py-2 px-3 leading-tight focus:outline-none"
             type="number"
             required
             >
         <div class="mt-4">
-            <Button on:click="{completePuzzle}" label="Neste oppgave" isBig="true" color="{displayError ? "red" : "green"}" />
+            <Button on:click="{completePuzzle}" label="Send" isBig="true" color="{displayError ? "red" : "green"}" />
         </div>
     </form>
 </div>

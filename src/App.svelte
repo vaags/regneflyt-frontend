@@ -4,7 +4,9 @@
 	import Quiz from './components/Quiz.svelte';
 
 	let quiz = {
-		length: 5,
+		duration: 5,
+		minValue: 1,
+		maxValue: 20,
 		isStarted: false,
 		isCompleted: false,
 		operators: ['addisjon']
@@ -13,10 +15,9 @@
 	let puzzleSet;
 
 	function startQuiz(event) {
-		quiz.length = event.detail.length
-		quiz.operators = event.detail.operators
+		console.log('starting quiz', event.detail.quiz)
+		quiz = event.detail.quiz
 		quiz.isStarted = true;
-		quiz.showAlernateGreeting = true;
 	}
 
 	function abortQuiz(event) {
@@ -34,22 +35,20 @@
 	}
 </script>
 
-<main class="container mx-auto px-3 py-4">
-	<h1 class="text-5xl font-light mb-8 text-center">Regneflyt</h1>
+<main class="container max-w-2xl mx-auto px-3 py-4">
+	<h1 class="text-4xl font-light mb-8 text-center">Regneflyt</h1>
 	{#if quiz.isCompleted}
 		<Results
 			puzzleSet={puzzleSet}
 			on:resetQuiz={resetQuiz} />
 	{:else if quiz.isStarted}
 		<Quiz
-			length={quiz.length}
-			operators={quiz.operators}
+			quiz={quiz}
 			on:abortQuiz={abortQuiz}
 			on:completeQuiz={completeQuiz} />
 	{:else}
 		<Menu
-			length={quiz.length}
-			operators={quiz.operators}
+			quiz={quiz}
 			on:startQuiz={startQuiz} />
 	{/if}
 </main>
