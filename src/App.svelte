@@ -35,8 +35,8 @@
 	}
 </script>
 
-<main class="container max-w-2xl mx-auto px-3 py-4">
-	<h1 class="text-4xl font-light mb-8 text-center">Regneflyt</h1>
+<main class="container max-w-2xl mx-auto px-3 pt-1 pb-4">
+	<h1 class="text-3xl font-light text-orange-700 mb-2 text-right">Regneflyt</h1>
 	{#if quiz.isCompleted}
 		<Results
 			puzzleSet={puzzleSet}

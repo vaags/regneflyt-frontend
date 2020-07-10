@@ -16,17 +16,23 @@
 
 ## Todo
 
-### Lite jobb
+### Arbeidsmengde: liten
 
-* Nummerert resultatliste
-* Oppsummering av tid
+* Resultatside: Nummererte oppgaver
+* Resultatside: Oppsummering av tid
 
-### Middels jobb
+### Arbeidsmengde: Middels
 
-* Tallvariasjon per del
-* Tallvariasjon for svaret
+* Meny: Tallvariasjon per del
+* Meny: Tallvariasjon for svaret?
 * Holde styr på hver omgang av spillet (vis Quiz 1, 2, 3 osv)
 
-### Mye jobb
+### Arbeidsmengde: Høy
 
 * Eksport og sending av resultater på mail.
+* Implementere routing
+
+#### Arbeidsmengde: Meget høy
+
+* Backend: Innlogging
+* Backend: Api

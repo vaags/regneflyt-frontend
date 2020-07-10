@@ -9,6 +9,7 @@
     class="bg-{color}-500
            hover:bg-{color}-700
            text-white
+           font-light
            {isBig ? "text-xl" : ""}
            py-1
            px-{isBig ? 6 : 4}

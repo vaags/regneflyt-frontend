@@ -84,7 +84,7 @@
 
 </script>
 
-<div class="border rounded px-4 pt-2 pb-3 text-center">
+<div class="border rounded px-4 pt-2 pb-3">
     <h2 class="mb-3 text-xl font-thin">Oppgave {puzzleNumber}</h2>
     <form class="mb-4">
         <p class="text-5xl mb-4">{puzzle.partOne} <Operator operator={operator} /> {puzzle.partTwo} = <span class="text-blue-600">?</span></p>
