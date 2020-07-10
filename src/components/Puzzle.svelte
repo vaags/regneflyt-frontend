@@ -5,9 +5,10 @@
 
     const dispatch = createEventDispatcher();
 
+    export let partOne;
+    export let partTwo;
     export let operator;
-    export let minValue;
-    export let maxValue;
+
     let puzzleNumber = 0;
 
     let puzzle = {
@@ -26,19 +27,19 @@
     $: displayError = !puzzle.answer && validationError;
 
     function generatePuzzle() {
-        puzzle.partOne = getRandomNumber()
-        puzzle.partTwo = getRandomNumber()
-        puzzle.answer = undefined,
-        puzzle.isCorrect = undefined,
-        puzzle.duration = undefined,
-        puzzle.operator = operator;
-        puzzleNumber++;
+        puzzle.partOne = getRandomNumber(partOne.minValue, partOne.maxValue)
+        puzzle.partTwo = getRandomNumber(partTwo.minValue, partTwo.maxValue)
+        puzzle.answer = undefined
+        puzzle.isCorrect = undefined
+        puzzle.duration = undefined
+        puzzle.operator = operator
+        puzzleNumber++
         input.focus()
         startTime = Date.now();
     }
 
-    function getRandomNumber() {
-        return Math.floor(Math.random() * (maxValue - minValue + 1)) + minValue;
+    function getRandomNumber(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
     function completePuzzle() {

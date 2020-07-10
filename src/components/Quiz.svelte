@@ -54,8 +54,8 @@
     {#if activeOperator}
         <Puzzle
             operator={activeOperator}
-            minValue={quiz.minValue}
-            maxValue={quiz.maxValue}
+            partOne={quiz.partOne}
+            partTwo={quiz.partTwo}
             on:addPuzzle={addPuzzle} />
     {/if}
 

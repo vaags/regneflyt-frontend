@@ -15,7 +15,9 @@
         'Divisjon'
     ]
 
-    $: validationError = !quiz.operators.length || quiz.minValue >= quiz.maxValue;
+    $: validationError = !quiz.operators.length
+        || quiz.partOne.minValue > quiz.partOne.maxValue
+        || quiz.partTwo.minValue > quiz.partTwo.maxValue;
 
     function startQuiz() {
         if (validationError) {
@@ -25,7 +27,6 @@
         dispatch('startQuiz', { quiz });
     }
 </script>
-
 
 <form>
     <div class="mb-4 border rounded px-4 pt-2 pb-3">
@@ -43,14 +44,51 @@
         {/each}
     </div>
     <div class="mb-4 border rounded px-4 pt-2 pb-3">
-        <h2 class="mb-3 text-xl font-thin">Tallvariasjon</h2>
+        <h2 class="mb-3 text-xl font-thin">Tallvariasjon &ndash; første del</h2>
         <div>
-            <div>Minste mulige tall</div>
-            <input class="w-3/4 md:w-1/2" type="range" min="0" max={quiz.maxValue - 1} step="1" bind:value={quiz.minValue}>
-            <div class="text-blue-800">{quiz.minValue}</div>
-            <div class="mt-2">Største mulige tall</div>
-            <input class="w-3/4 md:w-1/2" type="range" min={quiz.minValue + 1} max="100" step="1" bind:value={quiz.maxValue}>
-            <div class="text-blue-800">{quiz.maxValue}</div>
+            <label>Minste mulige tall<br />
+                <input
+                    class="w-3/4 md:w-1/2"
+                    type="range" min="0"
+                    max={quiz.partOne.maxValue}
+                    step="1"
+                    bind:value={quiz.partOne.minValue}>
+            </label>
+            <div class="text-blue-800 mb-4">{quiz.partOne.minValue}</div>
+            <label>Største mulige tall<br />
+                <input
+                    class="w-3/4 md:w-1/2"
+                    type="range"
+                    min={quiz.partOne.minValue}
+                    max="100"
+                    step="1"
+                    bind:value={quiz.partOne.maxValue}>
+            </label>
+            <div class="text-blue-800">{quiz.partOne.maxValue}</div>
+        </div>
+    </div>
+    <div class="mb-4 border rounded px-4 pt-2 pb-3">
+        <h2 class="mb-3 text-xl font-thin">Tallvariasjon &ndash; andre del</h2>
+        <div>
+            <label>Minste mulige tall<br />
+                <input
+                    class="w-3/4 md:w-1/2"
+                    type="range" min="0"
+                    max={quiz.partTwo.maxValue}
+                    step="1"
+                    bind:value={quiz.partTwo.minValue}>
+            </label>
+            <div class="text-blue-800 mb-4">{quiz.partTwo.minValue}</div>
+            <label>Største mulige tall<br />
+                <input
+                    class="w-3/4 md:w-1/2"
+                    type="range"
+                    min={quiz.partTwo.minValue}
+                    max="100"
+                    step="1"
+                    bind:value={quiz.partTwo.maxValue}>
+            </label>
+            <div class="text-blue-800">{quiz.partTwo.maxValue}</div>
         </div>
     </div>
     <div>

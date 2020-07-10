@@ -5,8 +5,14 @@
 
 	let quiz = {
 		duration: 5,
-		minValue: 1,
-		maxValue: 20,
+		partOne: {
+			minValue: 1,
+			maxValue: 20,
+		},
+		partTwo: {
+			minValue: 1,
+			maxValue: 20,
+		},
 		isStarted: false,
 		isCompleted: false,
 		operators: ['addisjon']
