@@ -1,3 +1,44 @@
 @tailwind base;
 @tailwind components;
+
+.btn-blue {
+    @apply bg-blue-500;
+}
+
+.btn-blue:hover {
+    @apply bg-blue-700;
+}
+
+.btn-green {
+    @apply bg-green-500;
+}
+
+.btn-green:hover {
+    @apply bg-green-700;
+}
+
+.btn-red {
+    @apply bg-red-500;
+}
+
+.btn-red:hover {
+    @apply bg-red-700;
+}
+
+.btn-gray {
+    @apply bg-gray-500;
+}
+
+.btn-gray:hover {
+    @apply bg-gray-700;
+}
+
+.alert-blue {
+    @apply bg-blue-100 border-blue-500 text-blue-800;
+}
+
+.alert-yellow {
+    @apply bg-yellow-100 border-yellow-500 text-yellow-800;
+}
+
 @tailwind utilities;

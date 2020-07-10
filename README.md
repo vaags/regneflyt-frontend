@@ -23,7 +23,7 @@
 
 ### Arbeidsmengde: Middels
 
-* Meny: Tallvariasjon per del
+* Fiks stripping av klasser (purgeCss)
 * Meny: Tallvariasjon for svaret?
 * Holde styr på hver omgang av spillet (vis Quiz 1, 2, 3 osv)
 * Styling av input elementer (checkbox, range etc.)
