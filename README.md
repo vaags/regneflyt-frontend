@@ -20,6 +20,7 @@
 
 * Resultatside: Nummererte oppgaver
 * Resultatside: Oppsummering av tid
+* Sett av plass til tallene for "fra og med" etc, slik at de ikke skyver range slider bortover når antall siffre øker
 
 ### Arbeidsmengde: Middels
 
