@@ -15,7 +15,14 @@
 		},
 		isStarted: false,
 		isCompleted: false,
-		operators: ['addisjon']
+		operators: [
+			'Addisjon',
+			'Subtraksjon',
+			'Multiplikasjon',
+			'Divisjon',
+			'Alle'
+		],
+		selectedOperator: 'addisjon'
 	}
 
 	let puzzleSet;

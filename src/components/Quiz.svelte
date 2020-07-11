@@ -35,15 +35,15 @@
     }
 
     function setOperator() {
-        if (quiz.operators.length > 1) {
-            var random = Math.ceil(Math.random() * quiz.operators.length)
+        if (quiz.selectedOperator === 'alle') {
+            var random = Math.ceil(Math.random() * 4)
     
-            activeOperator = quiz.operators[random - 1];
-            console.log('active operator:', activeOperator)
+            activeOperator = quiz.operators[random - 1].toLowerCase();
         } else {
-            activeOperator = quiz.operators[0]
+            activeOperator = quiz.selectedOperator
         }
 
+        console.log('active operator:', activeOperator)
     }
 
     function toggleWarning() {

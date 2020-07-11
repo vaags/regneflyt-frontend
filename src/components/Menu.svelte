@@ -4,17 +4,11 @@
     import Range from './widgets/Range.svelte';
     import Alert from './widgets/Alert.svelte';
 
-    const dispatch = createEventDispatcher();
 	export let quiz
     
+    const dispatch = createEventDispatcher();
+    
     let validationError = false;
-
-    let operatorMenu = [
-        'Addisjon',
-        'Subtraksjon',
-        'Multiplikasjon',
-        'Divisjon'
-    ]
 
     $: validationError = !quiz.operators.length
         || quiz.partOne.minValue > quiz.partOne.maxValue
@@ -32,14 +26,15 @@
 <form>
     <div class="card mt-3">
         <h2>Varighet</h2>
-        <input class="w-3/4 md:w-1/2" type="range" min="1" max="30" step="1" bind:value={quiz.duration}>
-        <div class="text-blue-800">{quiz.duration} {quiz.duration > 1 ? "minutter" : "minutt"}</div>
+        <label class="text-blue-800">{quiz.duration} {quiz.duration > 1 ? "minutter" : "minutt"}<br />
+            <input class="w-3/4 md:w-1/2 py-1" type="range" min="1" max="30" step="1" bind:value={quiz.duration}>
+        </label>
     </div>
     <div class="card">
         <h2>Regnearter</h2>
-        {#each operatorMenu as operator}
-            <label class="block">
-                <input type="checkbox" bind:group={quiz.operators} value={operator.toLowerCase()}>
+        {#each quiz.operators as operator}
+            <label class="block pb-1">
+                <input type="radio" bind:group={quiz.selectedOperator} value={operator.toLowerCase()}>
                     <span class="pl-1">{operator}</span>
             </label>
         {/each}
