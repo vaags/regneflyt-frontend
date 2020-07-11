@@ -8,17 +8,7 @@
     
     const dispatch = createEventDispatcher();
     
-    let validationError = false;
-
-    $: validationError = !quiz.operators.length
-        || quiz.partOne.minValue > quiz.partOne.maxValue
-        || quiz.partTwo.minValue > quiz.partTwo.maxValue;
-
     function startQuiz() {
-        if (validationError) {
-            return;
-        }
-
         dispatch('startQuiz', { quiz });
     }
 </script>
@@ -40,41 +30,75 @@
         {/each}
     </div>
     <div class="card">
-        <h2>Intervall &ndash; første del</h2>
+        <h2>
+            {#if quiz.selectedOperator === 'multiplikasjon'}
+                Multiplikand
+            {:else if quiz.selectedOperator === 'divisjon'}
+                Dividend <small>(intervall)</small>
+            {:else}
+                Første ledd <small>(intervall)</small>
+            {/if}
+        </h2>
         <div>
-            <label>Fra og med:<br />
-                <Range
-                    max={quiz.partOne.maxValue}
-                    bind:value={quiz.partOne.minValue}
-                />
-            </label>
-            <label>Til og med:<br />
-                <Range
-                    min={quiz.partOne.minValue}
-                    bind:value={quiz.partOne.maxValue}
-                />
-            </label>
+            {#if quiz.selectedOperator === 'multiplikasjon'}
+                    <Range
+                        min="1"
+                        max="10"
+                        bind:value={quiz.partOne.minValue}
+                        on:change="{() => {quiz.partOne.maxValue = quiz.partOne.minValue}}"
+                    />
+            {:else}
+                <label>Fra og med:<br />
+                    <Range
+                        max={quiz.partOne.maxValue}
+                        bind:value={quiz.partOne.minValue}
+                    />
+                </label>
+                <label>Til og med:<br />
+                    <Range
+                        min={quiz.partOne.minValue}
+                        bind:value={quiz.partOne.maxValue}
+                    />
+                </label>
+            {/if}
         </div>
     </div>
     <div class="card">
-        <h2>Intervall &ndash; andre del</h2>
+        <h2>
+            {#if quiz.selectedOperator === 'multiplikasjon'}
+                Multiplikator <small>(intervall)</small>
+            {:else if quiz.selectedOperator === 'divisjon'}
+                Divisor
+            {:else}
+                Andre ledd <small>(intervall)</small>
+            {/if}
+        </h2>
         <div>
-            <label>Fra og med:<br />
-                <Range
-                    max={quiz.partTwo.maxValue}
-                    bind:value={quiz.partTwo.minValue}
-                />
-            </label>
-            <label>Til og med:<br />
-                <Range
-                    min={quiz.partTwo.minValue}
-                    bind:value={quiz.partTwo.maxValue}
-                />
-            </label>
+            {#if quiz.selectedOperator === 'divisjon'}
+                    <Range
+                        min="1"
+                        max="10"
+                        bind:value={quiz.partTwo.minValue}
+                        on:change="{() => {quiz.partTwo.maxValue = quiz.partTwo.minValue}}"
+                    />
+            {:else}
+                <label>Fra og med:<br />
+                    <Range
+                        max={quiz.partTwo.maxValue}
+                        bind:value={quiz.partTwo.minValue}
+                    />
+                </label>
+                <label>Til og med:<br />
+                    <Range
+                        min={quiz.partTwo.minValue}
+                        bind:value={quiz.partTwo.maxValue}
+                    />
+                </label>
+            {/if}
         </div>
     </div>
     <Button
         on:click={startQuiz}
         label="Start"
-        color="{validationError ? 'red' : 'green'}" />
+        color="green" />
 </form>

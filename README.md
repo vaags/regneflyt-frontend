@@ -24,10 +24,9 @@
 
 ### Arbeidsmengde: Middels
 
-* Radiobuttons for valg av regnearter
-    * Legg til valg for alle
-    * Multiplikasjon skal ha låst første del (mellom 1 og 10)
-    * Divisjon skal ha låst andre del (mellom 1 og 10)
+* Valg for å unngå negativt svar
+    * Kun for subtraksjon?
+    * Dersom dette er valgt skal delene "flippes" dersom del to er større enn del én
 * Meny: Tallvariasjon for svaret?
 * Holde styr på hver omgang av spillet (vis Quiz 1, 2, 3 osv)
 * Styling av input elementer (checkbox, range etc.)
