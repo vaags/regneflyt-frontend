@@ -53,7 +53,7 @@
                     bind:value={quiz.partOne.minValue}
                 />
             </label>
-            <label>Til og med<br />
+            <label>Til og med:<br />
                 <Range
                     min={quiz.partOne.minValue}
                     bind:value={quiz.partOne.maxValue}
@@ -64,13 +64,13 @@
     <div class="card">
         <h2>Intervall &ndash; andre del</h2>
         <div>
-            <label>Fra og med<br />
+            <label>Fra og med:<br />
                 <Range
                     max={quiz.partTwo.maxValue}
                     bind:value={quiz.partTwo.minValue}
                 />
             </label>
-            <label>Til og med<br />
+            <label>Til og med:<br />
                 <Range
                     min={quiz.partTwo.minValue}
                     bind:value={quiz.partTwo.maxValue}
