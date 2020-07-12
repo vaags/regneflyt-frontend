@@ -11,6 +11,14 @@
     function startQuiz() {
         dispatch('startQuiz', { quiz });
     }
+
+    function syncMinMaxValuesIfNeeded() {
+        if (quiz.selectedOperator == 'multiplikasjon') {
+            quiz.partOne.maxValue = quiz.partOne.minValue
+        } else if (quiz.selectedOperator == 'divisjon') {
+            quiz.partTwo.maxValue = quiz.partTwo.minValue
+        }
+    }
 </script>
 
 <form>
@@ -23,11 +31,22 @@
     <div class="card">
         <h2>Regnearter</h2>
         {#each quiz.operators as operator}
-            <label class="block pb-1">
-                <input type="radio" bind:group={quiz.selectedOperator} value={operator.toLowerCase()}>
-                    <span class="pl-1">{operator}</span>
+            <label class="block pb-1 mt-1">
+                <input
+                    type="radio"
+                    bind:group={quiz.selectedOperator}
+                    value={operator.toLowerCase()}
+                    on:change="{() => syncMinMaxValuesIfNeeded()}"
+                >
+                <span class="ml-1">{operator}</span>
             </label>
         {/each}
+        {#if quiz.selectedOperator === 'subtraksjon'}
+            <label class="block mt-2">
+                <input type="checkbox" bind:checked={quiz.avoidNegativeAnswer}>
+                <span class="ml-1">Unngå negativt svar</span>
+            </label>
+        {/if}
     </div>
     <div class="card">
         <h2>

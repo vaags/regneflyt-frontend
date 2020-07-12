@@ -22,7 +22,9 @@
 			'Divisjon',
 			'Alle'
 		],
-		selectedOperator: 'addisjon'
+		selectedOperator: 'addisjon',
+		avoidNegativeAnswer: false,
+		activeOperator: undefined
 	}
 
 	let puzzleSet;

@@ -9,7 +9,6 @@
     const interval = setTimeout(completeQuiz, quiz.duration * 60000);
     let showWarning = false;
     let puzzleSet = [];
-    let activeOperator;
     const isLocalhost = location.hostname === "localhost";
 
     onDestroy(() => {
@@ -38,12 +37,12 @@
         if (quiz.selectedOperator === 'alle') {
             var random = Math.ceil(Math.random() * 4)
     
-            activeOperator = quiz.operators[random - 1].toLowerCase();
+            quiz.activeOperator = quiz.operators[random - 1].toLowerCase();
         } else {
-            activeOperator = quiz.selectedOperator
+            quiz.activeOperator = quiz.selectedOperator
         }
 
-        console.log('active operator:', activeOperator)
+        console.log('active operator:', quiz.activeOperator)
     }
 
     function toggleWarning() {
@@ -52,11 +51,9 @@
 </script>
 
 <div>
-    {#if activeOperator}
+    {#if quiz.activeOperator}
         <Puzzle
-            operator={activeOperator}
-            partOne={quiz.partOne}
-            partTwo={quiz.partTwo}
+            quiz={quiz}
             on:addPuzzle={addPuzzle} />
     {/if}
 
