@@ -5,9 +5,7 @@
 
     const dispatch = createEventDispatcher();
 
-    export let partOne;
-    export let partTwo;
-    export let operator;
+    export let quiz
 
     let puzzleNumber = 0;
 
@@ -17,7 +15,7 @@
         answer: undefined,
         duration: undefined,
         isCorrect: undefined,
-        operator: undefined
+        operator: quiz.activeOperator
     }
 
     let input;
@@ -27,15 +25,26 @@
     $: displayError = !puzzle.answer && validationError;
 
     function generatePuzzle() {
-        puzzle.partOne = getRandomNumber(partOne.minValue, partOne.maxValue)
-        puzzle.partTwo = getRandomNumber(partTwo.minValue, partTwo.maxValue)
+        puzzle.partOne = getRandomNumber(quiz.partOne.minValue, quiz.partOne.maxValue)
+        puzzle.partTwo = getRandomNumber(quiz.partTwo.minValue, quiz.partTwo.maxValue)
+
+        shouldAvoidNegativeAnswer() && swapPuzzlePartValues();
+
         puzzle.answer = undefined
         puzzle.isCorrect = undefined
         puzzle.duration = undefined
-        puzzle.operator = operator
         puzzleNumber++
         input.focus()
         startTime = Date.now();
+    }
+
+    function shouldAvoidNegativeAnswer() {
+        return (!quiz.allowNegativeAnswer && puzzle.operator == 'subtraksjon')
+            && puzzle.partTwo > puzzle.partOne;
+    }
+
+    function swapPuzzlePartValues() {
+        [puzzle.partOne, puzzle.partTwo] = [puzzle.partTwo, puzzle.partOne];
     }
 
     function getRandomNumber(min, max) {
@@ -55,7 +64,7 @@
     }
 
     function evaluateAnswer() {
-        switch (operator) {
+        switch (quiz.activeOperator) {
             case 'addisjon':
                 return puzzle.partOne + puzzle.partTwo === puzzle.answer;
             case 'subtraksjon':
@@ -88,7 +97,7 @@
 <div class="card">
     <h2>Oppgave {puzzleNumber}</h2>
     <form>
-        <div class="text-center my-12 text-4xl">{puzzle.partOne} <Operator operator={operator} /> {puzzle.partTwo} = 
+        <div class="text-center my-12 text-4xl">{puzzle.partOne} <Operator operator={quiz.activeOperator} /> {puzzle.partTwo} = 
         <input
             bind:this={input}
             bind:value={puzzle.answer}
