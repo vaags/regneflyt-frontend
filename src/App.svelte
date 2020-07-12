@@ -4,7 +4,7 @@
 	import Quiz from './components/Quiz.svelte';
 
 	let quiz = {
-		duration: 5,
+		duration: 3,
 		partOne: {
 			minValue: 1,
 			maxValue: 20,
@@ -23,7 +23,7 @@
 			'Alle'
 		],
 		selectedOperator: 'addisjon',
-		avoidNegativeAnswer: false,
+		allowNegativeAnswer: true,
 		activeOperator: undefined
 	}
 

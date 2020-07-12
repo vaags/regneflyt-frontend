@@ -39,8 +39,7 @@
     }
 
     function shouldAvoidNegativeAnswer() {
-        return ((puzzle.operator == 'subtraksjon' && quiz.avoidNegativeAnswer)
-            || puzzle.operator == 'divisjon')
+        return (!quiz.allowNegativeAnswer && puzzle.operator == 'subtraksjon')
             && puzzle.partTwo > puzzle.partOne;
     }
 

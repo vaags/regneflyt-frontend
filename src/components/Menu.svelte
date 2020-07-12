@@ -43,8 +43,8 @@
         {/each}
         {#if quiz.selectedOperator === 'subtraksjon'}
             <label class="block mt-2">
-                <input type="checkbox" bind:checked={quiz.avoidNegativeAnswer}>
-                <span class="ml-1">Unngå negativt svar</span>
+                <input type="checkbox" bind:checked={quiz.allowNegativeAnswer}>
+                <span class="ml-1">Tillat negative svar</span>
             </label>
         {/if}
     </div>
