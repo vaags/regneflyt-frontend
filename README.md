@@ -24,9 +24,9 @@
 
 ### Arbeidsmengde: Middels
 
-* Valg for å unngå negativt svar
-    * Kun for subtraksjon?
-    * Dersom dette er valgt skal delene "flippes" dersom del to er større enn del én
+* Sjekkbokser for valg av multiplikand og divisor
+    * Gir mulighet for å regne med flere gangetabeller på likt
+* Ikke randomiserte oppgaver ved multiplikasjon og divisjon
 * Meny: Tallvariasjon for svaret?
 * Holde styr på hver omgang av spillet (vis Quiz 1, 2, 3 osv)
 * Styling av input elementer (checkbox, range etc.)
