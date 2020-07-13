@@ -29,20 +29,20 @@
 
     function addPuzzle(event) {
         puzzleSet = [...puzzleSet, event.detail.puzzle];
-        console.log('added puzzle:', event.detail.puzzle);
+        // console.log('added puzzle:', event.detail.puzzle);
         setOperator();
     }
 
     function setOperator() {
         if (quiz.selectedOperator === 'alle') {
             let random = Math.ceil(Math.random() * 4)
-    
+
             quiz.activeOperator = quiz.operators[random - 1].toLowerCase();
         } else {
             quiz.activeOperator = quiz.selectedOperator
         }
 
-        console.log('active operator:', quiz.activeOperator)
+        // console.log('active operator:', quiz.activeOperator)
     }
 
     function toggleWarning() {

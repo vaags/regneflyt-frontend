@@ -9,11 +9,13 @@
 			minValue: 1,
 			maxValue: 20,
 			randomize: true,
+			possibleValues: [],
 		},
 		partTwo: {
 			minValue: 1,
 			maxValue: 20,
 			randomize: true,
+			possibleValues: [],
 		},
 		isStarted: false,
 		isCompleted: false,
@@ -33,7 +35,7 @@
 	let displayGreeting = true;
 
 	function startQuiz(event) {
-		console.log('starting quiz', event.detail.quiz)
+		// console.log('starting quiz', event.detail.quiz)
 		quiz = event.detail.quiz
 		quiz.isStarted = true;
 		displayGreeting = false;
