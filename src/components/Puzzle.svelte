@@ -34,9 +34,6 @@
         puzzle.partOne = getPuzzlePart(quiz.partOne, puzzle.partOne)
         puzzle.partTwo = getPuzzlePart(quiz.partTwo, puzzle.partTwo)
 
-        console.log('puzzle part 1', puzzle.partOne)
-        console.log('puzzle part 2', puzzle.partTwo)
-
         shouldAvoidNegativeAnswer() && swapPuzzlePartValues();
 
         puzzle.answer = undefined

@@ -35,7 +35,7 @@
 	let displayGreeting = true;
 
 	function startQuiz(event) {
-		console.log('starting quiz', event.detail.quiz)
+		// console.log('starting quiz', event.detail.quiz)
 		quiz = event.detail.quiz
 		quiz.isStarted = true;
 		displayGreeting = false;
