@@ -9,41 +9,66 @@
     const dispatch = createEventDispatcher();
     
     function startQuiz() {
+        if (validationError) return;
+
+        if (quiz.selectedOperator == 'multiplikasjon') {
+            quiz.partTwo.possibleValues = getArrayOfNumbers(quiz.partTwo.minValue, quiz.partTwo.maxValue);
+            quiz.partOne.minValue = quiz.partOne.possibleValues[0];
+            quiz.partOne.maxValue = quiz.partOne.possibleValues[quiz.partOne.possibleValues.length - 1];
+        } else if (quiz.selectedOperator == 'divisjon') {
+            quiz.partOne.possibleValues = getArrayOfNumbers(quiz.partOne.minValue, quiz.partOne.maxValue);
+            quiz.partTwo.minValue = quiz.partTwo.possibleValues[0];
+            quiz.partTwo.maxValue = quiz.partTwo.possibleValues[quiz.partTwo.possibleValues.length - 1];
+        } else {
+            quiz.partOne.possibleValues = getArrayOfNumbers(quiz.partOne.minValue, quiz.partOne.maxValue);
+            quiz.partTwo.possibleValues = getArrayOfNumbers(quiz.partTwo.minValue, quiz.partTwo.maxValue);
+        }
+
         dispatch('startQuiz', { quiz });
     }
 
+    function getArrayOfNumbers(first, last) {
+        return Array(last).fill(first).map((x, y) => x + y);
+    }
+
     function setRequiredPartProperties() {
-        if (quiz.selectedOperator == 'multiplikasjon' || quiz.selectedOperator == 'divisjon') {
-            quiz.partOne.randomize = false;
-            quiz.partTwo.randomize = false;
-
-            syncMinMaxValues();
-        } else {
-            quiz.partOne.randomize = false;
-            quiz.partTwo.randomize = false;
-        }
-    }
-
-    function syncMinMaxValues() {
         if (quiz.selectedOperator == 'multiplikasjon') {
-            quiz.partOne.maxValue = quiz.partOne.minValue
+            quiz.partOne.randomize = true;
+            quiz.partTwo.randomize = false;
+            quiz.partOne.possibleValues = [];
+            quiz.partTwo.possibleValues = [];
         } else if (quiz.selectedOperator == 'divisjon') {
-            quiz.partTwo.maxValue = quiz.partTwo.minValue
+            quiz.partOne.randomize = false;
+            quiz.partTwo.randomize = true;
+        } else {
+            quiz.partOne.randomize = true;
+            quiz.partTwo.randomize = true;
         }
     }
+
+    $: validationError = (quiz.selectedOperator == 'multiplikasjon' && quiz.partOne.possibleValues.length == 0)
+        || (quiz.selectedOperator == 'divisjon' && quiz.partTwo.possibleValues.length == 0);
+
 </script>
 
 <form>
     <div class="card mt-3">
         <h2>Varighet</h2>
-        <label class="text-blue-800">{quiz.duration} {quiz.duration > 1 ? "minutter" : "minutt"}<br />
-            <input class="w-3/4 md:w-1/2 py-1" type="range" min="1" max="30" step="1" bind:value={quiz.duration}>
+        <label class="text-blue-800">
+            {quiz.duration} {quiz.duration > 1 ? "minutter" : "minutt"}<br />
+            <input
+                class="w-3/4 md:w-1/2 py-1"
+                type="range"
+                min="1"
+                max="30"
+                step="1"
+                bind:value={quiz.duration}>
         </label>
     </div>
     <div class="card">
         <h2>Regnearter</h2>
         {#each quiz.operators as operator}
-            <label class="block pb-1 mt-1">
+            <label class="block py-1">
                 <input
                     type="radio"
                     bind:group={quiz.selectedOperator}
@@ -72,12 +97,12 @@
         </h2>
         <div>
             {#if quiz.selectedOperator === 'multiplikasjon'}
-                    <Range
-                        min="1"
-                        max="10"
-                        bind:value={quiz.partOne.minValue}
-                        on:change="{() => {quiz.partOne.maxValue = quiz.partOne.minValue}}"
-                    />
+                    {#each Array(10) as _, i}
+                        <label class="block py-1">
+                            <input type=checkbox bind:group={quiz.partOne.possibleValues} value={i + 1}>
+                            <span class="ml-1">{i + 1}</span>
+                        </label>
+                    {/each}
             {:else}
                 <label>Fra og med:<br />
                     <Range
@@ -112,12 +137,12 @@
         </h2>
         <div>
             {#if quiz.selectedOperator === 'divisjon'}
-                    <Range
-                        min="1"
-                        max="10"
-                        bind:value={quiz.partTwo.minValue}
-                        on:change="{() => {quiz.partTwo.maxValue = quiz.partTwo.minValue}}"
-                    />
+                    {#each Array(10) as _, i}
+                        <label class="block py-1">
+                            <input type=checkbox bind:group={quiz.partTwo.possibleValues} value={i + 1}>
+                            <span class="ml-1">{i + 1}</span>
+                        </label>
+                    {/each}
             {:else}
                 <label>Fra og med:<br />
                     <Range
@@ -143,5 +168,5 @@
     <Button
         on:click={startQuiz}
         label="Start"
-        color="green" />
+        color="{ validationError ? "red" : "green"}" />
 </form>

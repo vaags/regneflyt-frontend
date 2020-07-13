@@ -30,7 +30,7 @@
             <tbody>
                 {#each puzzleSet as puzzle}
                     <tr>
-                        <td class="border-t pr-3 py-2 whitespace-no-wrap">{puzzle.partOne} <Operator operator={puzzle.operator} /> {puzzle.partTwo} = <span class="">{puzzle.answer}</span></td>
+                        <td class="border-t pr-3 py-2 whitespace-no-wrap">{puzzle.partOne.value} <Operator operator={puzzle.operator} /> {puzzle.partTwo.value} = <span class="">{puzzle.answer}</span></td>
                         <td class="border-t px-3 py-2">
                             {#if puzzle.isCorrect}
                                 <span class="text-green-700">Riktig</span>

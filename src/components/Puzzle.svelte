@@ -10,12 +10,18 @@
     let puzzleNumber = 0;
 
     let puzzle = {
-        partOne: undefined,
-        partTwo: undefined,
+        partOne: {
+            index: undefined,
+            value: undefined
+        },
+        partTwo: {
+            index: undefined,
+            value: undefined
+        },
         answer: undefined,
         duration: undefined,
         isCorrect: undefined,
-        operator: quiz.activeOperator
+        operator: quiz.activeOperator,
     }
 
     let input;
@@ -25,8 +31,11 @@
     $: displayError = !puzzle.answer && validationError;
 
     function generatePuzzle() {
-        puzzle.partOne = getPuzzlePartValue(quiz.partOne, puzzle.partOne)
-        puzzle.partTwo = getPuzzlePartValue(quiz.partTwo, puzzle.partTwo)
+        puzzle.partOne = getPuzzlePart(quiz.partOne, puzzle.partOne)
+        puzzle.partTwo = getPuzzlePart(quiz.partTwo, puzzle.partTwo)
+
+        console.log('puzzle part 1', puzzle.partOne)
+        console.log('puzzle part 2', puzzle.partTwo)
 
         shouldAvoidNegativeAnswer() && swapPuzzlePartValues();
 
@@ -40,30 +49,41 @@
 
     function shouldAvoidNegativeAnswer() {
         return (!quiz.allowNegativeAnswer && puzzle.operator == 'subtraksjon')
-            && puzzle.partTwo > puzzle.partOne;
+            && puzzle.partTwo.value > puzzle.partOne.value;
     }
 
     function swapPuzzlePartValues() {
         [puzzle.partOne, puzzle.partTwo] = [puzzle.partTwo, puzzle.partOne];
     }
 
-    function getPuzzlePartValue(puzzlePart, previousValue) {
+    function getPuzzlePart(quizPuzzlePart, previousPuzzlePart) {
 
-        if (puzzlePart.minValue === puzzlePart.maxValue)
-            return puzzlePart.minValue;
+        if (quizPuzzlePart.minValue === quizPuzzlePart.maxValue)
+            return {
+                index: 0,
+                value: quizPuzzlePart.minValue
+            }
+        if (quizPuzzlePart.randomize) {
+            // Adapted from https://stackoverflow.com/a/34184614
+            let randomIndex = Math.floor(Math.random() * (quizPuzzlePart.possibleValues.length - 1));
+            if (randomIndex >= previousPuzzlePart.index) randomIndex++;
 
-        if (puzzlePart.randomize) {
-            // Stolen from https://stackoverflow.com/a/34184614
-
-            let randomNumber = Math.floor(Math.random() * (puzzlePart.maxValue - puzzlePart.minValue)) + puzzlePart.minValue;
-            if (randomNumber >= previousValue) randomNumber++;
-
-            return randomNumber;
+            return {
+                index: randomIndex,
+                value: quizPuzzlePart.possibleValues[randomIndex]
+            };
         } else {
-            if (!previousValue || previousValue === puzzlePart.maxValue) {
-                return puzzlePart.minValue;
+            if (previousPuzzlePart.index == undefined
+                || previousPuzzlePart.index === quizPuzzlePart.possibleValues.length - 1) {
+                return {
+                    index: 0,
+                    value: quizPuzzlePart.possibleValues[0]
+                }
             } else {
-                return previousValue + 1;
+                return {
+                    index: previousPuzzlePart.index + 1,
+                    value: quizPuzzlePart.possibleValues[previousPuzzlePart.index + 1]
+                }
             }
         }
     }
@@ -83,13 +103,13 @@
     function evaluateAnswer() {
         switch (quiz.activeOperator) {
             case 'addisjon':
-                return puzzle.partOne + puzzle.partTwo === puzzle.answer;
+                return puzzle.partOne.value + puzzle.partTwo.value === puzzle.answer;
             case 'subtraksjon':
-                return puzzle.partOne - puzzle.partTwo === puzzle.answer;
+                return puzzle.partOne.value - puzzle.partTwo.value === puzzle.answer;
             case 'multiplikasjon':
-                return puzzle.partOne * puzzle.partTwo === puzzle.answer;
+                return puzzle.partOne.value * puzzle.partTwo.value === puzzle.answer;
             case 'divisjon':
-                return puzzle.partOne / puzzle.partTwo === puzzle.answer;
+                return puzzle.partOne.value / puzzle.partTwo.value === puzzle.answer;
         }
     }
 
@@ -114,7 +134,7 @@
 <div class="card">
     <h2>Oppgave {puzzleNumber}</h2>
     <form>
-        <div class="text-center my-12 text-4xl">{puzzle.partOne} <Operator operator={quiz.activeOperator} /> {puzzle.partTwo} = 
+        <div class="text-center my-12 text-4xl">{puzzle.partOne.value} <Operator operator={quiz.activeOperator} /> {puzzle.partTwo.value} = 
         <input
             bind:this={input}
             bind:value={puzzle.answer}

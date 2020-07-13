@@ -9,11 +9,13 @@
 			minValue: 1,
 			maxValue: 20,
 			randomize: true,
+			possibleValues: [],
 		},
 		partTwo: {
 			minValue: 1,
 			maxValue: 20,
 			randomize: true,
+			possibleValues: [],
 		},
 		isStarted: false,
 		isCompleted: false,
