@@ -12,7 +12,19 @@
         dispatch('startQuiz', { quiz });
     }
 
-    function syncMinMaxValuesIfNeeded() {
+    function setRequiredPartProperties() {
+        if (quiz.selectedOperator == 'multiplikasjon' || quiz.selectedOperator == 'divisjon') {
+            quiz.partOne.randomize = false;
+            quiz.partTwo.randomize = false;
+
+            syncMinMaxValues();
+        } else {
+            quiz.partOne.randomize = false;
+            quiz.partTwo.randomize = false;
+        }
+    }
+
+    function syncMinMaxValues() {
         if (quiz.selectedOperator == 'multiplikasjon') {
             quiz.partOne.maxValue = quiz.partOne.minValue
         } else if (quiz.selectedOperator == 'divisjon') {
@@ -36,12 +48,12 @@
                     type="radio"
                     bind:group={quiz.selectedOperator}
                     value={operator.toLowerCase()}
-                    on:change="{() => syncMinMaxValuesIfNeeded()}"
+                    on:change="{() => setRequiredPartProperties()}"
                 >
                 <span class="ml-1">{operator}</span>
             </label>
         {/each}
-        {#if quiz.selectedOperator === 'subtraksjon'}
+        {#if quiz.selectedOperator === 'subtraksjon' || quiz.selectedOperator === 'alle'}
             <label class="block mt-2">
                 <input type="checkbox" bind:checked={quiz.allowNegativeAnswer}>
                 <span class="ml-1">Tillat negative svar</span>
@@ -81,6 +93,12 @@
                 </label>
             {/if}
         </div>
+        {#if quiz.selectedOperator === 'divisjon'}
+            <label class="block mt-2">
+                <input type="checkbox" bind:checked={quiz.partOne.randomize}>
+                <span class="ml-1">Tilfeldige verdier</span>
+            </label>
+        {/if}
     </div>
     <div class="card">
         <h2>
@@ -115,6 +133,12 @@
                 </label>
             {/if}
         </div>
+        {#if quiz.selectedOperator === 'multiplikasjon'}
+            <label class="block mt-2">
+                <input type="checkbox" bind:checked={quiz.partTwo.randomize}>
+                <span class="ml-1">Tilfeldige verdier</span>
+            </label>
+        {/if}
     </div>
     <Button
         on:click={startQuiz}

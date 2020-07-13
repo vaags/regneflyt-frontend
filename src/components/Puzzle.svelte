@@ -25,8 +25,8 @@
     $: displayError = !puzzle.answer && validationError;
 
     function generatePuzzle() {
-        puzzle.partOne = getRandomNumber(quiz.partOne.minValue, quiz.partOne.maxValue)
-        puzzle.partTwo = getRandomNumber(quiz.partTwo.minValue, quiz.partTwo.maxValue)
+        puzzle.partOne = getPuzzlePartValue(quiz.partOne, puzzle.partOne)
+        puzzle.partTwo = getPuzzlePartValue(quiz.partTwo, puzzle.partTwo)
 
         shouldAvoidNegativeAnswer() && swapPuzzlePartValues();
 
@@ -47,8 +47,25 @@
         [puzzle.partOne, puzzle.partTwo] = [puzzle.partTwo, puzzle.partOne];
     }
 
-    function getRandomNumber(min, max) {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
+    function getPuzzlePartValue(puzzlePart, previousValue) {
+
+        if (puzzlePart.minValue === puzzlePart.maxValue)
+            return puzzlePart.minValue;
+
+        if (puzzlePart.randomize) {
+            // Stolen from https://stackoverflow.com/a/34184614
+
+            let randomNumber = Math.floor(Math.random() * (puzzlePart.maxValue - puzzlePart.minValue)) + puzzlePart.minValue;
+            if (randomNumber >= previousValue) randomNumber++;
+
+            return randomNumber;
+        } else {
+            if (!previousValue || previousValue === puzzlePart.maxValue) {
+                return puzzlePart.minValue;
+            } else {
+                return previousValue + 1;
+            }
+        }
     }
 
     function completePuzzle() {

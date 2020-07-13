@@ -33,9 +33,9 @@
                         <td class="border-t pr-3 py-2 whitespace-no-wrap">{puzzle.partOne} <Operator operator={puzzle.operator} /> {puzzle.partTwo} = <span class="">{puzzle.answer}</span></td>
                         <td class="border-t px-3 py-2">
                             {#if puzzle.isCorrect}
-                                <span class="text-green-500">Riktig</span>
+                                <span class="text-green-700">Riktig</span>
                             {:else}
-                                <span class="text-red-500">Galt</span>
+                                <span class="text-red-700">Galt</span>
                             {/if}
                         </td>
                         <td class="border-t px-4 py-2">{Math.round(puzzle.duration * 10) / 10} s</td>

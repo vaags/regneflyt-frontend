@@ -8,10 +8,12 @@
 		partOne: {
 			minValue: 1,
 			maxValue: 20,
+			randomize: true,
 		},
 		partTwo: {
 			minValue: 1,
 			maxValue: 20,
+			randomize: true,
 		},
 		isStarted: false,
 		isCompleted: false,

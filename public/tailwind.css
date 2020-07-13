@@ -46,7 +46,7 @@
 }
 
 .card > h2 {
-    @apply mb-3 -mt-1 text-3xl font-thin;
+    @apply mb-5 -mt-1 text-3xl font-thin;
 }
 
 .validation-error-border {
