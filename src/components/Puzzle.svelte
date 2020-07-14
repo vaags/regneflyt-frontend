@@ -140,7 +140,7 @@
             </div>
     </div>
     <div class="float-left">
-        <Button on:click="{completePuzzle}" label="Send" color="{displayError ? "red" : "green"}" />
+        <Button on:click="{completePuzzle}" label="Neste" color="{displayError ? "red" : "green"}" />
     </div>
 </form>
 
