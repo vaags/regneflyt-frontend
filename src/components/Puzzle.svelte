@@ -139,8 +139,9 @@
                 >
             </div>
     </div>
-
-    <Button on:click="{completePuzzle}" label="Send" color="{displayError ? "red" : "green"}" />
+    <div class="float-left">
+        <Button on:click="{completePuzzle}" label="Send" color="{displayError ? "red" : "green"}" />
+    </div>
 </form>
 
 <style>
