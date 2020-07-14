@@ -47,7 +47,7 @@
 		activeOperator: undefined
 	}
 
-	console.log('quiz', quiz)
+	// console.log('quiz', quiz)
 
 	let puzzleSet;
 	let displayGreeting = true;
