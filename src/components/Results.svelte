@@ -13,6 +13,8 @@
     let totalTimeSpent = undefined;
 
     onMount(() => {
+        if (!puzzleSet || !puzzleSet.length) return;
+        
         const boolReducer = (accumulator, currentValue) => accumulator + (currentValue ? 1 : 0);
         const intReducer = (accumulator, currentValue) => accumulator + currentValue;
     
@@ -21,8 +23,6 @@
         scorePercentage = Math.round(correctAnswerSum / puzzleSet.length * 100);
 
         totalTimeSpent = Math.round(puzzleSet.map(p => p.duration).reduce(intReducer) * 10) / 10;
-
-
     })
 
     function resetQuiz() {

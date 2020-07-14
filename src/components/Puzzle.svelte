@@ -139,11 +139,11 @@
             required
             >
         </div>
-        <div class="text-center">
-            <Button on:click="{completePuzzle}" label="Send" color="{displayError ? "red" : "green"}" />
-        </div>
+
     </form>
 </div>
+
+<Button on:click="{completePuzzle}" label="Send" color="{displayError ? "red" : "green"}" />
 
 <style>
     /* Remove arrows from number input */
