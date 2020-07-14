@@ -3,19 +3,35 @@
 	import Results from './components/Results.svelte';
 	import Quiz from './components/Quiz.svelte';
 
+	const urlParams = new URLSearchParams(window.location.search);
+
+	function getIntParam(param) {
+		return parseInt(urlParams.get(param))
+	}
+
+	function getBoolParam(param) {
+		return urlParams.get(param) === 'false' ? false : true
+	}
+
+	function getNumArrayParam(param) {
+		var array = urlParams.get(param);
+
+		return array && array !== "null" ? array.split(',').map(Number) : [];
+	}
+
 	let quiz = {
-		duration: 3,
+		duration: getIntParam('duration') || 1,
 		partOne: {
-			minValue: 1,
-			maxValue: 20,
-			randomize: true,
-			possibleValues: [],
+			minValue: getIntParam('partOneMin') || 1,
+			maxValue: getIntParam('partOneMax') || 20,
+			randomize: getBoolParam('partOneRandom'),
+			possibleValues: getNumArrayParam('partOneValues'),
 		},
 		partTwo: {
-			minValue: 1,
-			maxValue: 20,
-			randomize: true,
-			possibleValues: [],
+			minValue: getIntParam('partTwoMin') || 1,
+			maxValue: getIntParam('partTwoMax') || 20,
+			randomize: getBoolParam('partTwoRandom'),
+			possibleValues: getNumArrayParam('partTwoValues'),
 		},
 		isStarted: false,
 		isCompleted: false,
@@ -26,10 +42,12 @@
 			'Divisjon',
 			'Alle'
 		],
-		selectedOperator: 'addisjon',
-		allowNegativeAnswer: true,
+		selectedOperator: urlParams.get('operator') || 'addisjon',
+		allowNegativeAnswer: getBoolParam('negatives'),
 		activeOperator: undefined
 	}
+
+	console.log('quiz', quiz)
 
 	let puzzleSet;
 	let displayGreeting = true;
@@ -56,7 +74,7 @@
 	}
 </script>
 
-<main class="container max-w-xl mx-auto px-3 pt-1 pb-4">
+<main class="container max-w-xl mx-auto px-3 pt-1 pb-5">
 	<h1 class="text-4xl font-light text-orange-600 mb-2 text-right">Regneflyt</h1>
 	{#if displayGreeting}
 		<div class="card text-blue-700">

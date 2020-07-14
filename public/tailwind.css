@@ -6,7 +6,7 @@
 }
 
 .btn-blue:hover {
-    @apply bg-blue-800;
+    @apply bg-blue-700;
 }
 
 .btn-green {
@@ -14,7 +14,7 @@
 }
 
 .btn-green:hover {
-    @apply bg-green-800;
+    @apply bg-green-700;
 }
 
 .btn-red {
@@ -22,7 +22,7 @@
 }
 
 .btn-red:hover {
-    @apply bg-red-800;
+    @apply bg-red-700;
 }
 
 .btn-gray {
@@ -30,7 +30,7 @@
 }
 
 .btn-gray:hover {
-    @apply bg-gray-800;
+    @apply bg-gray-700;
 }
 
 .alert-blue {
@@ -42,7 +42,7 @@
 }
 
 .card {
-    @apply mb-3 border rounded px-4 pt-2 pb-3 bg-white;
+    @apply mb-3 rounded px-5 py-3 bg-gray-100;
 }
 
 .card > h2 {

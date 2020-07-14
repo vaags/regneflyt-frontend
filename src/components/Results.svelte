@@ -62,7 +62,7 @@
                     </tr>
                 {/each}
                 <tr>
-                    <td class="border-t-2 px-3 py-2" colspan="2"></td>
+                    <td class="border-t-2 py-2 text-left" colspan="2">Sum</td>
                     <td class="border-t-2 px-3 py-2">
                         <span class="text-lg">{scorePercentage} %</span>
                         <span class="text-sm">({correctAnswerSum} av {puzzleSet.length})</span>
@@ -74,4 +74,4 @@
     {/if}
 </div>
 
-<Button on:click={resetQuiz} label="Til hovedmenyen" />
+<Button on:click={resetQuiz} label="Ny runde" />

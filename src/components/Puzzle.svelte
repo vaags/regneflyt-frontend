@@ -126,7 +126,7 @@
 
 </script>
 
-<div class="card">
+<div class="card pb-6">
     <h2>Oppgave {puzzleNumber}</h2>
     <form>
         <div class="text-center my-12 text-4xl">{puzzle.partOne.value} <Operator operator={quiz.activeOperator} /> {puzzle.partTwo.value} = 
