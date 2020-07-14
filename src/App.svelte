@@ -56,7 +56,7 @@
 	}
 </script>
 
-<main class="container max-w-xl mx-auto px-3 pt-1 pb-4">
+<main class="container max-w-xl mx-auto px-3 pt-1 pb-5">
 	<h1 class="text-4xl font-light text-orange-600 mb-2 text-right">Regneflyt</h1>
 	{#if displayGreeting}
 		<div class="card text-blue-700">

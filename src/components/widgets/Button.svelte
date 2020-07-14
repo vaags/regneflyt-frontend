@@ -10,6 +10,8 @@
            text-2xl
            py-1
            px-4
+           border
+           border-gray-800
            rounded
            btn-{color}
            ">

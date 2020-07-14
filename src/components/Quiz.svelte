@@ -59,7 +59,7 @@
 
     <div class="text-right">
         {#if showWarning}
-            <p class="mb-2">Er du sikker på at du vil avbryte?</p>
+            <p class="mb-2 text-gray-100">Er du sikker på at du vil avbryte?</p>
             <Button on:click={abortQuiz} label="ja" color="red" />
             <Button on:click={toggleWarning} label="Nei" />
         {:else}
