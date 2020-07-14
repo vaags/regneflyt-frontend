@@ -125,25 +125,24 @@
     })
 
 </script>
-
-<div class="card pb-6">
-    <h2>Oppgave {puzzleNumber}</h2>
-    <form>
-        <div class="text-center my-12 text-4xl">{puzzle.partOne.value} <Operator operator={quiz.activeOperator} /> {puzzle.partTwo.value} = 
-        <input
-            bind:this={input}
-            bind:value={puzzle.answer}
-            class="border {displayError ? 'validation-error-border' : ''} rounded w-24 py-2 px-3 leading-tight focus:outline-none"
-            type="number"
-            placeholder="?"
-            required
-            >
-        </div>
-
-    </form>
-</div>
-
-<Button on:click="{completePuzzle}" label="Send" color="{displayError ? "red" : "green"}" />
+<form>
+    <div class="card pb-6">
+        <h2>Oppgave {puzzleNumber}</h2>
+            <div class="text-center my-12 text-4xl">{puzzle.partOne.value} <Operator operator={quiz.activeOperator} /> {puzzle.partTwo.value} = 
+            <input
+                bind:this={input}
+                bind:value={puzzle.answer}
+                class="border {displayError ? 'validation-error-border' : ''} rounded w-24 py-2 px-3 leading-tight focus:outline-none"
+                type="number"
+                placeholder="?"
+                required
+                >
+            </div>
+    </div>
+    <div class="float-left">
+        <Button on:click="{completePuzzle}" label="Send" color="{displayError ? "red" : "green"}" />
+    </div>
+</form>
 
 <style>
     /* Remove arrows from number input */
