@@ -86,9 +86,7 @@
     }
 
     function completePuzzle() {
-        if (!puzzleIsValid()) {
-            return;
-        }
+        if (!puzzleIsValid()) return;
 
         puzzle.isCorrect = evaluateAnswer();
         puzzle.duration = (Date.now() - startTime) / 1000;

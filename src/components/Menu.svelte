@@ -57,7 +57,7 @@
         <label class="text-blue-800">
             {quiz.duration} {quiz.duration > 1 ? "minutter" : "minutt"}<br />
             <input
-                class="w-3/4 md:w-1/2 py-1"
+                class="w-3/4 py-1"
                 type="range"
                 min="1"
                 max="30"
