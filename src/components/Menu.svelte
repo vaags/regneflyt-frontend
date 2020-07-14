@@ -7,15 +7,22 @@
 	export let quiz
     
     const dispatch = createEventDispatcher();
+
+    $: isDivision = quiz.selectedOperator === 'divisjon';
+    $: isMultiplication = quiz.selectedOperator === 'multiplikasjon';
+
+    $: validationError =
+        (isMultiplication && quiz.partOne.possibleValues.length == 0)
+        || (isDivision && quiz.partTwo.possibleValues.length == 0);
     
     function startQuiz() {
         if (validationError) return;
 
-        if (quiz.selectedOperator == 'multiplikasjon') {
+        if (isMultiplication) {
             quiz.partTwo.possibleValues = getArrayOfNumbers(quiz.partTwo.minValue, quiz.partTwo.maxValue);
             quiz.partOne.minValue = quiz.partOne.possibleValues[0];
             quiz.partOne.maxValue = quiz.partOne.possibleValues[quiz.partOne.possibleValues.length - 1];
-        } else if (quiz.selectedOperator == 'divisjon') {
+        } else if (isDivision) {
             quiz.partOne.possibleValues = getArrayOfNumbers(quiz.partOne.minValue, quiz.partOne.maxValue);
             quiz.partTwo.minValue = quiz.partTwo.possibleValues[0];
             quiz.partTwo.maxValue = quiz.partTwo.possibleValues[quiz.partTwo.possibleValues.length - 1];
@@ -32,12 +39,12 @@
     }
 
     function setRequiredPartProperties() {
-        if (quiz.selectedOperator == 'multiplikasjon') {
+        if (isMultiplication) {
             quiz.partOne.randomize = true;
             quiz.partTwo.randomize = false;
             quiz.partOne.possibleValues = [];
             quiz.partTwo.possibleValues = [];
-        } else if (quiz.selectedOperator == 'divisjon') {
+        } else if (isDivision) {
             quiz.partOne.randomize = false;
             quiz.partTwo.randomize = true;
         } else {
@@ -46,9 +53,23 @@
         }
     }
 
-    $: validationError = (quiz.selectedOperator == 'multiplikasjon' && quiz.partOne.possibleValues.length == 0)
-        || (quiz.selectedOperator == 'divisjon' && quiz.partTwo.possibleValues.length == 0);
+    $: { // Set querystring params to allow for easy sharing of settings through url
+        let parameters = {
+            duration: quiz.duration,
+            operator: quiz.selectedOperator,
+            negatives: quiz.allowNegativeAnswer,
+            partOneMin: quiz.partOne.minValue,
+            partOneMax: quiz.partOne.maxValue,
+            partOneValues: isMultiplication ? quiz.partOne.possibleValues : null,
+            partOneRandom: quiz.partOne.randomize,
+            partTwoMin: quiz.partTwo.minValue,
+            partTwoMax: quiz.partTwo.maxValue,
+            partTwoValues: isDivision ? quiz.partTwo.possibleValues : null,
+            partTwoRandom: quiz.partTwo.randomize,
+        }
 
+        window.history.replaceState(null, null, `?${new URLSearchParams(parameters).toString()}`);
+    }
 </script>
 
 <form>
@@ -73,7 +94,7 @@
                     type="radio"
                     bind:group={quiz.selectedOperator}
                     value={operator.toLowerCase()}
-                    on:change="{() => setRequiredPartProperties()}"
+                    on:change="{setRequiredPartProperties}"
                 >
                 <span class="ml-1">{operator}</span>
             </label>
@@ -87,7 +108,7 @@
     </div>
     <div class="card">
         <h2>
-            {#if quiz.selectedOperator === 'multiplikasjon'}
+            {#if isMultiplication}
                 Multiplikand
             {:else if quiz.selectedOperator === 'divisjon'}
                 Dividend <small>(intervall)</small>
@@ -96,10 +117,10 @@
             {/if}
         </h2>
         <div>
-            {#if quiz.selectedOperator === 'multiplikasjon'}
+            {#if isMultiplication}
                     {#each Array(10) as _, i}
                         <label class="block py-1">
-                            <input type=checkbox bind:group={quiz.partOne.possibleValues} value={i + 1}>
+                            <input type="checkbox" bind:group={quiz.partOne.possibleValues} value={i + 1}>
                             <span class="ml-1">{i + 1}</span>
                         </label>
                     {/each}
@@ -118,7 +139,7 @@
                 </label>
             {/if}
         </div>
-        {#if quiz.selectedOperator === 'divisjon'}
+        {#if isDivision}
             <label class="block mt-2">
                 <input type="checkbox" bind:checked={quiz.partOne.randomize}>
                 <span class="ml-1">Tilfeldige verdier</span>
@@ -127,16 +148,16 @@
     </div>
     <div class="card">
         <h2>
-            {#if quiz.selectedOperator === 'multiplikasjon'}
+            {#if isMultiplication}
                 Multiplikator <small>(intervall)</small>
-            {:else if quiz.selectedOperator === 'divisjon'}
+            {:else if isDivision}
                 Divisor
             {:else}
                 Andre ledd <small>(intervall)</small>
             {/if}
         </h2>
         <div>
-            {#if quiz.selectedOperator === 'divisjon'}
+            {#if isDivision}
                     {#each Array(10) as _, i}
                         <label class="block py-1">
                             <input type=checkbox bind:group={quiz.partTwo.possibleValues} value={i + 1}>
@@ -158,7 +179,7 @@
                 </label>
             {/if}
         </div>
-        {#if quiz.selectedOperator === 'multiplikasjon'}
+        {#if isMultiplication}
             <label class="block mt-2">
                 <input type="checkbox" bind:checked={quiz.partTwo.randomize}>
                 <span class="ml-1">Tilfeldige verdier</span>

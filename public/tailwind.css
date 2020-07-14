@@ -42,7 +42,7 @@
 }
 
 .card {
-    @apply mb-3 rounded px-4 py-3 bg-gray-100;
+    @apply mb-3 rounded px-5 py-3 bg-gray-100;
 }
 
 .card > h2 {
