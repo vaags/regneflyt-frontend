@@ -61,7 +61,7 @@ import Puzzle from './Puzzle.svelte';
                                 <span class="text-red-700">Galt</span>
                             {/if}
                         </td>
-                        <td class="border-t px-3 py-2">{puzzle.timeout ? "-" : Math.round(puzzle.duration * 10) / 10 + " s"}</td>
+                        <td class="border-t px-3 py-2">{Math.round(puzzle.duration * 10) / 10} s</td>
                     </tr>
                 {/each}
                 <tr>
