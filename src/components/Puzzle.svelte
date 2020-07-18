@@ -174,8 +174,6 @@
     </div>
 </form>
 
-<Button on:click={focusInput} label="Focus" />
-
 <style>
     /* Remove arrows from number input */
     input[type=number]::-webkit-inner-spin-button, 
