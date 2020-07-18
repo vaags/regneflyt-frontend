@@ -21,6 +21,7 @@
 
 	let quiz = {
 		duration: getIntParam('duration') || 1,
+		puzzleTimeLimit: getIntParam('timeLimit') || 0,
 		partOne: {
 			minValue: getIntParam('partOneMin') || 1,
 			maxValue: getIntParam('partOneMax') || 20,
@@ -77,7 +78,7 @@
 <main class="container max-w-xl mx-auto px-3 pt-1 pb-5">
 	<h1 class="text-4xl font-light text-orange-600 mb-2 text-right">Regneflyt</h1>
 	{#if displayGreeting}
-		<div class="card text-blue-700">
+		<div class="card text-gray-700">
 			<p class="mb-2">
 			Regneflyt trener deg i hoderegning.
 			</p>

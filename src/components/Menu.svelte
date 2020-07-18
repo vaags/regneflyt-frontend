@@ -56,6 +56,7 @@
     $: { // Set querystring params to allow for easy sharing of settings through url
         let parameters = {
             duration: quiz.duration,
+            timeLimit: quiz.puzzleTimeLimit,
             operator: quiz.selectedOperator,
             negatives: quiz.allowNegativeAnswer,
             partOneMin: quiz.partOne.minValue,
@@ -74,16 +75,13 @@
 
 <form>
     <div class="card mt-3">
-        <h2>Varighet</h2>
-        <label class="text-blue-800">
-            {quiz.duration} {quiz.duration > 1 ? "minutter" : "minutt"}<br />
-            <input
-                class="w-3/4 py-1"
-                type="range"
-                min="1"
-                max="30"
-                step="1"
-                bind:value={quiz.duration}>
+        <h2>Spilletid</h2>
+        <label>Totalt: (i minutter)<br />
+            <Range min=1 max=30 bind:value={quiz.duration} />
+        </label>
+
+        <label>Per oppgave: (i sekunder)<br />
+            <Range zeroLabel="Ingen" max=30 bind:value={quiz.puzzleTimeLimit} />
         </label>
     </div>
     <div class="card">

@@ -3,6 +3,7 @@
     import Button from './widgets/Button.svelte';
     import Operator from './widgets/Operator.svelte';
     import Alert from './widgets/Alert.svelte';
+import Puzzle from './Puzzle.svelte';
 
     const dispatch = createEventDispatcher();
 
@@ -49,16 +50,18 @@
                     <tr>
                         <td class="border-t py-2 whitespace-no-wrap text-gray-600">{i + 1}</td>
                         <td class="border-t px-4 py-2">
-                            {puzzle.partOne.value} <Operator operator={puzzle.operator} /> {puzzle.partTwo.value} = {puzzle.answer}
+                            {puzzle.partOne.value} <Operator operator={puzzle.operator} /> {puzzle.partTwo.value} = {puzzle.timeout ? "?" : puzzle.answer}
                         </td>
                         <td class="border-t px-3 py-2">
                             {#if puzzle.isCorrect}
                                 <span class="text-green-700">Riktig</span>
+                            {:else if puzzle.timeout}
+                                <span class="text-yellow-700">Timeout</span>
                             {:else}
                                 <span class="text-red-700">Galt</span>
                             {/if}
                         </td>
-                        <td class="border-t px-3 py-2">{Math.round(puzzle.duration * 10) / 10} s</td>
+                        <td class="border-t px-3 py-2">{puzzle.timeout ? "-" : Math.round(puzzle.duration * 10) / 10 + " s"}</td>
                     </tr>
                 {/each}
                 <tr>
