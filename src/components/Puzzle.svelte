@@ -44,8 +44,8 @@
         puzzle.duration = undefined
         puzzle.timeout = undefined
         puzzleNumber++
-        console.log('focusing');
-        input.focus()
+        // using timeout to re-enable focus after defocus (hack)
+        setTimeout(focusInput, 1);
         startTime = Date.now();
         if (quiz.puzzleTimeLimit) {
             if (interval) clearInterval(interval);
@@ -103,6 +103,7 @@
     function timeOutPuzzle() {
         puzzle.timeout = true;
         puzzle.answer = undefined;
+        validationError = false;
     }
 
     function completePuzzle() {
@@ -112,6 +113,10 @@
         dispatch('addPuzzle', { puzzle: {...puzzle} });
 
         generatePuzzle()
+    }
+
+    function focusInput() {
+        input.focus();
     }
 
     function evaluateAnswer() {
@@ -155,21 +160,21 @@
             {/if}
             <div class="text-center my-12 text-4xl">{puzzle.partOne.value} <Operator operator={quiz.activeOperator} /> {puzzle.partTwo.value} = 
             <input
-                id="answerInput"
                 disabled={puzzle.timeout}
                 bind:this={input}
                 bind:value={puzzle.answer}
                 class="border {displayError ? 'validation-error-border' : ''} rounded w-24 py-2 px-3 leading-tight focus:outline-none"
                 type="number"
                 placeholder="?"
-                required
                 >
             </div>
     </div>
     <div class="float-left">
-        <Button on:click="{puzzle.timeout ? completePuzzle : completePuzzleIfValid}" label="Neste" color="{displayError ? "red" : "green"}" />
+        <Button on:click={puzzle.timeout ? completePuzzle : completePuzzleIfValid} label="Neste" color="{displayError ? "red" : "green"}" />
     </div>
 </form>
+
+<Button on:click={focusInput} label="Focus" />
 
 <style>
     /* Remove arrows from number input */
@@ -177,5 +182,9 @@
     input[type=number]::-webkit-outer-spin-button { 
         -webkit-appearance: none; 
         margin: 0; 
+    }
+
+    input[type=number] {
+        -moz-appearance:textfield;
     }
 </style>
