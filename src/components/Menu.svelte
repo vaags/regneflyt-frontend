@@ -81,7 +81,7 @@
         </label>
 
         <label>Per oppgave: (i sekunder)<br />
-            <Range zeroLabel="Ingen" max=30 bind:value={quiz.puzzleTimeLimit} />
+            <Range zeroLabel="Ingen" max=10 bind:value={quiz.puzzleTimeLimit} />
         </label>
     </div>
     <div class="card">
