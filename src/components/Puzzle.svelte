@@ -97,22 +97,24 @@
     function completePuzzleIfValid() {
         if (!puzzleIsValid()) return;
 
-        completePuzzle();
+        completePuzzle(true);
     }
 
     function timeOutPuzzle() {
         puzzle.timeout = true;
         puzzle.answer = undefined;
         validationError = false;
+
+        completePuzzle();
     }
 
-    function completePuzzle() {
+    function completePuzzle(generateNextPuzzle) {
         puzzle.isCorrect = evaluateAnswer();
         puzzle.duration = (Date.now() - startTime) / 1000;
 
         dispatch('addPuzzle', { puzzle: {...puzzle} });
 
-        generatePuzzle()
+        if (generateNextPuzzle) generatePuzzle();
     }
 
     function focusInput() {
@@ -170,7 +172,7 @@
             </div>
     </div>
     <div class="float-left">
-        <Button on:click={puzzle.timeout ? completePuzzle : completePuzzleIfValid} label="Neste" color="{displayError ? "red" : "green"}" />
+        <Button on:click={puzzle.timeout ? generatePuzzle : completePuzzleIfValid} label="Neste" color="{displayError ? "red" : "green"}" />
     </div>
 </form>
 
