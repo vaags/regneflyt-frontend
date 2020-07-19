@@ -96,13 +96,14 @@
 input[type=checkbox], input[type=radio]
 {
   /* Double-sized Checkboxes */
-  -ms-transform: scale(1.5); /* IE */
-  -moz-transform: scale(1.5); /* FF */
-  -webkit-transform: scale(1.5); /* Safari and Chrome */
-  -o-transform: scale(1.5); /* Opera */
-  transform: scale(1.5);
+  -ms-transform: scale(1.25); /* IE */
+  -moz-transform: scale(1.25); /* FF */
+  -webkit-transform: scale(1.25); /* Safari and Chrome */
+  -o-transform: scale(1.25); /* Opera */
+  transform: scale(1.25);
   padding: 10px;
   filter: grayscale(50%);
+  @apply mx-1;
 }
 
 @tailwind utilities;
