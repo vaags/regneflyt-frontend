@@ -80,22 +80,9 @@
             }
         }
 
-        if (quizPuzzlePart.randomize) {
-            return getRandomPuzzlePartValue()
-        } else {
-            if (shouldReturnMinValue()) {
-                return {
-                    index: 0,
-                    value: quizPuzzlePart.minValue,
-                }
-            }
-
-            return {
-                index: previousPuzzlePart.index + 1,
-                value:
-                    quizPuzzlePart.possibleValues[previousPuzzlePart.index + 1],
-            }
-        }
+        return quizPuzzlePart.randomize
+            ? getRandomPuzzlePartValue()
+            : getNextPuzzlePartValue()
 
         function getRandomPuzzlePartValue() {
             let randomIndex = getRandomNumber(
@@ -116,12 +103,27 @@
             }
         }
 
-        function shouldReturnMinValue() {
-            return (
-                previousPuzzlePart.index === undefined ||
-                previousPuzzlePart.index ===
-                    quizPuzzlePart.possibleValues.length - 1
-            )
+        function getNextPuzzlePartValue() {
+            if (shouldReturnMinValue()) {
+                return {
+                    index: 0,
+                    value: quizPuzzlePart.minValue,
+                }
+            }
+
+            return {
+                index: previousPuzzlePart.index + 1,
+                value:
+                    quizPuzzlePart.possibleValues[previousPuzzlePart.index + 1],
+            }
+
+            function shouldReturnMinValue() {
+                return (
+                    previousPuzzlePart.index === undefined ||
+                    previousPuzzlePart.index ===
+                        quizPuzzlePart.possibleValues.length - 1
+                )
+            }
         }
     }
 
