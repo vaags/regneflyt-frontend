@@ -67,4 +67,32 @@
     }
 }
 
+.slider {
+    -webkit-appearance: none;
+    height: 1rem;
+    border-radius: 4px;
+    outline: none;
+    -webkit-transition: 0.2s;
+    transition: opacity 0.2s;
+    @apply bg-gray-400;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 50%;
+    @apply bg-blue-700;
+    cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 50%;
+    @apply bg-blue-700;
+    cursor: pointer;
+}
+
 @tailwind utilities;
