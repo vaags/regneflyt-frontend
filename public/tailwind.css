@@ -81,7 +81,7 @@
     width: 1.5rem;
     height: 1.5rem;
     border-radius: 50%;
-    @apply bg-gray-700;
+    @apply bg-blue-700;
     cursor: pointer;
 }
 
@@ -89,7 +89,7 @@
     width: 1.5rem;
     height: 1.5rem;
     border-radius: 50%;
-    @apply bg-gray-700;
+    @apply bg-blue-700;
     cursor: pointer;
 }
 
@@ -102,8 +102,7 @@ input[type=checkbox], input[type=radio]
   -o-transform: scale(1.5); /* Opera */
   transform: scale(1.5);
   padding: 10px;
-  filter: grayscale(100%);
-  @apply mx-1;
+  filter: grayscale(50%);
 }
 
 @tailwind utilities;
