@@ -41,8 +41,6 @@
         } else {
             quiz.activeOperator = quiz.selectedOperator
         }
-
-        // console.log('active operator:', quiz.activeOperator)
     }
 
     function toggleWarning() {

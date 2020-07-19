@@ -5,7 +5,7 @@
     export let value = undefined
 </script>
 
-<div class="flex flex-row">
+<div class="flex flex-row mb-1">
     <span class="text-blue-800 mr-4 mt-2 w-8">
         {zeroLabel && !value ? zeroLabel : value}
     </span>
