@@ -5,16 +5,18 @@
     export let value = undefined
 </script>
 
-<div class="mb-4">
-    <span class="text-blue-800 mr-4 float-left mt-1 w-8">
+<div class="flex flex-row">
+    <span class="text-blue-800 mr-4 mt-1 w-8">
         {zeroLabel && !value ? zeroLabel : value}
     </span>
-    <input
-        on:change
-        class="w-3/4 mt-2"
-        type="range"
-        {min}
-        {max}
-        step="1"
-        bind:value />
+    <span class="w-full mt-2">
+        <input
+            on:change
+            class="w-full"
+            type="range"
+            {min}
+            {max}
+            step="1"
+            bind:value />
+    </span>
 </div>

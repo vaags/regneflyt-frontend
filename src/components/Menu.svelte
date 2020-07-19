@@ -101,7 +101,7 @@
 </script>
 
 <form>
-    <div class="card mt-3">
+    <div class="card">
         <h2>Spilletid</h2>
         <label>
             Totalt: (i minutter)
@@ -109,7 +109,7 @@
             <Range min="1" max="30" bind:value="{quiz.duration}" />
         </label>
 
-        <label>
+        <label class="block mt-4">
             Per oppgave: (i sekunder)
             <br />
             <Range
@@ -170,7 +170,7 @@
                         max="{quiz.partOne.maxValue}"
                         bind:value="{quiz.partOne.minValue}" />
                 </label>
-                <label>
+                <label class="block mt-4">
                     Til og med:
                     <br />
                     <Range
@@ -219,7 +219,7 @@
                         max="{quiz.partTwo.maxValue}"
                         bind:value="{quiz.partTwo.minValue}" />
                 </label>
-                <label>
+                <label class="block mt-4">
                     Til og med:
                     <br />
                     <Range

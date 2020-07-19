@@ -203,7 +203,7 @@
         {#if puzzle.timeout}
             <Alert color="red" message="Tiden er ute." />
         {/if}
-        <div class="text-center my-12 text-4xl">
+        <div class="text-center my-12 text-3xl md:text-4xl">
             {puzzle.partOne.value}
             <Operator operator="{quiz.activeOperator}" />
             {puzzle.partTwo.value} =
