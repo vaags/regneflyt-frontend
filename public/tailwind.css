@@ -103,7 +103,7 @@ input[type=checkbox], input[type=radio]
   transform: scale(1.5);
   padding: 10px;
   filter: grayscale(100%);
-  @apply mx-1
+  @apply mx-1;
 }
 
 @tailwind utilities;
