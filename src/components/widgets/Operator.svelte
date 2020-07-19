@@ -1,5 +1,5 @@
 <script>
-    export let operator;
+    export let operator
 </script>
 
 {#if operator == 'addisjon'}

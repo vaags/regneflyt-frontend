@@ -46,15 +46,25 @@
 }
 
 .card {
-    @apply mb-3 rounded px-5 py-3 bg-gray-100;
+    @apply mb-2 rounded px-3 py-2 bg-gray-100;
 }
 
 .card > h2 {
-    @apply mb-5 -mt-1 text-3xl font-thin;
+    @apply mb-4 text-2xl font-thin;
 }
 
 .validation-error-border {
     @apply border-red-600;
+}
+
+@screen md {
+    .card {
+      @apply mb-3 px-5 py-4;
+    }
+
+    .card > h2 {
+        @apply text-3xl mb-5 -mt-2
+    }
 }
 
 @tailwind utilities;
