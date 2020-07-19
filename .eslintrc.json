@@ -17,7 +17,8 @@
       }
     ],
     "rules": {
-      // ...
+      "block-scoped-var": 1,
+      "prefer-const": 1
     },
     "root": true 
   }

@@ -35,7 +35,7 @@
 
     function setOperator() {
         if (quiz.selectedOperator === 'alle') {
-            let random = Math.ceil(Math.random() * 4)
+            const random = Math.ceil(Math.random() * 4)
 
             quiz.activeOperator = quiz.operators[random - 1].toLowerCase()
         } else {
