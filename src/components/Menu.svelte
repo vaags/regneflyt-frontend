@@ -100,7 +100,7 @@
                 null,
                 `?${new URLSearchParams(parameters).toString()}`
             )
-        }, 200)
+        }, 300)
     }
 </script>
 
