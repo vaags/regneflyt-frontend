@@ -1,13 +1,13 @@
 <script>
-    import { createEventDispatcher, onMount, onDestroy } from 'svelte';
+    import { createEventDispatcher, onMount, onDestroy, tick } from 'svelte';
     import Button from './widgets/Button.svelte';
     import Alert from './widgets/Alert.svelte';
     import Operator from './widgets/Operator.svelte';
-
+    
+    export let quiz;
+    
     const dispatch = createEventDispatcher();
     let interval = undefined;
-
-    export let quiz
 
     let puzzleNumber = 0;
     let input;
@@ -30,7 +30,6 @@
         operator: quiz.activeOperator,
     }
 
-
     $: displayError = !puzzle.answer && validationError;
 
     function generatePuzzle() {
@@ -44,8 +43,7 @@
         puzzle.duration = undefined
         puzzle.timeout = undefined
         puzzleNumber++
-        // using timeout to re-enable focus after defocus (hack)
-        setTimeout(focusInput, 1);
+        focusInput();
         startTime = Date.now();
         if (quiz.puzzleTimeLimit) {
             if (interval) clearInterval(interval);
@@ -62,28 +60,26 @@
         [puzzle.partOne, puzzle.partTwo] = [puzzle.partTwo, puzzle.partOne];
     }
 
-    // TODO: Refactor for readability
     function getPuzzlePart(quizPuzzlePart, previousPuzzlePart) {
-        if (quizPuzzlePart.minValue === quizPuzzlePart.maxValue)
+        if (quizPuzzlePart.minValue === quizPuzzlePart.maxValue) {
             return {
                 index: 0,
                 value: quizPuzzlePart.minValue
             }
-        if (quizPuzzlePart.randomize) {
-            // Adapted from https://stackoverflow.com/a/34184614
-            let randomIndex = Math.floor(Math.random() * (quizPuzzlePart.possibleValues.length - 1));
-            if (randomIndex >= previousPuzzlePart.index) randomIndex++;
+        }
 
+        if (quizPuzzlePart.randomize) {
+            let randomIndex = getRandomNumber(quizPuzzlePart.possibleValues.length, previousPuzzlePart.index);
             return {
                 index: randomIndex,
                 value: quizPuzzlePart.possibleValues[randomIndex]
             };
         } else {
-            if (previousPuzzlePart.index == undefined
+            if (previousPuzzlePart.index === undefined
                 || previousPuzzlePart.index === quizPuzzlePart.possibleValues.length - 1) {
                 return {
                     index: 0,
-                    value: quizPuzzlePart.possibleValues[0]
+                    value: quizPuzzlePart.minValue
                 }
             } else {
                 return {
@@ -92,6 +88,14 @@
                 }
             }
         }
+    }
+
+    function getRandomNumber(max, exclude) {
+        // Adapted from https://stackoverflow.com/a/34184614
+        var rnd = Math.floor(Math.random() * (max - 1));
+        if (rnd >= exclude) rnd++;
+
+        return rnd;
     }
 
     function completePuzzleIfValid() {
@@ -117,7 +121,9 @@
         if (generateNextPuzzle) generatePuzzle();
     }
 
-    function focusInput() {
+    async function focusInput() {
+        // Must await dom-update when changing from disabled / un-disabled
+        await tick();
         input.focus();
     }
 
