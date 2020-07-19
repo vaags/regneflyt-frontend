@@ -33,21 +33,30 @@
     $: displayError = !puzzle.answer && validationError
 
     function generatePuzzle() {
+        initializePuzzle()
+        puzzleNumber++
+
         puzzle.partOne = getPuzzlePart(quiz.partOne, puzzle.partOne)
         puzzle.partTwo = getPuzzlePart(quiz.partTwo, puzzle.partTwo)
 
-        shouldAvoidNegativeAnswer() && swapPuzzlePartValues()
+        if (shouldAvoidNegativeAnswer()) swapPuzzlePartValues()
 
-        puzzle.answer = undefined
-        puzzle.isCorrect = undefined
-        puzzle.duration = undefined
-        puzzle.timeout = undefined
-        puzzleNumber++
         focusInput()
+
         startTime = Date.now()
-        if (quiz.puzzleTimeLimit) {
-            if (interval) clearInterval(interval)
+
+        if (quiz.puzzleTimeLimit) setPuzzleTimeout()
+
+        function setPuzzleTimeout() {
+            clearInterval(interval)
             interval = setTimeout(timeOutPuzzle, quiz.puzzleTimeLimit * 1000)
+        }
+
+        function initializePuzzle() {
+            puzzle.answer = undefined
+            puzzle.isCorrect = undefined
+            puzzle.duration = undefined
+            puzzle.timeout = undefined
         }
     }
 
@@ -71,43 +80,52 @@
             }
         }
 
-        if (quizPuzzlePart.randomize) {
+        return quizPuzzlePart.randomize
+            ? getRandomPuzzlePartValue()
+            : getNextPuzzlePartValue()
+
+        function getRandomPuzzlePartValue() {
             let randomIndex = getRandomNumber(
                 quizPuzzlePart.possibleValues.length,
                 previousPuzzlePart.index
             )
+
             return {
                 index: randomIndex,
                 value: quizPuzzlePart.possibleValues[randomIndex],
             }
-        } else {
-            if (
-                previousPuzzlePart.index === undefined ||
-                previousPuzzlePart.index ===
-                    quizPuzzlePart.possibleValues.length - 1
-            ) {
+
+            function getRandomNumber(max, exclude) {
+                // Adapted from https://stackoverflow.com/a/34184614
+                var rnd = Math.floor(Math.random() * (max - 1))
+                if (rnd >= exclude) rnd++
+
+                return rnd
+            }
+        }
+
+        function getNextPuzzlePartValue() {
+            if (shouldReturnMinValue()) {
                 return {
                     index: 0,
                     value: quizPuzzlePart.minValue,
                 }
-            } else {
-                return {
-                    index: previousPuzzlePart.index + 1,
-                    value:
-                        quizPuzzlePart.possibleValues[
-                            previousPuzzlePart.index + 1
-                        ],
-                }
+            }
+
+            return {
+                index: previousPuzzlePart.index + 1,
+                value:
+                    quizPuzzlePart.possibleValues[previousPuzzlePart.index + 1],
+            }
+
+            function shouldReturnMinValue() {
+                return (
+                    previousPuzzlePart.index === undefined ||
+                    previousPuzzlePart.index ===
+                        quizPuzzlePart.possibleValues.length - 1
+                )
             }
         }
-    }
-
-    function getRandomNumber(max, exclude) {
-        // Adapted from https://stackoverflow.com/a/34184614
-        var rnd = Math.floor(Math.random() * (max - 1))
-        if (rnd >= exclude) rnd++
-
-        return rnd
     }
 
     function completePuzzleIfValid() {

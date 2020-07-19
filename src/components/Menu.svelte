@@ -5,6 +5,7 @@
     import Alert from './widgets/Alert.svelte'
 
     export let quiz
+    let timer
 
     const dispatch = createEventDispatcher()
 
@@ -92,11 +93,14 @@
             partTwoRandom: quiz.partTwo.randomize,
         }
 
-        window.history.replaceState(
-            null,
-            null,
-            `?${new URLSearchParams(parameters).toString()}`
-        )
+        clearTimeout(timer)
+        timer = setTimeout(() => {
+            window.history.replaceState(
+                null,
+                null,
+                `?${new URLSearchParams(parameters).toString()}`
+            )
+        }, 300)
     }
 </script>
 
