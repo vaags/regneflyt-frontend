@@ -106,7 +106,7 @@
         <label>
             Totalt: (i minutter)
             <br />
-            <Range min="1" max="30" bind:value={quiz.duration} />
+            <Range min="1" max="30" bind:value="{quiz.duration}" />
         </label>
 
         <label>
@@ -115,7 +115,7 @@
             <Range
                 zeroLabel="Ingen"
                 max="10"
-                bind:value={quiz.puzzleTimeLimit} />
+                bind:value="{quiz.puzzleTimeLimit}" />
         </label>
     </div>
     <div class="card">
@@ -124,9 +124,9 @@
             <label class="block py-1">
                 <input
                     type="radio"
-                    bind:group={quiz.selectedOperator}
-                    value={operator.toLowerCase()}
-                    on:change={setRequiredPartProperties} />
+                    bind:group="{quiz.selectedOperator}"
+                    value="{operator.toLowerCase()}"
+                    on:change="{setRequiredPartProperties}" />
                 <span class="ml-1">{operator}</span>
             </label>
         {/each}
@@ -134,7 +134,7 @@
             <label class="block mt-2">
                 <input
                     type="checkbox"
-                    bind:checked={quiz.allowNegativeAnswer} />
+                    bind:checked="{quiz.allowNegativeAnswer}" />
                 <span class="ml-1">Tillat negative svar</span>
             </label>
         {/if}
@@ -157,8 +157,8 @@
                     <label class="block py-1">
                         <input
                             type="checkbox"
-                            bind:group={quiz.partOne.possibleValues}
-                            value={i + 1} />
+                            bind:group="{quiz.partOne.possibleValues}"
+                            value="{i + 1}" />
                         <span class="ml-1">{i + 1}</span>
                     </label>
                 {/each}
@@ -167,21 +167,23 @@
                     Fra og med:
                     <br />
                     <Range
-                        max={quiz.partOne.maxValue}
-                        bind:value={quiz.partOne.minValue} />
+                        max="{quiz.partOne.maxValue}"
+                        bind:value="{quiz.partOne.minValue}" />
                 </label>
                 <label>
                     Til og med:
                     <br />
                     <Range
-                        min={quiz.partOne.minValue}
-                        bind:value={quiz.partOne.maxValue} />
+                        min="{quiz.partOne.minValue}"
+                        bind:value="{quiz.partOne.maxValue}" />
                 </label>
             {/if}
         </div>
         {#if isDivision}
             <label class="block mt-2">
-                <input type="checkbox" bind:checked={quiz.partOne.randomize} />
+                <input
+                    type="checkbox"
+                    bind:checked="{quiz.partOne.randomize}" />
                 <span class="ml-1">Tilfeldige verdier</span>
             </label>
         {/if}
@@ -204,8 +206,8 @@
                     <label class="block py-1">
                         <input
                             type="checkbox"
-                            bind:group={quiz.partTwo.possibleValues}
-                            value={i + 1} />
+                            bind:group="{quiz.partTwo.possibleValues}"
+                            value="{i + 1}" />
                         <span class="ml-1">{i + 1}</span>
                     </label>
                 {/each}
@@ -214,27 +216,29 @@
                     Fra og med:
                     <br />
                     <Range
-                        max={quiz.partTwo.maxValue}
-                        bind:value={quiz.partTwo.minValue} />
+                        max="{quiz.partTwo.maxValue}"
+                        bind:value="{quiz.partTwo.minValue}" />
                 </label>
                 <label>
                     Til og med:
                     <br />
                     <Range
-                        min={quiz.partTwo.minValue}
-                        bind:value={quiz.partTwo.maxValue} />
+                        min="{quiz.partTwo.minValue}"
+                        bind:value="{quiz.partTwo.maxValue}" />
                 </label>
             {/if}
         </div>
         {#if isMultiplication}
             <label class="block mt-2">
-                <input type="checkbox" bind:checked={quiz.partTwo.randomize} />
+                <input
+                    type="checkbox"
+                    bind:checked="{quiz.partTwo.randomize}" />
                 <span class="ml-1">Tilfeldige verdier</span>
             </label>
         {/if}
     </div>
     <Button
-        on:click={startQuiz}
+        on:click="{startQuiz}"
         label="Start"
-        color={validationError ? 'red' : 'green'} />
+        color="{validationError ? 'red' : 'green'}" />
 </form>

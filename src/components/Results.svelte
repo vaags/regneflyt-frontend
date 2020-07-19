@@ -60,7 +60,7 @@
                         </td>
                         <td class="border-t px-4 py-2">
                             {puzzle.partOne.value}
-                            <Operator operator={puzzle.operator} />
+                            <Operator operator="{puzzle.operator}" />
                             {puzzle.partTwo.value} = {puzzle.timeout ? '?' : puzzle.answer}
                         </td>
                         <td class="border-t px-3 py-2">
@@ -92,4 +92,4 @@
     {/if}
 </div>
 
-<Button on:click={resetQuiz} label="Ny runde" />
+<Button on:click="{resetQuiz}" label="Ny runde" />

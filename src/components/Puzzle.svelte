@@ -205,12 +205,12 @@
         {/if}
         <div class="text-center my-12 text-4xl">
             {puzzle.partOne.value}
-            <Operator operator={quiz.activeOperator} />
+            <Operator operator="{quiz.activeOperator}" />
             {puzzle.partTwo.value} =
             <input
-                disabled={puzzle.timeout}
-                bind:this={input}
-                bind:value={puzzle.answer}
+                disabled="{puzzle.timeout}"
+                bind:this="{input}"
+                bind:value="{puzzle.answer}"
                 class="border {displayError ? 'validation-error-border' : ''}
                 rounded w-24 py-2 px-3 leading-tight focus:outline-none"
                 type="number"
@@ -219,8 +219,8 @@
     </div>
     <div class="float-left">
         <Button
-            on:click={puzzle.timeout ? generatePuzzle : completePuzzleIfValid}
+            on:click="{puzzle.timeout ? generatePuzzle : completePuzzleIfValid}"
             label="Neste"
-            color={displayError ? 'red' : 'green'} />
+            color="{displayError ? 'red' : 'green'}" />
     </div>
 </form>

@@ -89,10 +89,13 @@
         </div>
     {/if}
     {#if quiz.isCompleted}
-        <Results {puzzleSet} on:resetQuiz={resetQuiz} />
+        <Results {puzzleSet} on:resetQuiz="{resetQuiz}" />
     {:else if quiz.isStarted}
-        <Quiz {quiz} on:abortQuiz={abortQuiz} on:completeQuiz={completeQuiz} />
+        <Quiz
+            {quiz}
+            on:abortQuiz="{abortQuiz}"
+            on:completeQuiz="{completeQuiz}" />
     {:else}
-        <Menu {quiz} on:startQuiz={startQuiz} />
+        <Menu {quiz} on:startQuiz="{startQuiz}" />
     {/if}
 </main>
