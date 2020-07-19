@@ -135,7 +135,7 @@
             </label>
         {/each}
         {#if quiz.selectedOperator === 'subtraksjon' || quiz.selectedOperator === 'alle'}
-            <label class="block mt-2">
+            <label class="block mt-4">
                 <input
                     type="checkbox"
                     bind:checked="{quiz.allowNegativeAnswer}" />
@@ -184,7 +184,7 @@
             {/if}
         </div>
         {#if isDivision}
-            <label class="block mt-2">
+            <label class="block mt-4">
                 <input
                     type="checkbox"
                     bind:checked="{quiz.partOne.randomize}" />
