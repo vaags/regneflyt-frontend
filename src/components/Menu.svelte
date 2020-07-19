@@ -184,7 +184,7 @@
             {/if}
         </div>
         {#if isDivision}
-            <label class="block mt-4">
+            <label class="block mt-6">
                 <input
                     type="checkbox"
                     bind:checked="{quiz.partOne.randomize}" />
@@ -233,7 +233,7 @@
             {/if}
         </div>
         {#if isMultiplication}
-            <label class="block mt-2">
+            <label class="block mt-6">
                 <input
                     type="checkbox"
                     bind:checked="{quiz.partTwo.randomize}" />
