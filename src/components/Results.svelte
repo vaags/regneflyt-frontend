@@ -1,35 +1,41 @@
 <script>
-    import { createEventDispatcher, onMount } from 'svelte';
-    import Button from './widgets/Button.svelte';
-    import Operator from './widgets/Operator.svelte';
-    import Alert from './widgets/Alert.svelte';
-import Puzzle from './Puzzle.svelte';
+    import { createEventDispatcher, onMount } from 'svelte'
+    import Button from './widgets/Button.svelte'
+    import Operator from './widgets/Operator.svelte'
+    import Alert from './widgets/Alert.svelte'
+    import Puzzle from './Puzzle.svelte'
 
-    const dispatch = createEventDispatcher();
+    const dispatch = createEventDispatcher()
 
-    export let puzzleSet;
+    export let puzzleSet
 
-    let correctAnswerSum = undefined;
-    let scorePercentage = undefined;
-    let totalTimeSpent = undefined;
+    let correctAnswerSum = undefined
+    let scorePercentage = undefined
+    let totalTimeSpent = undefined
 
     onMount(() => {
-        if (!puzzleSet || !puzzleSet.length) return;
-        
-        const boolReducer = (accumulator, currentValue) => accumulator + (currentValue ? 1 : 0);
-        const intReducer = (accumulator, currentValue) => accumulator + currentValue;
-    
-        correctAnswerSum = puzzleSet.map(p => p.isCorrect).reduce(boolReducer);
+        if (!puzzleSet || !puzzleSet.length) return
 
-        scorePercentage = Math.round(correctAnswerSum / puzzleSet.length * 100);
+        const boolReducer = (accumulator, currentValue) =>
+            accumulator + (currentValue ? 1 : 0)
+        const intReducer = (accumulator, currentValue) =>
+            accumulator + currentValue
 
-        totalTimeSpent = Math.round(puzzleSet.map(p => p.duration).reduce(intReducer) * 10) / 10;
+        correctAnswerSum = puzzleSet.map((p) => p.isCorrect).reduce(boolReducer)
+
+        scorePercentage = Math.round(
+            (correctAnswerSum / puzzleSet.length) * 100
+        )
+
+        totalTimeSpent =
+            Math.round(
+                puzzleSet.map((p) => p.duration).reduce(intReducer) * 10
+            ) / 10
     })
 
     function resetQuiz() {
-        dispatch('resetQuiz');
+        dispatch('resetQuiz')
     }
-
 </script>
 
 <div class="card">
@@ -37,7 +43,6 @@ import Puzzle from './Puzzle.svelte';
     {#if !puzzleSet || !puzzleSet.length}
         <Alert color="yellow" message="Ingen fullførte oppgaver ble funnet." />
     {:else}
-
         <table class="table-auto">
             <thead>
                 <tr>
@@ -48,9 +53,15 @@ import Puzzle from './Puzzle.svelte';
             <tbody>
                 {#each puzzleSet as puzzle, i}
                     <tr>
-                        <td class="border-t py-2 whitespace-no-wrap text-gray-600">{i + 1}</td>
+                        <td
+                            class="border-t py-2 whitespace-no-wrap
+                            text-gray-600">
+                            {i + 1}
+                        </td>
                         <td class="border-t px-4 py-2">
-                            {puzzle.partOne.value} <Operator operator={puzzle.operator} /> {puzzle.partTwo.value} = {puzzle.timeout ? "?" : puzzle.answer}
+                            {puzzle.partOne.value}
+                            <Operator operator={puzzle.operator} />
+                            {puzzle.partTwo.value} = {puzzle.timeout ? '?' : puzzle.answer}
                         </td>
                         <td class="border-t px-3 py-2">
                             {#if puzzle.isCorrect}
@@ -61,14 +72,18 @@ import Puzzle from './Puzzle.svelte';
                                 <span class="text-red-700">Galt</span>
                             {/if}
                         </td>
-                        <td class="border-t px-3 py-2">{Math.round(puzzle.duration * 10) / 10} s</td>
+                        <td class="border-t px-3 py-2">
+                            {Math.round(puzzle.duration * 10) / 10} s
+                        </td>
                     </tr>
                 {/each}
                 <tr>
                     <td class="border-t-2 py-2 text-left" colspan="2">Sum</td>
                     <td class="border-t-2 px-3 py-2">
                         <span class="text-lg">{scorePercentage} %</span>
-                        <span class="text-sm">({correctAnswerSum} av {puzzleSet.length})</span>
+                        <span class="text-sm">
+                            ({correctAnswerSum} av {puzzleSet.length})
+                        </span>
                     </td>
                     <td class="border-t-2 px-3 py-2">{totalTimeSpent} s</td>
                 </tr>
