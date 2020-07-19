@@ -6,7 +6,7 @@
 </script>
 
 <div class="flex flex-row">
-    <span class="text-blue-800 mr-4 mt-1 w-8">
+    <span class="text-blue-800 mr-4 mt-2 w-8">
         {zeroLabel && !value ? zeroLabel : value}
     </span>
     <span class="w-full mt-2">
