@@ -89,6 +89,7 @@
                 quizPuzzlePart.possibleValues.length,
                 previousPuzzlePart.index
             )
+
             return {
                 index: randomIndex,
                 value: quizPuzzlePart.possibleValues[randomIndex],
