@@ -1,6 +1,9 @@
 @tailwind base;
 @tailwind components;
 
+
+/* Buttons */
+
 .btn-blue {
     @apply bg-blue-600;
 }
@@ -33,6 +36,8 @@
     @apply bg-gray-700;
 }
 
+/* Alerts */
+
 .alert-blue {
     @apply bg-blue-100 border-blue-500 text-blue-800;
 }
@@ -44,6 +49,8 @@
 .alert-red {
     @apply bg-red-100 border-red-500 text-red-800;
 }
+
+/* Card */
 
 .card {
     @apply mb-2 rounded px-4 py-3 bg-gray-100;
@@ -67,12 +74,14 @@
     }
 }
 
+/* Range slider */
+
 .slider {
     -webkit-appearance: none;
     height: 0.5rem;
-    border-radius: 4px;
+    border-radius: 2px;
     outline: none;
-    @apply bg-gray-400;
+    @apply bg-white border border-gray-500;
 }
 
 .slider::-webkit-slider-thumb {
@@ -91,19 +100,6 @@
     border-radius: 50%;
     @apply bg-blue-700;
     cursor: pointer;
-}
-
-input[type=checkbox], input[type=radio]
-{
-  /* Double-sized Checkboxes */
-  -ms-transform: scale(1.25); /* IE */
-  -moz-transform: scale(1.25); /* FF */
-  -webkit-transform: scale(1.25); /* Safari and Chrome */
-  -o-transform: scale(1.25); /* Opera */
-  transform: scale(1.25);
-  padding: 10px;
-  filter: grayscale(50%);
-  @apply mx-1;
 }
 
 @tailwind utilities;

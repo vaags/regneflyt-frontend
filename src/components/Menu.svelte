@@ -75,26 +75,26 @@
     }
 
     $: {
-        // Set querystring params to allow for easy sharing of settings through url
-        let parameters = {
-            duration: quiz.duration,
-            timeLimit: quiz.puzzleTimeLimit,
-            operator: quiz.selectedOperator,
-            negatives: quiz.allowNegativeAnswer,
-            partOneMin: quiz.partOne.minValue,
-            partOneMax: quiz.partOne.maxValue,
-            partOneValues: isMultiplication
-                ? quiz.partOne.possibleValues
-                : null,
-            partOneRandom: quiz.partOne.randomize,
-            partTwoMin: quiz.partTwo.minValue,
-            partTwoMax: quiz.partTwo.maxValue,
-            partTwoValues: isDivision ? quiz.partTwo.possibleValues : null,
-            partTwoRandom: quiz.partTwo.randomize,
-        }
-
         clearTimeout(timer)
         timer = setTimeout(() => {
+            // Set querystring params to allow for easy sharing of settings through url
+            let parameters = {
+                duration: quiz.duration,
+                timeLimit: quiz.puzzleTimeLimit,
+                operator: quiz.selectedOperator,
+                negatives: quiz.allowNegativeAnswer,
+                partOneMin: quiz.partOne.minValue,
+                partOneMax: quiz.partOne.maxValue,
+                partOneValues: isMultiplication
+                    ? quiz.partOne.possibleValues
+                    : null,
+                partOneRandom: quiz.partOne.randomize,
+                partTwoMin: quiz.partTwo.minValue,
+                partTwoMax: quiz.partTwo.maxValue,
+                partTwoValues: isDivision ? quiz.partTwo.possibleValues : null,
+                partTwoRandom: quiz.partTwo.randomize,
+            }
+
             window.history.replaceState(
                 null,
                 null,
@@ -108,13 +108,15 @@
     <div class="card">
         <h2>Spilletid</h2>
         <label>
-            Totalt: (i minutter)
+            Totalt:
+            <span class="text-sm">(i minutter)</span>
             <br />
             <Range min="1" max="30" bind:value="{quiz.duration}" />
         </label>
 
         <label class="block mt-4">
-            Per oppgave: (i sekunder)
+            Per oppgave:
+            <span class="text-sm">(i sekunder)</span>
             <br />
             <Range
                 zeroLabel="Ingen"
@@ -125,21 +127,23 @@
     <div class="card">
         <h2>Regnearter</h2>
         {#each quiz.operators as operator}
-            <label class="block py-1">
+            <label class="flex items-center py-1">
                 <input
                     type="radio"
+                    class="form-radio h-5 w-5 text-blue-700 border-gray-500"
                     bind:group="{quiz.selectedOperator}"
                     value="{operator.toLowerCase()}"
                     on:change="{setRequiredPartProperties}" />
-                <span class="ml-1">{operator}</span>
+                <span class="ml-2">{operator}</span>
             </label>
         {/each}
         {#if quiz.selectedOperator === 'subtraksjon' || quiz.selectedOperator === 'alle'}
-            <label class="block mt-4">
+            <label class="inline-flex items-center mt-4">
                 <input
                     type="checkbox"
+                    class="form-checkbox text-blue-700 h-5 w-5 border-gray-500"
                     bind:checked="{quiz.allowNegativeAnswer}" />
-                <span class="ml-1">Tillat negative svar</span>
+                <span class="ml-2">Tillat negative svar</span>
             </label>
         {/if}
     </div>
@@ -158,12 +162,14 @@
         <div>
             {#if isMultiplication}
                 {#each Array(10) as _, i}
-                    <label class="block py-1">
+                    <label class="flex items-center py-1">
                         <input
                             type="checkbox"
+                            class="form-checkbox text-blue-700 h-5 w-5
+                            border-gray-500"
                             bind:group="{quiz.partOne.possibleValues}"
                             value="{i + 1}" />
-                        <span class="ml-1">{i + 1}</span>
+                        <span class="ml-2">{i + 1}</span>
                     </label>
                 {/each}
             {:else}
@@ -184,11 +190,12 @@
             {/if}
         </div>
         {#if isDivision}
-            <label class="block mt-6">
+            <label class="inline-flex items-center mt-6">
                 <input
                     type="checkbox"
+                    class="form-checkbox text-blue-700 h-5 w-5 border-gray-500"
                     bind:checked="{quiz.partOne.randomize}" />
-                <span class="ml-1">Tilfeldige verdier</span>
+                <span class="ml-2">Tilfeldige verdier</span>
             </label>
         {/if}
     </div>
@@ -207,12 +214,14 @@
         <div>
             {#if isDivision}
                 {#each Array(10) as _, i}
-                    <label class="block py-1">
+                    <label class="flex items-center py-1">
                         <input
                             type="checkbox"
+                            class="form-checkbox text-blue-700 h-5 w-5
+                            border-gray-500"
                             bind:group="{quiz.partTwo.possibleValues}"
                             value="{i + 1}" />
-                        <span class="ml-1">{i + 1}</span>
+                        <span class="ml-2">{i + 1}</span>
                     </label>
                 {/each}
             {:else}
@@ -233,9 +242,10 @@
             {/if}
         </div>
         {#if isMultiplication}
-            <label class="block mt-6">
+            <label class="inline-flex items-center mt-6">
                 <input
                     type="checkbox"
+                    class="form-checkbox text-blue-700 h-5 w-5 border-gray-500"
                     bind:checked="{quiz.partTwo.randomize}" />
                 <span class="ml-1">Tilfeldige verdier</span>
             </label>

@@ -5,11 +5,11 @@
     export let value = undefined
 </script>
 
-<div class="flex flex-row mb-1">
-    <span class="text-blue-800 mr-4 mt-2 w-8">
+<div class="flex flex-row mb-1 pt-2">
+    <span class="text-blue-800 mr-4 w-8">
         {zeroLabel && !value ? zeroLabel : value}
     </span>
-    <span class="w-full mt-2">
+    <span class="w-full">
         <input
             on:change
             class="w-full slider"
