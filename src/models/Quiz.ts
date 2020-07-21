@@ -1,11 +1,12 @@
-import { PuzzlePart } from "./PuzzlePart";
+
 import { Operator } from "./Operator";
+import { QuizPuzzlePart } from "./QuizPuzzlePart";
 
 export class Quiz {
     duration: number;
     puzzleTimeLimit: number;
-    partOne: PuzzlePart;
-    partTwo: PuzzlePart;
+    partOne: QuizPuzzlePart;
+    partTwo: QuizPuzzlePart;
     isStarted: boolean;
     isCompleted: boolean;
     selectedOperator: Operator;

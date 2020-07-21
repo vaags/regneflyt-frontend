@@ -1,4 +1,4 @@
-export class PuzzlePart {
+export class QuizPuzzlePart {
     minValue: number;
     maxValue: number;
     randomize: boolean;

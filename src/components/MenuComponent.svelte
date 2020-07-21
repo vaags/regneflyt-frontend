@@ -6,7 +6,7 @@
     import { Quiz } from '../models/Quiz'
 
     export let quiz: Quiz
-    let timer
+    let timer: number
 
     const dispatch = createEventDispatcher()
 

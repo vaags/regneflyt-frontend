@@ -2,8 +2,10 @@
     import { createEventDispatcher, onDestroy, onMount } from 'svelte'
     import PuzzleComponent from './PuzzleComponent.svelte'
     import ButtonComponent from './widgets/ButtonComponent.svelte'
+    import { Quiz } from '../models/Quiz'
+    import { Operator } from '../models/Operator'
 
-    export let quiz
+    export let quiz: Quiz
 
     const dispatch = createEventDispatcher()
     const interval = setTimeout(completeQuiz, quiz.duration * 60000)
@@ -33,10 +35,10 @@
     }
 
     function setOperator() {
-        if (quiz.selectedOperator === 'alle') {
+        if (quiz.selectedOperator === Operator.All) {
             const random = Math.ceil(Math.random() * 4)
 
-            quiz.activeOperator = quiz.operators[random - 1].toLowerCase()
+            quiz.activeOperator = quiz.operators[random - 1]
         } else {
             quiz.activeOperator = quiz.selectedOperator
         }

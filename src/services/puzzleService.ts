@@ -1,5 +1,7 @@
+import { Quiz } from "../models/Quiz";
+import { Operator } from "../models/Operator";
 
-export function getPuzzle(quiz, previousPuzzle) {
+export function getPuzzle(quiz: Quiz, previousPuzzle) {
     const puzzle = {
         partOne: {
             index: undefined,
@@ -25,7 +27,7 @@ export function getPuzzle(quiz, previousPuzzle) {
     function shouldAvoidNegativeAnswer() {
         return (
             !quiz.allowNegativeAnswer &&
-            quiz.activeOperator == 'subtraksjon' &&
+            quiz.activeOperator === Operator.Subtraction &&
             puzzle.partTwo.value > puzzle.partOne.value
         )
     }
@@ -59,7 +61,7 @@ function getRandomPuzzlePartValue(possibleNumbersArray, previousPuzzlePartIndex)
         value: possibleNumbersArray[randomIndex],
     }
 
-    function getRandomNumber(max, exclude) {
+    function getRandomNumber(max: number, exclude: number) {
         // Adapted from https://stackoverflow.com/a/34184614
         var rnd = Math.floor(Math.random() * (max - 1))
         if (rnd >= exclude) rnd++
@@ -68,7 +70,7 @@ function getRandomPuzzlePartValue(possibleNumbersArray, previousPuzzlePartIndex)
     }
 }
 
-function getNextPuzzlePartValue(possibleNumbersArray, previousPuzzlePartIndex) {
+function getNextPuzzlePartValue(possibleNumbersArray, previousPuzzlePartIndex: number) {
     if (shouldReturnMinValue()) {
         return {
             index: 0,
