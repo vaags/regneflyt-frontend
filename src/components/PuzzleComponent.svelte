@@ -1,11 +1,13 @@
-<script>
+<script lang="ts">
     import { createEventDispatcher, onMount, onDestroy, tick } from 'svelte'
-    import Button from './widgets/Button.svelte'
-    import Alert from './widgets/Alert.svelte'
-    import Operator from './widgets/Operator.svelte'
+    import ButtonComponent from './widgets/ButtonComponent.svelte'
+    import AlertComponent from './widgets/AlertComponent.svelte'
+    import OperatorComponent from './widgets/OperatorComponent.svelte'
     import { getPuzzle } from '../services/puzzleService'
+    import { Quiz } from '../models/Quiz'
+    import { Operator } from '../models/Operator'
 
-    export let quiz
+    export let quiz: Quiz
 
     const dispatch = createEventDispatcher()
     let interval = undefined
@@ -60,10 +62,10 @@
         puzzle.answer = undefined
         validationError = false
 
-        completePuzzle()
+        completePuzzle(false)
     }
 
-    function completePuzzle(generateNextPuzzle) {
+    function completePuzzle(generateNextPuzzle: boolean) {
         puzzle.isCorrect = evaluateAnswer()
         puzzle.duration = (Date.now() - startTime) / 1000
 
@@ -80,22 +82,22 @@
 
     function evaluateAnswer() {
         switch (quiz.activeOperator) {
-            case 'addisjon':
+            case Operator.Addition:
                 return (
                     puzzle.partOne.value + puzzle.partTwo.value ===
                     puzzle.answer
                 )
-            case 'subtraksjon':
+            case Operator.Subtraction:
                 return (
                     puzzle.partOne.value - puzzle.partTwo.value ===
                     puzzle.answer
                 )
-            case 'multiplikasjon':
+            case Operator.Multiplication:
                 return (
                     puzzle.partOne.value * puzzle.partTwo.value ===
                     puzzle.answer
                 )
-            case 'divisjon':
+            case Operator.Division:
                 return (
                     puzzle.partOne.value / puzzle.partTwo.value ===
                     puzzle.answer
@@ -140,11 +142,11 @@
     <div class="card pb-6">
         <h2>Oppgave {puzzleNumber}</h2>
         {#if puzzle.timeout}
-            <Alert color="red" message="Tiden er ute." />
+            <AlertComponent color="red" message="Tiden er ute." />
         {/if}
         <div class="text-center my-12 text-3xl md:text-4xl">
             {puzzle.partOne.value}
-            <Operator operator="{quiz.activeOperator}" />
+            <OperatorComponent operator="{quiz.activeOperator}" />
             {puzzle.partTwo.value} =
             <input
                 disabled="{puzzle.timeout}"
@@ -157,7 +159,7 @@
         </div>
     </div>
     <div class="float-left">
-        <Button
+        <ButtonComponent
             on:click="{puzzle.timeout ? generatePuzzle : completePuzzleIfValid}"
             label="Neste"
             color="{displayError ? 'red' : 'green'}" />

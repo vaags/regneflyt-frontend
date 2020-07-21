@@ -1,15 +1,17 @@
-<script>
+<script lang="ts">
     import { createEventDispatcher } from 'svelte'
-    import Button from './widgets/Button.svelte'
-    import Range from './widgets/Range.svelte'
+    import ButtonComponent from './widgets/ButtonComponent.svelte'
+    import RangeComponent from './widgets/RangeComponent.svelte'
+    import { Operator } from '../models/Operator'
+    import { Quiz } from '../models/Quiz'
 
-    export let quiz
+    export let quiz: Quiz
     let timer
 
     const dispatch = createEventDispatcher()
 
-    $: isDivision = quiz.selectedOperator === 'divisjon'
-    $: isMultiplication = quiz.selectedOperator === 'multiplikasjon'
+    $: isDivision = quiz.selectedOperator === Operator.Division
+    $: isMultiplication = quiz.selectedOperator === Operator.Multiplication
 
     $: validationError =
         (isMultiplication && quiz.partOne.possibleValues.length == 0) ||
@@ -78,26 +80,28 @@
         timer = setTimeout(() => {
             // Set querystring params to allow for easy sharing of settings through url
             let parameters = {
-                duration: quiz.duration,
-                timeLimit: quiz.puzzleTimeLimit,
-                operator: quiz.selectedOperator,
-                negatives: quiz.allowNegativeAnswer,
-                partOneMin: quiz.partOne.minValue,
-                partOneMax: quiz.partOne.maxValue,
-                partOneValues: isMultiplication
-                    ? quiz.partOne.possibleValues
+                duration: quiz.duration.toString(),
+                timeLimit: quiz.puzzleTimeLimit.toString(),
+                operator: quiz.selectedOperator.toString(),
+                negatives: quiz.allowNegativeAnswer.toString(),
+                partOneMin: quiz.partOne.minValue.toString(),
+                partOneMax: quiz.partOne.maxValue.toString(),
+                partOneValues: isMultiplication.toString()
+                    ? quiz.partOne.possibleValues.toString()
                     : null,
-                partOneRandom: quiz.partOne.randomize,
-                partTwoMin: quiz.partTwo.minValue,
-                partTwoMax: quiz.partTwo.maxValue,
-                partTwoValues: isDivision ? quiz.partTwo.possibleValues : null,
-                partTwoRandom: quiz.partTwo.randomize,
+                partOneRandom: quiz.partOne.randomize.toString(),
+                partTwoMin: quiz.partTwo.minValue.toString(),
+                partTwoMax: quiz.partTwo.maxValue.toString(),
+                partTwoValues: isDivision
+                    ? quiz.partTwo.possibleValues.toString()
+                    : null,
+                partTwoRandom: quiz.partTwo.randomize.toString(),
             }
 
             window.history.replaceState(
                 null,
                 null,
-                `?${new URLSearchParams(parameters).toString()}`
+                `?${new URLSearchParams(parameters)}`
             )
         }, 300)
     }
@@ -110,16 +114,16 @@
             Totalt:
             <span class="text-sm">(i minutter)</span>
             <br />
-            <Range min="1" max="30" bind:value="{quiz.duration}" />
+            <RangeComponent min="{1}" max="{30}" bind:value="{quiz.duration}" />
         </label>
 
         <label class="block mt-4">
             Per oppgave:
             <span class="text-sm">(i sekunder)</span>
             <br />
-            <Range
+            <RangeComponent
                 zeroLabel="Ingen"
-                max="10"
+                max="{10}"
                 bind:value="{quiz.puzzleTimeLimit}" />
         </label>
     </div>
@@ -131,12 +135,12 @@
                     type="radio"
                     class="form-radio h-5 w-5 text-blue-700 border-gray-500"
                     bind:group="{quiz.selectedOperator}"
-                    value="{operator.toLowerCase()}"
+                    value="{operator}"
                     on:change="{setRequiredPartProperties}" />
                 <span class="ml-2">{operator}</span>
             </label>
         {/each}
-        {#if quiz.selectedOperator === 'subtraksjon' || quiz.selectedOperator === 'alle'}
+        {#if quiz.selectedOperator === Operator.Subtraction || quiz.selectedOperator === Operator.All}
             <label class="inline-flex items-center mt-4">
                 <input
                     type="checkbox"
@@ -150,7 +154,7 @@
         <h2>
             {#if isMultiplication}
                 Multiplikand
-            {:else if quiz.selectedOperator === 'divisjon'}
+            {:else if quiz.selectedOperator === Operator.Division}
                 Dividend
                 <small>(intervall)</small>
             {:else}
@@ -175,14 +179,14 @@
                 <label>
                     Fra og med:
                     <br />
-                    <Range
+                    <RangeComponent
                         max="{quiz.partOne.maxValue}"
                         bind:value="{quiz.partOne.minValue}" />
                 </label>
                 <label class="block mt-4">
                     Til og med:
                     <br />
-                    <Range
+                    <RangeComponent
                         min="{quiz.partOne.minValue}"
                         bind:value="{quiz.partOne.maxValue}" />
                 </label>
@@ -227,14 +231,14 @@
                 <label>
                     Fra og med:
                     <br />
-                    <Range
+                    <RangeComponent
                         max="{quiz.partTwo.maxValue}"
                         bind:value="{quiz.partTwo.minValue}" />
                 </label>
                 <label class="block mt-4">
                     Til og med:
                     <br />
-                    <Range
+                    <RangeComponent
                         min="{quiz.partTwo.minValue}"
                         bind:value="{quiz.partTwo.maxValue}" />
                 </label>
@@ -250,7 +254,7 @@
             </label>
         {/if}
     </div>
-    <Button
+    <ButtonComponent
         on:click="{startQuiz}"
         label="Start"
         color="{validationError ? 'red' : 'green'}" />

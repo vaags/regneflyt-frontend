@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     export let min = 0
     export let max = 100
     export let zeroLabel = undefined
