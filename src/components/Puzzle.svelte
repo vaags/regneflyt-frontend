@@ -3,6 +3,7 @@
     import Button from './widgets/Button.svelte'
     import Alert from './widgets/Alert.svelte'
     import Operator from './widgets/Operator.svelte'
+    import { getPuzzle } from '../services/puzzleService'
 
     export let quiz
 
@@ -27,19 +28,14 @@
         timeout: undefined,
         duration: undefined,
         isCorrect: undefined,
-        operator: quiz.activeOperator,
     }
 
     $: displayError = !puzzle.answer && validationError
 
     function generatePuzzle() {
-        initializePuzzle()
         puzzleNumber++
 
-        puzzle.partOne = getPuzzlePart(quiz.partOne, puzzle.partOne)
-        puzzle.partTwo = getPuzzlePart(quiz.partTwo, puzzle.partTwo)
-
-        if (shouldAvoidNegativeAnswer()) swapPuzzlePartValues()
+        puzzle = getPuzzle(quiz, puzzle)
 
         focusInput()
 
@@ -50,81 +46,6 @@
         function setPuzzleTimeout() {
             clearInterval(interval)
             interval = setTimeout(timeOutPuzzle, quiz.puzzleTimeLimit * 1000)
-        }
-
-        function initializePuzzle() {
-            puzzle.answer = undefined
-            puzzle.isCorrect = undefined
-            puzzle.duration = undefined
-            puzzle.timeout = undefined
-        }
-    }
-
-    function shouldAvoidNegativeAnswer() {
-        return (
-            !quiz.allowNegativeAnswer &&
-            puzzle.operator == 'subtraksjon' &&
-            puzzle.partTwo.value > puzzle.partOne.value
-        )
-    }
-
-    function swapPuzzlePartValues() {
-        ;[puzzle.partOne, puzzle.partTwo] = [puzzle.partTwo, puzzle.partOne]
-    }
-
-    function getPuzzlePart(quizPuzzlePart, previousPuzzlePart) {
-        if (quizPuzzlePart.minValue === quizPuzzlePart.maxValue) {
-            return {
-                index: 0,
-                value: quizPuzzlePart.minValue,
-            }
-        }
-
-        return quizPuzzlePart.randomize
-            ? getRandomPuzzlePartValue()
-            : getNextPuzzlePartValue()
-
-        function getRandomPuzzlePartValue() {
-            let randomIndex = getRandomNumber(
-                quizPuzzlePart.possibleValues.length,
-                previousPuzzlePart.index
-            )
-
-            return {
-                index: randomIndex,
-                value: quizPuzzlePart.possibleValues[randomIndex],
-            }
-
-            function getRandomNumber(max, exclude) {
-                // Adapted from https://stackoverflow.com/a/34184614
-                var rnd = Math.floor(Math.random() * (max - 1))
-                if (rnd >= exclude) rnd++
-
-                return rnd
-            }
-        }
-
-        function getNextPuzzlePartValue() {
-            if (shouldReturnMinValue()) {
-                return {
-                    index: 0,
-                    value: quizPuzzlePart.minValue,
-                }
-            }
-
-            return {
-                index: previousPuzzlePart.index + 1,
-                value:
-                    quizPuzzlePart.possibleValues[previousPuzzlePart.index + 1],
-            }
-
-            function shouldReturnMinValue() {
-                return (
-                    previousPuzzlePart.index === undefined ||
-                    previousPuzzlePart.index ===
-                        quizPuzzlePart.possibleValues.length - 1
-                )
-            }
         }
     }
 
