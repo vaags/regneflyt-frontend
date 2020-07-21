@@ -54,7 +54,7 @@
         dispatch('startQuiz', { quiz })
     }
 
-    function getArrayOfNumbers(first, last) {
+    function getArrayOfNumbers(first: number, last: number) {
         return Array(last)
             .fill(first)
             .map((x, y) => x + y)

@@ -1,13 +1,13 @@
 <script lang="ts">
+    import { Puzzle } from '../models/Puzzle'
     import { createEventDispatcher, onMount } from 'svelte'
     import ButtonComponent from './widgets/ButtonComponent.svelte'
     import OperatorComponent from './widgets/OperatorComponent.svelte'
     import AlertComponent from './widgets/AlertComponent.svelte'
-    import PuzzleComponent from './PuzzleComponent.svelte'
 
     const dispatch = createEventDispatcher()
 
-    export let puzzleSet
+    export let puzzleSet: Array<Puzzle>
 
     let correctAnswerSum = undefined
     let scorePercentage = undefined

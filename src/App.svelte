@@ -4,6 +4,7 @@
     import QuizComponent from './components/QuizComponent.svelte'
     import { Operator } from './models/Operator'
     import { Quiz } from './models/Quiz'
+    import { Puzzle } from './models/Puzzle'
 
     const urlParams = new URLSearchParams(window.location.search)
 
@@ -54,7 +55,7 @@
         ],
     }
 
-    let puzzleSet
+    let puzzleSet: Array<Puzzle>
     let displayGreeting = true
 
     function startQuiz(event) {

@@ -1,8 +1,10 @@
 import { Quiz } from "../models/Quiz";
 import { Operator } from "../models/Operator";
+import { Puzzle, PuzzlePart } from "../models/Puzzle";
+import { QuizPuzzlePart } from "../models/QuizPuzzlePart";
 
-export function getPuzzle(quiz: Quiz, previousPuzzle) {
-    const puzzle = {
+export function getPuzzle(quiz: Quiz, previousPuzzle: Puzzle): Puzzle {
+    const puzzle: Puzzle = {
         partOne: {
             index: undefined,
             value: undefined,
@@ -15,6 +17,7 @@ export function getPuzzle(quiz: Quiz, previousPuzzle) {
         timeout: undefined,
         duration: undefined,
         isCorrect: undefined,
+        operator: undefined
     }
 
     puzzle.partOne = getPuzzlePart(quiz.partOne, previousPuzzle.partOne)
@@ -37,7 +40,7 @@ export function getPuzzle(quiz: Quiz, previousPuzzle) {
     }
 }
 
-function getPuzzlePart(quizPuzzlePart, previousPuzzlePart) {
+function getPuzzlePart(quizPuzzlePart: QuizPuzzlePart, previousPuzzlePart: PuzzlePart): PuzzlePart {
     if (quizPuzzlePart.minValue === quizPuzzlePart.maxValue) {
         return {
             index: 0,
@@ -50,7 +53,7 @@ function getPuzzlePart(quizPuzzlePart, previousPuzzlePart) {
     : getNextPuzzlePartValue(quizPuzzlePart.possibleValues, previousPuzzlePart.index)
 }
 
-function getRandomPuzzlePartValue(possibleNumbersArray, previousPuzzlePartIndex) {
+function getRandomPuzzlePartValue(possibleNumbersArray: Array<number>, previousPuzzlePartIndex: number): PuzzlePart {
     const randomIndex = getRandomNumber(
         possibleNumbersArray.length,
         previousPuzzlePartIndex
@@ -70,7 +73,7 @@ function getRandomPuzzlePartValue(possibleNumbersArray, previousPuzzlePartIndex)
     }
 }
 
-function getNextPuzzlePartValue(possibleNumbersArray, previousPuzzlePartIndex: number) {
+function getNextPuzzlePartValue(possibleNumbersArray: Array<number>, previousPuzzlePartIndex: number): PuzzlePart {
     if (shouldReturnMinValue()) {
         return {
             index: 0,

@@ -4,13 +4,14 @@
     import ButtonComponent from './widgets/ButtonComponent.svelte'
     import { Quiz } from '../models/Quiz'
     import { Operator } from '../models/Operator'
+    import { Puzzle } from '../models/Puzzle'
 
     export let quiz: Quiz
 
     const dispatch = createEventDispatcher()
     const interval = setTimeout(completeQuiz, quiz.duration * 60000)
     let showWarning = false
-    let puzzleSet = []
+    let puzzleSet: Array<Puzzle> = []
     const isLocalhost = location.hostname === 'localhost'
 
     onDestroy(() => {

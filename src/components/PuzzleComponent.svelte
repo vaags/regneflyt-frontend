@@ -6,6 +6,7 @@
     import { getPuzzle } from '../services/puzzleService'
     import { Quiz } from '../models/Quiz'
     import { Operator } from '../models/Operator'
+    import { Puzzle } from '../models/Puzzle'
 
     export let quiz: Quiz
 
@@ -15,9 +16,9 @@
     let puzzleNumber = 0
     let input
     let validationError = false
-    let startTime
+    let startTime: number
 
-    let puzzle = {
+    let puzzle: Puzzle = {
         partOne: {
             index: undefined,
             value: undefined,
@@ -30,6 +31,7 @@
         timeout: undefined,
         duration: undefined,
         isCorrect: undefined,
+        operator: undefined,
     }
 
     $: displayError = !puzzle.answer && validationError
@@ -68,6 +70,7 @@
     function completePuzzle(generateNextPuzzle: boolean) {
         puzzle.isCorrect = evaluateAnswer()
         puzzle.duration = (Date.now() - startTime) / 1000
+        puzzle.operator = quiz.activeOperator
 
         dispatch('addPuzzle', { puzzle: { ...puzzle } })
 

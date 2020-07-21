@@ -1,3 +1,5 @@
+import { Operator } from "./Operator";
+
 export class Puzzle {
     partOne: PuzzlePart;
     partTwo: PuzzlePart;
@@ -5,9 +7,10 @@ export class Puzzle {
     timeout: boolean;
     duration: number;
     isCorrect: boolean;
+    operator: Operator
 }
 
-interface PuzzlePart {
+export class PuzzlePart {
     index: number;
     value: number
 }
