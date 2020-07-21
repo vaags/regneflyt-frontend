@@ -1,10 +1,13 @@
-<script>
+<script lang="ts">
     import { createEventDispatcher, onMount, onDestroy, tick } from 'svelte'
-    import Button from './widgets/Button.svelte'
-    import Alert from './widgets/Alert.svelte'
-    import Operator from './widgets/Operator.svelte'
+    import ButtonComponent from './widgets/ButtonComponent.svelte'
+    import AlertComponent from './widgets/AlertComponent.svelte'
+    import OperatorComponent from './widgets/OperatorComponent.svelte'
+    import { getPuzzle } from '../services/puzzleService'
+    import { Quiz } from '../models/Quiz'
+    import { Operator } from '../models/Operator'
 
-    export let quiz
+    export let quiz: Quiz
 
     const dispatch = createEventDispatcher()
     let interval = undefined
@@ -27,19 +30,14 @@
         timeout: undefined,
         duration: undefined,
         isCorrect: undefined,
-        operator: quiz.activeOperator,
     }
 
     $: displayError = !puzzle.answer && validationError
 
     function generatePuzzle() {
-        initializePuzzle()
         puzzleNumber++
 
-        puzzle.partOne = getPuzzlePart(quiz.partOne, puzzle.partOne)
-        puzzle.partTwo = getPuzzlePart(quiz.partTwo, puzzle.partTwo)
-
-        if (shouldAvoidNegativeAnswer()) swapPuzzlePartValues()
+        puzzle = getPuzzle(quiz, puzzle)
 
         focusInput()
 
@@ -50,81 +48,6 @@
         function setPuzzleTimeout() {
             clearInterval(interval)
             interval = setTimeout(timeOutPuzzle, quiz.puzzleTimeLimit * 1000)
-        }
-
-        function initializePuzzle() {
-            puzzle.answer = undefined
-            puzzle.isCorrect = undefined
-            puzzle.duration = undefined
-            puzzle.timeout = undefined
-        }
-    }
-
-    function shouldAvoidNegativeAnswer() {
-        return (
-            !quiz.allowNegativeAnswer &&
-            puzzle.operator == 'subtraksjon' &&
-            puzzle.partTwo.value > puzzle.partOne.value
-        )
-    }
-
-    function swapPuzzlePartValues() {
-        ;[puzzle.partOne, puzzle.partTwo] = [puzzle.partTwo, puzzle.partOne]
-    }
-
-    function getPuzzlePart(quizPuzzlePart, previousPuzzlePart) {
-        if (quizPuzzlePart.minValue === quizPuzzlePart.maxValue) {
-            return {
-                index: 0,
-                value: quizPuzzlePart.minValue,
-            }
-        }
-
-        return quizPuzzlePart.randomize
-            ? getRandomPuzzlePartValue()
-            : getNextPuzzlePartValue()
-
-        function getRandomPuzzlePartValue() {
-            let randomIndex = getRandomNumber(
-                quizPuzzlePart.possibleValues.length,
-                previousPuzzlePart.index
-            )
-
-            return {
-                index: randomIndex,
-                value: quizPuzzlePart.possibleValues[randomIndex],
-            }
-
-            function getRandomNumber(max, exclude) {
-                // Adapted from https://stackoverflow.com/a/34184614
-                var rnd = Math.floor(Math.random() * (max - 1))
-                if (rnd >= exclude) rnd++
-
-                return rnd
-            }
-        }
-
-        function getNextPuzzlePartValue() {
-            if (shouldReturnMinValue()) {
-                return {
-                    index: 0,
-                    value: quizPuzzlePart.minValue,
-                }
-            }
-
-            return {
-                index: previousPuzzlePart.index + 1,
-                value:
-                    quizPuzzlePart.possibleValues[previousPuzzlePart.index + 1],
-            }
-
-            function shouldReturnMinValue() {
-                return (
-                    previousPuzzlePart.index === undefined ||
-                    previousPuzzlePart.index ===
-                        quizPuzzlePart.possibleValues.length - 1
-                )
-            }
         }
     }
 
@@ -139,10 +62,10 @@
         puzzle.answer = undefined
         validationError = false
 
-        completePuzzle()
+        completePuzzle(false)
     }
 
-    function completePuzzle(generateNextPuzzle) {
+    function completePuzzle(generateNextPuzzle: boolean) {
         puzzle.isCorrect = evaluateAnswer()
         puzzle.duration = (Date.now() - startTime) / 1000
 
@@ -159,22 +82,22 @@
 
     function evaluateAnswer() {
         switch (quiz.activeOperator) {
-            case 'addisjon':
+            case Operator.Addition:
                 return (
                     puzzle.partOne.value + puzzle.partTwo.value ===
                     puzzle.answer
                 )
-            case 'subtraksjon':
+            case Operator.Subtraction:
                 return (
                     puzzle.partOne.value - puzzle.partTwo.value ===
                     puzzle.answer
                 )
-            case 'multiplikasjon':
+            case Operator.Multiplication:
                 return (
                     puzzle.partOne.value * puzzle.partTwo.value ===
                     puzzle.answer
                 )
-            case 'divisjon':
+            case Operator.Division:
                 return (
                     puzzle.partOne.value / puzzle.partTwo.value ===
                     puzzle.answer
@@ -219,11 +142,11 @@
     <div class="card pb-6">
         <h2>Oppgave {puzzleNumber}</h2>
         {#if puzzle.timeout}
-            <Alert color="red" message="Tiden er ute." />
+            <AlertComponent color="red" message="Tiden er ute." />
         {/if}
         <div class="text-center my-12 text-3xl md:text-4xl">
             {puzzle.partOne.value}
-            <Operator operator="{quiz.activeOperator}" />
+            <OperatorComponent operator="{quiz.activeOperator}" />
             {puzzle.partTwo.value} =
             <input
                 disabled="{puzzle.timeout}"
@@ -236,7 +159,7 @@
         </div>
     </div>
     <div class="float-left">
-        <Button
+        <ButtonComponent
             on:click="{puzzle.timeout ? generatePuzzle : completePuzzleIfValid}"
             label="Neste"
             color="{displayError ? 'red' : 'green'}" />

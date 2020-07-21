@@ -1,25 +1,31 @@
-<script>
-    import Menu from './components/Menu.svelte'
-    import Results from './components/Results.svelte'
-    import Quiz from './components/Quiz.svelte'
+<script lang="ts">
+    import MenuComponent from './components/MenuComponent.svelte'
+    import ResultsComponent from './components/ResultsComponent.svelte'
+    import QuizComponent from './components/QuizComponent.svelte'
+    import { Operator } from './models/Operator'
+    import { Quiz } from './models/Quiz'
 
     const urlParams = new URLSearchParams(window.location.search)
 
-    function getIntParam(param) {
+    function getIntParam(param: string): number {
         return parseInt(urlParams.get(param))
     }
 
-    function getBoolParam(param) {
+    function getBoolParam(param: string): boolean {
         return urlParams.get(param) === 'false' ? false : true
     }
 
-    function getNumArrayParam(param) {
+    function getOperatorParam(param: string): Operator {
+        return urlParams.get(param) as Operator
+    }
+
+    function getNumArrayParam(param: string): Array<number> {
         var array = urlParams.get(param)
 
         return array && array !== 'null' ? array.split(',').map(Number) : []
     }
 
-    let quiz = {
+    let quiz: Quiz = {
         duration: getIntParam('duration') || 1,
         puzzleTimeLimit: getIntParam('timeLimit') || 0,
         partOne: {
@@ -36,16 +42,16 @@
         },
         isStarted: false,
         isCompleted: false,
-        operators: [
-            'Addisjon',
-            'Subtraksjon',
-            'Multiplikasjon',
-            'Divisjon',
-            'Alle',
-        ],
-        selectedOperator: urlParams.get('operator') || 'addisjon',
+        selectedOperator: getOperatorParam('operator') || Operator.Addition,
         allowNegativeAnswer: getBoolParam('negatives'),
         activeOperator: undefined,
+        operators: [
+            Operator.Addition,
+            Operator.Subtraction,
+            Operator.Multiplication,
+            Operator.Division,
+            Operator.All,
+        ],
     }
 
     let puzzleSet
@@ -86,13 +92,13 @@
         </div>
     {/if}
     {#if quiz.isCompleted}
-        <Results {puzzleSet} on:resetQuiz="{resetQuiz}" />
+        <ResultsComponent {puzzleSet} on:resetQuiz="{resetQuiz}" />
     {:else if quiz.isStarted}
-        <Quiz
+        <QuizComponent
             {quiz}
             on:abortQuiz="{abortQuiz}"
             on:completeQuiz="{completeQuiz}" />
     {:else}
-        <Menu {quiz} on:startQuiz="{startQuiz}" />
+        <MenuComponent {quiz} on:startQuiz="{startQuiz}" />
     {/if}
 </main>

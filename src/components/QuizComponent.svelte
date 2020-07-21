@@ -1,7 +1,7 @@
-<script>
+<script lang="ts">
     import { createEventDispatcher, onDestroy, onMount } from 'svelte'
-    import Puzzle from './Puzzle.svelte'
-    import Button from './widgets/Button.svelte'
+    import PuzzleComponent from './PuzzleComponent.svelte'
+    import ButtonComponent from './widgets/ButtonComponent.svelte'
 
     export let quiz
 
@@ -29,7 +29,6 @@
 
     function addPuzzle(event) {
         puzzleSet = [...puzzleSet, event.detail.puzzle]
-        // console.log('added puzzle:', event.detail.puzzle);
         setOperator()
     }
 
@@ -50,19 +49,22 @@
 
 <div>
     {#if quiz.activeOperator}
-        <Puzzle {quiz} on:addPuzzle="{addPuzzle}" />
+        <PuzzleComponent {quiz} on:addPuzzle="{addPuzzle}" />
     {/if}
 
     <div class="text-right float-right">
         {#if showWarning}
             <p class="mb-2 text-gray-100">Er du sikker på at du vil avbryte?</p>
-            <Button on:click="{abortQuiz}" label="ja" color="red" />
-            <Button on:click="{toggleWarning}" label="Nei" />
+            <ButtonComponent on:click="{abortQuiz}" label="ja" color="red" />
+            <ButtonComponent on:click="{toggleWarning}" label="Nei" />
         {:else}
             {#if isLocalhost}
-                <Button on:click="{completeQuiz}" label="Fullfør" />
+                <ButtonComponent on:click="{completeQuiz}" label="Fullfør" />
             {/if}
-            <Button on:click="{toggleWarning}" label="Avbryt" color="gray" />
+            <ButtonComponent
+                on:click="{toggleWarning}"
+                label="Avbryt"
+                color="gray" />
         {/if}
     </div>
 </div>

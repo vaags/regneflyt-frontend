@@ -1,9 +1,9 @@
-<script>
+<script lang="ts">
     import { createEventDispatcher, onMount } from 'svelte'
-    import Button from './widgets/Button.svelte'
-    import Operator from './widgets/Operator.svelte'
-    import Alert from './widgets/Alert.svelte'
-    import Puzzle from './Puzzle.svelte'
+    import ButtonComponent from './widgets/ButtonComponent.svelte'
+    import OperatorComponent from './widgets/OperatorComponent.svelte'
+    import AlertComponent from './widgets/AlertComponent.svelte'
+    import PuzzleComponent from './PuzzleComponent.svelte'
 
     const dispatch = createEventDispatcher()
 
@@ -41,12 +41,16 @@
 <div class="card">
     <h2>Resultater</h2>
     {#if !puzzleSet || !puzzleSet.length}
-        <Alert color="yellow" message="Ingen fullførte oppgaver ble funnet." />
+        <AlertComponent
+            color="yellow"
+            message="Ingen fullførte oppgaver ble funnet." />
     {:else}
         <table class="table-auto">
             <thead>
                 <tr>
-                    <th class="text-left py-2 font-light" colspan="3">Svar</th>
+                    <th class="text-left py-2 font-light" colspan="{3}">
+                        Svar
+                    </th>
                     <th class="font-light px-3 py-2">Tidsbruk</th>
                 </tr>
             </thead>
@@ -60,7 +64,7 @@
                         </td>
                         <td class="border-t px-4 py-2">
                             {puzzle.partOne.value}
-                            <Operator operator="{puzzle.operator}" />
+                            <OperatorComponent operator="{puzzle.operator}" />
                             {puzzle.partTwo.value} = {puzzle.timeout ? '?' : puzzle.answer}
                         </td>
                         <td class="border-t px-3 py-2">
@@ -78,7 +82,7 @@
                     </tr>
                 {/each}
                 <tr>
-                    <td class="border-t-2 py-2 text-left" colspan="2">Sum</td>
+                    <td class="border-t-2 py-2 text-left" colspan="{2}">Sum</td>
                     <td class="border-t-2 px-3 py-2">
                         <span class="text-lg">{scorePercentage} %</span>
                         <span class="text-sm">
@@ -92,4 +96,4 @@
     {/if}
 </div>
 
-<Button on:click="{resetQuiz}" label="Ny runde" />
+<ButtonComponent on:click="{resetQuiz}" label="Ny runde" />

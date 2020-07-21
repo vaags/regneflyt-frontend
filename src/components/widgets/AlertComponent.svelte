@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     export let message = '[Message]'
     export let heading = undefined
     export let color = 'blue'
