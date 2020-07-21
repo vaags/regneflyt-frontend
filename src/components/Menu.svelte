@@ -2,7 +2,6 @@
     import { createEventDispatcher } from 'svelte'
     import Button from './widgets/Button.svelte'
     import Range from './widgets/Range.svelte'
-    import Alert from './widgets/Alert.svelte'
 
     export let quiz
     let timer
@@ -247,7 +246,7 @@
                     type="checkbox"
                     class="form-checkbox text-blue-700 h-5 w-5 border-gray-500"
                     bind:checked="{quiz.partTwo.randomize}" />
-                <span class="ml-1">Tilfeldige verdier</span>
+                <span class="ml-2">Tilfeldige verdier</span>
             </label>
         {/if}
     </div>
