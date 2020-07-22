@@ -16,10 +16,6 @@
         return urlParams.get(param) === 'false' ? false : true
     }
 
-    function getOperatorParam(param: string): Operator {
-        return urlParams.get(param) as Operator
-    }
-
     function getNumArrayParam(param: string): Array<number> {
         var array = urlParams.get(param)
 
@@ -43,9 +39,9 @@
         },
         isStarted: false,
         isCompleted: false,
-        selectedOperator: getOperatorParam('operator') || Operator.Addition,
+        selectedOperator:
+            (urlParams.get('operator') as Operator) || Operator.Addition,
         allowNegativeAnswer: getBoolParam('negatives'),
-        activeOperator: undefined,
         operators: [
             Operator.Addition,
             Operator.Subtraction,

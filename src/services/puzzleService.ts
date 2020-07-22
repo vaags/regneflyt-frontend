@@ -3,7 +3,7 @@ import { Operator } from "../models/Operator";
 import { Puzzle, PuzzlePart } from "../models/Puzzle";
 import { QuizPuzzlePart } from "../models/QuizPuzzlePart";
 
-export function getPuzzle(quiz: Quiz, previousPuzzle: Puzzle): Puzzle {
+export function getPuzzle(quiz: Quiz, previousPuzzle: Puzzle, activeOperator: Operator) {
     const puzzle: Puzzle = {
         partOne: {
             index: undefined,
@@ -30,7 +30,7 @@ export function getPuzzle(quiz: Quiz, previousPuzzle: Puzzle): Puzzle {
     function shouldAvoidNegativeAnswer() {
         return (
             !quiz.allowNegativeAnswer &&
-            quiz.activeOperator === Operator.Subtraction &&
+            activeOperator === Operator.Subtraction &&
             puzzle.partTwo.value > puzzle.partOne.value
         )
     }
