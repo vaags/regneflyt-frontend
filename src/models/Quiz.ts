@@ -1,6 +1,7 @@
 
 import { Operator } from "./Operator";
 import { QuizPuzzlePart } from "./QuizPuzzlePart";
+import { AnswerMode } from "./AnswerMode";
 
 export class Quiz {
     duration: number;
@@ -11,6 +12,6 @@ export class Quiz {
     isCompleted: boolean;
     selectedOperator: Operator;
     allowNegativeAnswer: boolean;
-    activeOperator: Operator;
     operators: Array<Operator>;
+    answerMode: AnswerMode;
 }

@@ -5,6 +5,8 @@
     import { Quiz } from '../models/Quiz'
     import { Operator } from '../models/Operator'
     import { Puzzle } from '../models/Puzzle'
+    import { AnswerMode } from '../models/AnswerMode'
+    import OperatorComponent from './widgets/OperatorComponent.svelte'
 
     export let quiz: Quiz
 
@@ -13,13 +15,19 @@
     let showWarning = false
     let puzzleSet: Array<Puzzle> = []
     const isLocalhost = location.hostname === 'localhost'
+    let activeOperator: Operator = undefined
+    let unknownPuzzlePart: number
 
     onDestroy(() => {
         clearInterval(interval)
     })
 
     onMount(() => {
-        setOperator()
+        activeOperator = getActiveOperator(quiz.selectedOperator)
+        unknownPuzzlePart = getUnknownPuzzlePart(
+            activeOperator,
+            quiz.answerMode
+        )
     })
 
     function abortQuiz() {
@@ -32,16 +40,51 @@
 
     function addPuzzle(event) {
         puzzleSet = [...puzzleSet, event.detail.puzzle]
-        setOperator()
+        activeOperator = getActiveOperator(quiz.selectedOperator)
+        unknownPuzzlePart = getUnknownPuzzlePart(
+            activeOperator,
+            quiz.answerMode
+        )
     }
 
-    function setOperator() {
-        if (quiz.selectedOperator === Operator.All) {
+    function getActiveOperator(operator: Operator) {
+        if (operator === Operator.All) {
             const random = Math.ceil(Math.random() * 4)
 
-            quiz.activeOperator = quiz.operators[random - 1]
-        } else {
-            quiz.activeOperator = quiz.selectedOperator
+            return quiz.operators[random - 1]
+        }
+
+        return operator
+    }
+
+    function getUnknownPuzzlePart(operator: Operator, answerMode: AnswerMode) {
+        switch (answerMode) {
+            case AnswerMode.Random:
+                if (getTrueOrFalse()) {
+                    return getAlternateUnknownPuzzlePart()
+                } else {
+                    return 3
+                }
+            case AnswerMode.Alternate:
+                return getAlternateUnknownPuzzlePart()
+            case AnswerMode.Normal:
+                return 3
+        }
+
+        function getAlternateUnknownPuzzlePart() {
+            switch (operator) {
+                case Operator.Addition || Operator.Subtraction:
+                    return getTrueOrFalse() ? 1 : 2
+                case Operator.Multiplication:
+                    return 2
+                case Operator.Division:
+                    return 1
+            }
+        }
+
+        function getTrueOrFalse() {
+            // Stolen from https://stackoverflow.com/a/36756480
+            return Math.random() >= 0.5
         }
     }
 
@@ -51,13 +94,17 @@
 </script>
 
 <div>
-    {#if quiz.activeOperator}
-        <PuzzleComponent {quiz} on:addPuzzle="{addPuzzle}" />
+    {#if activeOperator}
+        <PuzzleComponent
+            {quiz}
+            on:addPuzzle="{addPuzzle}"
+            {activeOperator}
+            {unknownPuzzlePart} />
     {/if}
 
     <div class="text-right float-right">
         {#if showWarning}
-            <p class="mb-2 text-gray-100">Er du sikker på at du vil avbryte?</p>
+            <p class="mb-2 text-gray-100">Ønsker du å avbryte?</p>
             <ButtonComponent on:click="{abortQuiz}" label="ja" color="red" />
             <ButtonComponent on:click="{toggleWarning}" label="Nei" />
         {:else}

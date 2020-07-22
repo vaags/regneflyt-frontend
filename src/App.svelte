@@ -5,6 +5,7 @@
     import { Operator } from './models/Operator'
     import { Quiz } from './models/Quiz'
     import { Puzzle } from './models/Puzzle'
+    import { AnswerMode } from './models/AnswerMode'
 
     const urlParams = new URLSearchParams(window.location.search)
 
@@ -49,6 +50,8 @@
             Operator.Division,
             Operator.All,
         ],
+        answerMode:
+            (urlParams.get('answerMode') as AnswerMode) || AnswerMode.Normal,
     }
 
     let puzzleSet: Array<Puzzle>

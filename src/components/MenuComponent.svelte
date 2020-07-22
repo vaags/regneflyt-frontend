@@ -4,6 +4,7 @@
     import RangeComponent from './widgets/RangeComponent.svelte'
     import { Operator } from '../models/Operator'
     import { Quiz } from '../models/Quiz'
+    import { AnswerMode } from '../models/AnswerMode'
 
     export let quiz: Quiz
     let timer: number
@@ -54,21 +55,18 @@
         dispatch('startQuiz', { quiz })
     }
 
-    function getArrayOfNumbers(first: number, last: number) {
+    function getArrayOfNumbers(first: number, last: number): Array<number> {
         return Array(last)
             .fill(first)
             .map((x, y) => x + y)
     }
 
     function setRequiredPartProperties() {
-        if (isMultiplication) {
-            quiz.partOne.randomize = true
-            quiz.partTwo.randomize = false
+        if (isMultiplication || isDivision) {
             quiz.partOne.possibleValues = []
             quiz.partTwo.possibleValues = []
-        } else if (isDivision) {
-            quiz.partOne.randomize = false
-            quiz.partTwo.randomize = true
+            quiz.partOne.randomize = isMultiplication
+            quiz.partTwo.randomize = isDivision
         } else {
             quiz.partOne.randomize = true
             quiz.partTwo.randomize = true
@@ -86,7 +84,7 @@
                 negatives: quiz.allowNegativeAnswer.toString(),
                 partOneMin: quiz.partOne.minValue.toString(),
                 partOneMax: quiz.partOne.maxValue.toString(),
-                partOneValues: isMultiplication.toString()
+                partOneValues: isMultiplication
                     ? quiz.partOne.possibleValues.toString()
                     : null,
                 partOneRandom: quiz.partOne.randomize.toString(),
@@ -96,6 +94,7 @@
                     ? quiz.partTwo.possibleValues.toString()
                     : null,
                 partTwoRandom: quiz.partTwo.randomize.toString(),
+                answerMode: quiz.answerMode.toString(),
             }
 
             window.history.replaceState(
@@ -253,6 +252,39 @@
                 <span class="ml-2">Tilfeldige verdier</span>
             </label>
         {/if}
+    </div>
+    <div class="card">
+        <h2>Ukjent ledd</h2>
+        <label class="flex items-center py-1">
+            <input
+                type="radio"
+                class="form-radio h-5 w-5 text-blue-700 border-gray-500"
+                bind:group="{quiz.answerMode}"
+                value="{AnswerMode.Normal}" />
+            <span class="ml-2">
+                {AnswerMode.Normal}
+                <span class="text-sm">(Svaret er ukjent)</span>
+            </span>
+        </label>
+        <label class="flex items-center py-1">
+            <input
+                type="radio"
+                class="form-radio h-5 w-5 text-blue-700 border-gray-500"
+                bind:group="{quiz.answerMode}"
+                value="{AnswerMode.Alternate}" />
+            <span class="ml-2">
+                {AnswerMode.Alternate}
+                <span class="text-sm">(Første eller andre ledd er ukjent)</span>
+            </span>
+        </label>
+        <label class="flex items-center py-1">
+            <input
+                type="radio"
+                class="form-radio h-5 w-5 text-blue-700 border-gray-500"
+                bind:group="{quiz.answerMode}"
+                value="{AnswerMode.Random}" />
+            <span class="ml-2">{AnswerMode.Random}</span>
+        </label>
     </div>
     <ButtonComponent
         on:click="{startQuiz}"

@@ -2,7 +2,7 @@
     export let min = 0
     export let max = 100
     export let zeroLabel: string = undefined
-    export let value: number = undefined
+    export let value: number
 </script>
 
 <div class="flex flex-row mb-1 pt-2">

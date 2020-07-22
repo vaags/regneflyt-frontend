@@ -1,33 +1,31 @@
 <script lang="ts">
-    import { createEventDispatcher, onMount, onDestroy, tick } from 'svelte'
+    import { createEventDispatcher, onMount, onDestroy } from 'svelte'
     import ButtonComponent from './widgets/ButtonComponent.svelte'
     import AlertComponent from './widgets/AlertComponent.svelte'
     import OperatorComponent from './widgets/OperatorComponent.svelte'
+    import NumberInputComponent from './widgets/NumberInputComponent.svelte'
     import { getPuzzle } from '../services/puzzleService'
     import { Quiz } from '../models/Quiz'
     import { Operator } from '../models/Operator'
     import { Puzzle } from '../models/Puzzle'
+    import { PuzzlePart } from '../models/PuzzlePart'
 
     export let quiz: Quiz
+    export let activeOperator: Operator
+    export let unknownPuzzlePart: Number
 
     const dispatch = createEventDispatcher()
     let interval = undefined
 
     let puzzleNumber = 0
-    let input
+    let input: any
     let validationError = false
     let startTime: number
 
     let puzzle: Puzzle = {
-        partOne: {
-            index: undefined,
-            value: undefined,
-        },
-        partTwo: {
-            index: undefined,
-            value: undefined,
-        },
-        answer: undefined,
+        partOne: new PuzzlePart(),
+        partTwo: new PuzzlePart(),
+        answer: new PuzzlePart(),
         timeout: undefined,
         duration: undefined,
         isCorrect: undefined,
@@ -39,9 +37,7 @@
     function generatePuzzle() {
         puzzleNumber++
 
-        puzzle = getPuzzle(quiz, puzzle)
-
-        focusInput()
+        puzzle = getPuzzle(quiz, puzzle, activeOperator, unknownPuzzlePart)
 
         startTime = Date.now()
 
@@ -68,42 +64,30 @@
     }
 
     function completePuzzle(generateNextPuzzle: boolean) {
-        puzzle.isCorrect = evaluateAnswer()
+        puzzle.isCorrect = evaluateAnswer(puzzle, unknownPuzzlePart)
         puzzle.duration = (Date.now() - startTime) / 1000
-        puzzle.operator = quiz.activeOperator
 
         dispatch('addPuzzle', { puzzle: { ...puzzle } })
 
         if (generateNextPuzzle) generatePuzzle()
     }
 
-    async function focusInput() {
-        // Must await dom-update when changing from disabled / un-disabled
-        await tick()
-        input.focus()
-    }
-
-    function evaluateAnswer() {
-        switch (quiz.activeOperator) {
-            case Operator.Addition:
+    function evaluateAnswer(puzzle: Puzzle, unknownPuzzlePart: Number) {
+        switch (unknownPuzzlePart) {
+            case 1:
                 return (
-                    puzzle.partOne.value + puzzle.partTwo.value ===
-                    puzzle.answer
+                    puzzle.partOne.userDefinedValue ===
+                    puzzle.partOne.generatedValue
                 )
-            case Operator.Subtraction:
+            case 2:
                 return (
-                    puzzle.partOne.value - puzzle.partTwo.value ===
-                    puzzle.answer
+                    puzzle.partTwo.userDefinedValue ===
+                    puzzle.partTwo.generatedValue
                 )
-            case Operator.Multiplication:
+            case 3:
                 return (
-                    puzzle.partOne.value * puzzle.partTwo.value ===
-                    puzzle.answer
-                )
-            case Operator.Division:
-                return (
-                    puzzle.partOne.value / puzzle.partTwo.value ===
-                    puzzle.answer
+                    puzzle.answer.userDefinedValue ===
+                    puzzle.answer.generatedValue
                 )
         }
     }
@@ -128,19 +112,6 @@
     })
 </script>
 
-<style>
-    /* Remove arrows from number input */
-    input[type='number']::-webkit-inner-spin-button,
-    input[type='number']::-webkit-outer-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-    }
-
-    input[type='number'] {
-        -moz-appearance: textfield;
-    }
-</style>
-
 <form>
     <div class="card pb-6">
         <h2>Oppgave {puzzleNumber}</h2>
@@ -148,17 +119,30 @@
             <AlertComponent color="red" message="Tiden er ute." />
         {/if}
         <div class="text-center my-12 text-3xl md:text-4xl">
-            {puzzle.partOne.value}
-            <OperatorComponent operator="{quiz.activeOperator}" />
-            {puzzle.partTwo.value} =
-            <input
-                disabled="{puzzle.timeout}"
-                bind:this="{input}"
-                bind:value="{puzzle.answer}"
-                class="border {displayError ? 'validation-error-border' : ''}
-                rounded w-24 py-2 px-3 leading-tight focus:outline-none"
-                type="number"
-                placeholder="?" />
+            {#if unknownPuzzlePart === 1}
+                <NumberInputComponent
+                    disabled="{puzzle.timeout}"
+                    {displayError}
+                    bind:value="{puzzle.partOne.userDefinedValue}" />
+                <OperatorComponent operator="{activeOperator}" />
+                {puzzle.partTwo.generatedValue} = {puzzle.answer.generatedValue}
+            {:else if unknownPuzzlePart === 2}
+                {puzzle.partOne.generatedValue}
+                <OperatorComponent operator="{activeOperator}" />
+                <NumberInputComponent
+                    disabled="{puzzle.timeout}"
+                    {displayError}
+                    bind:value="{puzzle.partTwo.userDefinedValue}" />
+                {puzzle.answer.generatedValue}
+            {:else}
+                {puzzle.partOne.generatedValue}
+                <OperatorComponent operator="{activeOperator}" />
+                {puzzle.partTwo.generatedValue} =
+                <NumberInputComponent
+                    disabled="{puzzle.timeout}"
+                    {displayError}
+                    bind:value="{puzzle.answer.userDefinedValue}" />
+            {/if}
         </div>
     </div>
     <div class="float-left">
