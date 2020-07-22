@@ -3,8 +3,10 @@ import { Operator } from "../models/Operator";
 import { Puzzle } from "../models/Puzzle";
 import { PuzzlePart } from "../models/PuzzlePart";
 import { QuizPuzzlePart } from "../models/QuizPuzzlePart";
+import { AnswerMode } from "../models/AnswerMode";
 
-export function getPuzzle(quiz: Quiz, previousPuzzle: Puzzle, activeOperator: Operator, unknownPuzzlePart: number) {
+export function getPuzzle(quiz: Quiz, previousPuzzle: Puzzle) {
+
     const puzzle: Puzzle = {
         partOne: undefined,
         partTwo: undefined,
@@ -12,23 +14,25 @@ export function getPuzzle(quiz: Quiz, previousPuzzle: Puzzle, activeOperator: Op
         timeout: undefined,
         duration: undefined,
         isCorrect: undefined,
-        operator: activeOperator,
-        unknownPuzzlePart: unknownPuzzlePart
+        operator: getActiveOperator(quiz.selectedOperator, quiz.operators),
+        unknownPuzzlePartNumber: undefined
     }
 
-    puzzle.partOne = getPuzzlePart(quiz.partOne, previousPuzzle.partOne, unknownPuzzlePart === 1)
-    puzzle.partTwo = getPuzzlePart(quiz.partTwo, previousPuzzle.partTwo, unknownPuzzlePart === 2)
+    puzzle.unknownPuzzlePartNumber = getUnknownPuzzlePartNumber(puzzle.operator, quiz.answerMode)
+
+    puzzle.partOne = getPuzzlePart(quiz.partOne, previousPuzzle.partOne, puzzle.unknownPuzzlePartNumber === 1)
+    puzzle.partTwo = getPuzzlePart(quiz.partTwo, previousPuzzle.partTwo, puzzle.unknownPuzzlePartNumber === 2)
 
     if (shouldAvoidNegativeAnswer()) swapPuzzlePartValues()
 
-    puzzle.answer = getAnswer(puzzle.partOne.generatedValue, puzzle.partTwo.generatedValue, activeOperator, unknownPuzzlePart === 3)
+    puzzle.answer = getAnswerPart(puzzle.partOne.generatedValue, puzzle.partTwo.generatedValue, puzzle.operator, puzzle.unknownPuzzlePartNumber === 3)
 
     return puzzle;
 
     function shouldAvoidNegativeAnswer() {
         return (
             !quiz.allowNegativeAnswer &&
-            activeOperator === Operator.Subtraction &&
+            puzzle.operator === Operator.Subtraction &&
             puzzle.partTwo.generatedValue > puzzle.partOne.generatedValue
         )
     }
@@ -102,7 +106,7 @@ function getNextPuzzlePartValue(possibleNumbersArray: Array<number>, previousPuz
     }
 }
 
-function getAnswer(
+function getAnswerPart(
     partOne: number,
     partTwo: number,
     activeOperator: Operator,
@@ -119,11 +123,54 @@ function getAnswer(
             case Operator.Addition:
                 return partOne + partTwo
             case Operator.Subtraction:
-                partOne - partTwo
+                return partOne - partTwo
             case Operator.Multiplication:
-                partOne * partTwo
+                return partOne * partTwo
             case Operator.Division:
-                partOne / partTwo
+                return partOne / partTwo
         }
+    }
+}
+
+function getActiveOperator(selectedOperator: Operator, operators: Array<Operator>) {
+    if (selectedOperator === Operator.All) {
+        const random = Math.ceil(Math.random() * 4)
+
+        return operators[random - 1]
+    }
+
+    return selectedOperator
+}
+
+function getUnknownPuzzlePartNumber(operator: Operator, answerMode: AnswerMode) {
+    switch (answerMode) {
+        case AnswerMode.Random:
+            if (getTrueOrFalse()) {
+                return getAlternateUnknownPuzzlePart()
+            } else {
+                return 3
+            }
+        case AnswerMode.Alternate: {
+            return getAlternateUnknownPuzzlePart()
+        }
+        case AnswerMode.Normal: {
+            return 3
+        }
+    }
+
+    function getAlternateUnknownPuzzlePart() {
+        switch (operator) {
+            case Operator.Addition || Operator.Subtraction:
+                return getTrueOrFalse() ? 1 : 2
+            case Operator.Multiplication:
+                return 2
+            case Operator.Division:
+                return 1
+        }
+    }
+
+    function getTrueOrFalse() {
+        // Stolen from https://stackoverflow.com/a/36756480
+        return Math.random() >= 0.5
     }
 }

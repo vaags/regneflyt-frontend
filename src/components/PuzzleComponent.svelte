@@ -11,14 +11,11 @@
     import { PuzzlePart } from '../models/PuzzlePart'
 
     export let quiz: Quiz
-    export let activeOperator: Operator
-    export let unknownPuzzlePart: number
 
     const dispatch = createEventDispatcher()
     let interval = undefined
 
     let puzzleNumber = 0
-    let input: any
     let validationError = false
     let startTime: number
     let missingUserInput: boolean
@@ -31,13 +28,13 @@
         duration: undefined,
         isCorrect: undefined,
         operator: undefined,
-        unknownPuzzlePart: undefined,
+        unknownPuzzlePartNumber: undefined,
     }
 
     $: displayError = missingUserInput && validationError
 
     $: {
-        switch (unknownPuzzlePart) {
+        switch (puzzle.unknownPuzzlePartNumber) {
             case 1: {
                 missingUserInput = puzzle.partOne.userDefinedValue === undefined
                 break
@@ -56,7 +53,7 @@
     function generatePuzzle() {
         puzzleNumber++
 
-        puzzle = getPuzzle(quiz, puzzle, activeOperator, unknownPuzzlePart)
+        puzzle = getPuzzle(quiz, puzzle)
 
         startTime = Date.now()
 
@@ -82,7 +79,10 @@
     }
 
     function completePuzzle(generateNextPuzzle: boolean) {
-        puzzle.isCorrect = evaluateAnswer(puzzle, unknownPuzzlePart)
+        puzzle.isCorrect = evaluateAnswer(
+            puzzle,
+            puzzle.unknownPuzzlePartNumber
+        )
         puzzle.duration = (Date.now() - startTime) / 1000
 
         dispatch('addPuzzle', { puzzle: { ...puzzle } })
@@ -132,22 +132,20 @@
 
 <form>
     <div class="card pb-6">
-        <p>Uknown part: {unknownPuzzlePart}</p>
-        <h2>Oppgave {puzzleNumber}</h2>
         {#if puzzle.timeout}
             <AlertComponent color="red" message="Tiden er ute." />
         {/if}
         <div class="text-center my-12 text-3xl md:text-4xl">
-            {#if unknownPuzzlePart === 1}
+            {#if puzzle.unknownPuzzlePartNumber === 1}
                 <NumberInputComponent
                     disabled="{puzzle.timeout}"
                     {displayError}
                     bind:value="{puzzle.partOne.userDefinedValue}" />
-                <OperatorComponent operator="{activeOperator}" />
+                <OperatorComponent operator="{puzzle.operator}" />
                 {puzzle.partTwo.generatedValue} = {puzzle.answer.generatedValue}
-            {:else if unknownPuzzlePart === 2}
+            {:else if puzzle.unknownPuzzlePartNumber === 2}
                 {puzzle.partOne.generatedValue}
-                <OperatorComponent operator="{activeOperator}" />
+                <OperatorComponent operator="{puzzle.operator}" />
                 <NumberInputComponent
                     disabled="{puzzle.timeout}"
                     {displayError}
@@ -155,7 +153,7 @@
                 {puzzle.answer.generatedValue}
             {:else}
                 {puzzle.partOne.generatedValue}
-                <OperatorComponent operator="{activeOperator}" />
+                <OperatorComponent operator="{puzzle.operator}" />
                 {puzzle.partTwo.generatedValue} =
                 <NumberInputComponent
                     disabled="{puzzle.timeout}"
