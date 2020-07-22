@@ -142,7 +142,7 @@
                     {displayError}
                     bind:value="{puzzle.partOne.userDefinedValue}" />
                 <OperatorComponent operator="{puzzle.operator}" />
-                {puzzle.partTwo.generatedValue} = {puzzle.answer.generatedValue}
+                = {puzzle.partTwo.generatedValue} = {puzzle.answer.generatedValue}
             {:else if puzzle.unknownPuzzlePartNumber === 2}
                 {puzzle.partOne.generatedValue}
                 <OperatorComponent operator="{puzzle.operator}" />
@@ -150,7 +150,7 @@
                     disabled="{puzzle.timeout}"
                     {displayError}
                     bind:value="{puzzle.partTwo.userDefinedValue}" />
-                {puzzle.answer.generatedValue}
+                = {puzzle.answer.generatedValue}
             {:else}
                 {puzzle.partOne.generatedValue}
                 <OperatorComponent operator="{puzzle.operator}" />

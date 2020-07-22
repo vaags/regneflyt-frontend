@@ -65,8 +65,8 @@
         if (isMultiplication || isDivision) {
             quiz.partOne.possibleValues = []
             quiz.partTwo.possibleValues = []
-            quiz.partOne.randomize = isMultiplication
-            quiz.partTwo.randomize = isDivision
+            quiz.partOne.randomize = isDivision
+            quiz.partTwo.randomize = isMultiplication
         } else {
             quiz.partOne.randomize = true
             quiz.partTwo.randomize = true
