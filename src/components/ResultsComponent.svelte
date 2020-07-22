@@ -63,9 +63,30 @@
                             {i + 1}
                         </td>
                         <td class="border-t px-4 py-2">
-                            {puzzle.partOne.value}
-                            <OperatorComponent operator="{puzzle.operator}" />
-                            {puzzle.partTwo.value} = {puzzle.timeout ? '?' : puzzle.answer}
+                            {#if puzzle.unknownPuzzlePart === 1}
+                                <span class="font-semibold text-blue-700">
+                                    {puzzle.timeout ? '?' : puzzle.partOne.userDefinedValue}
+                                </span>
+                                <OperatorComponent
+                                    operator="{puzzle.operator}" />
+                                {puzzle.partTwo.generatedValue} = {puzzle.answer.generatedValue}
+                            {:else if puzzle.unknownPuzzlePart === 2}
+                                {puzzle.partOne.generatedValue}
+                                <OperatorComponent
+                                    operator="{puzzle.operator}" />
+                                <span class="font-semibold text-blue-700">
+                                    {puzzle.timeout ? '?' : puzzle.partTwo.userDefinedValue}
+                                </span>
+                                = {puzzle.answer.generatedValue}
+                            {:else}
+                                {puzzle.partOne.generatedValue}
+                                <OperatorComponent
+                                    operator="{puzzle.operator}" />
+                                {puzzle.partTwo.generatedValue} =
+                                <span class="font-semibold text-blue-700">
+                                    {puzzle.timeout ? '?' : puzzle.answer.userDefinedValue}
+                                </span>
+                            {/if}
                         </td>
                         <td class="border-t px-3 py-2">
                             {#if puzzle.isCorrect}

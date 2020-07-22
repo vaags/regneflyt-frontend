@@ -9,4 +9,5 @@ export class Puzzle {
     duration: number;
     isCorrect: boolean;
     operator: Operator;
+    unknownPuzzlePart: number;
 }

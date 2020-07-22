@@ -12,7 +12,7 @@
 
     export let quiz: Quiz
     export let activeOperator: Operator
-    export let unknownPuzzlePart: Number
+    export let unknownPuzzlePart: number
 
     const dispatch = createEventDispatcher()
     let interval = undefined
@@ -21,6 +21,7 @@
     let input: any
     let validationError = false
     let startTime: number
+    let missingUserInput: boolean
 
     let puzzle: Puzzle = {
         partOne: new PuzzlePart(),
@@ -30,9 +31,27 @@
         duration: undefined,
         isCorrect: undefined,
         operator: undefined,
+        unknownPuzzlePart: undefined,
     }
 
-    $: displayError = !puzzle.answer && validationError
+    $: displayError = missingUserInput && validationError
+
+    $: {
+        switch (unknownPuzzlePart) {
+            case 1: {
+                missingUserInput = puzzle.partOne.userDefinedValue === undefined
+                break
+            }
+            case 2: {
+                missingUserInput = puzzle.partTwo.userDefinedValue === undefined
+                break
+            }
+            case 3: {
+                missingUserInput = puzzle.answer.userDefinedValue === undefined
+                break
+            }
+        }
+    }
 
     function generatePuzzle() {
         puzzleNumber++
@@ -57,7 +76,6 @@
 
     function timeOutPuzzle() {
         puzzle.timeout = true
-        puzzle.answer = undefined
         validationError = false
 
         completePuzzle(false)
@@ -93,7 +111,7 @@
     }
 
     function puzzleIsValid() {
-        if (puzzle.answer == undefined) {
+        if (missingUserInput) {
             validationError = true
             return
         }
@@ -114,6 +132,7 @@
 
 <form>
     <div class="card pb-6">
+        <p>Uknown part: {unknownPuzzlePart}</p>
         <h2>Oppgave {puzzleNumber}</h2>
         {#if puzzle.timeout}
             <AlertComponent color="red" message="Tiden er ute." />

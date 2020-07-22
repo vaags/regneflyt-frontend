@@ -4,7 +4,7 @@ import { Puzzle } from "../models/Puzzle";
 import { PuzzlePart } from "../models/PuzzlePart";
 import { QuizPuzzlePart } from "../models/QuizPuzzlePart";
 
-export function getPuzzle(quiz: Quiz, previousPuzzle: Puzzle, activeOperator: Operator, unknownPuzzlePart: Number) {
+export function getPuzzle(quiz: Quiz, previousPuzzle: Puzzle, activeOperator: Operator, unknownPuzzlePart: number) {
     const puzzle: Puzzle = {
         partOne: undefined,
         partTwo: undefined,
@@ -12,7 +12,8 @@ export function getPuzzle(quiz: Quiz, previousPuzzle: Puzzle, activeOperator: Op
         timeout: undefined,
         duration: undefined,
         isCorrect: undefined,
-        operator: activeOperator
+        operator: activeOperator,
+        unknownPuzzlePart: unknownPuzzlePart
     }
 
     puzzle.partOne = getPuzzlePart(quiz.partOne, previousPuzzle.partOne, unknownPuzzlePart === 1)

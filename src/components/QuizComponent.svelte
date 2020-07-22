@@ -40,6 +40,8 @@
 
     function addPuzzle(event) {
         puzzleSet = [...puzzleSet, event.detail.puzzle]
+        console.log('added puzzle:', JSON.stringify(event.detail.puzzle))
+        console.log('unknown puzzle part', unknownPuzzlePart)
         activeOperator = getActiveOperator(quiz.selectedOperator)
         unknownPuzzlePart = getUnknownPuzzlePart(
             activeOperator,
@@ -65,10 +67,12 @@
                 } else {
                     return 3
                 }
-            case AnswerMode.Alternate:
+            case AnswerMode.Alternate: {
                 return getAlternateUnknownPuzzlePart()
-            case AnswerMode.Normal:
+            }
+            case AnswerMode.Normal: {
                 return 3
+            }
         }
 
         function getAlternateUnknownPuzzlePart() {
