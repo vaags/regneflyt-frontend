@@ -28,7 +28,7 @@
 
     function addPuzzle(event) {
         puzzleSet = [...puzzleSet, event.detail.puzzle]
-        console.log('added puzzle', event.detail.puzzle)
+        // console.log('added puzzle', event.detail.puzzle)
     }
 
     function toggleWarning() {

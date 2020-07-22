@@ -5,6 +5,7 @@
     import { Operator } from '../models/Operator'
     import { Quiz } from '../models/Quiz'
     import { AnswerMode } from '../models/AnswerMode'
+    import AlertComponent from './widgets/AlertComponent.svelte'
 
     export let quiz: Quiz
     let timer: number
@@ -175,6 +176,10 @@
                     </label>
                 {/each}
             {:else}
+                {#if isDivision}
+                    <AlertComponent
+                        message="Intervallverdi &#215; divisor = dividend" />
+                {/if}
                 <label>
                     Fra og med:
                     <br />

@@ -23,7 +23,11 @@ export function getPuzzle(quiz: Quiz, previousPuzzle: Puzzle) {
     puzzle.partOne = getPuzzlePart(quiz.partOne, previousPuzzle.partOne, puzzle.unknownPuzzlePartNumber === 1)
     puzzle.partTwo = getPuzzlePart(quiz.partTwo, previousPuzzle.partTwo, puzzle.unknownPuzzlePartNumber === 2)
 
-    if (shouldAvoidNegativeAnswer()) swapPuzzlePartValues()
+    if (shouldAvoidNegativeAnswer()) {
+        swapPuzzlePartValues()
+    } else if (puzzle.operator === Operator.Division) {
+        puzzle.partOne.generatedValue = puzzle.partOne.generatedValue * puzzle.partTwo.generatedValue
+    }
 
     puzzle.answer = getAnswerPart(puzzle.partOne.generatedValue, puzzle.partTwo.generatedValue, puzzle.operator, puzzle.unknownPuzzlePartNumber === 3)
 

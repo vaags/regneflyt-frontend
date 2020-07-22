@@ -9,7 +9,7 @@
 {:else if operator === Operator.Subtraction}
     <span>-</span>
 {:else if operator === Operator.Multiplication}
-    <span>x</span>
+    <span>&#215;</span>
 {:else if operator === Operator.Division}
-    <span>/</span>
+    <span>&#247;</span>
 {/if}
