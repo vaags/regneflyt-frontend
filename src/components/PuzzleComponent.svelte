@@ -6,7 +6,6 @@
     import NumberInputComponent from './widgets/NumberInputComponent.svelte'
     import { getPuzzle } from '../services/puzzleService'
     import { Quiz } from '../models/Quiz'
-    import { Operator } from '../models/Operator'
     import { Puzzle } from '../models/Puzzle'
     import { PuzzlePart } from '../models/PuzzlePart'
 
@@ -132,6 +131,7 @@
 
 <form>
     <div class="card pb-6">
+        <h2>Oppgave {puzzleNumber}</h2>
         {#if puzzle.timeout}
             <AlertComponent color="red" message="Tiden er ute." />
         {/if}

@@ -178,7 +178,7 @@
             {:else}
                 {#if isDivision}
                     <AlertComponent
-                        message="Intervallverdi &#215; divisor = dividend" />
+                        message="Dividend = intervallverdi &#215; divisor" />
                 {/if}
                 <label>
                     Fra og med:
