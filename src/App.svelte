@@ -25,7 +25,7 @@
 
     let quiz: Quiz = {
         duration: getIntParam('duration') || 1,
-        puzzleTimeLimit: getIntParam('timeLimit') || 0,
+        puzzleTimeLimit: getIntParam('timeLimit') || 5,
         partOne: {
             minValue: getIntParam('partOneMin') || 1,
             maxValue: getIntParam('partOneMax') || 20,
@@ -51,7 +51,7 @@
             Operator.All,
         ],
         answerMode:
-            (urlParams.get('answerMode') as AnswerMode) || AnswerMode.Normal,
+            (urlParams.get('answerMode') as AnswerMode) || AnswerMode.Random,
     }
 
     let puzzleSet: Array<Puzzle>
