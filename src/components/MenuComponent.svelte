@@ -185,8 +185,8 @@
             {:else}
                 {#if isDivision}
                     <AlertComponent
-                        message="Verdien vil utregnes fra intervallet ganget med
-                        divisor." />
+                        message="Vil utregnes fra intervallverdi ganget med
+                        divisor" />
                 {/if}
                 <label>
                     Fra og med:
