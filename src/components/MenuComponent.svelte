@@ -68,6 +68,13 @@
             quiz.partTwo.possibleValues = []
             quiz.partOne.randomize = isDivision
             quiz.partTwo.randomize = isMultiplication
+            if (isMultiplication) {
+                quiz.partTwo.minValue = 1
+                quiz.partTwo.maxValue = 10
+            } else {
+                quiz.partOne.minValue = 1
+                quiz.partOne.maxValue = 10
+            }
         } else {
             quiz.partOne.randomize = true
             quiz.partTwo.randomize = true
@@ -178,7 +185,8 @@
             {:else}
                 {#if isDivision}
                     <AlertComponent
-                        message="Dividend = intervallverdi &#215; divisor" />
+                        message="Verdien vil utregnes fra intervallet ganget med
+                        divisor." />
                 {/if}
                 <label>
                     Fra og med:
