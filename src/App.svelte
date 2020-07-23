@@ -24,7 +24,7 @@
     }
 
     let quiz: Quiz = {
-        duration: getIntParam('duration') || 1,
+        duration: getIntParam('duration') || 0.5,
         puzzleTimeLimit: getIntParam('timeLimit') || 5,
         partOne: {
             minValue: getIntParam('partOneMin') || 1,

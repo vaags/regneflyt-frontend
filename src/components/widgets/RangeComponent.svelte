@@ -3,6 +3,7 @@
     export let max = 100
     export let zeroLabel: string = undefined
     export let value: number
+    export let step: number = 1
 </script>
 
 <div class="flex flex-row mb-1 pt-2">
@@ -16,7 +17,7 @@
             type="range"
             {min}
             {max}
-            step="1"
+            {step}
             bind:value />
     </span>
 </div>

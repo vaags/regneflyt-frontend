@@ -121,7 +121,11 @@
             Totalt:
             <span class="text-sm">(i minutter)</span>
             <br />
-            <RangeComponent min="{1}" max="{30}" bind:value="{quiz.duration}" />
+            <RangeComponent
+                min="{0.5}"
+                max="{15}"
+                step="{0.5}"
+                bind:value="{quiz.duration}" />
         </label>
 
         <label class="block mt-4">
