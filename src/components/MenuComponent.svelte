@@ -189,21 +189,20 @@
             {:else}
                 {#if isDivision}
                     <AlertComponent
-                        message="Vil utregnes fra intervallverdi ganget med
-                        divisor" />
+                        message="Utregnes fra intervallverdi ganget med divisor" />
                 {/if}
                 <label>
                     Fra og med:
                     <br />
                     <RangeComponent
-                        max="{quiz.partOne.maxValue}"
+                        max="{quiz.partOne.maxValue - 1}"
                         bind:value="{quiz.partOne.minValue}" />
                 </label>
                 <label class="block mt-4">
                     Til og med:
                     <br />
                     <RangeComponent
-                        min="{quiz.partOne.minValue}"
+                        min="{quiz.partOne.minValue + 1}"
                         bind:value="{quiz.partOne.maxValue}" />
                 </label>
             {/if}
@@ -248,14 +247,14 @@
                     Fra og med:
                     <br />
                     <RangeComponent
-                        max="{quiz.partTwo.maxValue}"
+                        max="{quiz.partTwo.maxValue - 1}"
                         bind:value="{quiz.partTwo.minValue}" />
                 </label>
                 <label class="block mt-4">
                     Til og med:
                     <br />
                     <RangeComponent
-                        min="{quiz.partTwo.minValue}"
+                        min="{quiz.partTwo.minValue + 1}"
                         bind:value="{quiz.partTwo.maxValue}" />
                 </label>
             {/if}

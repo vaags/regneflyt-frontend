@@ -1,6 +1,6 @@
 <script lang="ts">
-    export let min = 0
-    export let max = 100
+    export let min = 1
+    export let max = 50
     export let zeroLabel: string = undefined
     export let value: number
     export let step: number = 1
