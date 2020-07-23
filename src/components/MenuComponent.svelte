@@ -164,7 +164,7 @@
             {:else}
                 {#if isDivision}
                     <AlertComponent
-                        message="Utregnes fra intervallverdi ganget med divisor" />
+                        message="Intervallverdi ganget med divisor" />
                 {/if}
                 <label>
                     Fra og med:
@@ -284,7 +284,7 @@
                 color="yellow"
                 message="Kan ikke vise forhåndsvisning." />
         {:else}
-            <div class="text-center my-6 text-2xl md:text-4xl">
+            <div class="text-center my-6 text-3xl md:text-4xl">
                 {puzzle.partOne.isUnknown ? '?' : puzzle.partOne.generatedValue}
                 <OperatorComponent operator="{puzzle.operator}" />
                 {puzzle.partTwo.isUnknown ? '?' : puzzle.partTwo.generatedValue}
