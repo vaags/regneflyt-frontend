@@ -5,7 +5,7 @@ import { PuzzlePart } from "../models/PuzzlePart";
 import { QuizPuzzlePart } from "../models/QuizPuzzlePart";
 import { AnswerMode } from "../models/AnswerMode";
 
-export function getPuzzle(quiz: Quiz, previousPuzzle: Puzzle) {
+export function getPuzzle(quiz: Quiz, previousPuzzle: Puzzle | undefined) {
 
     const puzzle: Puzzle = {
         partOne: undefined,
@@ -14,15 +14,14 @@ export function getPuzzle(quiz: Quiz, previousPuzzle: Puzzle) {
         timeout: undefined,
         duration: undefined,
         isCorrect: undefined,
-        operator: getActiveOperator(quiz.selectedOperator, quiz.operators),
-        unknownPuzzlePartNumber: undefined
+        operator: quiz.selectedOperator,
+        unknownPuzzlePartNumber: getUnknownPuzzlePartNumber(quiz.selectedOperator, quiz.answerMode)
     }
 
-    puzzle.unknownPuzzlePartNumber = getUnknownPuzzlePartNumber(puzzle.operator, quiz.answerMode)
+    if (!previousPuzzle) InitializeQuizValues(quiz)
 
-    puzzle.partOne = getPuzzlePart(quiz.partOne, previousPuzzle.partOne, puzzle.unknownPuzzlePartNumber === 1)
-    puzzle.partTwo = getPuzzlePart(quiz.partTwo, previousPuzzle.partTwo, puzzle.unknownPuzzlePartNumber === 2)
-
+    puzzle.partOne = getPuzzlePart(quiz.partOne, previousPuzzle?.partOne, puzzle.unknownPuzzlePartNumber === 1)
+    puzzle.partTwo = getPuzzlePart(quiz.partTwo, previousPuzzle?.partTwo, puzzle.unknownPuzzlePartNumber === 2)
 
     if (puzzle.operator === Operator.Division) {
         puzzle.partOne.generatedValue = puzzle.partOne.generatedValue * puzzle.partTwo.generatedValue
@@ -31,6 +30,8 @@ export function getPuzzle(quiz: Quiz, previousPuzzle: Puzzle) {
     }
 
     puzzle.answer = getAnswerPart(puzzle.partOne.generatedValue, puzzle.partTwo.generatedValue, puzzle.operator, puzzle.unknownPuzzlePartNumber === 3)
+
+    // console.log('puzzle', puzzle)
 
     return puzzle;
 
@@ -53,16 +54,16 @@ function getPuzzlePart(quizPuzzlePart: QuizPuzzlePart, previousPuzzlePart: Puzzl
             index: 0,
             generatedValue: quizPuzzlePart.minValue,
             userDefinedValue: undefined,
-            isUnknown: isUnknown
+            isUnknown
         }
     }
 
     return quizPuzzlePart.randomize
-        ? getRandomPuzzlePartValue(quizPuzzlePart.possibleValues, previousPuzzlePart.index)
-        : getNextPuzzlePartValue(quizPuzzlePart.possibleValues, previousPuzzlePart.index)
+        ? getRandomPuzzlePartValue(quizPuzzlePart.possibleValues, previousPuzzlePart?.index, isUnknown)
+        : getNextPuzzlePartValue(quizPuzzlePart.possibleValues, previousPuzzlePart?.index, isUnknown)
 }
 
-function getRandomPuzzlePartValue(possibleNumbersArray: Array<number>, previousPuzzlePartIndex: number): PuzzlePart {
+function getRandomPuzzlePartValue(possibleNumbersArray: Array<number>, previousPuzzlePartIndex: number | undefined, isUnknown: boolean): PuzzlePart {
     const randomIndex = getRandomNumber(
         possibleNumbersArray.length,
         previousPuzzlePartIndex
@@ -72,25 +73,26 @@ function getRandomPuzzlePartValue(possibleNumbersArray: Array<number>, previousP
         index: randomIndex,
         generatedValue: possibleNumbersArray[randomIndex],
         userDefinedValue: undefined,
-        isUnknown: undefined
+        isUnknown
     }
 
-    function getRandomNumber(max: number, exclude: number) {
+    function getRandomNumber(max: number, exclude: number | undefined) {
         // Adapted from https://stackoverflow.com/a/34184614
-        var rnd = Math.floor(Math.random() * (max - 1))
-        if (rnd >= exclude) rnd++
+        var rnd = Math.floor(Math.random() * (exclude === undefined ? max : max - 1))
+        if (exclude !== undefined && rnd >= exclude) rnd++
 
         return rnd
     }
 }
 
-function getNextPuzzlePartValue(possibleNumbersArray: Array<number>, previousPuzzlePartIndex: number): PuzzlePart {
+function getNextPuzzlePartValue(possibleNumbersArray: Array<number>, previousPuzzlePartIndex: number, isUnknown: boolean): PuzzlePart {
+    console.log('gettting nex puzzle value')
     if (shouldReturnMinValue()) {
         return {
             index: 0,
             generatedValue: possibleNumbersArray[0],
             userDefinedValue: undefined,
-            isUnknown: undefined
+            isUnknown
         }
     }
 
@@ -99,7 +101,7 @@ function getNextPuzzlePartValue(possibleNumbersArray: Array<number>, previousPuz
         generatedValue:
             possibleNumbersArray[previousPuzzlePartIndex + 1],
         userDefinedValue: undefined,
-        isUnknown: undefined
+        isUnknown
     }
 
     function shouldReturnMinValue() {
@@ -137,16 +139,6 @@ function getAnswerPart(
     }
 }
 
-function getActiveOperator(selectedOperator: Operator, operators: Array<Operator>) {
-    if (selectedOperator === Operator.All) {
-        const random = Math.ceil(Math.random() * 4)
-
-        return operators[random - 1]
-    }
-
-    return selectedOperator
-}
-
 function getUnknownPuzzlePartNumber(operator: Operator, answerMode: AnswerMode) {
     switch (answerMode) {
         case AnswerMode.Random:
@@ -177,5 +169,44 @@ function getUnknownPuzzlePartNumber(operator: Operator, answerMode: AnswerMode) 
     function getTrueOrFalse() {
         // Stolen from https://stackoverflow.com/a/36756480
         return Math.random() >= 0.5
+    }
+}
+
+function InitializeQuizValues(quiz: Quiz) {
+    if (quiz.selectedOperator === Operator.Multiplication) {
+        quiz.partTwo.possibleValues = getArrayOfNumbers(
+            quiz.partTwo.minValue,
+            quiz.partTwo.maxValue
+        )
+        quiz.partOne.minValue = quiz.partOne.possibleValues[0]
+        quiz.partOne.maxValue =
+            quiz.partOne.possibleValues[
+            quiz.partOne.possibleValues.length - 1
+            ]
+    } else if (quiz.selectedOperator === Operator.Division) {
+        quiz.partOne.possibleValues = getArrayOfNumbers(
+            quiz.partOne.minValue,
+            quiz.partOne.maxValue
+        )
+        quiz.partTwo.minValue = quiz.partTwo.possibleValues[0]
+        quiz.partTwo.maxValue =
+            quiz.partTwo.possibleValues[
+            quiz.partTwo.possibleValues.length - 1
+            ]
+    } else {
+        quiz.partOne.possibleValues = getArrayOfNumbers(
+            quiz.partOne.minValue,
+            quiz.partOne.maxValue
+        )
+        quiz.partTwo.possibleValues = getArrayOfNumbers(
+            quiz.partTwo.minValue,
+            quiz.partTwo.maxValue
+        )
+    }
+
+    function getArrayOfNumbers(first: number, last: number): Array<number> {
+        return Array(last)
+            .fill(first)
+            .map((x, y) => x + y)
     }
 }

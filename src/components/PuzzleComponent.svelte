@@ -52,7 +52,7 @@
     function generatePuzzle() {
         puzzleNumber++
 
-        puzzle = getPuzzle(quiz, puzzle)
+        puzzle = getPuzzle(quiz, puzzleNumber === 1 ? undefined : puzzle)
 
         startTime = Date.now()
 

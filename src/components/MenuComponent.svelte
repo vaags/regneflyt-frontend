@@ -6,9 +6,13 @@
     import { Quiz } from '../models/Quiz'
     import { AnswerMode } from '../models/AnswerMode'
     import AlertComponent from './widgets/AlertComponent.svelte'
+    import { Puzzle } from '../models/Puzzle'
+    import { getPuzzle } from '../services/puzzleService'
+    import OperatorComponent from './widgets/OperatorComponent.svelte'
 
     export let quiz: Quiz
     let timer: number
+    let puzzle: Puzzle
 
     const dispatch = createEventDispatcher()
 
@@ -22,52 +26,15 @@
     function startQuiz() {
         if (validationError) return
 
-        if (isMultiplication) {
-            quiz.partTwo.possibleValues = getArrayOfNumbers(
-                quiz.partTwo.minValue,
-                quiz.partTwo.maxValue
-            )
-            quiz.partOne.minValue = quiz.partOne.possibleValues[0]
-            quiz.partOne.maxValue =
-                quiz.partOne.possibleValues[
-                    quiz.partOne.possibleValues.length - 1
-                ]
-        } else if (isDivision) {
-            quiz.partOne.possibleValues = getArrayOfNumbers(
-                quiz.partOne.minValue,
-                quiz.partOne.maxValue
-            )
-            quiz.partTwo.minValue = quiz.partTwo.possibleValues[0]
-            quiz.partTwo.maxValue =
-                quiz.partTwo.possibleValues[
-                    quiz.partTwo.possibleValues.length - 1
-                ]
-        } else {
-            quiz.partOne.possibleValues = getArrayOfNumbers(
-                quiz.partOne.minValue,
-                quiz.partOne.maxValue
-            )
-            quiz.partTwo.possibleValues = getArrayOfNumbers(
-                quiz.partTwo.minValue,
-                quiz.partTwo.maxValue
-            )
-        }
-
         dispatch('startQuiz', { quiz })
-    }
-
-    function getArrayOfNumbers(first: number, last: number): Array<number> {
-        return Array(last)
-            .fill(first)
-            .map((x, y) => x + y)
     }
 
     function setRequiredPartProperties() {
         if (isMultiplication || isDivision) {
+            quiz.partOne.randomize = true
+            quiz.partTwo.randomize = true
             quiz.partOne.possibleValues = []
             quiz.partTwo.possibleValues = []
-            quiz.partOne.randomize = isDivision
-            quiz.partTwo.randomize = isMultiplication
             if (isMultiplication) {
                 quiz.partTwo.minValue = 1
                 quiz.partTwo.maxValue = 10
@@ -82,35 +49,43 @@
     }
 
     $: {
-        clearTimeout(timer)
-        timer = setTimeout(() => {
-            // Set querystring params to allow for easy sharing of settings through url
-            let parameters = {
-                duration: quiz.duration.toString(),
-                timeLimit: quiz.puzzleTimeLimit.toString(),
-                operator: quiz.selectedOperator.toString(),
-                negatives: quiz.allowNegativeAnswer.toString(),
-                partOneMin: quiz.partOne.minValue.toString(),
-                partOneMax: quiz.partOne.maxValue.toString(),
-                partOneValues: isMultiplication
-                    ? quiz.partOne.possibleValues.toString()
-                    : null,
-                partOneRandom: quiz.partOne.randomize.toString(),
-                partTwoMin: quiz.partTwo.minValue.toString(),
-                partTwoMax: quiz.partTwo.maxValue.toString(),
-                partTwoValues: isDivision
-                    ? quiz.partTwo.possibleValues.toString()
-                    : null,
-                partTwoRandom: quiz.partTwo.randomize.toString(),
-                answerMode: quiz.answerMode.toString(),
-            }
+        if (!validationError) {
+            clearTimeout(timer)
+            timer = setTimeout(() => {
+                // Set querystring params to allow for easy sharing of settings through url
+                let parameters = {
+                    duration: quiz.duration.toString(),
+                    timeLimit: quiz.puzzleTimeLimit.toString(),
+                    operator: quiz.selectedOperator.toString(),
+                    negatives: quiz.allowNegativeAnswer.toString(),
+                    partOneMin: quiz.partOne.minValue?.toString(),
+                    partOneMax: quiz.partOne.maxValue?.toString(),
+                    partOneValues: isMultiplication
+                        ? quiz.partOne.possibleValues.toString()
+                        : null,
+                    partOneRandom: quiz.partOne.randomize.toString(),
+                    partTwoMin: quiz.partTwo.minValue?.toString(),
+                    partTwoMax: quiz.partTwo.maxValue?.toString(),
+                    partTwoValues: isDivision
+                        ? quiz.partTwo.possibleValues.toString()
+                        : null,
+                    partTwoRandom: quiz.partTwo.randomize.toString(),
+                    answerMode: quiz.answerMode.toString(),
+                }
 
-            window.history.replaceState(
-                null,
-                null,
-                `?${new URLSearchParams(parameters)}`
-            )
-        }, 300)
+                window.history.replaceState(
+                    null,
+                    null,
+                    `?${new URLSearchParams(parameters)}`
+                )
+
+                getPuzzlePreview()
+            }, 300)
+        }
+    }
+
+    function getPuzzlePreview() {
+        puzzle = getPuzzle(quiz, undefined)
     }
 </script>
 
@@ -139,7 +114,7 @@
         </label>
     </div>
     <div class="card">
-        <h2>Regnearter</h2>
+        <h2>Regneart</h2>
         {#each quiz.operators as operator}
             <label class="flex items-center py-1">
                 <input
@@ -151,7 +126,7 @@
                 <span class="ml-2">{operator}</span>
             </label>
         {/each}
-        {#if quiz.selectedOperator === Operator.Subtraction || quiz.selectedOperator === Operator.All}
+        {#if quiz.selectedOperator === Operator.Subtraction}
             <label class="inline-flex items-center mt-4">
                 <input
                     type="checkbox"
@@ -301,6 +276,27 @@
                 value="{AnswerMode.Random}" />
             <span class="ml-2">{AnswerMode.Random}</span>
         </label>
+    </div>
+    <div class="card">
+        <h2>Forhåndsvisning</h2>
+        {#if validationError || !puzzle}
+            <AlertComponent
+                color="yellow"
+                message="Kan ikke vise forhåndsvisning." />
+        {:else}
+            <div class="text-center my-6 text-2xl md:text-4xl">
+                {puzzle.partOne.isUnknown ? '?' : puzzle.partOne.generatedValue}
+                <OperatorComponent operator="{puzzle.operator}" />
+                {puzzle.partTwo.isUnknown ? '?' : puzzle.partTwo.generatedValue}
+                = {puzzle.answer.isUnknown ? '?' : puzzle.answer.generatedValue}
+            </div>
+            <div class="text-right">
+                <ButtonComponent
+                    small="{true}"
+                    on:click="{getPuzzlePreview}"
+                    label="Ny" />
+            </div>
+        {/if}
     </div>
     <ButtonComponent
         on:click="{startQuiz}"

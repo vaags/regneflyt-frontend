@@ -1,6 +1,6 @@
 export class PuzzlePart {
-    index: number;
-    generatedValue: number;
-    userDefinedValue: number;
+    index: number = undefined;
+    generatedValue: number = undefined;
+    userDefinedValue: number = undefined;
     isUnknown: boolean;
 }

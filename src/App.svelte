@@ -48,7 +48,6 @@
             Operator.Subtraction,
             Operator.Multiplication,
             Operator.Division,
-            Operator.All,
         ],
         answerMode:
             (urlParams.get('answerMode') as AnswerMode) || AnswerMode.Random,
