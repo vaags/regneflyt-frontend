@@ -6,7 +6,7 @@
 
 <button
     on:click|preventDefault
-    class="text-white font-light {small ? 'text-lg' : 'text-2xl'} py-1 px-4
+    class="text-white font-light {small ? 'text-2xl' : 'text-3xl'} py-1 px-4
     border border-gray-800 rounded btn-{color}
     ">
     {label}
