@@ -344,10 +344,19 @@
                 message="Kan ikke vise forhåndsvisning." />
         {:else}
             <p class="text-center mb-4 text-2xl md:text-3xl">
-                {puzzle.partOne.isUnknown ? '?' : puzzle.partOne.generatedValue}
-                <OperatorComponent operator="{puzzle.operator}" />
-                {puzzle.partTwo.isUnknown ? '?' : puzzle.partTwo.generatedValue}
-                = {puzzle.answer.isUnknown ? '?' : puzzle.answer.generatedValue}
+                {#if puzzle.unknownPuzzlePartNumber === 1}
+                    ?
+                    <OperatorComponent operator="{puzzle.operator}" />
+                    {puzzle.partTwo.generatedValue} = {puzzle.answer.generatedValue}
+                {:else if puzzle.unknownPuzzlePartNumber === 2}
+                    {puzzle.partOne.generatedValue}
+                    <OperatorComponent operator="{puzzle.operator}" />
+                    ? = {puzzle.answer.generatedValue}
+                {:else}
+                    {puzzle.partOne.generatedValue}
+                    <OperatorComponent operator="{puzzle.operator}" />
+                    {puzzle.partTwo.generatedValue} = ?
+                {/if}
             </p>
             <div class="text-right">
                 <ButtonComponent

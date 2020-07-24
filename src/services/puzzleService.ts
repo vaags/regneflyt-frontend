@@ -18,8 +18,8 @@ export function getPuzzle(quiz: Quiz, previousPuzzle: Puzzle | undefined) {
         unknownPuzzlePartNumber: getUnknownPuzzlePartNumber(quiz.selectedOperator, quiz.answerMode)
     }
 
-    puzzle.partOne = getPuzzlePart(quiz.partOne, previousPuzzle?.partOne, puzzle.unknownPuzzlePartNumber === 1)
-    puzzle.partTwo = getPuzzlePart(quiz.partTwo, previousPuzzle?.partTwo, puzzle.unknownPuzzlePartNumber === 2)
+    puzzle.partOne = getPuzzlePart(quiz.partOne, previousPuzzle?.partOne)
+    puzzle.partTwo = getPuzzlePart(quiz.partTwo, previousPuzzle?.partTwo)
 
     if (puzzle.operator === Operator.Division) {
         puzzle.partOne.generatedValue = puzzle.partOne.generatedValue * puzzle.partTwo.generatedValue
@@ -27,7 +27,7 @@ export function getPuzzle(quiz: Quiz, previousPuzzle: Puzzle | undefined) {
         swapPuzzlePartValues()
     }
 
-    puzzle.answer = getAnswerPart(puzzle.partOne.generatedValue, puzzle.partTwo.generatedValue, puzzle.operator, puzzle.unknownPuzzlePartNumber === 3)
+    puzzle.answer = getAnswerPart(puzzle.partOne.generatedValue, puzzle.partTwo.generatedValue, puzzle.operator)
 
     return puzzle;
 
@@ -44,22 +44,21 @@ export function getPuzzle(quiz: Quiz, previousPuzzle: Puzzle | undefined) {
     }
 }
 
-function getPuzzlePart(quizPuzzlePart: QuizPuzzlePart, previousPuzzlePart: PuzzlePart, isUnknown: boolean): PuzzlePart {
+function getPuzzlePart(quizPuzzlePart: QuizPuzzlePart, previousPuzzlePart: PuzzlePart): PuzzlePart {
     if (quizPuzzlePart.minValue === quizPuzzlePart.maxValue) {
         return {
             index: 0,
             generatedValue: quizPuzzlePart.minValue,
-            userDefinedValue: undefined,
-            isUnknown
+            userDefinedValue: undefined
         }
     }
 
     return quizPuzzlePart.randomize
-        ? getRandomPuzzlePartValue(quizPuzzlePart.possibleValues, previousPuzzlePart?.index, isUnknown)
-        : getNextPuzzlePartValue(quizPuzzlePart.possibleValues, previousPuzzlePart?.index, isUnknown)
+        ? getRandomPuzzlePartValue(quizPuzzlePart.possibleValues, previousPuzzlePart?.index)
+        : getNextPuzzlePartValue(quizPuzzlePart.possibleValues, previousPuzzlePart?.index)
 }
 
-function getRandomPuzzlePartValue(possibleNumbersArray: Array<number>, previousPuzzlePartIndex: number | undefined, isUnknown: boolean): PuzzlePart {
+function getRandomPuzzlePartValue(possibleNumbersArray: Array<number>, previousPuzzlePartIndex: number | undefined): PuzzlePart {
     const randomIndex = getRandomNumber(
         possibleNumbersArray.length,
         previousPuzzlePartIndex
@@ -68,8 +67,7 @@ function getRandomPuzzlePartValue(possibleNumbersArray: Array<number>, previousP
     return {
         index: randomIndex,
         generatedValue: possibleNumbersArray[randomIndex],
-        userDefinedValue: undefined,
-        isUnknown
+        userDefinedValue: undefined
     }
 
     function getRandomNumber(max: number, exclude: number | undefined) {
@@ -81,13 +79,12 @@ function getRandomPuzzlePartValue(possibleNumbersArray: Array<number>, previousP
     }
 }
 
-function getNextPuzzlePartValue(possibleNumbersArray: Array<number>, previousPuzzlePartIndex: number, isUnknown: boolean): PuzzlePart {
+function getNextPuzzlePartValue(possibleNumbersArray: Array<number>, previousPuzzlePartIndex: number): PuzzlePart {
     if (shouldReturnMinValue()) {
         return {
             index: 0,
             generatedValue: possibleNumbersArray[0],
-            userDefinedValue: undefined,
-            isUnknown
+            userDefinedValue: undefined
         }
     }
 
@@ -95,8 +92,7 @@ function getNextPuzzlePartValue(possibleNumbersArray: Array<number>, previousPuz
         index: previousPuzzlePartIndex + 1,
         generatedValue:
             possibleNumbersArray[previousPuzzlePartIndex + 1],
-        userDefinedValue: undefined,
-        isUnknown
+        userDefinedValue: undefined
     }
 
     function shouldReturnMinValue() {
@@ -111,13 +107,11 @@ function getNextPuzzlePartValue(possibleNumbersArray: Array<number>, previousPuz
 function getAnswerPart(
     partOne: number,
     partTwo: number,
-    activeOperator: Operator,
-    isUnknown: boolean): PuzzlePart {
+    activeOperator: Operator): PuzzlePart {
     return {
         index: 0,
         generatedValue: getResult(),
-        userDefinedValue: undefined,
-        isUnknown: isUnknown
+        userDefinedValue: undefined
     }
 
     function getResult(): number {
