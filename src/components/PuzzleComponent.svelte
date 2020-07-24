@@ -12,7 +12,7 @@
     export let quiz: Quiz
 
     const dispatch = createEventDispatcher()
-    let interval = undefined
+    let puzzleTimeout = undefined
 
     let puzzleNumber = 0
     let validationError = false
@@ -59,14 +59,18 @@
         if (quiz.puzzleTimeLimit) setPuzzleTimeout()
 
         function setPuzzleTimeout() {
-            clearInterval(interval)
-            interval = setTimeout(timeOutPuzzle, quiz.puzzleTimeLimit * 1000)
+            clearTimeout(puzzleTimeout)
+            puzzleTimeout = setTimeout(
+                timeOutPuzzle,
+                quiz.puzzleTimeLimit * 1000
+            )
         }
     }
 
     function completePuzzleIfValid() {
         if (!puzzleIsValid()) return
 
+        clearTimeout(puzzleTimeout)
         completePuzzle(true)
     }
 
@@ -78,6 +82,7 @@
     }
 
     function completePuzzle(generateNextPuzzle: boolean) {
+        clearTimeout(puzzleTimeout)
         puzzle.isCorrect = evaluateAnswer(
             puzzle,
             puzzle.unknownPuzzlePartNumber
@@ -125,7 +130,7 @@
     })
 
     onDestroy(() => {
-        clearInterval(interval)
+        clearTimeout(puzzleTimeout)
     })
 </script>
 
@@ -137,29 +142,39 @@
         {/if}
         <div class="text-center my-12 text-3xl md:text-4xl">
             {#if puzzle.unknownPuzzlePartNumber === 1}
-                <NumberInputComponent
-                    disabled="{puzzle.timeout}"
-                    {displayError}
-                    bind:value="{puzzle.partOne.userDefinedValue}" />
+                {#if puzzle.timeout}
+                    ?
+                {:else}
+                    <NumberInputComponent
+                        {displayError}
+                        bind:value="{puzzle.partOne.userDefinedValue}" />
+                {/if}
                 <OperatorComponent operator="{puzzle.operator}" />
                 {puzzle.partTwo.generatedValue} = {puzzle.answer.generatedValue}
             {:else if puzzle.unknownPuzzlePartNumber === 2}
                 {puzzle.partOne.generatedValue}
                 <OperatorComponent operator="{puzzle.operator}" />
-                <NumberInputComponent
-                    disabled="{puzzle.timeout}"
-                    {displayError}
-                    bind:value="{puzzle.partTwo.userDefinedValue}" />
+                {#if puzzle.timeout}
+                    ?
+                {:else}
+                    <NumberInputComponent
+                        {displayError}
+                        bind:value="{puzzle.partTwo.userDefinedValue}" />
+                {/if}
                 = {puzzle.answer.generatedValue}
             {:else}
                 {puzzle.partOne.generatedValue}
                 <OperatorComponent operator="{puzzle.operator}" />
                 {puzzle.partTwo.generatedValue} =
-                <NumberInputComponent
-                    disabled="{puzzle.timeout}"
-                    {displayError}
-                    bind:value="{puzzle.answer.userDefinedValue}" />
+                {#if puzzle.timeout}
+                    ?
+                {:else}
+                    <NumberInputComponent
+                        {displayError}
+                        bind:value="{puzzle.answer.userDefinedValue}" />
+                {/if}
             {/if}
+
         </div>
     </div>
     <div class="float-left">

@@ -18,8 +18,6 @@ export function getPuzzle(quiz: Quiz, previousPuzzle: Puzzle | undefined) {
         unknownPuzzlePartNumber: getUnknownPuzzlePartNumber(quiz.selectedOperator, quiz.answerMode)
     }
 
-    if (!previousPuzzle) InitializeQuizValues(quiz)
-
     puzzle.partOne = getPuzzlePart(quiz.partOne, previousPuzzle?.partOne, puzzle.unknownPuzzlePartNumber === 1)
     puzzle.partTwo = getPuzzlePart(quiz.partTwo, previousPuzzle?.partTwo, puzzle.unknownPuzzlePartNumber === 2)
 
@@ -30,8 +28,6 @@ export function getPuzzle(quiz: Quiz, previousPuzzle: Puzzle | undefined) {
     }
 
     puzzle.answer = getAnswerPart(puzzle.partOne.generatedValue, puzzle.partTwo.generatedValue, puzzle.operator, puzzle.unknownPuzzlePartNumber === 3)
-
-    // console.log('puzzle', puzzle)
 
     return puzzle;
 
@@ -86,7 +82,6 @@ function getRandomPuzzlePartValue(possibleNumbersArray: Array<number>, previousP
 }
 
 function getNextPuzzlePartValue(possibleNumbersArray: Array<number>, previousPuzzlePartIndex: number, isUnknown: boolean): PuzzlePart {
-    console.log('gettting nex puzzle value')
     if (shouldReturnMinValue()) {
         return {
             index: 0,
@@ -169,44 +164,5 @@ function getUnknownPuzzlePartNumber(operator: Operator, answerMode: AnswerMode) 
     function getTrueOrFalse() {
         // Stolen from https://stackoverflow.com/a/36756480
         return Math.random() >= 0.5
-    }
-}
-
-function InitializeQuizValues(quiz: Quiz) {
-    if (quiz.selectedOperator === Operator.Multiplication) {
-        quiz.partTwo.possibleValues = getArrayOfNumbers(
-            quiz.partTwo.minValue,
-            quiz.partTwo.maxValue
-        )
-        quiz.partOne.minValue = quiz.partOne.possibleValues[0]
-        quiz.partOne.maxValue =
-            quiz.partOne.possibleValues[
-            quiz.partOne.possibleValues.length - 1
-            ]
-    } else if (quiz.selectedOperator === Operator.Division) {
-        quiz.partOne.possibleValues = getArrayOfNumbers(
-            quiz.partOne.minValue,
-            quiz.partOne.maxValue
-        )
-        quiz.partTwo.minValue = quiz.partTwo.possibleValues[0]
-        quiz.partTwo.maxValue =
-            quiz.partTwo.possibleValues[
-            quiz.partTwo.possibleValues.length - 1
-            ]
-    } else {
-        quiz.partOne.possibleValues = getArrayOfNumbers(
-            quiz.partOne.minValue,
-            quiz.partOne.maxValue
-        )
-        quiz.partTwo.possibleValues = getArrayOfNumbers(
-            quiz.partTwo.minValue,
-            quiz.partTwo.maxValue
-        )
-    }
-
-    function getArrayOfNumbers(first: number, last: number): Array<number> {
-        return Array(last)
-            .fill(first)
-            .map((x, y) => x + y)
     }
 }

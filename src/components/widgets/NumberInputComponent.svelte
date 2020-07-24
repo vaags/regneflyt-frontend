@@ -1,7 +1,6 @@
 <script lang="ts">
     import { onMount } from 'svelte'
 
-    export let disabled: boolean
     export let value: number = undefined
     export let displayError: boolean
     let ref: any
@@ -33,7 +32,6 @@
 </style>
 
 <input
-    {disabled}
     bind:value
     bind:this="{ref}"
     class="border {displayError ? 'validation-error-border' : ''} rounded w-24

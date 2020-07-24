@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { createEventDispatcher } from 'svelte'
+    import { createEventDispatcher, onMount } from 'svelte'
     import ButtonComponent from './widgets/ButtonComponent.svelte'
     import RangeComponent from './widgets/RangeComponent.svelte'
     import { Operator } from '../models/Operator'
@@ -45,14 +45,61 @@
         } else {
             quiz.partOne.randomize = true
             quiz.partTwo.randomize = true
+            updateQuizSettings()
         }
     }
 
-    $: {
-        if (!validationError) {
-            clearTimeout(timer)
-            timer = setTimeout(() => {
-                // Set querystring params to allow for easy sharing of settings through url
+    function getPuzzlePreview() {
+        puzzle = getPuzzle(quiz, puzzle)
+    }
+
+    function updateQuizSettings() {
+        clearTimeout(timer)
+        timer = setTimeout(() => {
+            if (isMultiplication) {
+                quiz.partTwo.possibleValues = getArrayOfNumbers(
+                    quiz.partTwo.minValue,
+                    quiz.partTwo.maxValue
+                )
+                quiz.partOne.minValue = quiz.partOne.possibleValues[0]
+                quiz.partOne.maxValue =
+                    quiz.partOne.possibleValues[
+                        quiz.partOne.possibleValues.length - 1
+                    ]
+            } else if (isDivision) {
+                quiz.partOne.possibleValues = getArrayOfNumbers(
+                    quiz.partOne.minValue,
+                    quiz.partOne.maxValue
+                )
+                quiz.partTwo.minValue = quiz.partTwo.possibleValues[0]
+                quiz.partTwo.maxValue =
+                    quiz.partTwo.possibleValues[
+                        quiz.partTwo.possibleValues.length - 1
+                    ]
+            } else {
+                quiz.partOne.possibleValues = getArrayOfNumbers(
+                    quiz.partOne.minValue,
+                    quiz.partOne.maxValue
+                )
+                quiz.partTwo.possibleValues = getArrayOfNumbers(
+                    quiz.partTwo.minValue,
+                    quiz.partTwo.maxValue
+                )
+            }
+
+            updateUrlParams()
+            getPuzzlePreview()
+
+            function getArrayOfNumbers(
+                first: number,
+                last: number
+            ): Array<number> {
+                return Array(last)
+                    .fill(first)
+                    .map((x, y) => x + y)
+            }
+
+            function updateUrlParams() {
                 let parameters = {
                     duration: quiz.duration.toString(),
                     timeLimit: quiz.puzzleTimeLimit.toString(),
@@ -78,15 +125,13 @@
                     null,
                     `?${new URLSearchParams(parameters)}`
                 )
-
-                getPuzzlePreview()
-            }, 300)
-        }
+            }
+        }, 300)
     }
 
-    function getPuzzlePreview() {
-        puzzle = getPuzzle(quiz, undefined)
-    }
+    onMount(() => {
+        updateQuizSettings()
+    })
 </script>
 
 <form>
@@ -100,6 +145,7 @@
                 min="{0.5}"
                 max="{15}"
                 step="{0.5}"
+                on:change="{() => updateQuizSettings()}"
                 bind:value="{quiz.duration}" />
         </label>
 
@@ -110,6 +156,7 @@
             <RangeComponent
                 zeroLabel="Ingen"
                 max="{10}"
+                on:change="{() => updateQuizSettings()}"
                 bind:value="{quiz.puzzleTimeLimit}" />
         </label>
     </div>
@@ -122,7 +169,7 @@
                     class="form-radio h-5 w-5 text-blue-700 border-gray-500"
                     bind:group="{quiz.selectedOperator}"
                     value="{operator}"
-                    on:change="{setRequiredPartProperties}" />
+                    on:change="{() => setRequiredPartProperties()}" />
                 <span class="ml-2">{operator}</span>
             </label>
         {/each}
@@ -131,6 +178,7 @@
                 <input
                     type="checkbox"
                     class="form-checkbox text-blue-700 h-5 w-5 border-gray-500"
+                    on:change="{() => updateQuizSettings()}"
                     bind:checked="{quiz.allowNegativeAnswer}" />
                 <span class="ml-2">Tillat negative svar</span>
             </label>
@@ -156,6 +204,7 @@
                             type="checkbox"
                             class="form-checkbox text-blue-700 h-5 w-5
                             border-gray-500"
+                            on:change="{() => updateQuizSettings()}"
                             bind:group="{quiz.partOne.possibleValues}"
                             value="{i + 1}" />
                         <span class="ml-2">{i + 1}</span>
@@ -171,6 +220,7 @@
                     <br />
                     <RangeComponent
                         max="{quiz.partOne.maxValue - 1}"
+                        on:change="{() => updateQuizSettings()}"
                         bind:value="{quiz.partOne.minValue}" />
                 </label>
                 <label class="block mt-4">
@@ -178,6 +228,7 @@
                     <br />
                     <RangeComponent
                         min="{quiz.partOne.minValue + 1}"
+                        on:change="{() => updateQuizSettings()}"
                         bind:value="{quiz.partOne.maxValue}" />
                 </label>
             {/if}
@@ -187,6 +238,7 @@
                 <input
                     type="checkbox"
                     class="form-checkbox text-blue-700 h-5 w-5 border-gray-500"
+                    on:change="{() => updateQuizSettings()}"
                     bind:checked="{quiz.partOne.randomize}" />
                 <span class="ml-2">Tilfeldige verdier</span>
             </label>
@@ -212,6 +264,7 @@
                             type="checkbox"
                             class="form-checkbox text-blue-700 h-5 w-5
                             border-gray-500"
+                            on:change="{() => updateQuizSettings()}"
                             bind:group="{quiz.partTwo.possibleValues}"
                             value="{i + 1}" />
                         <span class="ml-2">{i + 1}</span>
@@ -223,6 +276,7 @@
                     <br />
                     <RangeComponent
                         max="{quiz.partTwo.maxValue - 1}"
+                        on:change="{() => updateQuizSettings()}"
                         bind:value="{quiz.partTwo.minValue}" />
                 </label>
                 <label class="block mt-4">
@@ -230,6 +284,7 @@
                     <br />
                     <RangeComponent
                         min="{quiz.partTwo.minValue + 1}"
+                        on:change="{() => updateQuizSettings()}"
                         bind:value="{quiz.partTwo.maxValue}" />
                 </label>
             {/if}
@@ -238,6 +293,7 @@
             <label class="inline-flex items-center mt-6">
                 <input
                     type="checkbox"
+                    on:change="{() => updateQuizSettings()}"
                     class="form-checkbox text-blue-700 h-5 w-5 border-gray-500"
                     bind:checked="{quiz.partTwo.randomize}" />
                 <span class="ml-2">Tilfeldige verdier</span>
@@ -251,6 +307,7 @@
                 type="radio"
                 class="form-radio h-5 w-5 text-blue-700 border-gray-500"
                 bind:group="{quiz.answerMode}"
+                on:change="{() => updateQuizSettings()}"
                 value="{AnswerMode.Normal}" />
             <span class="ml-2">
                 {AnswerMode.Normal}
@@ -262,6 +319,7 @@
                 type="radio"
                 class="form-radio h-5 w-5 text-blue-700 border-gray-500"
                 bind:group="{quiz.answerMode}"
+                on:change="{() => updateQuizSettings()}"
                 value="{AnswerMode.Alternate}" />
             <span class="ml-2">
                 {AnswerMode.Alternate}
@@ -273,6 +331,7 @@
                 type="radio"
                 class="form-radio h-5 w-5 text-blue-700 border-gray-500"
                 bind:group="{quiz.answerMode}"
+                on:change="{() => updateQuizSettings()}"
                 value="{AnswerMode.Random}" />
             <span class="ml-2">{AnswerMode.Random}</span>
         </label>
@@ -284,22 +343,22 @@
                 color="yellow"
                 message="Kan ikke vise forhåndsvisning." />
         {:else}
-            <div class="text-center my-6 text-3xl md:text-4xl">
+            <p class="text-center mb-4 text-2xl md:text-3xl">
                 {puzzle.partOne.isUnknown ? '?' : puzzle.partOne.generatedValue}
                 <OperatorComponent operator="{puzzle.operator}" />
                 {puzzle.partTwo.isUnknown ? '?' : puzzle.partTwo.generatedValue}
                 = {puzzle.answer.isUnknown ? '?' : puzzle.answer.generatedValue}
-            </div>
+            </p>
             <div class="text-right">
                 <ButtonComponent
                     small="{true}"
-                    on:click="{getPuzzlePreview}"
+                    on:click="{() => getPuzzlePreview()}"
                     label="Ny" />
             </div>
         {/if}
     </div>
     <ButtonComponent
-        on:click="{startQuiz}"
         label="Start"
+        on:click="{() => startQuiz()}"
         color="{validationError ? 'red' : 'green'}" />
 </form>
