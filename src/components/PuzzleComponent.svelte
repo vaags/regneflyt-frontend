@@ -179,7 +179,7 @@
     </div>
     <div class="float-left">
         <ButtonComponent
-            on:click="{puzzle.timeout ? generatePuzzle : completePuzzleIfValid}"
+            on:click="{() => (puzzle.timeout ? generatePuzzle() : completePuzzleIfValid())}"
             label="Neste"
             color="{displayError ? 'red' : 'green'}" />
     </div>

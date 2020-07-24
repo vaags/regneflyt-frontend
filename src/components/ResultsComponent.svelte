@@ -95,6 +95,11 @@
                                 <span class="text-yellow-700">Timeout</span>
                             {:else}
                                 <span class="text-red-700">Galt</span>
+                                <!-- (
+                                <span class="text-green-700">
+                                    {puzzle.unknownPuzzlePartNumber === 1 ? puzzle.partOne.generatedValue : puzzle.unknownPuzzlePartNumber === 2 ? puzzle.partTwo.generatedValue : puzzle.answer.generatedValue}
+                                </span>
+                                ) -->
                             {/if}
                         </td>
                         <td class="border-t px-3 py-2">
