@@ -155,6 +155,7 @@
             <br />
             <RangeComponent
                 zeroLabel="Ingen"
+                min="{0}"
                 max="{10}"
                 on:change="{() => updateQuizSettings()}"
                 bind:value="{quiz.puzzleTimeLimit}" />
