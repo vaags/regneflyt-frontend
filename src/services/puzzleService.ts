@@ -152,7 +152,8 @@ function getUnknownPuzzlePartNumber(operator: Operator, answerMode: AnswerMode) 
 
     function getAlternateUnknownPuzzlePart() {
         switch (operator) {
-            case Operator.Addition || Operator.Subtraction:
+            case Operator.Addition:
+            case Operator.Subtraction:
                 return getTrueOrFalse() ? 1 : 2
             case Operator.Multiplication:
                 return 2
