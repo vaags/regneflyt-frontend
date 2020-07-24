@@ -1,11 +1,11 @@
 <script lang="ts">
-    import { onMount } from 'svelte'
+    import { afterUpdate } from 'svelte'
 
     export let value: number = undefined
     export let displayError: boolean
     let ref: any
 
-    onMount(function () {
+    afterUpdate(() => {
         ref.focus()
     })
 </script>
