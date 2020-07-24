@@ -36,7 +36,7 @@
 </script>
 
 <div>
-    <PuzzleComponent {quiz} on:addPuzzle="{addPuzzle}" />
+    <PuzzleComponent {showWarning} {quiz} on:addPuzzle="{addPuzzle}" />
 
     <div class="text-right float-right">
         {#if showWarning}

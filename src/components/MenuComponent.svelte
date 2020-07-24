@@ -338,7 +338,7 @@
     </div>
     <div class="card">
         <h2>Forhåndsvisning</h2>
-        {#if validationError || !puzzle}
+        {#if validationError || !puzzle?.partOne?.generatedValue}
             <AlertComponent
                 color="yellow"
                 message="Kan ikke vise forhåndsvisning." />

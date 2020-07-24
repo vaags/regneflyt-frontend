@@ -10,6 +10,7 @@
     import { PuzzlePart } from '../models/PuzzlePart'
 
     export let quiz: Quiz
+    export let showWarning: boolean
 
     const dispatch = createEventDispatcher()
     let puzzleTimeout = undefined
@@ -144,6 +145,7 @@
             {#if puzzle.unknownPuzzlePartNumber === 1}
                 <NumberInputComponent
                     disabled="{puzzle.timeout}"
+                    {showWarning}
                     {displayError}
                     bind:value="{puzzle.partOne.userDefinedValue}" />
                 <OperatorComponent operator="{puzzle.operator}" />
@@ -153,6 +155,7 @@
                 <OperatorComponent operator="{puzzle.operator}" />
                 <NumberInputComponent
                     disabled="{puzzle.timeout}"
+                    {showWarning}
                     {displayError}
                     bind:value="{puzzle.partTwo.userDefinedValue}" />
                 = {puzzle.answer.generatedValue}
@@ -162,6 +165,7 @@
                 {puzzle.partTwo.generatedValue} =
                 <NumberInputComponent
                     disabled="{puzzle.timeout}"
+                    {showWarning}
                     {displayError}
                     bind:value="{puzzle.answer.userDefinedValue}" />
             {/if}

@@ -4,10 +4,13 @@
     export let value: number = undefined
     export let displayError: boolean
     export let disabled: boolean = false
+    export let showWarning: boolean = false
     let ref: any
 
     afterUpdate(() => {
-        ref.focus()
+        if (!showWarning) {
+            ref.focus()
+        }
     })
 </script>
 
