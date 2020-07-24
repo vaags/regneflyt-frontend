@@ -142,37 +142,28 @@
         {/if}
         <div class="text-center my-12 text-3xl md:text-4xl">
             {#if puzzle.unknownPuzzlePartNumber === 1}
-                {#if puzzle.timeout}
-                    ?
-                {:else}
-                    <NumberInputComponent
-                        {displayError}
-                        bind:value="{puzzle.partOne.userDefinedValue}" />
-                {/if}
+                <NumberInputComponent
+                    disabled="{puzzle.timeout}"
+                    {displayError}
+                    bind:value="{puzzle.partOne.userDefinedValue}" />
                 <OperatorComponent operator="{puzzle.operator}" />
                 {puzzle.partTwo.generatedValue} = {puzzle.answer.generatedValue}
             {:else if puzzle.unknownPuzzlePartNumber === 2}
                 {puzzle.partOne.generatedValue}
                 <OperatorComponent operator="{puzzle.operator}" />
-                {#if puzzle.timeout}
-                    ?
-                {:else}
-                    <NumberInputComponent
-                        {displayError}
-                        bind:value="{puzzle.partTwo.userDefinedValue}" />
-                {/if}
+                <NumberInputComponent
+                    disabled="{puzzle.timeout}"
+                    {displayError}
+                    bind:value="{puzzle.partTwo.userDefinedValue}" />
                 = {puzzle.answer.generatedValue}
             {:else}
                 {puzzle.partOne.generatedValue}
                 <OperatorComponent operator="{puzzle.operator}" />
                 {puzzle.partTwo.generatedValue} =
-                {#if puzzle.timeout}
-                    ?
-                {:else}
-                    <NumberInputComponent
-                        {displayError}
-                        bind:value="{puzzle.answer.userDefinedValue}" />
-                {/if}
+                <NumberInputComponent
+                    disabled="{puzzle.timeout}"
+                    {displayError}
+                    bind:value="{puzzle.answer.userDefinedValue}" />
             {/if}
 
         </div>

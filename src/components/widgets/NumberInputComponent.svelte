@@ -3,6 +3,7 @@
 
     export let value: number = undefined
     export let displayError: boolean
+    export let disabled: boolean = false
     let ref: any
 
     afterUpdate(() => {
@@ -32,6 +33,7 @@
 </style>
 
 <input
+    {disabled}
     bind:value
     bind:this="{ref}"
     class="border {displayError ? 'validation-error-border' : ''} rounded w-24
