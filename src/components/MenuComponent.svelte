@@ -126,7 +126,7 @@
                     `?${new URLSearchParams(parameters)}`
                 )
             }
-        }, 300)
+        }, 1)
     }
 
     onMount(() => {
