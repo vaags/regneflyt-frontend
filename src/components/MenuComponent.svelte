@@ -11,7 +11,6 @@
     import OperatorComponent from './widgets/OperatorComponent.svelte'
 
     export let quiz: Quiz
-    let timer: number
     let puzzle: Puzzle
 
     const dispatch = createEventDispatcher()
@@ -53,9 +52,8 @@
         puzzle = getPuzzle(quiz, puzzle)
     }
 
-    function updateQuizSettings() {
-        clearTimeout(timer)
-        timer = setTimeout(() => {
+    async function updateQuizSettings() {
+        setTimeout(() => {
             if (isMultiplication) {
                 quiz.partTwo.possibleValues = getArrayOfNumbers(
                     quiz.partTwo.minValue,
@@ -87,8 +85,10 @@
                 )
             }
 
-            updateUrlParams()
-            getPuzzlePreview()
+            if (!validationError) {
+                updateUrlParams()
+                getPuzzlePreview()
+            }
 
             function getArrayOfNumbers(
                 first: number,
@@ -126,7 +126,7 @@
                     `?${new URLSearchParams(parameters)}`
                 )
             }
-        }, 1)
+        }, 0)
     }
 
     onMount(() => {
