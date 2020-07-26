@@ -3,7 +3,7 @@
     export let time: number
 
     const interval = setInterval(() => {
-        time--
+        if (time > 1) time-- // Should not show zero
     }, 1000)
 
     onDestroy(() => {
@@ -12,7 +12,7 @@
 </script>
 
 <div class="card">
-    <h2>Gjør deg klar...</h2>
+    <h2>Gjør deg klar&hellip;</h2>
 
     <p class="text-center my-12 text-4xl md:text-5xl">{time}</p>
 </div>
