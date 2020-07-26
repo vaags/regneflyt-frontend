@@ -102,6 +102,7 @@
             function updateUrlParams() {
                 let parameters = {
                     duration: quiz.duration.toString(),
+                    showRemainingTime: quiz.showRemainingTime.toString(),
                     timeLimit: quiz.puzzleTimeLimit.toString(),
                     operator: quiz.selectedOperator.toString(),
                     negatives: quiz.allowNegativeAnswer.toString(),
@@ -148,6 +149,14 @@
                 on:change="{() => updateQuizSettings()}"
                 bind:value="{quiz.duration}" />
         </label>
+        <label class="inline-flex items-center mt-3">
+            <input
+                type="checkbox"
+                class="form-checkbox text-blue-700 h-5 w-5 border-gray-500"
+                on:change="{() => updateQuizSettings()}"
+                bind:checked="{quiz.showRemainingTime}" />
+            <span class="ml-2">Vis gjenværende tid</span>
+        </label>
 
         <label class="block mt-4">
             Per oppgave:
@@ -160,6 +169,7 @@
                 on:change="{() => updateQuizSettings()}"
                 bind:value="{quiz.puzzleTimeLimit}" />
         </label>
+
     </div>
     <div class="card">
         <h2>Regneart</h2>

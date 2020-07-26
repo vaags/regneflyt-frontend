@@ -15,4 +15,5 @@ export type Quiz = {
     allowNegativeAnswer: boolean;
     operators: Array<Operator>;
     answerMode: AnswerMode;
+    showRemainingTime: boolean;
 }

@@ -36,6 +36,14 @@
     @apply bg-gray-700;
 }
 
+.btn-yellow {
+    @apply bg-yellow-600;
+}
+
+.btn-yellow:hover {
+    @apply bg-yellow-700;
+}
+
 /* Alerts */
 
 .alert-blue {

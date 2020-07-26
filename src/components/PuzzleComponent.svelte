@@ -10,6 +10,7 @@
 
     export let quiz: Quiz
     export let showWarning: boolean
+    export let secondsLeft: number
 
     const dispatch = createEventDispatcher()
     let puzzleTimeout: number | undefined = undefined
@@ -22,6 +23,8 @@
     let puzzle = generatePuzzle(undefined)
 
     $: displayError = missingUserInput && validationError
+
+    $: almostFinished = secondsLeft <= 5
 
     $: {
         switch (puzzle.unknownPuzzlePartNumber) {
@@ -127,6 +130,12 @@
 
 <form>
     <div class="card pb-6">
+        {#if quiz.showRemainingTime}
+            <p
+                class="float-right {almostFinished ? 'font-bold text-yellow-700' : 'text-gray-700'}">
+                {secondsLeft}
+            </p>
+        {/if}
         <h2>Oppgave {puzzleNumber}</h2>
         {#if puzzle.timeout}
             <AlertComponent color="red" message="Tiden er ute." />
@@ -167,6 +176,6 @@
             disabled="{displayError}"
             on:click="{() => (puzzle.timeout ? (puzzle = generatePuzzle(puzzle)) : completePuzzleIfValid())}"
             label="Neste"
-            color="{displayError ? 'red' : 'green'}" />
+            color="{displayError ? 'red' : almostFinished ? 'yellow' : 'green'}" />
     </div>
 </form>

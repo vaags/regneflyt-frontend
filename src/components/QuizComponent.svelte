@@ -9,13 +9,16 @@
     export let quiz: Quiz
 
     const dispatch = createEventDispatcher()
-    let quizTimeout: any
+    let quizTimeout: number
+    let timeLeftInterval: number
+    let secondsLeft = quiz.duration * 60
     let showWarning = false
     let puzzleSet: Array<Puzzle> = []
     const isLocalhost = location.hostname === 'localhost'
 
     onDestroy(() => {
         clearTimeout(quizTimeout)
+        clearInterval(timeLeftInterval)
     })
 
     function abortQuiz() {
@@ -38,6 +41,9 @@
         quiz.isStarted = true
         quiz.isAboutToStart = false
         quizTimeout = setTimeout(completeQuiz, quiz.duration * 60000)
+        timeLeftInterval = setInterval(() => {
+            if (secondsLeft > 1) secondsLeft--
+        }, 1000)
     }
 
     onMount(() => {
@@ -47,7 +53,11 @@
 
 <div>
     {#if quiz.isStarted}
-        <PuzzleComponent {showWarning} {quiz} on:addPuzzle="{addPuzzle}" />
+        <PuzzleComponent
+            {secondsLeft}
+            {showWarning}
+            {quiz}
+            on:addPuzzle="{addPuzzle}" />
     {:else if quiz.isAboutToStart}
         <CountdownComponent time="{quiz.countDownTime}" />
     {/if}
