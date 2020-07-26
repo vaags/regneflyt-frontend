@@ -24,8 +24,6 @@ export function getPuzzle(quiz: Quiz, previousPuzzle: Puzzle | undefined) {
 
     puzzle.answer = getAnswerPart(puzzle.partOne.generatedValue, puzzle.partTwo.generatedValue, puzzle.operator)
 
-    console.log(puzzle)
-
     if (puzzle.operator === Operator.Division) {
         puzzle.partOne.generatedValue = puzzle.partOne.generatedValue * puzzle.partTwo.generatedValue
     } else if (shouldAvoidNegativeAnswer()) {

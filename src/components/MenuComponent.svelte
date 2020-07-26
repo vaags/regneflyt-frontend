@@ -109,20 +109,20 @@
                     partOneMax: quiz.partOne.maxValue?.toString(),
                     partOneValues: isMultiplication
                         ? quiz.partOne.possibleValues.toString()
-                        : null,
+                        : '',
                     partOneRandom: quiz.partOne.randomize.toString(),
                     partTwoMin: quiz.partTwo.minValue?.toString(),
                     partTwoMax: quiz.partTwo.maxValue?.toString(),
                     partTwoValues: isDivision
                         ? quiz.partTwo.possibleValues.toString()
-                        : null,
+                        : '',
                     partTwoRandom: quiz.partTwo.randomize.toString(),
                     answerMode: quiz.answerMode.toString(),
                 }
 
                 window.history.replaceState(
                     null,
-                    null,
+                    '',
                     `?${new URLSearchParams(parameters)}`
                 )
             }

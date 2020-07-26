@@ -10,7 +10,9 @@
     const urlParams = new URLSearchParams(window.location.search)
 
     function getIntParam(param: string): number {
-        return parseInt(urlParams.get(param))
+        let value = urlParams.get(param)
+
+        return value ? parseInt(value) : 0
     }
 
     function getBoolParam(param: string): boolean {
