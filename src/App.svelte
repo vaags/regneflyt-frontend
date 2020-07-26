@@ -2,10 +2,10 @@
     import MenuComponent from './components/MenuComponent.svelte'
     import ResultsComponent from './components/ResultsComponent.svelte'
     import QuizComponent from './components/QuizComponent.svelte'
-    import { Operator } from './models/Operator'
-    import { Quiz } from './models/Quiz'
-    import { Puzzle } from './models/Puzzle'
-    import { AnswerMode } from './models/AnswerMode'
+    import { Operator } from './models/enums/Operator'
+    import type { Quiz } from './models/Quiz'
+    import type { Puzzle } from './models/Puzzle'
+    import { AnswerMode } from './models/enums/AnswerMode'
 
     const urlParams = new URLSearchParams(window.location.search)
 

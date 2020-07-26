@@ -2,9 +2,8 @@
     import { createEventDispatcher, onDestroy, onMount } from 'svelte'
     import PuzzleComponent from './PuzzleComponent.svelte'
     import ButtonComponent from './widgets/ButtonComponent.svelte'
-    import { Quiz } from '../models/Quiz'
-    import { Operator } from '../models/Operator'
-    import { Puzzle } from '../models/Puzzle'
+    import type { Quiz } from '../models/Quiz'
+    import type { Puzzle } from '../models/Puzzle'
 
     export let quiz: Quiz
 

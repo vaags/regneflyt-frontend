@@ -1,7 +1,7 @@
 <script lang="ts">
     import { afterUpdate } from 'svelte'
 
-    export let value: number = undefined
+    export let value: number | undefined = undefined
     export let displayError: boolean
     export let disabled: boolean = false
     export let showWarning: boolean = false

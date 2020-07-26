@@ -1,13 +1,13 @@
-import { Operator } from "./Operator";
-import { PuzzlePart } from "./PuzzlePart";
+import type { Operator } from "./enums/Operator";
+import type { PuzzlePart } from "./PuzzlePart";
 
-export class Puzzle {
+export type Puzzle = {
     partOne: PuzzlePart;
     partTwo: PuzzlePart;
     answer: PuzzlePart;
     timeout: boolean;
     duration: number;
-    isCorrect: boolean;
+    isCorrect: boolean | undefined;
     operator: Operator;
     unknownPuzzlePartNumber: number;
 }

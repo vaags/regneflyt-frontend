@@ -1,6 +1,6 @@
 <script lang="ts">
     export let message = '[Message]'
-    export let heading: string = undefined
+    export let heading: string | undefined = undefined
     export let color = 'blue'
 </script>
 

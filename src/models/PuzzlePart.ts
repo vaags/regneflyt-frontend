@@ -1,5 +1,5 @@
-export class PuzzlePart {
-    index: number = undefined;
-    generatedValue: number = undefined;
-    userDefinedValue: number = undefined;
+export type PuzzlePart = {
+    index: number;
+    generatedValue: number;
+    userDefinedValue: number | undefined;
 }

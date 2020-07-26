@@ -1,59 +1,52 @@
 <script lang="ts">
-    import { createEventDispatcher, onMount, onDestroy } from 'svelte'
+    import { createEventDispatcher, onDestroy } from 'svelte'
     import ButtonComponent from './widgets/ButtonComponent.svelte'
     import AlertComponent from './widgets/AlertComponent.svelte'
     import OperatorComponent from './widgets/OperatorComponent.svelte'
     import NumberInputComponent from './widgets/NumberInputComponent.svelte'
     import { getPuzzle } from '../services/puzzleService'
-    import { Quiz } from '../models/Quiz'
-    import { Puzzle } from '../models/Puzzle'
-    import { PuzzlePart } from '../models/PuzzlePart'
+    import type { Quiz } from '../models/Quiz'
+    import type { Puzzle } from '../models/Puzzle'
 
     export let quiz: Quiz
     export let showWarning: boolean
 
     const dispatch = createEventDispatcher()
-    let puzzleTimeout = undefined
+    let puzzleTimeout: number | undefined = undefined
 
     let puzzleNumber = 0
     let validationError = false
     let startTime: number
     let missingUserInput: boolean
 
-    let puzzle: Puzzle = {
-        partOne: new PuzzlePart(),
-        partTwo: new PuzzlePart(),
-        answer: new PuzzlePart(),
-        timeout: undefined,
-        duration: undefined,
-        isCorrect: undefined,
-        operator: undefined,
-        unknownPuzzlePartNumber: undefined,
-    }
+    let puzzle = generatePuzzle(undefined)
 
     $: displayError = missingUserInput && validationError
 
     $: {
         switch (puzzle.unknownPuzzlePartNumber) {
             case 1: {
-                missingUserInput = puzzle.partOne.userDefinedValue === undefined
+                missingUserInput =
+                    puzzle?.partOne?.userDefinedValue === undefined
                 break
             }
             case 2: {
-                missingUserInput = puzzle.partTwo.userDefinedValue === undefined
+                missingUserInput =
+                    puzzle?.partTwo?.userDefinedValue === undefined
                 break
             }
             case 3: {
-                missingUserInput = puzzle.answer.userDefinedValue === undefined
+                missingUserInput =
+                    puzzle?.answer?.userDefinedValue === undefined
                 break
             }
         }
     }
 
-    function generatePuzzle() {
+    function generatePuzzle(previousPuzzle: Puzzle | undefined) {
         puzzleNumber++
 
-        puzzle = getPuzzle(quiz, puzzleNumber === 1 ? undefined : puzzle)
+        let puzzle = getPuzzle(quiz, previousPuzzle)
 
         startTime = Date.now()
 
@@ -66,6 +59,8 @@
                 quiz.puzzleTimeLimit * 1000
             )
         }
+
+        return puzzle
     }
 
     function completePuzzleIfValid() {
@@ -84,7 +79,7 @@
 
     function completePuzzle(generateNextPuzzle: boolean) {
         clearTimeout(puzzleTimeout)
-        puzzle.isCorrect = evaluateAnswer(
+        puzzle.isCorrect = answerIsCorrect(
             puzzle,
             puzzle.unknownPuzzlePartNumber
         )
@@ -92,10 +87,10 @@
 
         dispatch('addPuzzle', { puzzle: { ...puzzle } })
 
-        if (generateNextPuzzle) generatePuzzle()
+        if (generateNextPuzzle) puzzle = generatePuzzle(puzzle)
     }
 
-    function evaluateAnswer(puzzle: Puzzle, unknownPuzzlePart: Number) {
+    function answerIsCorrect(puzzle: Puzzle, unknownPuzzlePart: Number) {
         switch (unknownPuzzlePart) {
             case 1:
                 return (
@@ -107,7 +102,7 @@
                     puzzle.partTwo.userDefinedValue ===
                     puzzle.partTwo.generatedValue
                 )
-            case 3:
+            default:
                 return (
                     puzzle.answer.userDefinedValue ===
                     puzzle.answer.generatedValue
@@ -125,10 +120,6 @@
 
         return !validationError
     }
-
-    onMount(() => {
-        generatePuzzle()
-    })
 
     onDestroy(() => {
         clearTimeout(puzzleTimeout)
@@ -175,7 +166,7 @@
     <div class="float-left">
         <ButtonComponent
             disabled="{displayError}"
-            on:click="{() => (puzzle.timeout ? generatePuzzle() : completePuzzleIfValid())}"
+            on:click="{() => (puzzle.timeout ? generatePuzzle(puzzle) : completePuzzleIfValid())}"
             label="Neste"
             color="{displayError ? 'red' : 'green'}" />
     </div>

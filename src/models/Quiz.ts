@@ -1,9 +1,8 @@
+import type { Operator } from "./enums/Operator";
+import type { QuizPuzzlePart } from "./QuizPuzzlePart";
+import type { AnswerMode } from "./enums/AnswerMode";
 
-import { Operator } from "./Operator";
-import { QuizPuzzlePart } from "./QuizPuzzlePart";
-import { AnswerMode } from "./AnswerMode";
-
-export class Quiz {
+export type Quiz = {
     duration: number;
     puzzleTimeLimit: number;
     partOne: QuizPuzzlePart;

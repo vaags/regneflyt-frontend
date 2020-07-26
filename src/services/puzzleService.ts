@@ -1,33 +1,36 @@
-import { Quiz } from "../models/Quiz";
-import { Operator } from "../models/Operator";
-import { Puzzle } from "../models/Puzzle";
-import { PuzzlePart } from "../models/PuzzlePart";
-import { QuizPuzzlePart } from "../models/QuizPuzzlePart";
-import { AnswerMode } from "../models/AnswerMode";
+import type { Quiz } from "../models/Quiz";
+import { Operator } from "../models/enums/Operator";
+import type { Puzzle } from "../models/Puzzle";
+import type { PuzzlePart } from "../models/PuzzlePart";
+import type { QuizPuzzlePart } from "../models/QuizPuzzlePart";
+import { AnswerMode } from "../models/enums/AnswerMode";
 
 export function getPuzzle(quiz: Quiz, previousPuzzle: Puzzle | undefined) {
 
     const puzzle: Puzzle = {
-        partOne: undefined,
-        partTwo: undefined,
-        answer: undefined,
-        timeout: undefined,
-        duration: undefined,
-        isCorrect: undefined,
+        partOne: getPuzzlePart(quiz.partOne, previousPuzzle?.partOne),
+        partTwo: getPuzzlePart(quiz.partTwo, previousPuzzle?.partTwo),
         operator: quiz.selectedOperator,
+        answer: {
+            index: 0,
+            generatedValue: 0,
+            userDefinedValue: undefined,
+        },
+        timeout: false,
+        duration: 0,
+        isCorrect: undefined,
         unknownPuzzlePartNumber: getUnknownPuzzlePartNumber(quiz.selectedOperator, quiz.answerMode)
     }
 
-    puzzle.partOne = getPuzzlePart(quiz.partOne, previousPuzzle?.partOne)
-    puzzle.partTwo = getPuzzlePart(quiz.partTwo, previousPuzzle?.partTwo)
+    puzzle.answer = getAnswerPart(puzzle.partOne.generatedValue, puzzle.partTwo.generatedValue, puzzle.operator)
+
+    console.log(puzzle)
 
     if (puzzle.operator === Operator.Division) {
         puzzle.partOne.generatedValue = puzzle.partOne.generatedValue * puzzle.partTwo.generatedValue
     } else if (shouldAvoidNegativeAnswer()) {
         swapPuzzlePartValues()
     }
-
-    puzzle.answer = getAnswerPart(puzzle.partOne.generatedValue, puzzle.partTwo.generatedValue, puzzle.operator)
 
     return puzzle;
 
@@ -44,7 +47,7 @@ export function getPuzzle(quiz: Quiz, previousPuzzle: Puzzle | undefined) {
     }
 }
 
-function getPuzzlePart(quizPuzzlePart: QuizPuzzlePart, previousPuzzlePart: PuzzlePart): PuzzlePart {
+function getPuzzlePart(quizPuzzlePart: QuizPuzzlePart, previousPuzzlePart: PuzzlePart | undefined): PuzzlePart {
     if (quizPuzzlePart.minValue === quizPuzzlePart.maxValue) {
         return {
             index: 0,
@@ -79,8 +82,10 @@ function getRandomPuzzlePartValue(possibleNumbersArray: Array<number>, previousP
     }
 }
 
-function getNextPuzzlePartValue(possibleNumbersArray: Array<number>, previousPuzzlePartIndex: number): PuzzlePart {
-    if (shouldReturnMinValue()) {
+function getNextPuzzlePartValue(possibleNumbersArray: Array<number>, previousPuzzlePartIndex: number | undefined): PuzzlePart {
+    if (previousPuzzlePartIndex === undefined ||
+        previousPuzzlePartIndex ===
+        possibleNumbersArray.length - 1) {
         return {
             index: 0,
             generatedValue: possibleNumbersArray[0],
@@ -93,14 +98,6 @@ function getNextPuzzlePartValue(possibleNumbersArray: Array<number>, previousPuz
         generatedValue:
             possibleNumbersArray[previousPuzzlePartIndex + 1],
         userDefinedValue: undefined
-    }
-
-    function shouldReturnMinValue() {
-        return (
-            previousPuzzlePartIndex === undefined ||
-            previousPuzzlePartIndex ===
-            possibleNumbersArray.length - 1
-        )
     }
 }
 

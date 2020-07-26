@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { Operator } from '../../models/Operator'
+    import { Operator } from '../../models/enums/Operator'
 
     export let operator: Operator
 </script>

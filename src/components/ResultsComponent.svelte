@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { Puzzle } from '../models/Puzzle'
+    import type { Puzzle } from '../models/Puzzle'
     import { createEventDispatcher, onMount } from 'svelte'
     import ButtonComponent from './widgets/ButtonComponent.svelte'
     import OperatorComponent from './widgets/OperatorComponent.svelte'
@@ -9,9 +9,9 @@
 
     export let puzzleSet: Array<Puzzle>
 
-    let correctAnswerSum = undefined
-    let scorePercentage = undefined
-    let totalTimeSpent = undefined
+    let correctAnswerSum: any
+    let scorePercentage: any
+    let totalTimeSpent: any
 
     onMount(() => {
         if (!puzzleSet || !puzzleSet.length) return
