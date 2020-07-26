@@ -165,7 +165,7 @@
     <div class="float-left">
         <ButtonComponent
             disabled="{displayError}"
-            on:click="{() => (puzzle.timeout ? generatePuzzle(puzzle) : completePuzzleIfValid())}"
+            on:click="{() => (puzzle.timeout ? (puzzle = generatePuzzle(puzzle)) : completePuzzleIfValid())}"
             label="Neste"
             color="{displayError ? 'red' : 'green'}" />
     </div>
