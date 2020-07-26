@@ -4,7 +4,7 @@
     import ButtonComponent from './widgets/ButtonComponent.svelte'
     import type { Quiz } from '../models/Quiz'
     import type { Puzzle } from '../models/Puzzle'
-    import CountdownComponent from './widgets/CountdownComponent.svelte'
+    import CountdownComponent from './CountdownComponent.svelte'
 
     export let quiz: Quiz
 
