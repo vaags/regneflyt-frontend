@@ -154,7 +154,7 @@
             <span class="text-sm">(i sekunder)</span>
             <br />
             <RangeComponent
-                zeroLabel="Ingen"
+                zeroLabel="&#8734;"
                 min="{0}"
                 max="{10}"
                 on:change="{() => updateQuizSettings()}"

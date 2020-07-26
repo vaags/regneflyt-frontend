@@ -4,17 +4,18 @@
     import ButtonComponent from './widgets/ButtonComponent.svelte'
     import type { Quiz } from '../models/Quiz'
     import type { Puzzle } from '../models/Puzzle'
+    import CountdownComponent from './widgets/CountdownComponent.svelte'
 
     export let quiz: Quiz
 
     const dispatch = createEventDispatcher()
-    const interval = setTimeout(completeQuiz, quiz.duration * 60000)
+    let quizTimeout: any
     let showWarning = false
     let puzzleSet: Array<Puzzle> = []
     const isLocalhost = location.hostname === 'localhost'
 
     onDestroy(() => {
-        clearInterval(interval)
+        clearTimeout(quizTimeout)
     })
 
     function abortQuiz() {
@@ -32,10 +33,24 @@
     function toggleWarning() {
         showWarning = !showWarning
     }
+
+    function startQuiz() {
+        quiz.isStarted = true
+        quiz.isAboutToStart = false
+        quizTimeout = setTimeout(completeQuiz, quiz.duration * 60000)
+    }
+
+    onMount(() => {
+        quizTimeout = setTimeout(startQuiz, quiz.countDownTime * 1000)
+    })
 </script>
 
 <div>
-    <PuzzleComponent {showWarning} {quiz} on:addPuzzle="{addPuzzle}" />
+    {#if quiz.isStarted}
+        <PuzzleComponent {showWarning} {quiz} on:addPuzzle="{addPuzzle}" />
+    {:else if quiz.isAboutToStart}
+        <CountdownComponent time="{quiz.countDownTime}" />
+    {/if}
 
     <div class="text-right float-right">
         {#if showWarning}

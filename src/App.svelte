@@ -27,7 +27,7 @@
 
     let quiz: Quiz = {
         duration: getIntParam('duration') || 0.5,
-        puzzleTimeLimit: getIntParam('timeLimit') || 5,
+        puzzleTimeLimit: getIntParam('timeLimit') || 0,
         partOne: {
             minValue: getIntParam('partOneMin') || 1,
             maxValue: getIntParam('partOneMax') || 20,
@@ -42,6 +42,8 @@
         },
         isStarted: false,
         isCompleted: false,
+        isAboutToStart: false,
+        countDownTime: 3,
         selectedOperator:
             (urlParams.get('operator') as Operator) || Operator.Addition,
         allowNegativeAnswer: getBoolParam('negatives'),
@@ -60,7 +62,7 @@
 
     function startQuiz(event) {
         quiz = event.detail.quiz
-        quiz.isStarted = true
+        quiz.isAboutToStart = true
         displayGreeting = false
     }
 
@@ -94,7 +96,7 @@
     {/if}
     {#if quiz.isCompleted}
         <ResultsComponent {puzzleSet} on:resetQuiz="{resetQuiz}" />
-    {:else if quiz.isStarted}
+    {:else if quiz.isAboutToStart || quiz.isStarted}
         <QuizComponent
             {quiz}
             on:abortQuiz="{abortQuiz}"

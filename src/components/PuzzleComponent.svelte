@@ -66,7 +66,6 @@
     function completePuzzleIfValid() {
         if (!puzzleIsValid()) return
 
-        clearTimeout(puzzleTimeout)
         completePuzzle(true)
     }
 

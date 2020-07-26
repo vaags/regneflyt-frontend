@@ -5,8 +5,10 @@ import type { AnswerMode } from "./enums/AnswerMode";
 export type Quiz = {
     duration: number;
     puzzleTimeLimit: number;
+    countDownTime: number;
     partOne: QuizPuzzlePart;
     partTwo: QuizPuzzlePart;
+    isAboutToStart: boolean;
     isStarted: boolean;
     isCompleted: boolean;
     selectedOperator: Operator;
