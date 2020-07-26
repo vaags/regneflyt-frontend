@@ -14,5 +14,5 @@
 <div class="card">
     <h2>Gjør deg klar...</h2>
 
-    <p class="text-center my-12 text-3xl md:text-4xl">{time}</p>
+    <p class="text-center my-12 text-4xl md:text-5xl">{time}</p>
 </div>
