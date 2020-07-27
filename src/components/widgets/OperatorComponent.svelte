@@ -5,11 +5,11 @@
 </script>
 
 {#if operator === Operator.Addition}
-    <span>&#43;</span>
+    {@html '&#43;'}
 {:else if operator === Operator.Subtraction}
-    <span>&#8722;</span>
+    {@html '&#8722;'}
 {:else if operator === Operator.Multiplication}
-    <span>&#215;</span>
+    {@html '&#215;'}
 {:else if operator === Operator.Division}
-    <span>&#247;</span>
+    {@html '&#247;'}
 {/if}

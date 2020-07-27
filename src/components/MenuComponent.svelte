@@ -349,25 +349,24 @@
     </div>
     <div class="card">
         <h2>Forhåndsvisning</h2>
-        {#if validationError || !puzzle || !puzzle.partOne || !puzzle.partOne.generatedValue}
+        {#if validationError || !puzzle?.parts}
             <AlertComponent
                 color="yellow"
                 message="Kan ikke vise forhåndsvisning." />
         {:else}
             <p class="text-center mb-4 text-2xl md:text-3xl">
-                {#if puzzle.unknownPuzzlePartNumber === 1}
-                    ?
-                    <OperatorComponent operator="{puzzle.operator}" />
-                    {puzzle.partTwo.generatedValue} = {puzzle.answer.generatedValue}
-                {:else if puzzle.unknownPuzzlePartNumber === 2}
-                    {puzzle.partOne.generatedValue}
-                    <OperatorComponent operator="{puzzle.operator}" />
-                    ? = {puzzle.answer.generatedValue}
-                {:else}
-                    {puzzle.partOne.generatedValue}
-                    <OperatorComponent operator="{puzzle.operator}" />
-                    {puzzle.partTwo.generatedValue} = ?
-                {/if}
+                {#each puzzle.parts as part, i}
+                    <span>
+                        {puzzle.unknownPuzzlePartNumber === i ? '?' : part.generatedValue}
+                    </span>
+                    {#if i === 0}
+                        <span>
+                            <OperatorComponent operator="{puzzle.operator}" />
+                        </span>
+                    {:else if i === 1}
+                        <span class="mr-2">=</span>
+                    {/if}
+                {/each}
             </p>
             <div class="text-right">
                 <ButtonComponent
