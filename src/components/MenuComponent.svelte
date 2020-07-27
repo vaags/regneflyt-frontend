@@ -11,7 +11,7 @@
     import OperatorComponent from './widgets/OperatorComponent.svelte'
 
     export let quiz: Quiz
-    let puzzle: Puzzle
+    let puzzle = getPuzzle(quiz, undefined)
 
     const dispatch = createEventDispatcher()
 
@@ -349,7 +349,7 @@
     </div>
     <div class="card">
         <h2>Forhåndsvisning</h2>
-        {#if validationError || !puzzle.parts}
+        {#if validationError}
             <AlertComponent
                 color="yellow"
                 message="Kan ikke vise forhåndsvisning." />
