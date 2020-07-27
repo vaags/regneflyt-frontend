@@ -27,25 +27,9 @@
 
     $: almostFinished = secondsLeft <= 5
 
-    $: {
-        switch (puzzle.unknownPuzzlePartNumber) {
-            case 1: {
-                missingUserInput =
-                    puzzle?.partOne?.userDefinedValue === undefined
-                break
-            }
-            case 2: {
-                missingUserInput =
-                    puzzle?.partTwo?.userDefinedValue === undefined
-                break
-            }
-            case 3: {
-                missingUserInput =
-                    puzzle?.answer?.userDefinedValue === undefined
-                break
-            }
-        }
-    }
+    $: missingUserInput =
+        puzzle.parts[puzzle.unknownPuzzlePartNumber].userDefinedValue ===
+        undefined
 
     function generatePuzzle(previousPuzzle: Puzzle | undefined) {
         puzzleNumber++
@@ -93,24 +77,11 @@
         if (generateNextPuzzle) puzzle = generatePuzzle(puzzle)
     }
 
-    function answerIsCorrect(puzzle: Puzzle, unknownPuzzlePart: Number) {
-        switch (unknownPuzzlePart) {
-            case 1:
-                return (
-                    puzzle.partOne.userDefinedValue ===
-                    puzzle.partOne.generatedValue
-                )
-            case 2:
-                return (
-                    puzzle.partTwo.userDefinedValue ===
-                    puzzle.partTwo.generatedValue
-                )
-            default:
-                return (
-                    puzzle.answer.userDefinedValue ===
-                    puzzle.answer.generatedValue
-                )
-        }
+    function answerIsCorrect(puzzle: Puzzle, unknownPuzzlePart: number) {
+        return (
+            puzzle.parts[unknownPuzzlePart].userDefinedValue ===
+            puzzle.parts[unknownPuzzlePart].generatedValue
+        )
     }
 
     function puzzleIsValid() {
@@ -142,34 +113,24 @@
             <AlertComponent color="red" message="Tiden er ute." />
         {/if}
         <div class="text-center my-12 text-3xl md:text-4xl">
-            {#if puzzle.unknownPuzzlePartNumber === 1}
-                <NumberInputComponent
-                    disabled="{puzzle.timeout}"
-                    {showWarning}
-                    {displayError}
-                    bind:value="{puzzle.partOne.userDefinedValue}" />
-                <OperatorComponent operator="{puzzle.operator}" />
-                {puzzle.partTwo.generatedValue} = {puzzle.answer.generatedValue}
-            {:else if puzzle.unknownPuzzlePartNumber === 2}
-                {puzzle.partOne.generatedValue}
-                <OperatorComponent operator="{puzzle.operator}" />
-                <NumberInputComponent
-                    disabled="{puzzle.timeout}"
-                    {showWarning}
-                    {displayError}
-                    bind:value="{puzzle.partTwo.userDefinedValue}" />
-                = {puzzle.answer.generatedValue}
-            {:else}
-                {puzzle.partOne.generatedValue}
-                <OperatorComponent operator="{puzzle.operator}" />
-                {puzzle.partTwo.generatedValue} =
-                <NumberInputComponent
-                    disabled="{puzzle.timeout}"
-                    {showWarning}
-                    {displayError}
-                    bind:value="{puzzle.answer.userDefinedValue}" />
-            {/if}
-
+            {#each puzzle.parts as part, i}
+                <span>
+                    {#if puzzle.unknownPuzzlePartNumber === i}
+                        <NumberInputComponent
+                            disabled="{puzzle.timeout}"
+                            {showWarning}
+                            {displayError}
+                            bind:value="{part.userDefinedValue}" />
+                    {:else}{part.generatedValue}{/if}
+                </span>
+                {#if i === 0}
+                    <span>
+                        <OperatorComponent operator="{puzzle.operator}" />
+                    </span>
+                {:else if i === 1}
+                    <span class="mr-2">=</span>
+                {/if}
+            {/each}
         </div>
     </div>
     <div class="float-left">

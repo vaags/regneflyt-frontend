@@ -8,14 +8,11 @@ import { AnswerMode } from "../models/enums/AnswerMode";
 export function getPuzzle(quiz: Quiz, previousPuzzle: Puzzle | undefined) {
 
     const puzzle: Puzzle = {
-        partOne: getPuzzlePart(quiz.partOne, previousPuzzle?.partOne),
-        partTwo: getPuzzlePart(quiz.partTwo, previousPuzzle?.partTwo),
+        parts: [
+            getPuzzlePart(quiz.partOne, previousPuzzle?.parts[0]),
+            getPuzzlePart(quiz.partTwo, previousPuzzle?.parts[1])
+        ],
         operator: quiz.selectedOperator,
-        answer: {
-            index: 0,
-            generatedValue: 0,
-            userDefinedValue: undefined,
-        },
         timeout: false,
         duration: 0,
         isCorrect: undefined,
@@ -23,12 +20,12 @@ export function getPuzzle(quiz: Quiz, previousPuzzle: Puzzle | undefined) {
     }
 
     if (puzzle.operator === Operator.Division) {
-        puzzle.partOne.generatedValue = puzzle.partOne.generatedValue * puzzle.partTwo.generatedValue
+        puzzle.parts[0].generatedValue = puzzle.parts[0].generatedValue * puzzle.parts[1].generatedValue
     } else if (shouldAvoidNegativeAnswer()) {
         swapPuzzlePartValues()
     }
 
-    puzzle.answer = getAnswerPart(puzzle.partOne.generatedValue, puzzle.partTwo.generatedValue, puzzle.operator)
+    puzzle.parts.push(getAnswerPart(puzzle.parts[0].generatedValue, puzzle.parts[1].generatedValue, puzzle.operator))
 
     return puzzle;
 
@@ -36,12 +33,12 @@ export function getPuzzle(quiz: Quiz, previousPuzzle: Puzzle | undefined) {
         return (
             !quiz.allowNegativeAnswer &&
             puzzle.operator === Operator.Subtraction &&
-            puzzle.partTwo.generatedValue > puzzle.partOne.generatedValue
+            puzzle.parts[1].generatedValue > puzzle.parts[0].generatedValue
         )
     }
 
     function swapPuzzlePartValues() {
-        [puzzle.partOne, puzzle.partTwo] = [puzzle.partTwo, puzzle.partOne]
+        [puzzle.parts[0], puzzle.parts[1]] = [puzzle.parts[1], puzzle.parts[0]]
     }
 }
 
@@ -129,13 +126,13 @@ function getUnknownPuzzlePartNumber(operator: Operator, answerMode: AnswerMode) 
             if (getTrueOrFalse()) {
                 return getAlternateUnknownPuzzlePart()
             } else {
-                return 3
+                return 2
             }
         case AnswerMode.Alternate: {
             return getAlternateUnknownPuzzlePart()
         }
         case AnswerMode.Normal: {
-            return 3
+            return 2
         }
     }
 
@@ -143,11 +140,11 @@ function getUnknownPuzzlePartNumber(operator: Operator, answerMode: AnswerMode) 
         switch (operator) {
             case Operator.Addition:
             case Operator.Subtraction:
-                return getTrueOrFalse() ? 1 : 2
+                return getTrueOrFalse() ? 0 : 1
             case Operator.Multiplication:
-                return 2
-            case Operator.Division:
                 return 1
+            case Operator.Division:
+                return 0
         }
     }
 

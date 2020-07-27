@@ -63,30 +63,23 @@
                             {i + 1}
                         </td>
                         <td class="border-t px-4 py-2">
-                            {#if puzzle.unknownPuzzlePartNumber === 1}
-                                <span class="font-bold text-blue-700">
-                                    {puzzle.timeout ? '?' : puzzle.partOne.userDefinedValue}
-                                </span>
-                                <OperatorComponent
-                                    operator="{puzzle.operator}" />
-                                {puzzle.partTwo.generatedValue} = {puzzle.answer.generatedValue}
-                            {:else if puzzle.unknownPuzzlePartNumber === 2}
-                                {puzzle.partOne.generatedValue}
-                                <OperatorComponent
-                                    operator="{puzzle.operator}" />
-                                <span class="font-bold text-blue-700">
-                                    {puzzle.timeout ? '?' : puzzle.partTwo.userDefinedValue}
-                                </span>
-                                = {puzzle.answer.generatedValue}
-                            {:else}
-                                {puzzle.partOne.generatedValue}
-                                <OperatorComponent
-                                    operator="{puzzle.operator}" />
-                                {puzzle.partTwo.generatedValue} =
-                                <span class="font-bold text-blue-700">
-                                    {puzzle.timeout ? '?' : puzzle.answer.userDefinedValue}
-                                </span>
-                            {/if}
+                            {#each puzzle.parts as part, i}
+                                {#if puzzle.unknownPuzzlePartNumber === i}
+                                    <span class="font-bold text-blue-700">
+                                        {puzzle.timeout ? '?' : part.userDefinedValue}
+                                    </span>
+                                {:else}
+                                    <span>{part.generatedValue}</span>
+                                {/if}
+                                {#if i === 0}
+                                    <span>
+                                        <OperatorComponent
+                                            operator="{puzzle.operator}" />
+                                    </span>
+                                {:else if i === 1}
+                                    <span class="mr-1">=</span>
+                                {/if}
+                            {/each}
                         </td>
                         <td class="border-t px-3 py-2">
                             {#if puzzle.isCorrect}
@@ -95,11 +88,6 @@
                                 <span class="text-yellow-700">Timeout</span>
                             {:else}
                                 <span class="text-red-700">Galt</span>
-                                <!-- (
-                                <span class="text-green-700">
-                                    {puzzle.unknownPuzzlePartNumber === 1 ? puzzle.partOne.generatedValue : puzzle.unknownPuzzlePartNumber === 2 ? puzzle.partTwo.generatedValue : puzzle.answer.generatedValue}
-                                </span>
-                                ) -->
                             {/if}
                         </td>
                         <td class="border-t px-3 py-2">
