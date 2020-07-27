@@ -349,7 +349,7 @@
     </div>
     <div class="card">
         <h2>Forhåndsvisning</h2>
-        {#if validationError || !puzzle?.parts}
+        {#if validationError || !puzzle.parts}
             <AlertComponent
                 color="yellow"
                 message="Kan ikke vise forhåndsvisning." />
