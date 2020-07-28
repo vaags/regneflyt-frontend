@@ -69,6 +69,7 @@
 
     function abortQuiz() {
         quiz.isStarted = false
+        quiz.isAboutToStart = false
     }
 
     function completeQuiz(event) {

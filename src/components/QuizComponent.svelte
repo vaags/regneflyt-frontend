@@ -58,25 +58,20 @@
             {showWarning}
             {quiz}
             on:addPuzzle="{addPuzzle}" />
-        <div class="text-right float-right">
-            {#if showWarning}
-                <p class="mb-2 text-gray-100">Ønsker du å avbryte?</p>
-                <ButtonComponent
-                    on:click="{abortQuiz}"
-                    label="ja"
-                    color="red" />
-                <ButtonComponent on:click="{toggleWarning}" label="Nei" />
-            {:else}
-                {#if isLocalhost}
-                    <ButtonComponent
-                        on:click="{completeQuiz}"
-                        label="Fullfør" />
-                {/if}
-                <ButtonComponent on:click="{toggleWarning}" label="Avbryt" />
-            {/if}
-        </div>
     {:else if quiz.isAboutToStart}
         <CountdownComponent time="{quiz.countDownTime}" />
     {/if}
+    <div class="text-right float-right">
+        {#if showWarning}
+            <p class="mb-2 text-gray-100">Ønsker du å avbryte?</p>
+            <ButtonComponent on:click="{abortQuiz}" label="ja" color="red" />
+            <ButtonComponent on:click="{toggleWarning}" label="Nei" />
+        {:else}
+            {#if isLocalhost}
+                <ButtonComponent on:click="{completeQuiz}" label="Fullfør" />
+            {/if}
+            <ButtonComponent on:click="{toggleWarning}" label="Avbryt" />
+        {/if}
+    </div>
 
 </div>
