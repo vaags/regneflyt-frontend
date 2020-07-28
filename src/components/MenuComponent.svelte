@@ -30,8 +30,6 @@
 
     function setRequiredPartProperties() {
         if (isMultiplication || isDivision) {
-            quiz.partOne.randomize = true
-            quiz.partTwo.randomize = true
             quiz.partOne.possibleValues = []
             quiz.partTwo.possibleValues = []
             if (isMultiplication) {
@@ -42,8 +40,6 @@
                 quiz.partOne.maxValue = 10
             }
         } else {
-            quiz.partOne.randomize = true
-            quiz.partTwo.randomize = true
             updateQuizSettings()
         }
     }
@@ -111,13 +107,11 @@
                     partOneValues: isMultiplication
                         ? quiz.partOne.possibleValues.toString()
                         : '',
-                    partOneRandom: quiz.partOne.randomize.toString(),
                     partTwoMin: quiz.partTwo.minValue?.toString(),
                     partTwoMax: quiz.partTwo.maxValue?.toString(),
                     partTwoValues: isDivision
                         ? quiz.partTwo.possibleValues.toString()
                         : '',
-                    partTwoRandom: quiz.partTwo.randomize.toString(),
                     answerMode: quiz.answerMode.toString(),
                 }
 
@@ -244,16 +238,6 @@
                 </label>
             {/if}
         </div>
-        {#if isDivision}
-            <label class="inline-flex items-center mt-6">
-                <input
-                    type="checkbox"
-                    class="form-checkbox text-blue-700 h-5 w-5 border-gray-500"
-                    on:change="{() => updateQuizSettings()}"
-                    bind:checked="{quiz.partOne.randomize}" />
-                <span class="ml-2">Tilfeldige verdier</span>
-            </label>
-        {/if}
     </div>
     <div class="card">
         <h2>
@@ -300,16 +284,6 @@
                 </label>
             {/if}
         </div>
-        {#if isMultiplication}
-            <label class="inline-flex items-center mt-6">
-                <input
-                    type="checkbox"
-                    on:change="{() => updateQuizSettings()}"
-                    class="form-checkbox text-blue-700 h-5 w-5 border-gray-500"
-                    bind:checked="{quiz.partTwo.randomize}" />
-                <span class="ml-2">Tilfeldige verdier</span>
-            </label>
-        {/if}
     </div>
     <div class="card">
         <h2>Ukjent ledd</h2>

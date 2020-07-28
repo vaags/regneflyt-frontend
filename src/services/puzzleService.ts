@@ -49,11 +49,10 @@ function getPuzzlePart(quizPuzzlePart: QuizPuzzlePart, previousPuzzlePart: Puzzl
             generatedValue: quizPuzzlePart.minValue,
             userDefinedValue: undefined
         }
+    } else {
+        return getRandomPuzzlePartValue(quizPuzzlePart.possibleValues, previousPuzzlePart?.index)
     }
 
-    return quizPuzzlePart.randomize
-        ? getRandomPuzzlePartValue(quizPuzzlePart.possibleValues, previousPuzzlePart?.index)
-        : getNextPuzzlePartValue(quizPuzzlePart.possibleValues, previousPuzzlePart?.index)
 }
 
 function getRandomPuzzlePartValue(possibleNumbersArray: Array<number>, previousPuzzlePartIndex: number | undefined): PuzzlePart {
@@ -74,25 +73,6 @@ function getRandomPuzzlePartValue(possibleNumbersArray: Array<number>, previousP
         if (exclude !== undefined && rnd >= exclude) rnd++
 
         return rnd
-    }
-}
-
-function getNextPuzzlePartValue(possibleNumbersArray: Array<number>, previousPuzzlePartIndex: number | undefined): PuzzlePart {
-    if (previousPuzzlePartIndex === undefined ||
-        previousPuzzlePartIndex ===
-        possibleNumbersArray.length - 1) {
-        return {
-            index: 0,
-            generatedValue: possibleNumbersArray[0],
-            userDefinedValue: undefined
-        }
-    }
-
-    return {
-        index: previousPuzzlePartIndex + 1,
-        generatedValue:
-            possibleNumbersArray[previousPuzzlePartIndex + 1],
-        userDefinedValue: undefined
     }
 }
 
