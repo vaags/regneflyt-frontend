@@ -6,7 +6,6 @@
     import type { Quiz } from '../models/Quiz'
     import { AnswerMode } from '../models/enums/AnswerMode'
     import AlertComponent from './widgets/AlertComponent.svelte'
-    import type { Puzzle } from '../models/Puzzle'
     import { getPuzzle } from '../services/puzzleService'
     import OperatorComponent from './widgets/OperatorComponent.svelte'
 
