@@ -1,13 +1,12 @@
 import type { Operator } from "./enums/Operator";
-import type { QuizPuzzlePart } from "./QuizPuzzlePart";
 import type { AnswerMode } from "./enums/AnswerMode";
+import type { QuizPuzzlePartSettings } from "./QuizPuzzlePartSettings";
 
 export type Quiz = {
     duration: number;
     puzzleTimeLimit: number;
     countDownTime: number;
-    partOne: QuizPuzzlePart;
-    partTwo: QuizPuzzlePart;
+    partSettings: Array<QuizPuzzlePartSettings>;
     isAboutToStart: boolean;
     isStarted: boolean;
     isCompleted: boolean;
@@ -16,4 +15,5 @@ export type Quiz = {
     operators: Array<Operator>;
     answerMode: AnswerMode;
     showRemainingTime: boolean;
+    isLocalhost: boolean;
 }

@@ -14,7 +14,6 @@
     let secondsLeft = quiz.duration * 60
     let showWarning = false
     let puzzleSet: Array<Puzzle> = []
-    const isLocalhost = location.hostname === 'localhost'
 
     onDestroy(() => {
         clearTimeout(quizTimeout)
@@ -67,7 +66,7 @@
             <ButtonComponent on:click="{abortQuiz}" label="ja" color="red" />
             <ButtonComponent on:click="{toggleWarning}" label="Nei" />
         {:else}
-            {#if isLocalhost}
+            {#if quiz.isLocalhost}
                 <ButtonComponent on:click="{completeQuiz}" label="Fullfør" />
             {/if}
             <ButtonComponent on:click="{toggleWarning}" label="Avbryt" />
