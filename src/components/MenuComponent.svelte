@@ -354,7 +354,7 @@
                 color="yellow"
                 message="Kan ikke vise forhåndsvisning." />
         {:else}
-            <p class="text-center mb-4 text-2xl md:text-3xl">
+            <div class="text-center text-2xl md:text-3xl">
                 {#each puzzle.parts as part, i}
                     <span>
                         {puzzle.unknownPuzzlePartNumber === i ? '?' : part.generatedValue}
@@ -367,12 +367,14 @@
                         <span class="mr-2">=</span>
                     {/if}
                 {/each}
-            </p>
+            </div>
             <div class="text-right">
-                <ButtonComponent
-                    small="{true}"
-                    on:click="{() => getPuzzlePreview()}"
-                    label="Ny" />
+                <button
+                    type="button"
+                    class="text-3xl cursor-pointer focus:outline-none"
+                    on:click="{() => getPuzzlePreview()}">
+                    &#127922;
+                </button>
             </div>
         {/if}
     </div>
