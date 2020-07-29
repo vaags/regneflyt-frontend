@@ -1,5 +1,5 @@
 import type { Operator } from "./enums/Operator";
-import type { AnswerMode } from "./enums/AnswerMode";
+import type { PuzzleMode } from "./enums/PuzzleMode";
 import type { QuizPuzzlePartSettings } from "./QuizPuzzlePartSettings";
 
 export type Quiz = {
@@ -13,7 +13,7 @@ export type Quiz = {
     selectedOperator: Operator;
     allowNegativeAnswer: boolean;
     operators: Array<Operator>;
-    answerMode: AnswerMode;
+    puzzleMode: PuzzleMode;
     showRemainingTime: boolean;
     isLocalhost: boolean;
 }

@@ -4,7 +4,7 @@
     import RangeComponent from './widgets/RangeComponent.svelte'
     import { Operator } from '../models/enums/Operator'
     import type { Quiz } from '../models/Quiz'
-    import { AnswerMode } from '../models/enums/AnswerMode'
+    import { PuzzleMode } from '../models/enums/PuzzleMode'
     import AlertComponent from './widgets/AlertComponent.svelte'
     import { getPuzzle } from '../services/puzzleService'
     import OperatorComponent from './widgets/OperatorComponent.svelte'
@@ -20,6 +20,7 @@
 
     $: isDivision = quiz.selectedOperator === Operator.Division
     $: isMultiplication = quiz.selectedOperator === Operator.Multiplication
+    $: isMultiplicationOrDivision = isDivision || isMultiplication
     $: isAllOperators = quiz.selectedOperator === Operator.All
     $: hasPuzzleTimeLimit = quiz.puzzleTimeLimit > 0
 
@@ -121,7 +122,7 @@
                 </span>
             </label>
         {/each}
-        {#if quiz.selectedOperator === Operator.All}
+        {#if isAllOperators}
             <AlertComponent
                 message="De valgte innstillingene for alle fire regnearter vil
                 bli brukt."
@@ -138,7 +139,7 @@
             </label>
         {/if}
     </div>
-    {#if quiz.selectedOperator !== Operator.All}
+    {#if !isAllOperators}
         <div class="card">
             <h2>
                 {#if isMultiplication}
@@ -165,7 +166,7 @@
                             <span class="ml-2">{i + 1}</span>
                         </label>
                     {/each}
-                {:else if quiz.selectedOperator !== Operator.All}
+                {:else if !isAllOperators}
                     {#if isDivision}
                         <AlertComponent
                             message="Intervallverdi ganget med divisor" />
@@ -237,16 +238,16 @@
         </div>
     {/if}
     <div class="card">
-        <h2>Ukjent ledd</h2>
+        <h2>Oppgaveform</h2>
         <label class="flex items-center py-1">
             <input
                 type="radio"
                 class="form-radio h-5 w-5 text-blue-700 border-gray-500"
-                bind:group="{quiz.answerMode}"
+                bind:group="{quiz.puzzleMode}"
                 on:change="{() => updateQuizSettings()}"
-                value="{AnswerMode.Normal}" />
+                value="{PuzzleMode.Normal}" />
             <span class="ml-2">
-                {AnswerMode.Normal}
+                Normal
                 <span class="text-sm">(Svaret er ukjent)</span>
             </span>
         </label>
@@ -254,11 +255,11 @@
             <input
                 type="radio"
                 class="form-radio h-5 w-5 text-blue-700 border-gray-500"
-                bind:group="{quiz.answerMode}"
+                bind:group="{quiz.puzzleMode}"
                 on:change="{() => updateQuizSettings()}"
-                value="{AnswerMode.Alternate}" />
+                value="{PuzzleMode.Alternate}" />
             <span class="ml-2">
-                {AnswerMode.Alternate}
+                Omvendt
                 <span class="text-sm">(Første eller andre ledd er ukjent)</span>
             </span>
         </label>
@@ -266,10 +267,10 @@
             <input
                 type="radio"
                 class="form-radio h-5 w-5 text-blue-700 border-gray-500"
-                bind:group="{quiz.answerMode}"
+                bind:group="{quiz.puzzleMode}"
                 on:change="{() => updateQuizSettings()}"
-                value="{AnswerMode.Random}" />
-            <span class="ml-2">{AnswerMode.Random}</span>
+                value="{PuzzleMode.Random}" />
+            <span class="ml-2">Tilfeldig</span>
         </label>
     </div>
     <div class="card">

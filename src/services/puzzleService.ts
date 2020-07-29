@@ -3,7 +3,7 @@ import { Operator } from "../models/enums/Operator";
 import type { Puzzle } from "../models/Puzzle";
 import type { PuzzlePart } from "../models/PuzzlePart";
 import type { QuizPuzzlePart } from "../models/QuizPuzzlePart";
-import { AnswerMode } from "../models/enums/AnswerMode";
+import { PuzzleMode } from "../models/enums/PuzzleMode";
 
 export function getPuzzle(quiz: Quiz, previousPuzzle: Puzzle | undefined) {
 
@@ -18,7 +18,7 @@ export function getPuzzle(quiz: Quiz, previousPuzzle: Puzzle | undefined) {
         timeout: false,
         duration: 0,
         isCorrect: undefined,
-        unknownPuzzlePartNumber: getUnknownPuzzlePartNumber(activeOperator, quiz.answerMode)
+        unknownPuzzlePartNumber: getUnknownPuzzlePartNumber(activeOperator, quiz.puzzleMode)
     }
 
     if (puzzle.operator === Operator.Division) {
@@ -121,18 +121,18 @@ function getAnswerPart(
     }
 }
 
-function getUnknownPuzzlePartNumber(operator: Operator, answerMode: AnswerMode) {
+function getUnknownPuzzlePartNumber(operator: Operator, answerMode: PuzzleMode) {
     switch (answerMode) {
-        case AnswerMode.Random:
+        case PuzzleMode.Random:
             if (getTrueOrFalse()) {
                 return getAlternateUnknownPuzzlePart()
             } else {
                 return 2
             }
-        case AnswerMode.Alternate: {
+        case PuzzleMode.Alternate: {
             return getAlternateUnknownPuzzlePart()
         }
-        case AnswerMode.Normal: {
+        case PuzzleMode.Normal: {
             return 2
         }
     }

@@ -1,6 +1,6 @@
 import type { Quiz } from "../models/Quiz"
 import { Operator } from "../models/enums/Operator"
-import { AnswerMode } from "../models/enums/AnswerMode";
+import { PuzzleMode } from "../models/enums/PuzzleMode";
 
 const urlParams = new URLSearchParams(window.location.search)
 
@@ -78,8 +78,8 @@ export function getQuiz(): Quiz {
             Operator.Division,
             Operator.All
         ],
-        answerMode:
-            (urlParams.get('answerMode') as AnswerMode) || AnswerMode.Normal,
+        puzzleMode:
+            (getIntParam('puzzleMode') as PuzzleMode) || PuzzleMode.Normal,
     }
 }
 
@@ -108,7 +108,7 @@ export function setUrlParams(quiz: Quiz) {
         divTwoValues:
             quiz.partSettings[3].partTwo.possibleValues?.toString() ||
             '',
-        answerMode: quiz.answerMode.toString(),
+        puzzleMode: quiz.puzzleMode.toString(),
     }
 
     window.history.replaceState(
