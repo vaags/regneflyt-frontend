@@ -2,14 +2,17 @@
     import { Operator } from '../../models/enums/Operator'
 
     export let operator: Operator
+    export let returnName: boolean = false
 </script>
 
 {#if operator === Operator.Addition}
-    {@html '&#43;'}
+    {@html returnName ? 'Addisjon' : '&#43;'}
 {:else if operator === Operator.Subtraction}
-    {@html '&#8722;'}
+    {@html returnName ? 'Subtraksjon' : '&#8722;'}
 {:else if operator === Operator.Multiplication}
-    {@html '&#215;'}
+    {@html returnName ? 'Multiplikasjon' : '&#215;'}
 {:else if operator === Operator.Division}
-    {@html '&#247;'}
+    {@html returnName ? 'Divisjon' : '&#247;'}
+{:else if operator === Operator.All}
+    {@html returnName ? 'Alle' : '&#8704'}
 {/if}

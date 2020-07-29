@@ -8,18 +8,26 @@
     import AlertComponent from './widgets/AlertComponent.svelte'
     import { getPuzzle } from '../services/puzzleService'
     import OperatorComponent from './widgets/OperatorComponent.svelte'
+    import { setUrlParams } from '../services/quizService'
+    import HiddenValueComponent from './widgets/HiddenValueComponent.svelte'
 
     export let quiz: Quiz
     let puzzle = getPuzzle(quiz, undefined)
+    let showHiddenValue: boolean = false
 
     const dispatch = createEventDispatcher()
 
     $: isDivision = quiz.selectedOperator === Operator.Division
     $: isMultiplication = quiz.selectedOperator === Operator.Multiplication
+    $: isAllOperators = quiz.selectedOperator === Operator.All
 
     $: validationError =
-        (isMultiplication && quiz.partOne.possibleValues.length == 0) ||
-        (isDivision && quiz.partTwo.possibleValues.length == 0)
+        ((isMultiplication || isAllOperators) &&
+            quiz.partSettings[Operator.Multiplication].partOne.possibleValues
+                ?.length == 0) ||
+        ((isDivision || isAllOperators) &&
+            quiz.partSettings[Operator.Division].partTwo.possibleValues
+                ?.length == 0)
 
     function startQuiz() {
         if (validationError) return
@@ -27,100 +35,16 @@
         dispatch('startQuiz', { quiz })
     }
 
-    function setRequiredPartProperties() {
-        if (isMultiplication || isDivision) {
-            quiz.partOne.possibleValues = []
-            quiz.partTwo.possibleValues = []
-            if (isMultiplication) {
-                quiz.partTwo.minValue = 1
-                quiz.partTwo.maxValue = 10
-            } else {
-                quiz.partOne.minValue = 1
-                quiz.partOne.maxValue = 10
-            }
-        } else {
-            updateQuizSettings()
-        }
-    }
-
     function getPuzzlePreview() {
+        showHiddenValue = false
         puzzle = getPuzzle(quiz, puzzle)
     }
 
-    async function updateQuizSettings() {
-        setTimeout(() => {
-            if (isMultiplication) {
-                quiz.partTwo.possibleValues = getArrayOfNumbers(
-                    quiz.partTwo.minValue,
-                    quiz.partTwo.maxValue
-                )
-                quiz.partOne.minValue = quiz.partOne.possibleValues[0]
-                quiz.partOne.maxValue =
-                    quiz.partOne.possibleValues[
-                        quiz.partOne.possibleValues.length - 1
-                    ]
-            } else if (isDivision) {
-                quiz.partOne.possibleValues = getArrayOfNumbers(
-                    quiz.partOne.minValue,
-                    quiz.partOne.maxValue
-                )
-                quiz.partTwo.minValue = quiz.partTwo.possibleValues[0]
-                quiz.partTwo.maxValue =
-                    quiz.partTwo.possibleValues[
-                        quiz.partTwo.possibleValues.length - 1
-                    ]
-            } else {
-                quiz.partOne.possibleValues = getArrayOfNumbers(
-                    quiz.partOne.minValue,
-                    quiz.partOne.maxValue
-                )
-                quiz.partTwo.possibleValues = getArrayOfNumbers(
-                    quiz.partTwo.minValue,
-                    quiz.partTwo.maxValue
-                )
-            }
-
-            if (!validationError) {
-                updateUrlParams()
-                getPuzzlePreview()
-            }
-
-            function getArrayOfNumbers(
-                first: number,
-                last: number
-            ): Array<number> {
-                return Array(last)
-                    .fill(first)
-                    .map((x, y) => x + y)
-            }
-
-            function updateUrlParams() {
-                let parameters = {
-                    duration: quiz.duration.toString(),
-                    showRemainingTime: quiz.showRemainingTime.toString(),
-                    timeLimit: quiz.puzzleTimeLimit.toString(),
-                    operator: quiz.selectedOperator.toString(),
-                    negatives: quiz.allowNegativeAnswer.toString(),
-                    partOneMin: quiz.partOne.minValue?.toString(),
-                    partOneMax: quiz.partOne.maxValue?.toString(),
-                    partOneValues: isMultiplication
-                        ? quiz.partOne.possibleValues.toString()
-                        : '',
-                    partTwoMin: quiz.partTwo.minValue?.toString(),
-                    partTwoMax: quiz.partTwo.maxValue?.toString(),
-                    partTwoValues: isDivision
-                        ? quiz.partTwo.possibleValues.toString()
-                        : '',
-                    answerMode: quiz.answerMode.toString(),
-                }
-
-                window.history.replaceState(
-                    null,
-                    '',
-                    `?${new URLSearchParams(parameters)}`
-                )
-            }
-        }, 0)
+    function updateQuizSettings() {
+        if (!validationError) {
+            setUrlParams(quiz)
+            getPuzzlePreview()
+        }
     }
 
     onMount(() => {
@@ -173,10 +97,18 @@
                     class="form-radio h-5 w-5 text-blue-700 border-gray-500"
                     bind:group="{quiz.selectedOperator}"
                     value="{operator}"
-                    on:change="{() => setRequiredPartProperties()}" />
-                <span class="ml-2">{operator}</span>
+                    on:change="{() => updateQuizSettings()}" />
+                <span class="ml-2">
+                    <OperatorComponent {operator} returnName="{true}" />
+                </span>
             </label>
         {/each}
+        {#if quiz.selectedOperator === Operator.All}
+            <AlertComponent
+                message="De valgte innstillingene for alle fire regnearter vil
+                bli brukt."
+                bottomMargin="{false}" />
+        {/if}
         {#if quiz.selectedOperator === Operator.Subtraction}
             <label class="inline-flex items-center mt-4">
                 <input
@@ -188,102 +120,104 @@
             </label>
         {/if}
     </div>
-    <div class="card">
-        <h2>
-            {#if isMultiplication}
-                Multiplikand
-            {:else if quiz.selectedOperator === Operator.Division}
-                Dividend
-                <small>(intervall)</small>
-            {:else}
-                Første ledd
-                <small>(intervall)</small>
-            {/if}
-        </h2>
-        <div>
-            {#if isMultiplication}
-                {#each Array(10) as _, i}
-                    <label class="flex items-center py-1">
-                        <input
-                            type="checkbox"
-                            class="form-checkbox text-blue-700 h-5 w-5
-                            border-gray-500"
-                            on:change="{() => updateQuizSettings()}"
-                            bind:group="{quiz.partOne.possibleValues}"
-                            value="{i + 1}" />
-                        <span class="ml-2">{i + 1}</span>
-                    </label>
-                {/each}
-            {:else}
-                {#if isDivision}
-                    <AlertComponent
-                        message="Intervallverdi ganget med divisor" />
+    {#if quiz.selectedOperator !== Operator.All}
+        <div class="card">
+            <h2>
+                {#if isMultiplication}
+                    Multiplikand
+                {:else if quiz.selectedOperator === Operator.Division}
+                    Dividend
+                    <small>(intervall)</small>
+                {:else}
+                    Første ledd
+                    <small>(intervall)</small>
                 {/if}
-                <label>
-                    Fra og med:
-                    <br />
-                    <RangeComponent
-                        max="{quiz.partOne.maxValue - 1}"
-                        on:change="{() => updateQuizSettings()}"
-                        bind:value="{quiz.partOne.minValue}" />
-                </label>
-                <label class="block mt-4">
-                    Til og med:
-                    <br />
-                    <RangeComponent
-                        min="{quiz.partOne.minValue + 1}"
-                        on:change="{() => updateQuizSettings()}"
-                        bind:value="{quiz.partOne.maxValue}" />
-                </label>
-            {/if}
-        </div>
-    </div>
-    <div class="card">
-        <h2>
-            {#if isMultiplication}
-                Multiplikator
-                <small>(intervall)</small>
-            {:else if isDivision}
-                Divisor
-            {:else}
-                Andre ledd
-                <small>(intervall)</small>
-            {/if}
-        </h2>
-        <div>
-            {#if isDivision}
-                {#each Array(10) as _, i}
-                    <label class="flex items-center py-1">
-                        <input
-                            type="checkbox"
-                            class="form-checkbox text-blue-700 h-5 w-5
-                            border-gray-500"
+            </h2>
+            <div>
+                {#if isMultiplication}
+                    {#each Array(10) as _, i}
+                        <label class="flex items-center py-1">
+                            <input
+                                type="checkbox"
+                                class="form-checkbox text-blue-700 h-5 w-5
+                                border-gray-500"
+                                on:change="{() => updateQuizSettings()}"
+                                bind:group="{quiz.partSettings[Operator.Multiplication].partOne.possibleValues}"
+                                value="{i + 1}" />
+                            <span class="ml-2">{i + 1}</span>
+                        </label>
+                    {/each}
+                {:else if quiz.selectedOperator !== Operator.All}
+                    {#if isDivision}
+                        <AlertComponent
+                            message="Intervallverdi ganget med divisor" />
+                    {/if}
+                    <label>
+                        Fra og med:
+                        <br />
+                        <RangeComponent
+                            max="{quiz.partSettings[quiz.selectedOperator].partOne.maxValue - 1}"
                             on:change="{() => updateQuizSettings()}"
-                            bind:group="{quiz.partTwo.possibleValues}"
-                            value="{i + 1}" />
-                        <span class="ml-2">{i + 1}</span>
+                            bind:value="{quiz.partSettings[quiz.selectedOperator].partOne.minValue}" />
                     </label>
-                {/each}
-            {:else}
-                <label>
-                    Fra og med:
-                    <br />
-                    <RangeComponent
-                        max="{quiz.partTwo.maxValue - 1}"
-                        on:change="{() => updateQuizSettings()}"
-                        bind:value="{quiz.partTwo.minValue}" />
-                </label>
-                <label class="block mt-4">
-                    Til og med:
-                    <br />
-                    <RangeComponent
-                        min="{quiz.partTwo.minValue + 1}"
-                        on:change="{() => updateQuizSettings()}"
-                        bind:value="{quiz.partTwo.maxValue}" />
-                </label>
-            {/if}
+                    <label class="block mt-4">
+                        Til og med:
+                        <br />
+                        <RangeComponent
+                            min="{quiz.partSettings[quiz.selectedOperator].partOne.minValue + 1}"
+                            on:change="{() => updateQuizSettings()}"
+                            bind:value="{quiz.partSettings[quiz.selectedOperator].partOne.maxValue}" />
+                    </label>
+                {/if}
+            </div>
         </div>
-    </div>
+        <div class="card">
+            <h2>
+                {#if isMultiplication}
+                    Multiplikator
+                    <small>(intervall)</small>
+                {:else if isDivision}
+                    Divisor
+                {:else}
+                    Andre ledd
+                    <small>(intervall)</small>
+                {/if}
+            </h2>
+            <div>
+                {#if isDivision}
+                    {#each Array(10) as _, i}
+                        <label class="flex items-center py-1">
+                            <input
+                                type="checkbox"
+                                class="form-checkbox text-blue-700 h-5 w-5
+                                border-gray-500"
+                                on:change="{() => updateQuizSettings()}"
+                                bind:group="{quiz.partSettings[Operator.Division].partTwo.possibleValues}"
+                                value="{i + 1}" />
+                            <span class="ml-2">{i + 1}</span>
+                        </label>
+                    {/each}
+                {:else if quiz.selectedOperator !== Operator.All}
+                    <label>
+                        Fra og med:
+                        <br />
+                        <RangeComponent
+                            max="{quiz.partSettings[quiz.selectedOperator].partTwo.maxValue - 1}"
+                            on:change="{() => updateQuizSettings()}"
+                            bind:value="{quiz.partSettings[quiz.selectedOperator].partTwo.minValue}" />
+                    </label>
+                    <label class="block mt-4">
+                        Til og med:
+                        <br />
+                        <RangeComponent
+                            min="{quiz.partSettings[quiz.selectedOperator].partTwo.minValue + 1}"
+                            on:change="{() => updateQuizSettings()}"
+                            bind:value="{quiz.partSettings[quiz.selectedOperator].partTwo.maxValue}" />
+                    </label>
+                {/if}
+            </div>
+        </div>
+    {/if}
     <div class="card">
         <h2>Ukjent ledd</h2>
         <label class="flex items-center py-1">
@@ -329,9 +263,15 @@
         {:else}
             <div class="text-center text-2xl md:text-3xl">
                 {#each puzzle.parts as part, i}
-                    <span>
-                        {puzzle.unknownPuzzlePartNumber === i ? '?' : part.generatedValue}
-                    </span>
+                    {#if puzzle.unknownPuzzlePartNumber === i}
+                        <HiddenValueComponent
+                            on:click="{() => (showHiddenValue = !showHiddenValue)}"
+                            hiddenValue="{part.generatedValue}"
+                            {showHiddenValue}
+                            value="?" />
+                    {:else}
+                        <span>{part.generatedValue}</span>
+                    {/if}
                     {#if i === 0}
                         <span>
                             <OperatorComponent operator="{puzzle.operator}" />

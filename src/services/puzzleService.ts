@@ -7,16 +7,18 @@ import { AnswerMode } from "../models/enums/AnswerMode";
 
 export function getPuzzle(quiz: Quiz, previousPuzzle: Puzzle | undefined) {
 
+    const activeOperator = getOperator(quiz)
+
     const puzzle: Puzzle = {
         parts: [
-            getPuzzlePart(quiz.partOne, previousPuzzle?.parts[0]),
-            getPuzzlePart(quiz.partTwo, previousPuzzle?.parts[1])
+            getPuzzlePart(quiz.partSettings[activeOperator].partOne, previousPuzzle?.parts[0]),
+            getPuzzlePart(quiz.partSettings[activeOperator].partTwo, previousPuzzle?.parts[1])
         ],
-        operator: quiz.selectedOperator,
+        operator: activeOperator,
         timeout: false,
         duration: 0,
         isCorrect: undefined,
-        unknownPuzzlePartNumber: getUnknownPuzzlePartNumber(quiz.selectedOperator, quiz.answerMode)
+        unknownPuzzlePartNumber: getUnknownPuzzlePartNumber(activeOperator, quiz.answerMode)
     }
 
     if (puzzle.operator === Operator.Division) {
@@ -42,34 +44,52 @@ export function getPuzzle(quiz: Quiz, previousPuzzle: Puzzle | undefined) {
     }
 }
 
+function getOperator(quiz: Quiz) {
+    if (quiz.selectedOperator === Operator.All) {
+        let random = Math.ceil(Math.random() * 4)
+        return quiz.operators[random - 1];
+    }
+
+    return quiz.selectedOperator
+}
+
 function getPuzzlePart(quizPuzzlePart: QuizPuzzlePart, previousPuzzlePart: PuzzlePart | undefined): PuzzlePart {
-    if (quizPuzzlePart.minValue === quizPuzzlePart.maxValue) {
+    if (quizPuzzlePart.possibleValues?.length > 0) {
+
+        if (quizPuzzlePart.possibleValues.length === 1) {
+            return {
+                generatedValue: quizPuzzlePart.possibleValues[0],
+                userDefinedValue: undefined
+            }
+        }
+
+        let previousIndex: number | undefined = undefined;
+
+        if (previousPuzzlePart !== undefined) {
+            previousIndex = quizPuzzlePart.possibleValues.indexOf(previousPuzzlePart.generatedValue);
+        }
+
+        let randomIndex = getRandomNumber(
+            0, quizPuzzlePart.possibleValues.length - 1, previousIndex
+        )
+
         return {
-            index: 0,
-            generatedValue: quizPuzzlePart.minValue,
+            generatedValue: quizPuzzlePart.possibleValues[randomIndex],
             userDefinedValue: undefined
         }
     } else {
-        return getRandomPuzzlePartValue(quizPuzzlePart.possibleValues, previousPuzzlePart?.index)
+        return {
+            generatedValue: getRandomNumber(
+                quizPuzzlePart.minValue,
+                quizPuzzlePart.maxValue,
+                previousPuzzlePart?.generatedValue),
+            userDefinedValue: undefined
+        }
     }
 
-}
-
-function getRandomPuzzlePartValue(possibleNumbersArray: Array<number>, previousPuzzlePartIndex: number | undefined): PuzzlePart {
-    const randomIndex = getRandomNumber(
-        possibleNumbersArray.length,
-        previousPuzzlePartIndex
-    )
-
-    return {
-        index: randomIndex,
-        generatedValue: possibleNumbersArray[randomIndex],
-        userDefinedValue: undefined
-    }
-
-    function getRandomNumber(max: number, exclude: number | undefined) {
+    function getRandomNumber(min: number, max: number, exclude: number | undefined) {
         // Adapted from https://stackoverflow.com/a/34184614
-        var rnd = Math.floor(Math.random() * (exclude === undefined ? max : max - 1))
+        var rnd = Math.floor(Math.random() * ((exclude === undefined ? max + 1 : max) - min) + min)
         if (exclude !== undefined && rnd >= exclude) rnd++
 
         return rnd
@@ -81,7 +101,6 @@ function getAnswerPart(
     partTwo: number,
     activeOperator: Operator): PuzzlePart {
     return {
-        index: 0,
         generatedValue: getResult(),
         userDefinedValue: undefined
     }
@@ -96,6 +115,8 @@ function getAnswerPart(
                 return partOne * partTwo
             case Operator.Division:
                 return partOne / partTwo
+            default:
+                throw new Error("Cannot get result. No valid operator defined");
         }
     }
 }
@@ -125,6 +146,8 @@ function getUnknownPuzzlePartNumber(operator: Operator, answerMode: AnswerMode) 
                 return 1
             case Operator.Division:
                 return 0
+            default:
+                throw new Error("No operator defined");
         }
     }
 

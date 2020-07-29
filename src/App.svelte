@@ -2,64 +2,12 @@
     import MenuComponent from './components/MenuComponent.svelte'
     import ResultsComponent from './components/ResultsComponent.svelte'
     import QuizComponent from './components/QuizComponent.svelte'
-    import { Operator } from './models/enums/Operator'
-    import type { Quiz } from './models/Quiz'
     import type { Puzzle } from './models/Puzzle'
-    import { AnswerMode } from './models/enums/AnswerMode'
-
-    const urlParams = new URLSearchParams(window.location.search)
-
-    function getIntParam(param: string): number {
-        let value = urlParams.get(param)
-
-        return value ? parseInt(value) : 0
-    }
-
-    function getBoolParam(param: string): boolean {
-        return urlParams.get(param) === 'false' ? false : true
-    }
-
-    function getNumArrayParam(param: string): Array<number> {
-        var array = urlParams.get(param)
-
-        return array && array !== 'null' ? array.split(',').map(Number) : []
-    }
-
-    let quiz: Quiz = {
-        duration: getIntParam('duration') || 0.5,
-        showRemainingTime: getBoolParam('showRemainingTime'),
-        puzzleTimeLimit: getIntParam('timeLimit') || 0,
-        partOne: {
-            minValue: getIntParam('partOneMin') || 1,
-            maxValue: getIntParam('partOneMax') || 20,
-            randomize: getBoolParam('partOneRandom'),
-            possibleValues: getNumArrayParam('partOneValues'),
-        },
-        partTwo: {
-            minValue: getIntParam('partTwoMin') || 1,
-            maxValue: getIntParam('partTwoMax') || 20,
-            randomize: getBoolParam('partTwoRandom'),
-            possibleValues: getNumArrayParam('partTwoValues'),
-        },
-        isStarted: false,
-        isCompleted: false,
-        isAboutToStart: false,
-        countDownTime: 3,
-        selectedOperator:
-            (urlParams.get('operator') as Operator) || Operator.Addition,
-        allowNegativeAnswer: getBoolParam('negatives'),
-        operators: [
-            Operator.Addition,
-            Operator.Subtraction,
-            Operator.Multiplication,
-            Operator.Division,
-        ],
-        answerMode:
-            (urlParams.get('answerMode') as AnswerMode) || AnswerMode.Random,
-    }
+    import { getQuiz } from './services/quizService'
 
     let puzzleSet: Array<Puzzle>
     let displayGreeting = true
+    let quiz = getQuiz()
 
     function startQuiz(event) {
         quiz = event.detail.quiz
