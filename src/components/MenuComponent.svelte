@@ -14,12 +14,14 @@
     export let quiz: Quiz
     let puzzle = getPuzzle(quiz, undefined)
     let showHiddenValue: boolean = false
+    let hasPuzzleTimeLimit: boolean
 
     const dispatch = createEventDispatcher()
 
     $: isDivision = quiz.selectedOperator === Operator.Division
     $: isMultiplication = quiz.selectedOperator === Operator.Multiplication
     $: isAllOperators = quiz.selectedOperator === Operator.All
+    $: hasPuzzleTimeLimit = quiz.puzzleTimeLimit > 0
 
     $: validationError =
         ((isMultiplication || isAllOperators) &&
@@ -47,6 +49,14 @@
         }
     }
 
+    function togglePuzzleTimeLimit() {
+        quiz.puzzleTimeLimit === 0
+            ? (quiz.puzzleTimeLimit = 3)
+            : (quiz.puzzleTimeLimit = 0)
+
+        updateQuizSettings()
+    }
+
     onMount(() => {
         updateQuizSettings()
     })
@@ -57,12 +67,13 @@
         <h2>Spilletid</h2>
         <label>
             Totalt:
-            <span class="text-sm">(i minutter)</span>
             <br />
             <RangeComponent
                 min="{0.5}"
-                max="{15}"
+                max="{10}"
                 step="{0.5}"
+                unitLabel=" min"
+                largeLabel="{true}"
                 on:change="{() => updateQuizSettings()}"
                 bind:value="{quiz.duration}" />
         </label>
@@ -74,19 +85,27 @@
                 bind:checked="{quiz.showRemainingTime}" />
             <span class="ml-2">Vis gjenværende tid</span>
         </label>
-
         <label class="block mt-4">
-            Per oppgave:
-            <span class="text-sm">(i sekunder)</span>
-            <br />
-            <RangeComponent
-                zeroLabel="&#8734;"
-                min="{0}"
-                max="{10}"
-                on:change="{() => updateQuizSettings()}"
-                bind:value="{quiz.puzzleTimeLimit}" />
+            <label class="inline-flex items-center">
+                <input
+                    type="checkbox"
+                    class="form-checkbox text-blue-700 h-5 w-5 border-gray-500"
+                    on:change="{() => togglePuzzleTimeLimit()}"
+                    bind:checked="{hasPuzzleTimeLimit}" />
+                <span class="ml-2">
+                    Tidsbegrensning per oppgave{quiz.puzzleTimeLimit ? ':' : ''}
+                </span>
+            </label>
+            {#if quiz.puzzleTimeLimit}
+                <br />
+                <RangeComponent
+                    min="{3}"
+                    max="{10}"
+                    unitLabel=" s"
+                    on:change="{() => updateQuizSettings()}"
+                    bind:value="{quiz.puzzleTimeLimit}" />
+            {/if}
         </label>
-
     </div>
     <div class="card">
         <h2>Regneart</h2>

@@ -7,7 +7,7 @@ const urlParams = new URLSearchParams(window.location.search)
 export function getQuiz(): Quiz {
     return {
         isLocalhost: location.hostname === 'localhost',
-        duration: getIntParam('duration') || 0.5,
+        duration: getIntParam('duration') || 1,
         showRemainingTime: getBoolParam('showRemainingTime'),
         puzzleTimeLimit: getIntParam('timeLimit') || 0,
         partSettings: [
