@@ -65,19 +65,18 @@
 <form>
     <div class="card">
         <h2>Spilletid</h2>
-        <label>
-            Totalt:
-            <br />
-            <RangeComponent
-                min="{0.5}"
-                max="{10}"
-                step="{0.5}"
-                unitLabel=" min"
-                largeLabel="{true}"
-                on:change="{() => updateQuizSettings()}"
-                bind:value="{quiz.duration}" />
-        </label>
-        <label class="inline-flex items-center mt-3">
+        <label for="duration" class="sr-only">Totalt:</label>
+        <RangeComponent
+            min="{0.5}"
+            max="{10}"
+            id="duration"
+            step="{0.5}"
+            unitLabel=" min"
+            paddingTop="{false}"
+            largeLabel="{true}"
+            on:change="{() => updateQuizSettings()}"
+            bind:value="{quiz.duration}" />
+        <label class="inline-flex items-center mt-4">
             <input
                 type="checkbox"
                 class="form-checkbox text-blue-700 h-5 w-5 border-gray-500"
