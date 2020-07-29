@@ -264,11 +264,13 @@
             <div class="text-center text-2xl md:text-3xl">
                 {#each puzzle.parts as part, i}
                     {#if puzzle.unknownPuzzlePartNumber === i}
-                        <HiddenValueComponent
-                            on:click="{() => (showHiddenValue = !showHiddenValue)}"
-                            hiddenValue="{part.generatedValue}"
-                            {showHiddenValue}
-                            value="?" />
+                        <span
+                            on:click="{() => (showHiddenValue = !showHiddenValue)}">
+                            <HiddenValueComponent
+                                hiddenValue="{part.generatedValue}"
+                                {showHiddenValue}
+                                value="?" />
+                        </span>
                     {:else}
                         <span>{part.generatedValue}</span>
                     {/if}

@@ -4,6 +4,7 @@
     import ButtonComponent from './widgets/ButtonComponent.svelte'
     import OperatorComponent from './widgets/OperatorComponent.svelte'
     import AlertComponent from './widgets/AlertComponent.svelte'
+    import HiddenValueCompontent from './widgets/HiddenValueComponent.svelte'
 
     const dispatch = createEventDispatcher()
 
@@ -62,12 +63,13 @@
                             text-gray-600">
                             {i + 1}
                         </td>
-                        <td class="border-t px-4 py-2">
+                        <td class="border-t px-4 py-2 whitespace-no-wrap">
                             {#each puzzle.parts as part, i}
                                 {#if puzzle.unknownPuzzlePartNumber === i}
-                                    <span class="font-bold text-blue-700">
-                                        {puzzle.timeout ? '?' : part.userDefinedValue}
-                                    </span>
+                                    <HiddenValueCompontent
+                                        value="{puzzle.timeout ? '?' : part.userDefinedValue}"
+                                        showHiddenValue="{false}"
+                                        hiddenValue="{part.generatedValue}" />
                                 {:else}
                                     <span>{part.generatedValue}</span>
                                 {/if}

@@ -6,7 +6,7 @@
 
 <button
     type="button"
-    on:click
-    class="cursor-pointer focus:outline-none {showHiddenValue ? 'text-blue-700' : ''}">
+    on:click="{() => (showHiddenValue = !showHiddenValue)}"
+    class="cursor-pointer focus:outline-none {showHiddenValue ? 'text-green-700' : 'text-blue-700'}">
     {showHiddenValue ? hiddenValue : value}
 </button>
