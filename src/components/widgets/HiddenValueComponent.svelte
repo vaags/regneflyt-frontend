@@ -1,12 +1,12 @@
 <script lang="ts">
     export let value: any
     export let hiddenValue: any
-
-    let showHiddenValue: boolean = false
+    export let showHiddenValue: boolean
 </script>
 
-<span
-    on:click="{() => (showHiddenValue = !showHiddenValue)}"
-    class="cursor-pointer">
+<button
+    type="button"
+    on:click
+    class="cursor-pointer focus:outline-none {showHiddenValue ? 'text-blue-700' : ''}">
     {showHiddenValue ? hiddenValue : value}
-</span>
+</button>

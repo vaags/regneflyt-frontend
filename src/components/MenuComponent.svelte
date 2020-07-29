@@ -13,6 +13,7 @@
 
     export let quiz: Quiz
     let puzzle = getPuzzle(quiz, undefined)
+    let showHiddenValue: boolean = false
 
     const dispatch = createEventDispatcher()
 
@@ -35,6 +36,7 @@
     }
 
     function getPuzzlePreview() {
+        showHiddenValue = false
         puzzle = getPuzzle(quiz, puzzle)
     }
 
@@ -263,7 +265,9 @@
                 {#each puzzle.parts as part, i}
                     {#if puzzle.unknownPuzzlePartNumber === i}
                         <HiddenValueComponent
+                            on:click="{() => (showHiddenValue = !showHiddenValue)}"
                             hiddenValue="{part.generatedValue}"
+                            {showHiddenValue}
                             value="?" />
                     {:else}
                         <span>{part.generatedValue}</span>
