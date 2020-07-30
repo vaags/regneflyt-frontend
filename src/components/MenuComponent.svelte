@@ -319,20 +319,24 @@
     <div class="card">
         <h2>Forhåndsvisning</h2>
         {#if validationError}
-            <AlertComponent
-                color="yellow"
-                message="Kan ikke vise forhåndsvisning." />
-        {:else}
-            <div class="text-center text-2xl md:text-3xl">
-                <PuzzlePreviewComponent {puzzle} />
+            <div transition:slide|local="{appSettings.transitionDuration}">
+                <AlertComponent
+                    color="yellow"
+                    message="Kan ikke vise forhåndsvisning." />
             </div>
-            <div class="text-right">
-                <button
-                    type="button"
-                    class="text-3xl cursor-pointer focus:outline-none"
-                    on:click="{() => getPuzzlePreview()}">
-                    &#127922;
-                </button>
+        {:else}
+            <div transition:slide|local="{appSettings.transitionDuration}">
+                <div class="text-center text-2xl md:text-3xl">
+                    <PuzzlePreviewComponent {puzzle} />
+                </div>
+                <div class="text-right">
+                    <button
+                        type="button"
+                        class="text-3xl cursor-pointer focus:outline-none"
+                        on:click="{() => getPuzzlePreview()}">
+                        &#127922;
+                    </button>
+                </div>
             </div>
         {/if}
     </div>
