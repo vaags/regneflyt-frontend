@@ -3,7 +3,16 @@
     import ResultsComponent from './components/ResultsComponent.svelte'
     import QuizComponent from './components/QuizComponent.svelte'
     import type { Puzzle } from './models/Puzzle'
+    import type { AppSettings } from './models/AppSettings'
     import { getQuiz } from './services/quizService'
+
+    const appSettings: AppSettings = {
+        isLocalhost: location.hostname === 'localhost',
+        countDownTime: 3,
+        transitionDuration: {
+            duration: 200,
+        },
+    }
 
     let puzzleSet: Array<Puzzle>
     let displayGreeting = true
@@ -47,11 +56,17 @@
     {#if quiz.isCompleted}
         <ResultsComponent {puzzleSet} on:resetQuiz="{resetQuiz}" />
     {:else if quiz.isAboutToStart || quiz.isStarted}
-        <QuizComponent
-            {quiz}
-            on:abortQuiz="{abortQuiz}"
-            on:completeQuiz="{completeQuiz}" />
+        <div>
+            <QuizComponent
+                {quiz}
+                on:abortQuiz="{abortQuiz}"
+                on:completeQuiz="{completeQuiz}"
+                {appSettings} />
+
+        </div>
     {:else}
-        <MenuComponent {quiz} on:startQuiz="{startQuiz}" />
+        <div>
+            <MenuComponent {quiz} on:startQuiz="{startQuiz}" {appSettings} />
+        </div>
     {/if}
 </main>

@@ -6,10 +6,9 @@
     export let unitLabel: string | undefined = undefined
     export let largeLabel: boolean = false
     export let id: string | undefined = undefined
-    export let paddingTop: boolean = true
 </script>
 
-<div class="flex flex-row mb-1 {paddingTop ? 'pt-2' : ''}">
+<div class="flex flex-row">
     <span class="text-blue-800 mr-4 {largeLabel ? 'w-20' : 'w-8'}">
         {value}
         {#if unitLabel}{unitLabel}{/if}

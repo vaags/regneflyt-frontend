@@ -5,7 +5,6 @@ import type { QuizPuzzlePartSettings } from "./QuizPuzzlePartSettings";
 export type Quiz = {
     duration: number;
     puzzleTimeLimit: number;
-    countDownTime: number;
     partSettings: Array<QuizPuzzlePartSettings>;
     isAboutToStart: boolean;
     isStarted: boolean;
@@ -15,5 +14,4 @@ export type Quiz = {
     operators: Array<Operator>;
     puzzleMode: PuzzleMode;
     showRemainingTime: boolean;
-    isLocalhost: boolean;
 }

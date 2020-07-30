@@ -5,8 +5,10 @@
     import type { Quiz } from '../models/Quiz'
     import type { Puzzle } from '../models/Puzzle'
     import CountdownComponent from './CountdownComponent.svelte'
+    import type { AppSettings } from '../models/AppSettings'
 
     export let quiz: Quiz
+    export let appSettings: AppSettings
 
     const dispatch = createEventDispatcher()
     let quizTimeout: number
@@ -46,7 +48,7 @@
     }
 
     onMount(() => {
-        quizTimeout = setTimeout(startQuiz, quiz.countDownTime * 1000)
+        quizTimeout = setTimeout(startQuiz, appSettings.countDownTime * 1000)
     })
 </script>
 
@@ -58,7 +60,7 @@
             {quiz}
             on:addPuzzle="{addPuzzle}" />
     {:else if quiz.isAboutToStart}
-        <CountdownComponent time="{quiz.countDownTime}" />
+        <CountdownComponent time="{appSettings.countDownTime}" />
     {/if}
     <div class="text-right float-right">
         {#if showWarning}
@@ -66,7 +68,7 @@
             <ButtonComponent on:click="{abortQuiz}" label="ja" color="red" />
             <ButtonComponent on:click="{toggleWarning}" label="Nei" />
         {:else}
-            {#if quiz.isLocalhost}
+            {#if appSettings.isLocalhost}
                 <ButtonComponent on:click="{completeQuiz}" label="Fullfør" />
             {/if}
             <ButtonComponent on:click="{toggleWarning}" label="Avbryt" />

@@ -6,7 +6,6 @@ const urlParams = new URLSearchParams(window.location.search)
 
 export function getQuiz(): Quiz {
     return {
-        isLocalhost: location.hostname === 'localhost',
         duration: getIntParam('duration') || 1,
         showRemainingTime: getBoolParam('showRemainingTime'),
         puzzleTimeLimit: getIntParam('timeLimit') || 0,
@@ -67,7 +66,6 @@ export function getQuiz(): Quiz {
         isStarted: false,
         isCompleted: false,
         isAboutToStart: false,
-        countDownTime: 3,
         selectedOperator:
             (getIntParam('operator') as Operator) || Operator.Addition,
         allowNegativeAnswer: getBoolParam('negatives'),

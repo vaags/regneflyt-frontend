@@ -121,8 +121,8 @@ function getAnswerPart(
     }
 }
 
-function getUnknownPuzzlePartNumber(operator: Operator, answerMode: PuzzleMode) {
-    switch (answerMode) {
+function getUnknownPuzzlePartNumber(operator: Operator, puzzleMode: PuzzleMode): number {
+    switch (puzzleMode) {
         case PuzzleMode.Random:
             if (getTrueOrFalse()) {
                 return getAlternateUnknownPuzzlePart()
