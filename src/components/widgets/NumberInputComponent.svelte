@@ -1,16 +1,24 @@
 <script lang="ts">
-    import { afterUpdate } from 'svelte'
+    import { onMount, afterUpdate } from 'svelte'
 
     export let value: number | undefined = undefined
     export let displayError: boolean
     export let disabled: boolean = false
-    export let showWarning: boolean = false
+    export let focus: boolean = true
     let ref: any
 
-    afterUpdate(() => {
-        if (!showWarning) {
+    function focusInput() {
+        if (focus) {
             ref.focus()
         }
+    }
+
+    afterUpdate(() => {
+        focusInput()
+    })
+
+    onMount(() => {
+        focusInput()
     })
 </script>
 

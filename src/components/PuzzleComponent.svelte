@@ -118,7 +118,7 @@
                     {#if puzzle.unknownPuzzlePartNumber === i}
                         <NumberInputComponent
                             disabled="{puzzle.timeout}"
-                            {showWarning}
+                            focus="{!showWarning}"
                             {displayError}
                             bind:value="{part.userDefinedValue}" />
                     {:else}{part.generatedValue}{/if}
