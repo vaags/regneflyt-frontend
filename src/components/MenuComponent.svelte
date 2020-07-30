@@ -10,14 +10,12 @@
     import { getPuzzle } from '../services/puzzleService'
     import OperatorComponent from './widgets/OperatorComponent.svelte'
     import { setUrlParams } from '../services/quizService'
-    import HiddenValueComponent from './widgets/HiddenValueComponent.svelte'
+    import PuzzlePreviewComponent from './widgets/PuzzlePreviewComponent.svelte'
     import type { AppSettings } from '../models/AppSettings'
 
     export let appSettings: AppSettings
     export let quiz: Quiz
     let puzzle = getPuzzle(quiz, undefined)
-    let showHiddenValue: boolean = false
-    let hasPuzzleTimeLimit: boolean
 
     const dispatch = createEventDispatcher()
 
@@ -41,7 +39,6 @@
     }
 
     function getPuzzlePreview() {
-        showHiddenValue = false
         puzzle = getPuzzle(quiz, puzzle)
     }
 
@@ -327,26 +324,7 @@
                 message="Kan ikke vise forhåndsvisning." />
         {:else}
             <div class="text-center text-2xl md:text-3xl">
-                {#each puzzle.parts as part, i}
-                    {#if puzzle.unknownPuzzlePartNumber === i}
-                        <span
-                            on:click="{() => (showHiddenValue = !showHiddenValue)}">
-                            <HiddenValueComponent
-                                hiddenValue="{part.generatedValue}"
-                                {showHiddenValue}
-                                value="?" />
-                        </span>
-                    {:else}
-                        <span>{part.generatedValue}</span>
-                    {/if}
-                    {#if i === 0}
-                        <span>
-                            <OperatorComponent operator="{puzzle.operator}" />
-                        </span>
-                    {:else if i === 1}
-                        <span class="mr-2">=</span>
-                    {/if}
-                {/each}
+                <PuzzlePreviewComponent {puzzle} />
             </div>
             <div class="text-right">
                 <button
