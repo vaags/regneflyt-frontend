@@ -333,8 +333,9 @@
                     <button
                         type="button"
                         class="text-3xl cursor-pointer focus:outline-none"
+                        title="Nytt oppgave-eksempel"
                         on:click="{() => getPuzzlePreview()}">
-                        &#127922;
+                        🎲
                     </button>
                 </div>
             </div>

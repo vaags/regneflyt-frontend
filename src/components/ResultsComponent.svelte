@@ -47,14 +47,6 @@
             message="Ingen fullførte oppgaver ble funnet." />
     {:else}
         <table class="table-auto">
-            <thead>
-                <tr>
-                    <th class="text-left py-2 font-light" colspan="{3}">
-                        Svar
-                    </th>
-                    <th class="font-light px-3 py-2">Tidsbruk</th>
-                </tr>
-            </thead>
             <tbody>
                 {#each puzzleSet as puzzle, i}
                     <tr>
@@ -85,11 +77,17 @@
                         </td>
                         <td class="border-t px-3 py-2">
                             {#if puzzle.isCorrect}
-                                <span class="text-green-700">Riktig</span>
+                                <span class="text-green-700" title="Riktig">
+                                    ✔
+                                </span>
                             {:else if puzzle.timeout}
-                                <span class="text-yellow-700">Timeout</span>
+                                <span class="text-yellow-700" title="Timeout">
+                                    ⌛
+                                </span>
                             {:else}
-                                <span class="text-red-700">Galt</span>
+                                <span class="text-red-700" title="Galt">
+                                    ❌
+                                </span>
                             {/if}
                         </td>
                         <td class="border-t px-3 py-2">
@@ -98,8 +96,7 @@
                     </tr>
                 {/each}
                 <tr>
-                    <td class="border-t-2 py-2 text-left" colspan="{2}">Sum</td>
-                    <td class="border-t-2 px-3 py-2">
+                    <td class="border-t-2 px-3 py-2" colspan="{3}">
                         <span class="text-lg">{scorePercentage} %</span>
                         <span class="text-sm">
                             ({correctAnswerSum} av {puzzleSet.length})
