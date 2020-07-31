@@ -56,17 +56,12 @@
     {#if quiz.isCompleted}
         <ResultsComponent {puzzleSet} on:resetQuiz="{resetQuiz}" />
     {:else if quiz.isAboutToStart || quiz.isStarted}
-        <div>
-            <QuizComponent
-                {quiz}
-                on:abortQuiz="{abortQuiz}"
-                on:completeQuiz="{completeQuiz}"
-                {appSettings} />
-
-        </div>
+        <QuizComponent
+            {quiz}
+            on:abortQuiz="{abortQuiz}"
+            on:completeQuiz="{completeQuiz}"
+            {appSettings} />
     {:else}
-        <div>
-            <MenuComponent {quiz} on:startQuiz="{startQuiz}" {appSettings} />
-        </div>
+        <MenuComponent {quiz} on:startQuiz="{startQuiz}" {appSettings} />
     {/if}
 </main>

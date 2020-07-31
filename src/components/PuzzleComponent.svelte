@@ -95,9 +95,7 @@
         return !validationError
     }
 
-    onDestroy(() => {
-        clearTimeout(puzzleTimeout)
-    })
+    onDestroy(() => clearTimeout(puzzleTimeout))
 </script>
 
 <form>
