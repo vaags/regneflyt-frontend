@@ -1,0 +1,23 @@
+{
+    "name": "Regneflyt",
+    "short_name": "Regneflyt",
+    "theme_color": "#dd6b20",
+    "background_color": "#2d3748",
+    "display": "standalone",
+    "Scope": "/",
+    "start_url": "/index.html",
+    "icons": [
+        {
+            "src": "/assets/maskable_icon.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/assets/metaimage.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "splash_pages": null
+}
