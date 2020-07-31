@@ -2,7 +2,7 @@
     export let label = '[Label]'
     export let color = 'blue'
     export let small = false
-    export let disabled = false
+    export let disabled: boolean = false
 </script>
 
 <button
