@@ -53,7 +53,7 @@
 
     function togglePuzzleTimeLimit() {
         quiz.puzzleTimeLimit === 0
-            ? (quiz.puzzleTimeLimit = 3)
+            ? (quiz.puzzleTimeLimit = 5)
             : (quiz.puzzleTimeLimit = 0)
 
         updateQuizSettings()
