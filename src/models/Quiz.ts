@@ -11,7 +11,6 @@ export type Quiz = {
     isCompleted: boolean;
     selectedOperator: Operator;
     allowNegativeAnswer: boolean;
-    operators: Array<Operator>;
     puzzleMode: PuzzleMode;
     showRemainingTime: boolean;
 }

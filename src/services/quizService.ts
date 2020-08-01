@@ -69,13 +69,6 @@ export function getQuiz(): Quiz {
         selectedOperator:
             (getIntParam('operator') as Operator) || Operator.Addition,
         allowNegativeAnswer: getBoolParam('negatives'),
-        operators: [
-            Operator.Addition,
-            Operator.Subtraction,
-            Operator.Multiplication,
-            Operator.Division,
-            Operator.All
-        ],
         puzzleMode:
             (getIntParam('puzzleMode') as PuzzleMode) || PuzzleMode.Normal,
     }

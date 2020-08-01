@@ -4,10 +4,11 @@ import type { Puzzle } from "../models/Puzzle";
 import type { PuzzlePart } from "../models/PuzzlePart";
 import type { QuizPuzzlePart } from "../models/QuizPuzzlePart";
 import { PuzzleMode } from "../models/enums/PuzzleMode";
+import { GetEnumValues } from "./enumService";
 
 export function getPuzzle(quiz: Quiz, previousPuzzle: Puzzle | undefined) {
 
-    const activeOperator = getOperator(quiz)
+    const activeOperator: Operator = getOperator(quiz)
 
     const puzzle: Puzzle = {
         parts: [
@@ -44,10 +45,11 @@ export function getPuzzle(quiz: Quiz, previousPuzzle: Puzzle | undefined) {
     }
 }
 
-function getOperator(quiz: Quiz) {
+function getOperator(quiz: Quiz): Operator {
     if (quiz.selectedOperator === Operator.All) {
         let random = Math.ceil(Math.random() * 4)
-        return quiz.operators[random - 1];
+
+        return GetEnumValues(Operator)[random - 1] as Operator;
     }
 
     return quiz.selectedOperator

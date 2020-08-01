@@ -11,7 +11,9 @@
     import OperatorComponent from './widgets/OperatorComponent.svelte'
     import { setUrlParams } from '../services/quizService'
     import PuzzlePreviewComponent from './widgets/PuzzlePreviewComponent.svelte'
+    import PuzzleModeComponent from './widgets/PuzzleModeComponent.svelte'
     import type { AppSettings } from '../models/AppSettings'
+    import { GetEnumValues } from '../services/enumService'
 
     export let appSettings: AppSettings
     export let quiz: Quiz
@@ -108,7 +110,7 @@
     </div>
     <div class="card">
         <h2>Regneart</h2>
-        {#each quiz.operators as operator}
+        {#each GetEnumValues(Operator) as operator}
             <label class="flex items-center py-1">
                 <input
                     type="radio"
@@ -153,7 +155,7 @@
                         transition:slide|local="{appSettings.transitionDuration}">
                         Multiplikand
                     </h2>
-                {:else if quiz.selectedOperator === Operator.Division}
+                {:else if isDivision}
                     <h2
                         transition:slide|local="{appSettings.transitionDuration}">
                         Dividend
@@ -282,39 +284,17 @@
     {/if}
     <div class="card">
         <h2>Oppgaveform</h2>
-        <label class="flex items-center py-1">
-            <input
-                type="radio"
-                class="form-radio h-5 w-5 text-blue-700 border-gray-500"
-                bind:group="{quiz.puzzleMode}"
-                on:change="{() => updateQuizSettings()}"
-                value="{PuzzleMode.Normal}" />
-            <span class="ml-2">
-                Normal
-                <span class="text-sm">(Svaret er ukjent)</span>
-            </span>
-        </label>
-        <label class="flex items-center py-1">
-            <input
-                type="radio"
-                class="form-radio h-5 w-5 text-blue-700 border-gray-500"
-                bind:group="{quiz.puzzleMode}"
-                on:change="{() => updateQuizSettings()}"
-                value="{PuzzleMode.Alternate}" />
-            <span class="ml-2">
-                Omvendt
-                <span class="text-sm">(Første eller andre ledd er ukjent)</span>
-            </span>
-        </label>
-        <label class="flex items-center py-1">
-            <input
-                type="radio"
-                class="form-radio h-5 w-5 text-blue-700 border-gray-500"
-                bind:group="{quiz.puzzleMode}"
-                on:change="{() => updateQuizSettings()}"
-                value="{PuzzleMode.Random}" />
-            <span class="ml-2">Tilfeldig</span>
-        </label>
+        {#each GetEnumValues(PuzzleMode) as puzzleMode}
+            <label class="flex items-center py-1">
+                <input
+                    type="radio"
+                    class="form-radio h-5 w-5 text-blue-700 border-gray-500"
+                    bind:group="{quiz.puzzleMode}"
+                    on:change="{() => updateQuizSettings()}"
+                    value="{puzzleMode}" />
+                <PuzzleModeComponent {puzzleMode} />
+            </label>
+        {/each}
     </div>
     <div class="card">
         <h2>Forhåndsvisning</h2>
