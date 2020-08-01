@@ -57,6 +57,7 @@
         <PuzzleComponent
             {secondsLeft}
             {showWarning}
+            {appSettings}
             {quiz}
             on:addPuzzle="{addPuzzle}" />
     {:else if quiz.isAboutToStart}

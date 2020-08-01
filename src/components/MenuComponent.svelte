@@ -5,7 +5,6 @@
     import RangeComponent from './widgets/RangeComponent.svelte'
     import { Operator } from '../models/enums/Operator'
     import type { Quiz } from '../models/Quiz'
-    import { PuzzleMode } from '../models/enums/PuzzleMode'
     import AlertComponent from './widgets/AlertComponent.svelte'
     import { getPuzzle } from '../services/puzzleService'
     import OperatorComponent from './widgets/OperatorComponent.svelte'

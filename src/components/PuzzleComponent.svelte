@@ -1,5 +1,6 @@
 <script lang="ts">
     import { createEventDispatcher, onDestroy } from 'svelte'
+    import { slide } from 'svelte/transition'
     import ButtonComponent from './widgets/ButtonComponent.svelte'
     import AlertComponent from './widgets/AlertComponent.svelte'
     import OperatorComponent from './widgets/OperatorComponent.svelte'
@@ -8,10 +9,12 @@
     import { getPuzzle } from '../services/puzzleService'
     import type { Quiz } from '../models/Quiz'
     import type { Puzzle } from '../models/Puzzle'
+    import type { AppSettings } from '../models/AppSettings'
 
     export let quiz: Quiz
     export let showWarning: boolean
     export let secondsLeft: number
+    export let appSettings: AppSettings
 
     const dispatch = createEventDispatcher()
     let puzzleTimeout: number | undefined = undefined
@@ -107,28 +110,34 @@
             </p>
         {/if}
         <h2>Oppgave {puzzleNumber}</h2>
-        {#if puzzle.timeout}
-            <AlertComponent color="red" message="Tiden er ute." />
-        {/if}
-        <div class="text-center my-12 text-3xl md:text-4xl">
-            {#each puzzle.parts as part, i}
-                <span>
-                    {#if puzzle.unknownPuzzlePartNumber === i}
-                        <NumberInputComponent
-                            disabled="{puzzle.timeout}"
-                            focus="{!showWarning}"
-                            {displayError}
-                            bind:value="{part.userDefinedValue}" />
-                    {:else}{part.generatedValue}{/if}
-                </span>
-                {#if i === 0}
+        <div class="my-12">
+            {#if puzzle.timeout}
+                <div
+                    class="mb-4"
+                    transition:slide|local="{appSettings.transitionDuration}">
+                    <AlertComponent color="red" message="Tiden er ute." />
+                </div>
+            {/if}
+            <div class="text-center text-3xl md:text-4xl">
+                {#each puzzle.parts as part, i}
                     <span>
-                        <OperatorComponent operator="{puzzle.operator}" />
+                        {#if puzzle.unknownPuzzlePartNumber === i}
+                            <NumberInputComponent
+                                disabled="{puzzle.timeout}"
+                                focus="{!showWarning}"
+                                {displayError}
+                                bind:value="{part.userDefinedValue}" />
+                        {:else}{part.generatedValue}{/if}
                     </span>
-                {:else if i === 1}
-                    <span class="mr-2">=</span>
-                {/if}
-            {/each}
+                    {#if i === 0}
+                        <span>
+                            <OperatorComponent operator="{puzzle.operator}" />
+                        </span>
+                    {:else if i === 1}
+                        <span class="mr-2">=</span>
+                    {/if}
+                {/each}
+            </div>
         </div>
     </div>
     <div class="float-left">

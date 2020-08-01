@@ -5,7 +5,7 @@ import type { QuizPuzzlePartSettings } from "./QuizPuzzlePartSettings";
 export type Quiz = {
     duration: number;
     puzzleTimeLimit: number;
-    partSettings: Array<QuizPuzzlePartSettings>;
+    partSettings: QuizPuzzlePartSettings[];
     isAboutToStart: boolean;
     isStarted: boolean;
     isCompleted: boolean;

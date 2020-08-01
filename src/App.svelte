@@ -19,7 +19,7 @@
         puzzleModes: GetEnumValues(PuzzleMode),
     }
 
-    let puzzleSet: Array<Puzzle>
+    let puzzleSet: Puzzle[]
     let displayGreeting = true
     let quiz = getQuiz()
 
