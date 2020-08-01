@@ -5,6 +5,9 @@
     import type { Puzzle } from './models/Puzzle'
     import type { AppSettings } from './models/AppSettings'
     import { getQuiz } from './services/quizService'
+    import { Operator } from './models/enums/Operator'
+    import { GetEnumValues } from './services/enumService'
+    import { PuzzleMode } from './models/enums/PuzzleMode'
 
     const appSettings: AppSettings = {
         isLocalhost: location.hostname === 'localhost',
@@ -12,6 +15,8 @@
         transitionDuration: {
             duration: 200,
         },
+        operators: GetEnumValues(Operator),
+        puzzleModes: GetEnumValues(PuzzleMode),
     }
 
     let puzzleSet: Array<Puzzle>

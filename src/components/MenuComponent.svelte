@@ -13,12 +13,10 @@
     import PuzzlePreviewComponent from './widgets/PuzzlePreviewComponent.svelte'
     import PuzzleModeComponent from './widgets/PuzzleModeComponent.svelte'
     import type { AppSettings } from '../models/AppSettings'
-    import { GetEnumValues } from '../services/enumService'
 
     export let appSettings: AppSettings
     export let quiz: Quiz
     let puzzle = getPuzzle(quiz, undefined)
-
     const dispatch = createEventDispatcher()
 
     $: isDivision = quiz.selectedOperator === Operator.Division
@@ -110,7 +108,7 @@
     </div>
     <div class="card">
         <h2>Regneart</h2>
-        {#each GetEnumValues(Operator) as operator}
+        {#each appSettings.operators as operator}
             <label class="flex items-center py-1">
                 <input
                     type="radio"
@@ -284,7 +282,7 @@
     {/if}
     <div class="card">
         <h2>Oppgaveform</h2>
-        {#each GetEnumValues(PuzzleMode) as puzzleMode}
+        {#each appSettings.puzzleModes as puzzleMode}
             <label class="flex items-center py-1">
                 <input
                     type="radio"
