@@ -5,7 +5,7 @@
     import AlertComponent from './widgets/AlertComponent.svelte'
     import OperatorComponent from './widgets/OperatorComponent.svelte'
     import NumberInputComponent from './widgets/NumberInputComponent.svelte'
-    import TimeComponent from './widgets/TimeComponent.svelte'
+    import TimeoutComponent from './widgets/TimeoutComponent.svelte'
     import { getPuzzle } from '../services/puzzleService'
     import type { Quiz } from '../models/Quiz'
     import type { Puzzle } from '../models/Puzzle'
@@ -13,11 +13,12 @@
 
     export let quiz: Quiz
     export let showWarning: boolean
-    export let secondsLeft: number
+    export let seconds: number
     export let appSettings: AppSettings
 
     const dispatch = createEventDispatcher()
     let puzzleTimeout: number | undefined = undefined
+    let secondsLeft: number = seconds
 
     let puzzleNumber = 0
     let validationError = false
@@ -98,6 +99,14 @@
         return !validationError
     }
 
+    function quizTimeout() {
+        dispatch('quizTimeout')
+    }
+
+    function secondChange() {
+        secondsLeft--
+    }
+
     onDestroy(() => clearTimeout(puzzleTimeout))
 </script>
 
@@ -106,7 +115,11 @@
         {#if quiz.showRemainingTime}
             <p
                 class="float-right {almostFinished ? 'text-yellow-700' : 'text-gray-700'}">
-                <TimeComponent seconds="{secondsLeft}" />
+                <TimeoutComponent
+                    {seconds}
+                    on:secondChange="{secondChange}"
+                    on:finished="{quizTimeout}"
+                    showMinutes="{true}" />
             </p>
         {/if}
         <h2>Oppgave {puzzleNumber}</h2>

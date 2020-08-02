@@ -17,16 +17,16 @@
         },
         operators: GetEnumValues(Operator),
         puzzleModes: GetEnumValues(PuzzleMode),
+        displayGreeting: true,
     }
 
     let puzzleSet: Puzzle[]
-    let displayGreeting = true
     let quiz = getQuiz()
 
     function startQuiz(event) {
         quiz = event.detail.quiz
         quiz.isAboutToStart = true
-        displayGreeting = false
+        appSettings.displayGreeting = false
     }
 
     function abortQuiz() {
@@ -49,7 +49,7 @@
     <h1 class="text-3xl md:text-4xl font-light text-orange-600 mb-1 text-right">
         Regneflyt
     </h1>
-    {#if displayGreeting}
+    {#if appSettings.displayGreeting}
         <div class="card text-gray-700">
             <p class="mb-2">Regneflyt trener deg i hoderegning.</p>
             <p>

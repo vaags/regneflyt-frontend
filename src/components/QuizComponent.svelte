@@ -1,26 +1,18 @@
 <script lang="ts">
-    import { createEventDispatcher, onDestroy, onMount } from 'svelte'
+    import { createEventDispatcher } from 'svelte'
     import PuzzleComponent from './PuzzleComponent.svelte'
     import ButtonComponent from './widgets/ButtonComponent.svelte'
     import type { Quiz } from '../models/Quiz'
     import type { Puzzle } from '../models/Puzzle'
-    import CountdownComponent from './CountdownComponent.svelte'
+    import TimeoutComponent from './widgets/TimeoutComponent.svelte'
     import type { AppSettings } from '../models/AppSettings'
 
     export let quiz: Quiz
     export let appSettings: AppSettings
 
     const dispatch = createEventDispatcher()
-    let quizTimeout: number
-    let timeLeftInterval: number
-    let secondsLeft = quiz.duration * 60
     let showWarning = false
-    let puzzleSet: Array<Puzzle> = []
-
-    onDestroy(() => {
-        clearTimeout(quizTimeout)
-        clearInterval(timeLeftInterval)
-    })
+    let puzzleSet: Puzzle[] = []
 
     function abortQuiz() {
         dispatch('abortQuiz')
@@ -41,27 +33,29 @@
     function startQuiz() {
         quiz.isStarted = true
         quiz.isAboutToStart = false
-        quizTimeout = setTimeout(completeQuiz, quiz.duration * 60000)
-        timeLeftInterval = setInterval(() => {
-            if (secondsLeft > 1) secondsLeft--
-        }, 1000)
     }
-
-    onMount(() => {
-        quizTimeout = setTimeout(startQuiz, appSettings.countDownTime * 1000)
-    })
 </script>
 
 <div>
     {#if quiz.isStarted}
         <PuzzleComponent
-            {secondsLeft}
+            seconds="{quiz.duration * 60}"
             {showWarning}
             {appSettings}
             {quiz}
+            on:quizTimeout="{completeQuiz}"
             on:addPuzzle="{addPuzzle}" />
     {:else if quiz.isAboutToStart}
-        <CountdownComponent time="{appSettings.countDownTime}" />
+        <div class="card">
+            <h2>Gjør deg klar&hellip;</h2>
+
+            <p class="text-center my-12 text-4xl md:text-5xl">
+                <TimeoutComponent
+                    seconds="{appSettings.countDownTime}"
+                    fadeOnSecondChange="{true}"
+                    on:finished="{startQuiz}" />
+            </p>
+        </div>
     {/if}
     <div class="text-right float-right">
         {#if showWarning}
