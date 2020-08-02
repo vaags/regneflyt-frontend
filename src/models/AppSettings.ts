@@ -8,5 +8,6 @@ export type AppSettings = {
         duration: number
     },
     operators: Operator[],
-    puzzleModes: PuzzleMode[]
+    puzzleModes: PuzzleMode[],
+    displayGreeting: boolean
 }
