@@ -56,8 +56,6 @@
         tickerHandles[2] = setInterval(() => {
             remainingMilliseconds -= 100
         }, 100)
-
-        console.log('start')
     }
 
     function resume() {
