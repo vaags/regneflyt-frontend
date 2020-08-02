@@ -7,6 +7,7 @@
     export let state: TimerState = TimerState.Started
     export let fadeOnSecondChange: boolean = false
     export let showMinutes: boolean = false
+    export let invisible: boolean = false
 
     const dispatch = createEventDispatcher()
     let internalState: TimerState = TimerState.Initialized
@@ -14,10 +15,9 @@
     let fadeTimeout: number
     let interval: number
     let secondsLeft: number
-    let invisible: boolean = false
     let transparentText: boolean = false
 
-    $: if (internalState !== TimerState.Finished && internalState !== state) {
+    $: if (state && internalState !== state) {
         switch (state) {
             case TimerState.Started:
                 start()
@@ -32,9 +32,11 @@
                 stop()
                 break
         }
+        internalState = state
     }
 
     function start() {
+        clearTickers()
         secondsLeft = seconds
 
         timeout = setTimeout(finished, seconds * 1000)
@@ -43,34 +45,28 @@
                 secondsLeft-- // Should not display zero
                 if (fadeOnSecondChange) fadeOut()
                 dispatch('secondChange', { secondsLeft })
-                console.log('seconds left:', secondsLeft)
             }
         }, 1000)
 
-        internalState = TimerState.Started
         console.log('start')
     }
 
     function pause() {
-        internalState = TimerState.Paused
         console.log('pause')
     }
 
     function resume() {
-        internalState = TimerState.Resumed
         console.log('resume')
     }
 
     function stop() {
-        internalState = TimerState.Stopped
+        clearTickers()
         console.log('stop')
     }
 
     function finished() {
-        clearInterval(interval)
-        clearTimeout(timeout)
+        clearTickers()
         dispatch('finished')
-        internalState = TimerState.Finished
         console.log('finished')
     }
 
@@ -82,18 +78,22 @@
         }, 500)
     }
 
+    function clearTickers() {
+        clearInterval(interval)
+        clearTimeout(timeout)
+        clearTimeout(fadeTimeout)
+    }
+
     onMount(() => {
         if (fadeOnSecondChange) fadeOut()
     })
 
     onDestroy(() => {
-        clearInterval(interval)
-        clearTimeout(timeout)
-        clearTimeout(fadeTimeout)
+        clearTickers()
     })
 </script>
 
-{#if !invisible}
+{#if !invisible && internalState}
     <span
         class="{fadeOnSecondChange ? 'transition duration-1000 ease-out' : ''}
         {transparentText ? 'opacity-0' : ''}">

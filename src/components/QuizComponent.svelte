@@ -64,7 +64,11 @@
             <ButtonComponent on:click="{toggleWarning}" label="Nei" />
         {:else}
             {#if appSettings.isLocalhost}
-                <ButtonComponent on:click="{completeQuiz}" label="Fullfør" />
+                <span class="mr-1">
+                    <ButtonComponent
+                        on:click="{completeQuiz}"
+                        label="Fullfør" />
+                </span>
             {/if}
             <ButtonComponent on:click="{toggleWarning}" label="Avbryt" />
         {/if}

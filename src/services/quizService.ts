@@ -6,7 +6,7 @@ const urlParams = new URLSearchParams(window.location.search)
 
 export function getQuiz(): Quiz {
     return {
-        duration: getIntParam('duration') || 1,
+        duration: getFloatParam('duration') || 1,
         showRemainingTime: getBoolParam('showRemainingTime'),
         puzzleTimeLimit: getIntParam('timeLimit') || 0,
         partSettings: [
@@ -113,6 +113,12 @@ function getIntParam(param: string): number {
     let value = urlParams.get(param)
 
     return value ? parseInt(value) : 0
+}
+
+function getFloatParam(param: string): number {
+    let value = urlParams.get(param)
+
+    return value ? parseFloat(value) : 0
 }
 
 function getBoolParam(param: string): boolean {
