@@ -31,7 +31,7 @@
     let puzzle = generatePuzzle(undefined)
 
     $: displayError = missingUserInput && validationError
-    $: quizAlmostFinished = quizSecondsLeft <= 6
+    $: quizAlmostFinished = quizSecondsLeft <= 5
 
     $: missingUserInput =
         puzzle.parts[puzzle.unknownPuzzlePartNumber].userDefinedValue ===
@@ -106,19 +106,19 @@
     }
 
     function secondChange(event) {
-        quizSecondsLeft = event.detail.secondsLeft
+        quizSecondsLeft = event.detail.remainingSeconds
     }
 </script>
 
 <form>
     <div class="card pb-6">
         {#if quiz.showRemainingTime}
-            <div class="float-right">
+            <div
+                class="float-right {quizAlmostFinished ? 'text-yellow-700' : 'text-gray-700'}">
                 <TimeoutComponent
                     {seconds}
                     state="{quizTimeoutState}"
                     on:secondChange="{secondChange}"
-                    fadeOnSecondChange="{quizAlmostFinished}"
                     on:finished="{quizTimeout}"
                     showMinutes="{true}" />
             </div>
