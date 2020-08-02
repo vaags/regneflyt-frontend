@@ -11,9 +11,7 @@
 
     const dispatch = createEventDispatcher()
     let internalState: TimerState = TimerState.Initialized
-    let timeout: number
-    let fadeTimeout: number
-    let interval: number
+    let tickerHandles: number[] = [3]
     let remainingSeconds: number
     let remainingMilliseconds: number
     let transparentText: boolean = false
@@ -22,9 +20,6 @@
         switch (state) {
             case TimerState.Started:
                 start(undefined)
-                break
-            case TimerState.Paused:
-                pause()
                 break
             case TimerState.Resumed:
                 resume()
@@ -45,59 +40,51 @@
             ? resumeMilliseconds
             : seconds * 1000
 
-        timeout = setTimeout(
+        tickerHandles[0] = setTimeout(
             finished,
             resumeMilliseconds ? resumeMilliseconds : seconds * 1000
         )
-        interval = setInterval(() => {
-            remainingMilliseconds -= 100
-            console.log(remainingMilliseconds)
-            if (
-                remainingSeconds > 1 &&
-                (remainingMilliseconds / 1000) % 1 === 0
-            ) {
+
+        tickerHandles[1] = setInterval(() => {
+            if (remainingSeconds > 1) {
                 remainingSeconds-- // Should not display zero
                 if (fadeOnSecondChange) fadeOut()
                 dispatch('secondChange', { remainingSeconds })
             }
+        }, 1000)
+
+        tickerHandles[2] = setInterval(() => {
+            remainingMilliseconds -= 100
         }, 100)
 
         console.log('start')
     }
 
-    function pause() {
-        clearTickers()
-        console.log('pause')
-    }
-
     function resume() {
         start(remainingMilliseconds)
-        console.log('resume')
     }
 
     function stop() {
         clearTickers()
-        console.log('stop')
     }
 
     function finished() {
         clearTickers()
         dispatch('finished')
-        console.log('finished')
     }
 
     function fadeOut() {
         transparentText = false
-        clearTimeout(fadeTimeout)
-        fadeTimeout = setTimeout(() => {
+        clearTimeout(tickerHandles[3])
+        tickerHandles[3] = setTimeout(() => {
             transparentText = true
         }, 500)
     }
 
     function clearTickers() {
-        clearInterval(interval)
-        clearTimeout(timeout)
-        clearTimeout(fadeTimeout)
+        tickerHandles.forEach((element) => {
+            clearInterval(element)
+        })
     }
 
     onMount(() => {

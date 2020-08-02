@@ -63,7 +63,7 @@
         puzzle.timeout = true
         validationError = false
 
-        quizTimeoutState = TimerState.Paused
+        quizTimeoutState = TimerState.Stopped
         puzzleTimeoutState = TimerState.Finished
 
         completePuzzle(false)
