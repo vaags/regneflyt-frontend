@@ -14,13 +14,14 @@
     let timeout: number
     let fadeTimeout: number
     let interval: number
-    let secondsLeft: number
+    let remainingSeconds: number
+    let remainingMilliseconds: number
     let transparentText: boolean = false
 
     $: if (state && internalState !== state) {
         switch (state) {
             case TimerState.Started:
-                start()
+                start(undefined)
                 break
             case TimerState.Paused:
                 pause()
@@ -35,27 +36,42 @@
         internalState = state
     }
 
-    function start() {
+    function start(resumeMilliseconds: number | undefined) {
         clearTickers()
-        secondsLeft = seconds
+        remainingSeconds = resumeMilliseconds
+            ? Math.round(resumeMilliseconds / 1000)
+            : seconds
+        remainingMilliseconds = resumeMilliseconds
+            ? resumeMilliseconds
+            : seconds * 1000
 
-        timeout = setTimeout(finished, seconds * 1000)
+        timeout = setTimeout(
+            finished,
+            resumeMilliseconds ? resumeMilliseconds : seconds * 1000
+        )
         interval = setInterval(() => {
-            if (secondsLeft > 1) {
-                secondsLeft-- // Should not display zero
+            remainingMilliseconds -= 100
+            console.log(remainingMilliseconds)
+            if (
+                remainingSeconds > 1 &&
+                (remainingMilliseconds / 1000) % 1 === 0
+            ) {
+                remainingSeconds-- // Should not display zero
                 if (fadeOnSecondChange) fadeOut()
-                dispatch('secondChange', { secondsLeft })
+                dispatch('secondChange', { remainingSeconds })
             }
-        }, 1000)
+        }, 100)
 
         console.log('start')
     }
 
     function pause() {
+        clearTickers()
         console.log('pause')
     }
 
     function resume() {
+        start(remainingMilliseconds)
         console.log('resume')
     }
 
@@ -98,7 +114,7 @@
         class="{fadeOnSecondChange ? 'transition duration-1000 ease-out' : ''}
         {transparentText ? 'opacity-0' : ''}">
         {#if showMinutes}
-            <TimeComponent seconds="{secondsLeft}" />
-        {:else}{secondsLeft}{/if}
+            <TimeComponent seconds="{remainingSeconds}" />
+        {:else}{remainingSeconds}{/if}
     </span>
 {/if}

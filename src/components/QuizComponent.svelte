@@ -60,11 +60,16 @@
     <div class="text-right float-right">
         {#if showWarning}
             <p class="mb-2 text-gray-100">Ønsker du å avbryte?</p>
-            <ButtonComponent on:click="{abortQuiz}" label="ja" color="red" />
+            <span class="mr-2">
+                <ButtonComponent
+                    on:click="{abortQuiz}"
+                    label="ja"
+                    color="red" />
+            </span>
             <ButtonComponent on:click="{toggleWarning}" label="Nei" />
         {:else}
             {#if appSettings.isLocalhost}
-                <span class="mr-1">
+                <span class="mr-2">
                     <ButtonComponent
                         on:click="{completeQuiz}"
                         label="Fullfør" />

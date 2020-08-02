@@ -26,6 +26,7 @@
     let startTime: number
     let missingUserInput: boolean
     let puzzleTimeoutState: TimerState = TimerState.Started
+    let quizTimeoutState: TimerState = TimerState.Started
 
     let puzzle = generatePuzzle(undefined)
 
@@ -36,11 +37,16 @@
         puzzle.parts[puzzle.unknownPuzzlePartNumber].userDefinedValue ===
         undefined
 
-    function generatePuzzle(previousPuzzle: Puzzle | undefined) {
+    function generatePuzzle(
+        previousPuzzle: Puzzle | undefined,
+        resumeTimer: boolean = false
+    ) {
         puzzleNumber++
 
         let puzzle = getPuzzle(quiz, previousPuzzle)
         puzzleTimeoutState = TimerState.Started
+
+        if (resumeTimer) quizTimeoutState = TimerState.Resumed
 
         startTime = Date.now()
 
@@ -57,6 +63,7 @@
         puzzle.timeout = true
         validationError = false
 
+        quizTimeoutState = TimerState.Paused
         puzzleTimeoutState = TimerState.Finished
 
         completePuzzle(false)
@@ -109,6 +116,7 @@
             <div class="float-right">
                 <TimeoutComponent
                     {seconds}
+                    state="{quizTimeoutState}"
                     on:secondChange="{secondChange}"
                     fadeOnSecondChange="{quizAlmostFinished}"
                     on:finished="{quizTimeout}"
@@ -159,7 +167,7 @@
     <div class="float-left">
         <ButtonComponent
             disabled="{displayError}"
-            on:click="{() => (puzzle.timeout ? (puzzle = generatePuzzle(puzzle)) : completePuzzleIfValid())}"
+            on:click="{() => (puzzle.timeout ? (puzzle = generatePuzzle(puzzle, true)) : completePuzzleIfValid())}"
             label="Neste"
             color="{displayError ? 'red' : quizAlmostFinished ? 'yellow' : 'green'}" />
     </div>
