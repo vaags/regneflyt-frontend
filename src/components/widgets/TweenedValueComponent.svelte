@@ -3,9 +3,10 @@
     import { sineOut } from 'svelte/easing'
 
     export let value: any
+    export let duration: number = 200
 
     export const valueTweened = tweened(0, {
-        duration: 200,
+        duration: duration,
         easing: sineOut,
     })
 

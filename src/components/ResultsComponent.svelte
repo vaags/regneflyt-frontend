@@ -77,17 +77,11 @@
                         </td>
                         <td class="border-t px-3 py-2">
                             {#if puzzle.isCorrect}
-                                <span class="text-green-700" title="Riktig">
-                                    ✔
-                                </span>
+                                <span title="Riktig">✔</span>
                             {:else if puzzle.timeout}
-                                <span class="text-yellow-700" title="Timeout">
-                                    ⌛
-                                </span>
+                                <span title="Timeout">⌛</span>
                             {:else}
-                                <span class="text-red-700" title="Galt">
-                                    ❌
-                                </span>
+                                <span title="Galt">❌</span>
                             {/if}
                         </td>
                         <td class="border-t px-3 py-2">

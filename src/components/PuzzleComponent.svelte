@@ -2,7 +2,6 @@
     import { createEventDispatcher, tick } from 'svelte'
     import { slide } from 'svelte/transition'
     import ButtonComponent from './widgets/ButtonComponent.svelte'
-    import AlertComponent from './widgets/AlertComponent.svelte'
     import TweenedValueComponent from './widgets/TweenedValueComponent.svelte'
     import OperatorComponent from './widgets/OperatorComponent.svelte'
     import NumberInputComponent from './widgets/NumberInputComponent.svelte'
@@ -124,15 +123,15 @@
             </div>
         {/if}
         <h2>Oppgave {puzzleNumber}</h2>
-        <div class="my-12">
+        <div class="my-12 text-center text-3xl md:text-4xl">
             {#if puzzle.timeout}
                 <div
                     class="mb-4"
                     transition:slide|local="{appSettings.transitionDuration}">
-                    <AlertComponent color="red" message="Tiden er ute." />
+                    <span title="Timeout">⌛</span>
                 </div>
             {/if}
-            <div class="text-center text-3xl md:text-4xl">
+            <div>
                 {#each puzzle.parts as part, i}
                     {#if puzzle.unknownPuzzlePartNumber === i}
                         <NumberInputComponent
@@ -144,21 +143,23 @@
                         <TweenedValueComponent value="{part.generatedValue}" />
                     {/if}
                     {#if i === 0}
-                        <span class="mr-2">
+                        <span>
                             <OperatorComponent operator="{puzzle.operator}" />
                         </span>
                     {:else if i === 1}
                         <span class="mr-2">=</span>
                     {/if}
                 {/each}
-                {#if quiz.puzzleTimeLimit}
+            </div>
+            {#if quiz.puzzleTimeLimit}
+                <div class="mt-12">
                     <TimeoutComponent
                         state="{puzzleTimeoutState}"
-                        invisible="{true}"
+                        showProgressBar="{true}"
                         seconds="{quiz.puzzleTimeLimit}"
                         on:finished="{timeOutPuzzle}" />
-                {/if}
-            </div>
+                </div>
+            {/if}
         </div>
     </div>
     <div class="float-left">

@@ -7,14 +7,17 @@
     export let state: TimerState = TimerState.Started
     export let fadeOnSecondChange: boolean = false
     export let showMinutes: boolean = false
+    export let showProgressBar: boolean = false
     export let invisible: boolean = false
 
     const dispatch = createEventDispatcher()
     let internalState: TimerState = TimerState.Initialized
     let tickerHandles: number[] = [2]
-    let remainingSeconds: number
+    const milliseconds = seconds * 1000
+    let remainingSeconds: number = seconds
     let remainingMilliseconds: number
     let transparentText: boolean = false
+    let percentageCompleted: number = 0
 
     $: if (state && internalState !== state) {
         switch (state) {
@@ -33,6 +36,7 @@
 
     function start(resumeMilliseconds: number | undefined) {
         clearTickers()
+        percentageCompleted = 0
         remainingSeconds = resumeMilliseconds
             ? Math.round(resumeMilliseconds / 1000)
             : seconds
@@ -47,7 +51,10 @@
 
         tickerHandles[1] = setInterval(() => {
             remainingMilliseconds -= 100
-            if (remainingSeconds > 1 && remainingMilliseconds % 1000 === 0) {
+            percentageCompleted =
+                ((milliseconds - remainingMilliseconds) / milliseconds) * 100
+
+            if (remainingMilliseconds % 1000 === 0) {
                 remainingSeconds-- // Should not display zero
                 if (fadeOnSecondChange) fadeOut()
                 dispatch('secondChange', { remainingSeconds })
@@ -65,6 +72,7 @@
 
     function finished() {
         clearTickers()
+        percentageCompleted = 100
         dispatch('finished')
     }
 
@@ -98,6 +106,15 @@
         {transparentText ? 'opacity-0' : ''}">
         {#if showMinutes}
             <TimeComponent seconds="{remainingSeconds}" />
+        {:else if showProgressBar}
+            <div class="w-full">
+                <div class="w-full bg-white border border-gray-300">
+                    <div
+                        class="bg-blue-500 text-xs leading-none py-1 text-center
+                        text-white transition-all duration-100 ease-linear"
+                        style="width: {Math.ceil(percentageCompleted)}%"></div>
+                </div>
+            </div>
         {:else}{remainingSeconds}{/if}
     </span>
 {/if}
