@@ -155,6 +155,7 @@
                 <div class="mt-12">
                     <TimeoutComponent
                         state="{puzzleTimeoutState}"
+                        invisible="{!quiz.showRemainingTime}"
                         showProgressBar="{true}"
                         seconds="{quiz.puzzleTimeLimit}"
                         on:finished="{timeOutPuzzle}" />
