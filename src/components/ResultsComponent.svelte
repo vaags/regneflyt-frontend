@@ -46,7 +46,7 @@
             color="yellow"
             message="Ingen fullførte oppgaver ble funnet." />
     {:else}
-        <table class="table-auto">
+        <table class="table-auto w-full">
             <tbody>
                 {#each puzzleSet as puzzle, i}
                     <tr>
@@ -96,7 +96,8 @@
                     </tr>
                 {/each}
                 <tr>
-                    <td class="border-t-2 px-3 py-2" colspan="{3}">
+                    <td class="border-t-2 py-2 text-gray-600">Sum</td>
+                    <td class="border-t-2 px-4 py-2" colspan="{2}">
                         <span class="text-lg">{scorePercentage} %</span>
                         <span class="text-sm">
                             ({correctAnswerSum} av {puzzleSet.length})
