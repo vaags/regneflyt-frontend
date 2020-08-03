@@ -11,7 +11,7 @@
 
     const dispatch = createEventDispatcher()
     let internalState: TimerState = TimerState.Initialized
-    let tickerHandles: number[] = [3]
+    let tickerHandles: number[] = [2]
     let remainingSeconds: number
     let remainingMilliseconds: number
     let transparentText: boolean = false
@@ -46,15 +46,12 @@
         )
 
         tickerHandles[1] = setInterval(() => {
-            if (remainingSeconds > 1) {
+            remainingMilliseconds -= 100
+            if (remainingSeconds > 1 && remainingMilliseconds % 1000 === 0) {
                 remainingSeconds-- // Should not display zero
                 if (fadeOnSecondChange) fadeOut()
                 dispatch('secondChange', { remainingSeconds })
             }
-        }, 1000)
-
-        tickerHandles[2] = setInterval(() => {
-            remainingMilliseconds -= 100
         }, 100)
     }
 
@@ -74,7 +71,7 @@
     function fadeOut() {
         transparentText = false
         clearTimeout(tickerHandles[3])
-        tickerHandles[3] = setTimeout(() => {
+        tickerHandles[2] = setTimeout(() => {
             transparentText = true
         }, 500)
     }
@@ -82,6 +79,7 @@
     function clearTickers() {
         tickerHandles.forEach((element) => {
             clearInterval(element)
+            clearTimeout(element)
         })
     }
 

@@ -134,18 +134,15 @@
             {/if}
             <div class="text-center text-3xl md:text-4xl">
                 {#each puzzle.parts as part, i}
-                    <span>
-                        {#if puzzle.unknownPuzzlePartNumber === i}
-                            <NumberInputComponent
-                                disabled="{puzzle.timeout}"
-                                focus="{!showWarning}"
-                                {displayError}
-                                bind:value="{part.userDefinedValue}" />
-                        {:else}
-                            <TweenedValueComponent
-                                value="{part.generatedValue}" />
-                        {/if}
-                    </span>
+                    {#if puzzle.unknownPuzzlePartNumber === i}
+                        <NumberInputComponent
+                            disabled="{puzzle.timeout}"
+                            focus="{!showWarning}"
+                            {displayError}
+                            bind:value="{part.userDefinedValue}" />
+                    {:else}
+                        <TweenedValueComponent value="{part.generatedValue}" />
+                    {/if}
                     {#if i === 0}
                         <span class="mr-2">
                             <OperatorComponent operator="{puzzle.operator}" />

@@ -60,7 +60,7 @@
     <div class="text-right float-right">
         {#if showWarning}
             <p class="mb-2 text-gray-100">Ønsker du å avbryte?</p>
-            <span class="mr-2">
+            <span class="mr-1">
                 <ButtonComponent
                     on:click="{abortQuiz}"
                     label="ja"

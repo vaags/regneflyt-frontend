@@ -5,15 +5,15 @@
 </script>
 
 {#if puzzleMode === PuzzleMode.Normal}
-    <span class="ml-2">
+    <span>
         Normal
         <span class="text-sm">(Svaret er ukjent)</span>
     </span>
 {:else if puzzleMode === PuzzleMode.Alternate}
-    <span class="ml-2">
+    <span>
         Omvendt
         <span class="text-sm">(Første eller andre ledd er ukjent)</span>
     </span>
 {:else}
-    <span class="ml-2">Tilfeldig</span>
+    <span>Tilfeldig</span>
 {/if}

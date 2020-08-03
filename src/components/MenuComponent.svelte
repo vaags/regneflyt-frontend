@@ -285,7 +285,7 @@
             <label class="flex items-center py-1">
                 <input
                     type="radio"
-                    class="form-radio h-5 w-5 text-blue-700 border-gray-500"
+                    class="form-radio h-5 w-5 text-blue-700 border-gray-500 mr-2"
                     bind:group="{quiz.puzzleMode}"
                     on:change="{() => updateQuizSettings()}"
                     value="{puzzleMode}" />
