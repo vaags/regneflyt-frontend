@@ -8,7 +8,7 @@ export function getQuiz(): Quiz {
     return {
         duration: getFloatParam('duration') || 1,
         showRemainingTime: getBoolParam('showRemainingTime'),
-        puzzleTimeLimit: getIntParam('timeLimit') || 0,
+        puzzleTimeLimit: getIntParam('timeLimit') || 5,
         partSettings: [
             {
                 operator: Operator.Addition,
