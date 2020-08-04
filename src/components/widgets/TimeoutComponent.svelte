@@ -1,5 +1,6 @@
 <script lang="ts">
     import { onDestroy, onMount, createEventDispatcher } from 'svelte'
+    import { tweened } from 'svelte/motion'
     import { TimerState } from '../../models/enums/TimerState'
     import TimeComponent from './TimeComponent.svelte'
 
@@ -9,6 +10,10 @@
     export let showMinutes: boolean = false
     export let showProgressBar: boolean = false
     export let invisible: boolean = false
+
+    const percentageTweened = tweened(0, {
+        duration: 100,
+    })
 
     const dispatch = createEventDispatcher()
     let internalState: TimerState = TimerState.Initialized
@@ -98,6 +103,8 @@
     onDestroy(() => {
         clearTickers()
     })
+
+    $: percentageTweened.set(percentageCompleted)
 </script>
 
 {#if !invisible && internalState}
@@ -111,8 +118,8 @@
                 <div class="w-full bg-white border border-gray-300">
                     <div
                         class="bg-blue-500 text-xs leading-none py-1 text-center
-                        text-white transition-all duration-100 ease-linear"
-                        style="width: {Math.ceil(percentageCompleted)}%"></div>
+                        text-white"
+                        style="width: {$percentageTweened}%"></div>
                 </div>
             </div>
         {:else}{remainingSeconds}{/if}
