@@ -23,6 +23,7 @@
     let remainingMilliseconds: number
     let transparentText: boolean = false
     let percentageCompleted: number = 0
+    const transitionDelayCompensation = 100
 
     $: if (state && internalState !== state) {
         switch (state) {
@@ -41,7 +42,8 @@
 
     function start(resumeMilliseconds: number | undefined) {
         clearTickers()
-        percentageCompleted = 0
+
+        percentageCompleted = (100 / milliseconds) * 100 // Must be 100 ms ahead of actual time left, to account for transition time.
         remainingSeconds = resumeMilliseconds
             ? Math.round(resumeMilliseconds / 1000)
             : seconds
@@ -57,7 +59,10 @@
         tickerHandles[1] = setInterval(() => {
             remainingMilliseconds -= 100
             percentageCompleted =
-                ((milliseconds - remainingMilliseconds) / milliseconds) * 100
+                ((milliseconds -
+                    (remainingMilliseconds - transitionDelayCompensation)) /
+                    milliseconds) *
+                100
 
             if (remainingMilliseconds % 1000 === 0) {
                 remainingSeconds-- // Should not display zero
@@ -115,11 +120,14 @@
             <TimeComponent seconds="{remainingSeconds}" />
         {:else if showProgressBar}
             <div class="w-full">
-                <div class="w-full bg-white border border-gray-300">
+                <div class="w-full bg-white border rounded border-gray-500">
                     <div
-                        class="bg-blue-500 text-xs leading-none py-1 text-center
-                        text-white"
-                        style="width: {$percentageTweened}%"></div>
+                        class="transition-colors text-base text-white
+                        duration-200 {percentageCompleted === 100 ? 'bg-blue-800' : 'bg-blue-500'}
+                        text-center leading-none"
+                        style="width: {$percentageTweened}%">
+                        <slot />
+                    </div>
                 </div>
             </div>
         {:else}{remainingSeconds}{/if}

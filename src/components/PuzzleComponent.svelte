@@ -1,6 +1,5 @@
 <script lang="ts">
     import { createEventDispatcher, tick } from 'svelte'
-    import { slide } from 'svelte/transition'
     import ButtonComponent from './widgets/ButtonComponent.svelte'
     import TweenedValueComponent from './widgets/TweenedValueComponent.svelte'
     import OperatorComponent from './widgets/OperatorComponent.svelte'
@@ -9,13 +8,11 @@
     import { getPuzzle } from '../services/puzzleService'
     import type { Quiz } from '../models/Quiz'
     import type { Puzzle } from '../models/Puzzle'
-    import type { AppSettings } from '../models/AppSettings'
     import { TimerState } from '../models/enums/TimerState'
 
     export let quiz: Quiz
     export let showWarning: boolean
     export let seconds: number
-    export let appSettings: AppSettings
 
     const dispatch = createEventDispatcher()
     let quizSecondsLeft: number = seconds
@@ -43,6 +40,7 @@
         puzzleNumber++
 
         let puzzle = getPuzzle(quiz, previousPuzzle)
+        puzzle.timeout = false
         puzzleTimeoutState = TimerState.Started
 
         if (resumeTimer) quizTimeoutState = TimerState.Resumed
@@ -124,13 +122,6 @@
         {/if}
         <h2>Oppgave {puzzleNumber}</h2>
         <div class="my-12 text-center text-3xl md:text-4xl">
-            {#if puzzle.timeout}
-                <div
-                    class="mb-4"
-                    transition:slide|local="{appSettings.transitionDuration}">
-                    <span title="Timeout">⌛</span>
-                </div>
-            {/if}
             <div>
                 {#each puzzle.parts as part, i}
                     {#if puzzle.unknownPuzzlePartNumber === i}
@@ -158,16 +149,25 @@
                         invisible="{!quiz.showRemainingTime}"
                         showProgressBar="{true}"
                         seconds="{quiz.puzzleTimeLimit}"
-                        on:finished="{timeOutPuzzle}" />
+                        on:finished="{timeOutPuzzle}">
+                        {#if puzzle.timeout}
+                            <TimeoutComponent
+                                seconds="{3}"
+                                fadeOnSecondChange="{true}"
+                                on:finished="{() => (puzzle = generatePuzzle(puzzle, true))}" />
+                        {:else}
+                            {@html '&nbsp;'}
+                        {/if}
+                    </TimeoutComponent>
                 </div>
             {/if}
         </div>
     </div>
-    <div class="float-left">
+    <div class="float-left {puzzle.timeout ? 'animate-pulse' : ''}">
         <ButtonComponent
             disabled="{displayError}"
             on:click="{() => (puzzle.timeout ? (puzzle = generatePuzzle(puzzle, true)) : completePuzzleIfValid())}"
             label="Neste"
-            color="{displayError ? 'red' : quizAlmostFinished ? 'yellow' : 'green'}" />
+            color="{displayError ? 'red' : quizAlmostFinished || puzzle.timeout ? 'yellow' : 'green'}" />
     </div>
 </form>

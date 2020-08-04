@@ -41,7 +41,6 @@
         <PuzzleComponent
             seconds="{quiz.duration * 60}"
             {showWarning}
-            {appSettings}
             {quiz}
             on:quizTimeout="{completeQuiz}"
             on:addPuzzle="{addPuzzle}" />
