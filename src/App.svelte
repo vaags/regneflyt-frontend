@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { onMount } from 'svelte'
     import MenuComponent from './components/MenuComponent.svelte'
     import ResultsComponent from './components/ResultsComponent.svelte'
     import QuizComponent from './components/QuizComponent.svelte'
@@ -43,6 +44,17 @@
         quiz.isCompleted = false
         quiz.isStarted = false
     }
+
+    onMount(() => {
+        if (!appSettings.isLocalhost) {
+            window.addEventListener('beforeunload', function (e) {
+                var confirmationMessage = 'o/'
+
+                ;(e || window.event).returnValue = confirmationMessage //Gecko + IE
+                return confirmationMessage //Webkit, Safari, Chrome
+            })
+        }
+    })
 </script>
 
 <main class="container max-w-xl mx-auto px-2 md:px-3 pt-1 pb-2 md:pb-5">
