@@ -41,10 +41,10 @@
         puzzle = getPuzzle(quiz, puzzle)
     }
 
-    function updateQuizSettings() {
+    function updateQuizSettings(updatePuzzlePreview: boolean = true) {
         if (!validationError) {
             setUrlParams(quiz)
-            getPuzzlePreview()
+            if (updatePuzzlePreview) getPuzzlePreview()
         }
     }
 
@@ -53,7 +53,7 @@
             ? (quiz.puzzleTimeLimit = 5)
             : (quiz.puzzleTimeLimit = 0)
 
-        updateQuizSettings()
+        updateQuizSettings(false)
     }
 
     onMount(() => {
@@ -152,18 +152,20 @@
                                 </div>
                             {/if}
                             <div>
-                                <label>
+                                <label for="partOneFrom">
                                     Fra og med:
                                     <RangeComponent
+                                        id="partOneFrom"
                                         max="{quiz.partSettings[quiz.selectedOperator].partOne.maxValue - 1}"
                                         on:change="{() => updateQuizSettings()}"
                                         bind:value="{quiz.partSettings[quiz.selectedOperator].partOne.minValue}" />
                                 </label>
                             </div>
                             <div class="mt-4">
-                                <label>
+                                <label for="partOneTo">
                                     Til og med:
                                     <RangeComponent
+                                        id="partOneTo"
                                         min="{quiz.partSettings[quiz.selectedOperator].partOne.minValue + 1}"
                                         on:change="{() => updateQuizSettings()}"
                                         bind:value="{quiz.partSettings[quiz.selectedOperator].partOne.maxValue}" />
@@ -212,20 +214,22 @@
                     <div
                         transition:slide|local="{appSettings.transitionDuration}">
                         <div>
-                            <label>
+                            <label for="partTwoFrom">
                                 Fra og med:
                                 <br />
                                 <RangeComponent
+                                    id="partTwoFrom"
                                     max="{quiz.partSettings[quiz.selectedOperator].partTwo.maxValue - 1}"
                                     on:change="{() => updateQuizSettings()}"
                                     bind:value="{quiz.partSettings[quiz.selectedOperator].partTwo.minValue}" />
                             </label>
                         </div>
                         <div class="mt-4">
-                            <label>
+                            <label for="partTwoTo">
                                 Til og med:
                                 <br />
                                 <RangeComponent
+                                    id="partTwoTo"
                                     min="{quiz.partSettings[quiz.selectedOperator].partTwo.minValue + 1}"
                                     on:change="{() => updateQuizSettings()}"
                                     bind:value="{quiz.partSettings[quiz.selectedOperator].partTwo.maxValue}" />
@@ -260,11 +264,12 @@
             step="{0.5}"
             unitLabel=" min"
             largeLabel="{true}"
-            on:change="{() => updateQuizSettings()}"
+            on:change="{() => updateQuizSettings(false)}"
             bind:value="{quiz.duration}" />
-        <label class="block mt-4">
+        <div class="mt-4">
             <label class="inline-flex items-center">
                 <input
+                    id="hasLimit"
                     type="checkbox"
                     class="form-checkbox text-blue-700 h-5 w-5 border-gray-500"
                     on:change="{() => togglePuzzleTimeLimit()}"
@@ -279,16 +284,16 @@
                         min="{3}"
                         max="{10}"
                         unitLabel=" s"
-                        on:change="{() => updateQuizSettings()}"
+                        on:change="{() => updateQuizSettings(false)}"
                         bind:value="{quiz.puzzleTimeLimit}" />
                 </div>
             {/if}
-        </label>
+        </div>
         <label class="inline-flex items-center mt-4">
             <input
                 type="checkbox"
                 class="form-checkbox text-blue-700 h-5 w-5 border-gray-500"
-                on:change="{() => updateQuizSettings()}"
+                on:change="{() => updateQuizSettings(false)}"
                 bind:checked="{quiz.showRemainingTime}" />
             <span class="ml-2">Vis gjenværende tid</span>
         </label>
