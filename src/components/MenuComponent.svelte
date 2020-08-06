@@ -280,7 +280,11 @@
                 <div
                     class="mt-1"
                     transition:slide|local="{appSettings.transitionDuration}">
+                    <label class="sr-only" for="puzzleLimit">
+                        Antall sekunder per oppgave
+                    </label>
                     <RangeComponent
+                        id="puzzleLimit"
                         min="{3}"
                         max="{10}"
                         unitLabel=" s"
