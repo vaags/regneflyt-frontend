@@ -63,49 +63,6 @@
 
 <form>
     <div class="card">
-        <h2>Spilletid</h2>
-        <label for="duration" class="sr-only">Totalt:</label>
-        <RangeComponent
-            min="{0.5}"
-            max="{10}"
-            id="duration"
-            step="{0.5}"
-            unitLabel=" min"
-            largeLabel="{true}"
-            on:change="{() => updateQuizSettings()}"
-            bind:value="{quiz.duration}" />
-        <label class="block mt-4">
-            <label class="inline-flex items-center">
-                <input
-                    type="checkbox"
-                    class="form-checkbox text-blue-700 h-5 w-5 border-gray-500"
-                    on:change="{() => togglePuzzleTimeLimit()}"
-                    bind:checked="{hasPuzzleTimeLimit}" />
-                <span class="ml-2">Tidsbegrensning per oppgave</span>
-            </label>
-            {#if quiz.puzzleTimeLimit}
-                <div
-                    class="mt-1"
-                    transition:slide|local="{appSettings.transitionDuration}">
-                    <RangeComponent
-                        min="{3}"
-                        max="{10}"
-                        unitLabel=" s"
-                        on:change="{() => updateQuizSettings()}"
-                        bind:value="{quiz.puzzleTimeLimit}" />
-                </div>
-            {/if}
-        </label>
-        <label class="inline-flex items-center mt-4">
-            <input
-                type="checkbox"
-                class="form-checkbox text-blue-700 h-5 w-5 border-gray-500"
-                on:change="{() => updateQuizSettings()}"
-                bind:checked="{quiz.showRemainingTime}" />
-            <span class="ml-2">Vis gjenværende tid</span>
-        </label>
-    </div>
-    <div class="card">
         <h2>Regneart</h2>
         {#each appSettings.operators as operator}
             <label class="flex items-center py-1">
@@ -292,6 +249,49 @@
                 <PuzzleModeComponent {puzzleMode} />
             </label>
         {/each}
+    </div>
+    <div class="card">
+        <h2>Spilletid</h2>
+        <label for="duration" class="sr-only">Totalt:</label>
+        <RangeComponent
+            min="{0.5}"
+            max="{10}"
+            id="duration"
+            step="{0.5}"
+            unitLabel=" min"
+            largeLabel="{true}"
+            on:change="{() => updateQuizSettings()}"
+            bind:value="{quiz.duration}" />
+        <label class="block mt-4">
+            <label class="inline-flex items-center">
+                <input
+                    type="checkbox"
+                    class="form-checkbox text-blue-700 h-5 w-5 border-gray-500"
+                    on:change="{() => togglePuzzleTimeLimit()}"
+                    bind:checked="{hasPuzzleTimeLimit}" />
+                <span class="ml-2">Tidsbegrensning per oppgave</span>
+            </label>
+            {#if quiz.puzzleTimeLimit}
+                <div
+                    class="mt-1"
+                    transition:slide|local="{appSettings.transitionDuration}">
+                    <RangeComponent
+                        min="{3}"
+                        max="{10}"
+                        unitLabel=" s"
+                        on:change="{() => updateQuizSettings()}"
+                        bind:value="{quiz.puzzleTimeLimit}" />
+                </div>
+            {/if}
+        </label>
+        <label class="inline-flex items-center mt-4">
+            <input
+                type="checkbox"
+                class="form-checkbox text-blue-700 h-5 w-5 border-gray-500"
+                on:change="{() => updateQuizSettings()}"
+                bind:checked="{quiz.showRemainingTime}" />
+            <span class="ml-2">Vis gjenværende tid</span>
+        </label>
     </div>
     <div class="card">
         <h2>Forhåndsvisning</h2>
