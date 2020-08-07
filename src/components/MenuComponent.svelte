@@ -255,6 +255,31 @@
         {/each}
     </div>
     <div class="card">
+        <h2>Forhåndsvisning</h2>
+        {#if validationError}
+            <div transition:slide|local="{appSettings.transitionDuration}">
+                <AlertComponent
+                    color="yellow"
+                    message="Kan ikke vise forhåndsvisning." />
+            </div>
+        {:else}
+            <div transition:slide|local="{appSettings.transitionDuration}">
+                <div class="text-center text-2xl md:text-3xl">
+                    <PuzzlePreviewComponent {puzzle} />
+                </div>
+                <div class="text-right">
+                    <button
+                        type="button"
+                        class="text-3xl cursor-pointer focus:outline-none"
+                        title="Nytt oppgave-eksempel"
+                        on:click="{() => getPuzzlePreview()}">
+                        🎲
+                    </button>
+                </div>
+            </div>
+        {/if}
+    </div>
+    <div class="card">
         <h2>Spilletid</h2>
         <label for="duration" class="sr-only">Totalt:</label>
         <RangeComponent
@@ -293,39 +318,6 @@
                 </div>
             {/if}
         </div>
-        <label class="inline-flex items-center mt-4">
-            <input
-                type="checkbox"
-                class="form-checkbox text-blue-700 h-5 w-5 border-gray-500"
-                on:change="{() => updateQuizSettings(false)}"
-                bind:checked="{quiz.showRemainingTime}" />
-            <span class="ml-2">Vis gjenværende tid</span>
-        </label>
-    </div>
-    <div class="card">
-        <h2>Forhåndsvisning</h2>
-        {#if validationError}
-            <div transition:slide|local="{appSettings.transitionDuration}">
-                <AlertComponent
-                    color="yellow"
-                    message="Kan ikke vise forhåndsvisning." />
-            </div>
-        {:else}
-            <div transition:slide|local="{appSettings.transitionDuration}">
-                <div class="text-center text-2xl md:text-3xl">
-                    <PuzzlePreviewComponent {puzzle} />
-                </div>
-                <div class="text-right">
-                    <button
-                        type="button"
-                        class="text-3xl cursor-pointer focus:outline-none"
-                        title="Nytt oppgave-eksempel"
-                        on:click="{() => getPuzzlePreview()}">
-                        🎲
-                    </button>
-                </div>
-            </div>
-        {/if}
     </div>
     <ButtonComponent
         label="Start"

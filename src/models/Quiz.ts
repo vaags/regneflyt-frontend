@@ -12,5 +12,4 @@ export type Quiz = {
     selectedOperator: Operator;
     allowNegativeAnswer: boolean;
     puzzleMode: PuzzleMode;
-    showRemainingTime: boolean;
 }

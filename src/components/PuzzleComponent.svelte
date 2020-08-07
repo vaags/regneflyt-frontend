@@ -109,17 +109,15 @@
 
 <form>
     <div class="card pb-6">
-        {#if quiz.showRemainingTime}
-            <div
-                class="float-right {quizAlmostFinished ? 'text-yellow-700' : 'text-gray-700'}">
-                <TimeoutComponent
-                    {seconds}
-                    state="{quizTimeoutState}"
-                    on:secondChange="{secondChange}"
-                    on:finished="{quizTimeout}"
-                    showMinutes="{true}" />
-            </div>
-        {/if}
+        <div
+            class="float-right {quizAlmostFinished ? 'text-yellow-700' : 'text-gray-700'}">
+            <TimeoutComponent
+                {seconds}
+                state="{quizTimeoutState}"
+                on:secondChange="{secondChange}"
+                on:finished="{quizTimeout}"
+                showMinutes="{true}" />
+        </div>
         <h2>Oppgave {puzzleNumber}</h2>
         <div class="my-12 text-center text-3xl md:text-4xl">
             <div>
@@ -146,7 +144,6 @@
                 <div class="mt-12">
                     <TimeoutComponent
                         state="{puzzleTimeoutState}"
-                        invisible="{!quiz.showRemainingTime}"
                         showProgressBar="{true}"
                         seconds="{quiz.puzzleTimeLimit}"
                         on:finished="{timeOutPuzzle}">
