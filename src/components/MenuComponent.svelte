@@ -3,6 +3,7 @@
     import { slide } from 'svelte/transition'
     import ButtonComponent from './widgets/ButtonComponent.svelte'
     import RangeComponent from './widgets/RangeComponent.svelte'
+    import LabelComponent from './widgets/LabelComponent.svelte'
     import { Operator } from '../models/enums/Operator'
     import type { Quiz } from '../models/Quiz'
     import AlertComponent from './widgets/AlertComponent.svelte'
@@ -62,11 +63,13 @@
 </script>
 
 {#if appSettings.displayGreeting}
-    <div class="card text-gray-700">
-        <p class="mb-2">Regneflyt trener deg i hoderegning.</p>
+    <div class="card" transition:slide|local="{appSettings.transitionDuration}">
+        <p class="mb-2">
+            Regneflyt er et mattespill som trener deg i hoderegning.
+        </p>
         <p>
-            Velg hvordan du ønsker å trene nedenfor. Når tiden er ute vil du få
-            en vurdering.
+            Velg hvordan du vil trene nedenfor. Ved spillets slutt vil du få en
+            vurdering.
         </p>
     </div>
 {/if}
@@ -114,13 +117,11 @@
             transition:slide|local="{appSettings.transitionDuration}"
             class="mb-3">
             <div class="card">
-                <span
-                    class="text-sm float-right font-medium bg-blue-100 py-1 px-2
-                    rounded text-blue-600 align-middle">
+                <LabelComponent>
                     <OperatorComponent
                         returnName="{true}"
                         operator="{quiz.selectedOperator}" />
-                </span>
+                </LabelComponent>
                 <h2>
                     {#if isMultiplication}
                         Multiplikand
