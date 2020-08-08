@@ -61,15 +61,6 @@
     <h1 class="text-3xl md:text-4xl font-light text-orange-600 mb-1 text-right">
         Regneflyt
     </h1>
-    {#if appSettings.displayGreeting}
-        <div class="card text-gray-700">
-            <p class="mb-2">Regneflyt trener deg i hoderegning.</p>
-            <p>
-                Velg hvordan du ønsker å trene nedenfor. Når tiden er ute vil du
-                få en vurdering.
-            </p>
-        </div>
-    {/if}
     {#if quiz.isCompleted}
         <ResultsComponent {puzzleSet} on:resetQuiz="{resetQuiz}" />
     {:else if quiz.isAboutToStart || quiz.isStarted}

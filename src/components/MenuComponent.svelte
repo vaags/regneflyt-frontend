@@ -61,6 +61,16 @@
     })
 </script>
 
+{#if appSettings.displayGreeting}
+    <div class="card text-gray-700">
+        <p class="mb-2">Regneflyt trener deg i hoderegning.</p>
+        <p>
+            Velg hvordan du ønsker å trene nedenfor. Når tiden er ute vil du få
+            en vurdering.
+        </p>
+    </div>
+{/if}
+
 <form>
     <div class="card">
         <h2>Regneart</h2>
@@ -104,25 +114,25 @@
             transition:slide|local="{appSettings.transitionDuration}"
             class="mb-3">
             <div class="card">
-                {#if isMultiplication}
-                    <h2
-                        transition:slide|local="{appSettings.transitionDuration}">
+                <span
+                    class="text-sm float-right font-medium bg-blue-100 py-1 px-2
+                    rounded text-blue-600 align-middle">
+                    <OperatorComponent
+                        returnName="{true}"
+                        operator="{quiz.selectedOperator}" />
+                </span>
+                <h2>
+                    {#if isMultiplication}
                         Multiplikand
-                    </h2>
-                {:else if isDivision}
-                    <h2
-                        transition:slide|local="{appSettings.transitionDuration}">
+                    {:else if isDivision}
                         Dividend
                         <small>(intervall)</small>
-                    </h2>
-                {:else}
-                    <h2
-                        transition:slide|local="{appSettings.transitionDuration}">
+                    {:else}
                         Første ledd
                         <small>(intervall)</small>
-                    </h2>
-                {/if}
-                <div>
+                    {/if}
+                </h2>
+                <div class="mb-6">
                     {#if isMultiplication}
                         <div
                             transition:slide|local="{appSettings.transitionDuration}">
@@ -174,26 +184,17 @@
                         </div>
                     {/if}
                 </div>
-            </div>
-            <div class="card mb-0">
-                {#if isMultiplication}
-                    <h2
-                        transition:slide|local="{appSettings.transitionDuration}">
+                <h2>
+                    {#if isMultiplication}
                         Multiplikator
                         <small>(intervall)</small>
-                    </h2>
-                {:else if isDivision}
-                    <h2
-                        transition:slide|local="{appSettings.transitionDuration}">
+                    {:else if isDivision}
                         Divisor
-                    </h2>
-                {:else}
-                    <h2
-                        transition:slide|local="{appSettings.transitionDuration}">
+                    {:else}
                         Andre ledd
                         <small>(intervall)</small>
-                    </h2>
-                {/if}
+                    {/if}
+                </h2>
                 {#if isDivision}
                     <div
                         transition:slide|local="{appSettings.transitionDuration}">
