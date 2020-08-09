@@ -52,7 +52,7 @@
         // Hack to get Safari / Ios to focus
         // create invisible dummy input to receive the focus first
         const fakeInput = document.createElement('input')
-        fakeInput.setAttribute('type', 'text')
+        fakeInput.setAttribute('type', 'number')
         fakeInput.style.position = 'absolute'
         fakeInput.style.opacity = '0'
         fakeInput.style.height = '0'
