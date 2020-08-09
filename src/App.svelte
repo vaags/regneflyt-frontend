@@ -1,5 +1,6 @@
 <script lang="ts">
     import { onMount } from 'svelte'
+    import * as animateScroll from 'svelte-scrollto'
     import MenuComponent from './components/MenuComponent.svelte'
     import ResultsComponent from './components/ResultsComponent.svelte'
     import QuizComponent from './components/QuizComponent.svelte'
@@ -24,10 +25,14 @@
     let puzzleSet: Puzzle[]
     let quiz = getQuiz()
 
+    let fakeInput: any
+
     function startQuiz(event) {
         quiz = event.detail.quiz
         quiz.isAboutToStart = true
         appSettings.displayGreeting = false
+        animateScroll.scrollToTop()
+        fakeInputFocus()
     }
 
     function abortQuiz() {
@@ -43,6 +48,26 @@
     function resetQuiz() {
         quiz.isCompleted = false
         quiz.isStarted = false
+    }
+
+    function fakeInputFocus() {
+        // Hack to get Safari / Ios to focus
+        // create invisible dummy input to receive the focus first
+        if (!fakeInput) {
+            fakeInput = document.createElement('input')
+            fakeInput.setAttribute('type', 'number')
+            fakeInput.style.position = 'absolute'
+            fakeInput.style.opacity = '0'
+            fakeInput.style.height = '0'
+            fakeInput.style.fontSize = '16px' // disable auto zoom
+
+            // you may need to append to another element depending on the browser's auto
+            // zoom/scroll behavior
+            document.body.prepend(fakeInput)
+        }
+
+        // focus so that subsequent async focus will work
+        fakeInput.focus()
     }
 
     onMount(() => {
