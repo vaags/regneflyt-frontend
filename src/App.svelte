@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { onMount } from 'svelte'
     import * as animateScroll from 'svelte-scrollto'
     import MenuComponent from './components/MenuComponent.svelte'
     import ResultsComponent from './components/ResultsComponent.svelte'
@@ -26,6 +25,7 @@
     let quiz = getQuiz()
 
     let fakeInput: any
+    let eventListener: any
 
     function startQuiz(event) {
         quiz = event.detail.quiz
@@ -53,6 +53,7 @@
     function fakeInputFocus() {
         // Hack to get Safari / Ios to focus
         // create invisible dummy input to receive the focus first
+        // Ref: https://stackoverflow.com/a/45703019
         if (!fakeInput) {
             fakeInput = document.createElement('input')
             fakeInput.setAttribute('type', 'number')
@@ -69,17 +70,6 @@
         // focus so that subsequent async focus will work
         fakeInput.focus()
     }
-
-    onMount(() => {
-        if (!appSettings.isLocalhost) {
-            window.addEventListener('beforeunload', function (e) {
-                var confirmationMessage = 'o/'
-
-                ;(e || window.event).returnValue = confirmationMessage //Gecko + IE
-                return confirmationMessage //Webkit, Safari, Chrome
-            })
-        }
-    })
 </script>
 
 <main class="container max-w-xl mx-auto px-2 md:px-3 pt-1 pb-2 md:pb-5">
