@@ -1,5 +1,6 @@
 <script lang="ts">
     import { onMount } from 'svelte'
+    import * as animateScroll from 'svelte-scrollto'
     import MenuComponent from './components/MenuComponent.svelte'
     import ResultsComponent from './components/ResultsComponent.svelte'
     import QuizComponent from './components/QuizComponent.svelte'
@@ -25,6 +26,7 @@
     let quiz = getQuiz()
 
     function startQuiz(event) {
+        animateScroll.scrollToTop()
         fakeInputFocus()
         quiz = event.detail.quiz
         quiz.isAboutToStart = true
@@ -47,7 +49,6 @@
     }
 
     function fakeInputFocus() {
-        console.log('add fake input focus')
         // Hack to get Safari / Ios to focus
         // create invisible dummy input to receive the focus first
         const fakeInput = document.createElement('input')
