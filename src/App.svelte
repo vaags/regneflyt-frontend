@@ -26,11 +26,11 @@
     let quiz = getQuiz()
 
     function startQuiz(event) {
-        animateScroll.scrollToTop()
-        fakeInputFocus()
         quiz = event.detail.quiz
         quiz.isAboutToStart = true
         appSettings.displayGreeting = false
+        animateScroll.scrollToTop()
+        fakeInputFocus()
     }
 
     function abortQuiz() {
