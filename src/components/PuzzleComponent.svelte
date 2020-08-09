@@ -119,7 +119,7 @@
                 showMinutes="{true}" />
         </div>
         <h2>Oppgave {puzzleNumber}</h2>
-        <div class="my-12 text-center text-3xl md:text-4xl">
+        <div class="my-8 text-center text-3xl md:text-4xl">
             <div>
                 {#each puzzle.parts as part, i}
                     {#if puzzle.unknownPuzzlePartNumber === i}
