@@ -68,7 +68,7 @@
 
     async function completePuzzle(generateNextPuzzle: boolean) {
         puzzleTimeoutState = TimerState.Stopped
-        await tick()
+        await tick() // Wait for timeoutcomponent to reset puzzle timer (it listens to the puzzleTimeoutState value)
         puzzle.isCorrect = answerIsCorrect(
             puzzle,
             puzzle.unknownPuzzlePartNumber

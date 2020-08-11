@@ -5,8 +5,8 @@ const app = new App({
 	props: {}
 })
 
-if ('serviceWorker' in navigator) {
-	navigator.serviceWorker.register('/service-worker.js')
-}
+// if ('serviceWorker' in navigator) {
+// 	navigator.serviceWorker.register('/service-worker.js')
+// }
 
 export default app;
