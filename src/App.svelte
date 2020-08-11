@@ -75,6 +75,7 @@
 <main class="container max-w-xl mx-auto px-2 md:px-3 pt-1 pb-2 md:pb-5">
     <h1 class="text-2xl md:text-3xl font-light text-orange-600 mb-1 text-right">
         Regneflyt
+        <small class="text-xs">1.0</small>
     </h1>
     {#if quiz.isCompleted}
         <ResultsComponent {puzzleSet} on:resetQuiz="{resetQuiz}" />
