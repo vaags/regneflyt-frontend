@@ -1,6 +1,7 @@
 import type { Quiz } from "../models/Quiz"
 import { Operator } from "../models/enums/Operator"
 import { PuzzleMode } from "../models/enums/PuzzleMode";
+import { QuizState } from "../models/enums/QuizState";
 
 const urlParams = new URLSearchParams(window.location.search)
 
@@ -62,9 +63,7 @@ export function getQuiz(): Quiz {
                 }
             },
         ],
-        isStarted: false,
-        isCompleted: false,
-        isAboutToStart: false,
+        state: QuizState.Initial,
         selectedOperator:
             (getIntParam('operator') as Operator) || Operator.Addition,
         allowNegativeAnswer: getBoolParam('negatives'),

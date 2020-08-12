@@ -10,6 +10,7 @@
     import { Operator } from './models/enums/Operator'
     import { GetEnumValues } from './services/enumService'
     import { PuzzleMode } from './models/enums/PuzzleMode'
+    import { QuizState } from './models/enums/QuizState'
 
     const appSettings: AppSettings = {
         isLocalhost: location.hostname === 'localhost',
@@ -30,32 +31,27 @@
 
     function getReady(event) {
         quiz = event.detail.quiz
-        quiz.isAboutToStart = true
+        quiz.state = QuizState.AboutToStart
         appSettings.displayGreeting = false
         animateScroll.scrollToTop()
         fakeInputFocus()
     }
 
     function startQuiz(event) {
-        quiz.isStarted = true
-        quiz.isAboutToStart = false
+        quiz.state = QuizState.Started
     }
 
     function abortQuiz() {
-        quiz.isStarted = false
-        quiz.isAboutToStart = false
+        quiz.state = QuizState.Initial
     }
 
     function completeQuiz(event) {
-        quiz.isCompleted = true
-        quiz.isStarted = false
-        quiz.isAboutToStart = false
+        quiz.state = QuizState.Completed
         puzzleSet = event.detail.puzzleSet
     }
 
     function resetQuiz() {
-        quiz.isCompleted = false
-        quiz.isStarted = false
+        quiz.state = QuizState.Initial
     }
 
     function fakeInputFocus() {
@@ -75,7 +71,6 @@
             document.body.prepend(fakeInput)
         }
 
-        // focus so that subsequent async focus will work
         fakeInput.focus()
     }
 </script>
@@ -85,15 +80,15 @@
         Regneflyt
         <small class="text-xs">1.1</small>
     </h1>
-    {#if quiz.isAboutToStart}
+    {#if quiz.state === QuizState.AboutToStart}
         <GetReadyComponent {appSettings} on:startQuiz="{startQuiz}" />
-    {:else if quiz.isStarted}
+    {:else if quiz.state === QuizState.Started}
         <QuizComponent
             {quiz}
             on:abortQuiz="{abortQuiz}"
             on:completeQuiz="{completeQuiz}"
             {appSettings} />
-    {:else if quiz.isCompleted}
+    {:else if quiz.state === QuizState.Completed}
         <ResultsComponent {puzzleSet} on:resetQuiz="{resetQuiz}" />
     {:else}
         <MenuComponent {quiz} on:getReady="{getReady}" {appSettings} />
