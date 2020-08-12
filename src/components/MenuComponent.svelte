@@ -32,10 +32,10 @@
             quiz.partSettings[Operator.Division].partTwo.possibleValues
                 ?.length == 0)
 
-    function startQuiz() {
+    function getReady() {
         if (validationError) return
 
-        dispatch('startQuiz', { quiz })
+        dispatch('getReady', { quiz })
     }
 
     function getPuzzlePreview() {
@@ -323,6 +323,6 @@
     </div>
     <ButtonComponent
         label="Start"
-        on:click="{() => startQuiz()}"
+        on:click="{() => getReady()}"
         color="{validationError ? 'red' : 'green'}" />
 </form>

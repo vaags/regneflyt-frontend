@@ -3,6 +3,7 @@
     import MenuComponent from './components/MenuComponent.svelte'
     import ResultsComponent from './components/ResultsComponent.svelte'
     import QuizComponent from './components/QuizComponent.svelte'
+    import GetReadyComponent from './components/GetReadyComponent.svelte'
     import type { Puzzle } from './models/Puzzle'
     import type { AppSettings } from './models/AppSettings'
     import { getQuiz } from './services/quizService'
@@ -27,12 +28,17 @@
     let fakeInput: any
     let eventListener: any
 
-    function startQuiz(event) {
+    function getReady(event) {
         quiz = event.detail.quiz
         quiz.isAboutToStart = true
         appSettings.displayGreeting = false
         animateScroll.scrollToTop()
         fakeInputFocus()
+    }
+
+    function startQuiz(event) {
+        quiz.isStarted = true
+        quiz.isAboutToStart = false
     }
 
     function abortQuiz() {
@@ -42,6 +48,8 @@
 
     function completeQuiz(event) {
         quiz.isCompleted = true
+        quiz.isStarted = false
+        quiz.isAboutToStart = false
         puzzleSet = event.detail.puzzleSet
     }
 
@@ -77,15 +85,17 @@
         Regneflyt
         <small class="text-xs">1.1</small>
     </h1>
-    {#if quiz.isCompleted}
-        <ResultsComponent {puzzleSet} on:resetQuiz="{resetQuiz}" />
-    {:else if quiz.isAboutToStart || quiz.isStarted}
+    {#if quiz.isAboutToStart}
+        <GetReadyComponent {appSettings} on:startQuiz="{startQuiz}" />
+    {:else if quiz.isStarted}
         <QuizComponent
             {quiz}
             on:abortQuiz="{abortQuiz}"
             on:completeQuiz="{completeQuiz}"
             {appSettings} />
+    {:else if quiz.isCompleted}
+        <ResultsComponent {puzzleSet} on:resetQuiz="{resetQuiz}" />
     {:else}
-        <MenuComponent {quiz} on:startQuiz="{startQuiz}" {appSettings} />
+        <MenuComponent {quiz} on:getReady="{getReady}" {appSettings} />
     {/if}
 </main>
