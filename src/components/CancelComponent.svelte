@@ -3,7 +3,6 @@
     import ButtonComponent from './widgets/ButtonComponent.svelte'
 
     export let isLocalhost: boolean
-    export let displayComplete: boolean
     const dispatch = createEventDispatcher()
 
     let showWarning = false
@@ -29,7 +28,7 @@
         </span>
         <ButtonComponent on:click="{toggleWarning}" label="Nei" />
     {:else}
-        {#if isLocalhost && displayComplete}
+        {#if isLocalhost}
             <span class="mr-2">
                 <ButtonComponent on:click="{completeQuiz}" label="Fullfør" />
             </span>

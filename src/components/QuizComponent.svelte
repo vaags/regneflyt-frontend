@@ -36,5 +36,4 @@
 <CancelComponent
     isLocalhost="{appSettings.isLocalhost}"
     on:abortQuiz="{abortQuiz}"
-    on:completeQuiz="{completeQuiz}"
-    displayComplete="{true}" />
+    on:completeQuiz="{completeQuiz}" />

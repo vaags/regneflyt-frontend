@@ -9,7 +9,7 @@
     export let fadeOnSecondChange: boolean = false
     export let showMinutes: boolean = false
     export let showProgressBar: boolean = false
-    export let invisible: boolean = false
+    export let hidden: boolean = false
 
     const percentageTweened = tweened(0, {
         duration: 100,
@@ -112,7 +112,7 @@
     $: percentageTweened.set(percentageCompleted)
 </script>
 
-{#if !invisible && internalState}
+{#if !hidden && internalState}
     <span
         class="{fadeOnSecondChange ? 'transition duration-1000 ease-out' : ''}
         {transparentText ? 'opacity-0' : ''}">

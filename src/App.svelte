@@ -4,6 +4,7 @@
     import ResultsComponent from './components/ResultsComponent.svelte'
     import QuizComponent from './components/QuizComponent.svelte'
     import GetReadyComponent from './components/GetReadyComponent.svelte'
+    import GameOverComponent from './components/GameOverComponent.svelte'
     import type { Puzzle } from './models/Puzzle'
     import type { AppSettings } from './models/AppSettings'
     import { getQuiz } from './services/quizService'
@@ -49,6 +50,10 @@
         puzzleSet = event.detail.puzzleSet
     }
 
+    function evaluateQuiz() {
+        quiz.state = QuizState.Evaluated
+    }
+
     function resetQuiz() {
         quiz.state = QuizState.Initial
     }
@@ -92,6 +97,8 @@
             on:completeQuiz="{completeQuiz}"
             {appSettings} />
     {:else if quiz.state === QuizState.Completed}
+        <GameOverComponent on:evaluateQuiz="{evaluateQuiz}" {appSettings} />
+    {:else if quiz.state === QuizState.Evaluated}
         <ResultsComponent {puzzleSet} on:resetQuiz="{resetQuiz}" />
     {:else}
         <MenuComponent {quiz} on:getReady="{getReady}" {appSettings} />
