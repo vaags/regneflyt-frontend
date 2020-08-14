@@ -27,7 +27,6 @@
     let quiz = getQuiz()
 
     let fakeInput: any
-    let eventListener: any
 
     function getReady(event) {
         quiz = event.detail.quiz
@@ -81,7 +80,11 @@
         <small class="text-xs">1.1</small>
     </h1>
     {#if quiz.state === QuizState.AboutToStart}
-        <GetReadyComponent {appSettings} on:startQuiz="{startQuiz}" />
+        <GetReadyComponent
+            {appSettings}
+            on:startQuiz="{startQuiz}"
+            on:completeQuiz="{completeQuiz}"
+            on:abortQuiz="{abortQuiz}" />
     {:else if quiz.state === QuizState.Started}
         <QuizComponent
             {quiz}

@@ -2,6 +2,7 @@
     import { createEventDispatcher } from 'svelte'
     import TimeoutComponent from './widgets/TimeoutComponent.svelte'
     import type { AppSettings } from '../models/AppSettings'
+    import CancelComponent from './CancelComponent.svelte'
 
     export let appSettings: AppSettings
 
@@ -9,6 +10,10 @@
 
     function startQuiz() {
         dispatch('startQuiz')
+    }
+
+    function abortQuiz() {
+        dispatch('abortQuiz')
     }
 </script>
 
@@ -22,3 +27,8 @@
             on:finished="{startQuiz}" />
     </p>
 </div>
+
+<CancelComponent
+    isLocalhost="{appSettings.isLocalhost}"
+    displayComplete="{false}"
+    on:abortQuiz="{abortQuiz}" />
