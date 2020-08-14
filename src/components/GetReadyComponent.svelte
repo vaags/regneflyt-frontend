@@ -26,9 +26,9 @@
 <div class="card">
     <h2>Gjør deg klar&hellip;</h2>
 
-    <p class="text-center my-12 text-4xl md:text-5xl">
+    <p class="text-center my-12 text-5xl md:text-6xl">
         <TimeoutComponent
-            seconds="{appSettings.countDownTime}"
+            seconds="{3}"
             fadeOnSecondChange="{true}"
             on:finished="{startQuiz}" />
     </p>

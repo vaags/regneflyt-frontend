@@ -15,7 +15,6 @@
 
     const appSettings: AppSettings = {
         isLocalhost: location.hostname === 'localhost',
-        countDownTime: 3,
         transitionDuration: {
             duration: 200,
         },
@@ -97,7 +96,7 @@
             on:completeQuiz="{completeQuiz}"
             {appSettings} />
     {:else if quiz.state === QuizState.Completed}
-        <GameOverComponent on:evaluateQuiz="{evaluateQuiz}" {appSettings} />
+        <GameOverComponent on:evaluateQuiz="{evaluateQuiz}" />
     {:else if quiz.state === QuizState.Evaluated}
         <ResultsComponent {puzzleSet} on:resetQuiz="{resetQuiz}" />
     {:else}
