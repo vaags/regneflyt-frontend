@@ -1,32 +1,17 @@
 <script lang="ts">
-    import { onMount, afterUpdate } from 'svelte'
-
-    export let value: number | undefined = undefined
-    export let displayError: boolean
-    export let disabled: boolean = false
-    export let focus: boolean = true
-    let ref: any
-
-    function focusInput() {
-        if (focus) {
-            ref.focus()
-        }
-    }
-
-    afterUpdate(() => {
-        focusInput()
-    })
-
-    onMount(() => {
-        focusInput()
-    })
+    export let value: number
+    export let min: number = 1
+    export let max: number = 50
+    export let step: number = 1
+    export let id: string
 </script>
 
 <input
-    {disabled}
-    bind:value
-    bind:this="{ref}"
-    class="border {displayError ? 'validation-error-border' : ''} rounded w-24
-    py-2 px-3 leading-tight focus:outline-none"
+    {id}
+    class="border rounded p-2 leading-tight block"
     type="number"
-    placeholder="?" />
+    {min}
+    {max}
+    {step}
+    on:change
+    bind:value />

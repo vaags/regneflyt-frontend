@@ -3,7 +3,7 @@
     import ButtonComponent from './widgets/ButtonComponent.svelte'
     import TweenedValueComponent from './widgets/TweenedValueComponent.svelte'
     import OperatorComponent from './widgets/OperatorComponent.svelte'
-    import NumberInputComponent from './widgets/NumberInputComponent.svelte'
+    import PuzzleInputComponent from './widgets/PuzzleInputComponent.svelte'
     import TimeoutComponent from './widgets/TimeoutComponent.svelte'
     import { getPuzzle } from '../services/puzzleService'
     import type { Quiz } from '../models/Quiz'
@@ -123,7 +123,7 @@
             <div>
                 {#each puzzle.parts as part, i}
                     {#if puzzle.unknownPuzzlePartNumber === i}
-                        <NumberInputComponent
+                        <PuzzleInputComponent
                             disabled="{puzzle.timeout}"
                             focus="{!showWarning}"
                             {displayError}

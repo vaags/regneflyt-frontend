@@ -12,6 +12,7 @@
     import { setUrlParams } from '../services/quizService'
     import PuzzlePreviewComponent from './widgets/PuzzlePreviewComponent.svelte'
     import PuzzleModeComponent from './widgets/PuzzleModeComponent.svelte'
+    import NumberInputComponent from './widgets/NumberInputComponent.svelte'
     import type { AppSettings } from '../models/AppSettings'
 
     export let appSettings: AppSettings
@@ -162,23 +163,21 @@
                                         divisor" />
                                 </div>
                             {/if}
-                            <div>
-                                <label for="partOneFrom">
-                                    Fra og med:
-                                    <RangeComponent
-                                        id="partOneFrom"
-                                        max="{quiz.partSettings[quiz.selectedOperator].partOne.maxValue - 1}"
+                            <div class="flex flex-row">
+                                <label class="mr-4" for="partOneMin">
+                                    Fra og med
+                                    <NumberInputComponent
+                                        id="partOneMin"
                                         on:change="{() => updateQuizSettings()}"
+                                        max="{quiz.partSettings[quiz.selectedOperator].partOne.maxValue - 1 || 50}"
                                         bind:value="{quiz.partSettings[quiz.selectedOperator].partOne.minValue}" />
                                 </label>
-                            </div>
-                            <div class="mt-4">
-                                <label for="partOneTo">
-                                    Til og med:
-                                    <RangeComponent
-                                        id="partOneTo"
-                                        min="{quiz.partSettings[quiz.selectedOperator].partOne.minValue + 1}"
+                                <label for="partOneMax">
+                                    Til og med
+                                    <NumberInputComponent
+                                        id="partOneMax"
                                         on:change="{() => updateQuizSettings()}"
+                                        min="{quiz.partSettings[quiz.selectedOperator].partOne.minValue + 1 || 1}"
                                         bind:value="{quiz.partSettings[quiz.selectedOperator].partOne.maxValue}" />
                                 </label>
                             </div>
@@ -214,29 +213,24 @@
                     </div>
                 {:else}
                     <div
-                        transition:slide|local="{appSettings.transitionDuration}">
-                        <div>
-                            <label for="partTwoFrom">
-                                Fra og med:
-                                <br />
-                                <RangeComponent
-                                    id="partTwoFrom"
-                                    max="{quiz.partSettings[quiz.selectedOperator].partTwo.maxValue - 1}"
-                                    on:change="{() => updateQuizSettings()}"
-                                    bind:value="{quiz.partSettings[quiz.selectedOperator].partTwo.minValue}" />
-                            </label>
-                        </div>
-                        <div class="mt-4">
-                            <label for="partTwoTo">
-                                Til og med:
-                                <br />
-                                <RangeComponent
-                                    id="partTwoTo"
-                                    min="{quiz.partSettings[quiz.selectedOperator].partTwo.minValue + 1}"
-                                    on:change="{() => updateQuizSettings()}"
-                                    bind:value="{quiz.partSettings[quiz.selectedOperator].partTwo.maxValue}" />
-                            </label>
-                        </div>
+                        transition:slide|local="{appSettings.transitionDuration}"
+                        class="flex flex-row">
+                        <label for="partTwoFrom" class="mr-4">
+                            Fra og med
+                            <NumberInputComponent
+                                id="partTwoFrom"
+                                max="{quiz.partSettings[quiz.selectedOperator].partTwo.maxValue - 1 || 50}"
+                                on:change="{() => updateQuizSettings()}"
+                                bind:value="{quiz.partSettings[quiz.selectedOperator].partTwo.minValue}" />
+                        </label>
+                        <label for="partTwoTo">
+                            Til og med
+                            <NumberInputComponent
+                                id="partTwoTo"
+                                min="{quiz.partSettings[quiz.selectedOperator].partTwo.minValue + 1}"
+                                on:change="{() => updateQuizSettings()}"
+                                bind:value="{quiz.partSettings[quiz.selectedOperator].partTwo.maxValue}" />
+                        </label>
                     </div>
                 {/if}
             </div>
