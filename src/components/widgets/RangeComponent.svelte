@@ -8,7 +8,7 @@
     export let id: string | undefined = undefined
 </script>
 
-<div class="flex flex-row">
+<div class="flex flex-row mb-1">
     <span class="text-blue-800 mr-4 {largeLabel ? 'w-20' : 'w-8'}">
         {value}
         {#if unitLabel}{unitLabel}{/if}
