@@ -154,15 +154,6 @@
                     {:else}
                         <div
                             transition:slide|local="{appSettings.transitionDuration}">
-                            {#if isDivision}
-                                <div
-                                    class="mb-4"
-                                    transition:slide|local="{appSettings.transitionDuration}">
-                                    <AlertComponent
-                                        message="Intervallverdi ganget med
-                                        divisor" />
-                                </div>
-                            {/if}
                             <div class="flex flex-row">
                                 <label class="mr-4" for="partOneMin">
                                     Fra og med
@@ -181,6 +172,15 @@
                                         bind:value="{quiz.partSettings[quiz.selectedOperator].partOne.maxValue}" />
                                 </label>
                             </div>
+                            {#if isDivision}
+                                <div
+                                    class="mt-4"
+                                    transition:slide|local="{appSettings.transitionDuration}">
+                                    <AlertComponent
+                                        message="Intervallverdi ganget med
+                                        divisor" />
+                                </div>
+                            {/if}
                         </div>
                     {/if}
                 </div>
