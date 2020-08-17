@@ -183,7 +183,7 @@
                                         id="{quiz.selectedOperator}-1-min"
                                         on:change="{() => updateQuizSettings()}"
                                         on:isValid="{validateNumberInput}"
-                                        max="{quiz.partSettings[quiz.selectedOperator].partOne.maxValue - 1 || 50}"
+                                        max="{quiz.partSettings[quiz.selectedOperator].partOne.maxValue - 1 || 1000}"
                                         bind:value="{quiz.partSettings[quiz.selectedOperator].partOne.minValue}" />
                                 </label>
                                 <label for="partOneMax">
@@ -192,7 +192,7 @@
                                         id="{quiz.selectedOperator}-1-max"
                                         on:change="{() => updateQuizSettings()}"
                                         on:isValid="{validateNumberInput}"
-                                        min="{quiz.partSettings[quiz.selectedOperator].partOne.minValue + 1 || 1}"
+                                        min="{quiz.partSettings[quiz.selectedOperator].partOne.minValue + 1 || -1000}"
                                         bind:value="{quiz.partSettings[quiz.selectedOperator].partOne.maxValue}" />
                                 </label>
                             </div>
@@ -243,7 +243,7 @@
                             Fra og med
                             <NumberInputComponent
                                 id="{quiz.selectedOperator}-2-min"
-                                max="{quiz.partSettings[quiz.selectedOperator].partTwo.maxValue - 1 || 50}"
+                                max="{quiz.partSettings[quiz.selectedOperator].partTwo.maxValue - 1 || 1000}"
                                 on:change="{() => updateQuizSettings()}"
                                 on:isValid="{validateNumberInput}"
                                 bind:value="{quiz.partSettings[quiz.selectedOperator].partTwo.minValue}" />
@@ -252,7 +252,7 @@
                             Til og med
                             <NumberInputComponent
                                 id="{quiz.selectedOperator}-2-max"
-                                min="{quiz.partSettings[quiz.selectedOperator].partTwo.minValue + 1}"
+                                min="{quiz.partSettings[quiz.selectedOperator].partTwo.minValue + 1 || -1000}"
                                 on:change="{() => updateQuizSettings()}"
                                 on:isValid="{validateNumberInput}"
                                 bind:value="{quiz.partSettings[quiz.selectedOperator].partTwo.maxValue}" />

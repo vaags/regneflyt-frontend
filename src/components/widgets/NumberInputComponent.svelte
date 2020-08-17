@@ -1,8 +1,8 @@
 <script lang="ts">
     import { createEventDispatcher } from 'svelte'
     export let value: number | undefined = undefined
-    export let min: number = -100
-    export let max: number = 100
+    export let min: number = -1000
+    export let max: number = +1000
     export let step: number = 1
     export let id: string
 
