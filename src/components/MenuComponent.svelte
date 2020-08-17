@@ -19,19 +19,41 @@
     export let quiz: Quiz
     let puzzle = getPuzzle(quiz, undefined)
     const dispatch = createEventDispatcher()
+    let invalidInputs: string[] = []
+    let invalidNumberInputs: boolean
 
-    $: isDivision = quiz.selectedOperator === Operator.Division
+    function validateNumberInput(event: any) {
+        toggleInvalidFields(event.detail.id, event.detail.isValid)
+    }
+
+    function toggleInvalidFields(id: string, isValid: boolean) {
+        var idx = invalidInputs.indexOf(id)
+        if (idx >= 0 && isValid) {
+            invalidInputs.splice(idx, 1)
+        } else if (idx < 0 && !isValid) {
+            invalidInputs.push(id)
+        }
+        invalidNumberInputs = invalidInputs.length > 0
+    }
+
     $: isMultiplication = quiz.selectedOperator === Operator.Multiplication
+    $: isDivision = quiz.selectedOperator === Operator.Division
     $: isAllOperators = quiz.selectedOperator === Operator.All
     $: hasPuzzleTimeLimit = quiz.puzzleTimeLimit > 0
 
+    $: validationMultiplicationError =
+        (isMultiplication || isAllOperators) &&
+        quiz.partSettings[Operator.Multiplication].partOne.possibleValues
+            ?.length == 0
+
+    $: validationDivisionError =
+        (isDivision || isAllOperators) &&
+        quiz.partSettings[Operator.Division].partTwo.possibleValues?.length == 0
+
     $: validationError =
-        ((isMultiplication || isAllOperators) &&
-            quiz.partSettings[Operator.Multiplication].partOne.possibleValues
-                ?.length == 0) ||
-        ((isDivision || isAllOperators) &&
-            quiz.partSettings[Operator.Division].partTwo.possibleValues
-                ?.length == 0)
+        invalidNumberInputs ||
+        validationMultiplicationError ||
+        validationDivisionError
 
     function getReady() {
         if (validationError) return
@@ -158,16 +180,18 @@
                                 <label class="mr-4" for="partOneMin">
                                     Fra og med
                                     <NumberInputComponent
-                                        id="partOneMin"
+                                        id="{quiz.selectedOperator}-1-min"
                                         on:change="{() => updateQuizSettings()}"
+                                        on:isValid="{validateNumberInput}"
                                         max="{quiz.partSettings[quiz.selectedOperator].partOne.maxValue - 1 || 50}"
                                         bind:value="{quiz.partSettings[quiz.selectedOperator].partOne.minValue}" />
                                 </label>
                                 <label for="partOneMax">
                                     Til og med
                                     <NumberInputComponent
-                                        id="partOneMax"
+                                        id="{quiz.selectedOperator}-1-max"
                                         on:change="{() => updateQuizSettings()}"
+                                        on:isValid="{validateNumberInput}"
                                         min="{quiz.partSettings[quiz.selectedOperator].partOne.minValue + 1 || 1}"
                                         bind:value="{quiz.partSettings[quiz.selectedOperator].partOne.maxValue}" />
                                 </label>
@@ -218,17 +242,19 @@
                         <label for="partTwoFrom" class="mr-4">
                             Fra og med
                             <NumberInputComponent
-                                id="partTwoFrom"
+                                id="{quiz.selectedOperator}-2-min"
                                 max="{quiz.partSettings[quiz.selectedOperator].partTwo.maxValue - 1 || 50}"
                                 on:change="{() => updateQuizSettings()}"
+                                on:isValid="{validateNumberInput}"
                                 bind:value="{quiz.partSettings[quiz.selectedOperator].partTwo.minValue}" />
                         </label>
                         <label for="partTwoTo">
                             Til og med
                             <NumberInputComponent
-                                id="partTwoTo"
+                                id="{quiz.selectedOperator}-2-max"
                                 min="{quiz.partSettings[quiz.selectedOperator].partTwo.minValue + 1}"
                                 on:change="{() => updateQuizSettings()}"
+                                on:isValid="{validateNumberInput}"
                                 bind:value="{quiz.partSettings[quiz.selectedOperator].partTwo.maxValue}" />
                         </label>
                     </div>

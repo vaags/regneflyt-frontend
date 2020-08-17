@@ -1,14 +1,24 @@
 <script lang="ts">
-    export let value: number
-    export let min: number = 1
-    export let max: number = 50
+    import { createEventDispatcher } from 'svelte'
+    export let value: number | undefined = undefined
+    export let min: number = -100
+    export let max: number = 100
     export let step: number = 1
     export let id: string
+
+    const dispatch = createEventDispatcher()
+
+    $: isValid = value !== undefined && value >= min && value <= max
+
+    $: {
+        dispatch('isValid', { isValid, id })
+        // console.log('dispatching isvalid: ', { isValid, id })
+    }
 </script>
 
 <input
-    {id}
-    class="border rounded p-2 leading-tight block"
+    id="e{id}"
+    class="border rounded p-2 my-1 leading-tight block {!isValid ? 'border-red-600' : null}"
     type="number"
     {min}
     {max}
