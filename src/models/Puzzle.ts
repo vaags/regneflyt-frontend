@@ -1,5 +1,5 @@
-import type { Operator } from "./enums/Operator";
-import type { PuzzlePart } from "./PuzzlePart";
+import type { Operator } from "./enums/Operator"
+import type { PuzzlePart } from "./PuzzlePart"
 
 export type Puzzle = {
     parts: PuzzlePart[];

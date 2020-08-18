@@ -7,6 +7,8 @@ const urlParams = new URLSearchParams(window.location.search)
 
 export function getQuiz(): Quiz {
     return {
+        title: urlParams.get('title') || undefined,
+        showSettings: getBoolParam('showSettings'),
         duration: getFloatParam('duration') || 1,
         puzzleTimeLimit: getIntParam('timeLimit') || 5,
         partSettings: [
@@ -69,6 +71,10 @@ export function getQuiz(): Quiz {
         allowNegativeAnswer: getBoolParam('negatives'),
         puzzleMode:
             (getIntParam('puzzleMode') as PuzzleMode) || PuzzleMode.Normal,
+        sharing: {
+            title: '',
+            showSettings: false
+        }
     }
 }
 

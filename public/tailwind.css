@@ -36,6 +36,14 @@
     @apply bg-yellow-700 border-yellow-800;
 }
 
+.btn-purple {
+    @apply bg-purple-600 border-purple-700;
+}
+
+.btn-purple:hover {
+    @apply bg-purple-700 border-purple-800;
+}
+
 /* Alerts */
 
 .alert-blue {

@@ -1,5 +1,5 @@
 export type QuizPuzzlePart = {
-    minValue: number;
-    maxValue: number;
-    possibleValues: Array<number>;
+    minValue: number
+    maxValue: number
+    possibleValues: Array<number>
 }
