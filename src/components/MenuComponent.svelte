@@ -24,8 +24,7 @@
     let showSharePanel: boolean
 
     // Sharing
-    let value = null
-    let areaDom: any
+    let textAreaDom: any
     let shareLinkCopied: boolean
 
     function validateNumberInput(event: any) {
@@ -87,8 +86,8 @@
     }
 
     function copyShareLinkToClipboard() {
-        areaDom.focus()
-        areaDom.select()
+        textAreaDom.focus()
+        textAreaDom.select()
 
         const successful = document.execCommand('copy')
         if (!successful) {
@@ -401,7 +400,7 @@
                 <textarea
                     class="form-textarea w-full font-mono text-xs"
                     rows="5"
-                    bind:this="{areaDom}"
+                    bind:this="{textAreaDom}"
                     value="{window.location.protocol + '//' + window.location.host + window.location.pathname + window.location.search}&title={encodeURIComponent(quiz.sharing.title)}&showSettings={quiz.sharing.showSettings}"></textarea>
 
             </label>
