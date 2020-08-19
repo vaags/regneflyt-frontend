@@ -110,7 +110,7 @@
 <form>
     <div class="card pb-6">
         <div
-            class="float-right {quizAlmostFinished ? 'text-yellow-700' : 'text-gray-700'}">
+            class="float-right {quizAlmostFinished ? 'text-yellow-700 font-semibold' : 'text-gray-700'}">
             <TimeoutComponent
                 {seconds}
                 state="{quizTimeoutState}"
@@ -165,6 +165,6 @@
             disabled="{displayError}"
             on:click="{() => (puzzle.timeout ? (puzzle = generatePuzzle(puzzle, true)) : completePuzzleIfValid())}"
             label="Neste"
-            color="{displayError ? 'red' : quizAlmostFinished || puzzle.timeout ? 'yellow' : 'green'}" />
+            color="{displayError ? 'red' : puzzle.timeout ? 'yellow' : 'green'}" />
     </div>
 </form>
