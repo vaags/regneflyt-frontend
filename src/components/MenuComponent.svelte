@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { createEventDispatcher, onMount } from 'svelte'
+    import { createEventDispatcher, onMount, tick } from 'svelte'
     import { slide } from 'svelte/transition'
     import ButtonComponent from './widgets/ButtonComponent.svelte'
     import RangeComponent from './widgets/RangeComponent.svelte'
@@ -22,6 +22,11 @@
     let invalidInputs: string[] = []
     let invalidNumberInputs: boolean
     let showSharePanel: boolean
+
+    // Sharing
+    let value = null
+    let areaDom: any
+    let shareLinkCopied: boolean
 
     function validateNumberInput(event: any) {
         toggleInvalidFields(event.detail.id, event.detail.isValid)
@@ -67,7 +72,6 @@
     }
 
     function updateQuizSettings(updatePuzzlePreview: boolean = true) {
-        console.log('updating settings')
         if (!validationError) {
             setUrlParams(quiz)
             if (updatePuzzlePreview) getPuzzlePreview()
@@ -80,6 +84,18 @@
             : (quiz.puzzleTimeLimit = 0)
 
         updateQuizSettings(false)
+    }
+
+    function copyShareLinkToClipboard() {
+        areaDom.focus()
+        areaDom.select()
+
+        const successful = document.execCommand('copy')
+        if (!successful) {
+            console.error('unable to copy share link')
+        } else {
+            shareLinkCopied = true
+        }
     }
 
     onMount(() => {
@@ -365,22 +381,31 @@
                 id="shareTitle"
                 type="text"
                 maxlength="50"
+                on:keyup="{() => (shareLinkCopied = false)}"
                 placeholder="Tittel"
                 class="form-input w-3/4"
                 bind:value="{quiz.sharing.title}" />
             <label class="inline-flex items-center mt-4">
                 <input
                     type="checkbox"
+                    on:change="{() => (shareLinkCopied = false)}"
                     class="form-checkbox text-blue-700 h-5 w-5 border-gray-500"
                     bind:checked="{quiz.sharing.showSettings}" />
                 <span class="ml-2">Vis innstillinger</span>
             </label>
-            <p class="py-2 mt-4 px-3 border border-gray-400 rounded bg-white">
-                <!-- <LabelComponent>Lenke</LabelComponent> -->
-                <code class="break-all text-sm">
-                    {window.location.protocol + '//' + window.location.host + window.location.pathname + window.location.search}&title={encodeURIComponent(quiz.sharing.title)}&showSettings={quiz.sharing.showSettings}
-                </code>
-            </p>
+            <label class="block mt-4">
+                Lenke
+                <LabelComponent on:click="{copyShareLinkToClipboard}">
+                    {shareLinkCopied ? 'Kopiert!' : 'Trykk for å kopiere'}
+                </LabelComponent>
+                <textarea
+                    class="form-textarea w-full font-mono text-xs"
+                    rows="5"
+                    bind:this="{areaDom}"
+                    value="{window.location.protocol + '//' + window.location.host + window.location.pathname + window.location.search}&title={encodeURIComponent(quiz.sharing.title)}&showSettings={quiz.sharing.showSettings}"></textarea>
+
+            </label>
+            <!-- <LabelComponent>Lenke</LabelComponent> -->
         </div>
     {/if}
     <ButtonComponent
@@ -395,6 +420,12 @@
                 on:click="{() => (showSharePanel = !showSharePanel)}"
                 disabled="{validationError}"
                 color="{validationError ? 'red' : showSharePanel ? 'purple' : 'blue'}" />
+        </div>
+    {:else}
+        <div class="float-right">
+            <ButtonComponent
+                label="Avbryt"
+                on:click="{() => (quiz.showSettings = true)}" />
         </div>
     {/if}
 </form>
