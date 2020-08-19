@@ -1,4 +1,4 @@
 export type PuzzlePart = {
-    generatedValue: number;
-    userDefinedValue: number | undefined;
+    generatedValue: number
+    userDefinedValue: number | undefined
 }

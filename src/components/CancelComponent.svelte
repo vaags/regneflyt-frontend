@@ -29,10 +29,16 @@
         <ButtonComponent on:click="{toggleWarning}" label="Nei" />
     {:else}
         {#if isLocalhost}
-            <span class="mr-2">
-                <ButtonComponent on:click="{completeQuiz}" label="Fullfør" />
+            <span class="mr-1">
+                <ButtonComponent
+                    on:click="{completeQuiz}"
+                    small="{true}"
+                    label="Fullfør" />
             </span>
         {/if}
-        <ButtonComponent on:click="{toggleWarning}" label="Avbryt" />
+        <ButtonComponent
+            small="{true}"
+            on:click="{toggleWarning}"
+            label="Avbryt" />
     {/if}
 </div>
