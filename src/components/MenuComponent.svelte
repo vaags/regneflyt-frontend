@@ -419,12 +419,14 @@
                 label="Del"
                 on:click="{() => (showSharePanel = !showSharePanel)}"
                 disabled="{validationError}"
+                small="{true}"
                 color="{validationError ? 'red' : showSharePanel ? 'purple' : 'blue'}" />
         </div>
     {:else}
         <div class="float-right">
             <ButtonComponent
-                label="Avbryt"
+                label="Vis innstillinger"
+                small="{true}"
                 on:click="{() => (quiz.showSettings = true)}" />
         </div>
     {/if}
