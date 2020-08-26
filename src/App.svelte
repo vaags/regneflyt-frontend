@@ -36,7 +36,7 @@
         fakeInputFocus()
     }
 
-    function startQuiz(event) {
+    function startQuiz() {
         quiz.state = QuizState.Started
     }
 

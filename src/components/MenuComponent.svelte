@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { createEventDispatcher, onMount, tick } from 'svelte'
+    import { createEventDispatcher, onMount } from 'svelte'
     import { slide } from 'svelte/transition'
     import ButtonComponent from './widgets/ButtonComponent.svelte'
     import RangeComponent from './widgets/RangeComponent.svelte'
