@@ -14,14 +14,14 @@ export function getQuiz(): Quiz {
         operatorSettings: [
             {
                 operator: Operator.Addition,
-                minValue: getIntParam('addMin') || 1,
-                maxValue: getIntParam('addMax') || 20,
+                minValue: getIntParam('addMin') || 0,
+                maxValue: getIntParam('addMax') || 19,
                 possibleValues: []
             },
             {
                 operator: Operator.Subtraction,
-                minValue: getIntParam('subMin') || 1,
-                maxValue: getIntParam('subMax') || 20,
+                minValue: getIntParam('subMin') || 0,
+                maxValue: getIntParam('subMax') || 19,
                 possibleValues: []
             },
             {
