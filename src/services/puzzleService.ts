@@ -2,19 +2,16 @@ import type { Quiz } from "../models/Quiz";
 import { Operator } from "../models/enums/Operator";
 import type { Puzzle } from "../models/Puzzle";
 import type { PuzzlePart } from "../models/PuzzlePart";
-import type { QuizPuzzlePart } from "../models/QuizPuzzlePart";
 import { PuzzleMode } from "../models/enums/PuzzleMode";
 import { GetEnumValues } from "./enumService";
+import type { OperatorSettings } from "../models/OperatorSettings";
 
 export function getPuzzle(quiz: Quiz, previousPuzzle: Puzzle | undefined) {
 
     const activeOperator: Operator = getOperator(quiz)
 
     const puzzle: Puzzle = {
-        parts: [
-            getPuzzlePart(quiz.partSettings[activeOperator].partOne, previousPuzzle?.parts[0]),
-            getPuzzlePart(quiz.partSettings[activeOperator].partTwo, previousPuzzle?.parts[1])
-        ],
+        parts: getPuzzleParts(quiz.operatorSettings[activeOperator], previousPuzzle?.parts),
         operator: activeOperator,
         timeout: false,
         duration: 0,
@@ -25,7 +22,7 @@ export function getPuzzle(quiz: Quiz, previousPuzzle: Puzzle | undefined) {
     if (puzzle.operator === Operator.Division) {
         puzzle.parts[0].generatedValue = puzzle.parts[0].generatedValue * puzzle.parts[1].generatedValue
     } else if (shouldAvoidNegativeAnswer()) {
-        swapPuzzlePartValues()
+        puzzle.parts = puzzle.parts.reverse();
     }
 
     puzzle.parts.push(getAnswerPart(puzzle.parts[0].generatedValue, puzzle.parts[1].generatedValue, puzzle.operator))
@@ -40,9 +37,6 @@ export function getPuzzle(quiz: Quiz, previousPuzzle: Puzzle | undefined) {
         )
     }
 
-    function swapPuzzlePartValues() {
-        [puzzle.parts[0], puzzle.parts[1]] = [puzzle.parts[1], puzzle.parts[0]]
-    }
 }
 
 function getOperator(quiz: Quiz): Operator {
@@ -55,47 +49,49 @@ function getOperator(quiz: Quiz): Operator {
     return quiz.selectedOperator
 }
 
-function getPuzzlePart(quizPuzzlePart: QuizPuzzlePart, previousPuzzlePart: PuzzlePart | undefined): PuzzlePart {
-    if (quizPuzzlePart.possibleValues?.length > 0) {
+function getPuzzleParts(settings: OperatorSettings, previousParts: PuzzlePart[] | undefined): PuzzlePart[] {
+    const parts: PuzzlePart[] = [{ userDefinedValue: undefined, generatedValue: 0 }, { userDefinedValue: undefined, generatedValue: 0 }]
 
-        if (quizPuzzlePart.possibleValues.length === 1) {
-            return {
-                generatedValue: quizPuzzlePart.possibleValues[0],
-                userDefinedValue: undefined
-            }
-        }
-
-        let previousIndex: number | undefined = undefined;
-
-        if (previousPuzzlePart !== undefined) {
-            previousIndex = quizPuzzlePart.possibleValues.indexOf(previousPuzzlePart.generatedValue);
-        }
-
-        let randomIndex = getRandomNumber(
-            0, quizPuzzlePart.possibleValues.length - 1, previousIndex
-        )
-
-        return {
-            generatedValue: quizPuzzlePart.possibleValues[randomIndex],
-            userDefinedValue: undefined
-        }
-    } else {
-        return {
-            generatedValue: getRandomNumber(
-                quizPuzzlePart.minValue,
-                quizPuzzlePart.maxValue,
-                previousPuzzlePart?.generatedValue),
-            userDefinedValue: undefined
-        }
+    switch (settings.operator) {
+        case Operator.Addition:
+            parts[0].generatedValue = getRandomNumber(settings.minValue, settings.maxValue, previousParts?.[0].generatedValue)
+            parts[1].generatedValue = getRandomNumber(settings.minValue, settings.maxValue, previousParts?.[1].generatedValue)
+            break;
+        case Operator.Subtraction:
+            parts[0].generatedValue = getRandomNumber(settings.minValue, settings.maxValue, previousParts?.[0].generatedValue)
+            parts[1].generatedValue = getRandomNumber(settings.minValue, settings.maxValue, previousParts?.[1].generatedValue)
+            break;
+        case Operator.Multiplication:
+            parts[0].generatedValue = getRandomNumberFromArray(settings.possibleValues, previousParts?.[0].generatedValue)
+            parts[1].generatedValue = getRandomNumber(1, 10, previousParts?.[1].generatedValue)
+            break;
+        case Operator.Division:
+            parts[0].generatedValue = getRandomNumber(1, 10, previousParts?.[0].generatedValue)
+            parts[1].generatedValue = getRandomNumberFromArray(settings.possibleValues, previousParts?.[1].generatedValue)
+            break;
+        default:
+            throw ('Cannot get puzzleParts: Operator not recognized')
     }
 
-    function getRandomNumber(min: number, max: number, exclude: number | undefined) {
-        // Adapted from https://stackoverflow.com/a/34184614
-        var rnd = Math.floor(Math.random() * ((exclude === undefined ? max + 1 : max) - min) + min)
-        if (exclude !== undefined && rnd >= exclude) rnd++
+    return parts
+}
 
-        return rnd
-    }
+function getRandomNumberFromArray(numbers: number[], previousNumber: number | undefined): number {
+    if (numbers.length === 1) return numbers[0]
+
+    let previousIndex = previousNumber ? numbers.indexOf(previousNumber) : undefined
+
+    return numbers[getRandomNumber(0, numbers.length - 1, previousIndex)]
+}
+
+function getRandomNumber(min: number, max: number, exclude: number | undefined) {
+    // Adapted from https://stackoverflow.com/a/34184614
+    // console.log('min', min)
+    // console.log('max', max)
+    var rnd = Math.floor(Math.random() * ((exclude === undefined ? max + 1 : max) - min) + min)
+    if (exclude !== undefined && rnd >= exclude) rnd++
+
+    return rnd
 }
 
 function getAnswerPart(

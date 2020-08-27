@@ -21,7 +21,7 @@
         dispatch('completeQuiz', { puzzleSet })
     }
 
-    function addPuzzle(event) {
+    function addPuzzle(event: any) {
         puzzleSet = [...puzzleSet, event.detail.puzzle]
     }
 </script>

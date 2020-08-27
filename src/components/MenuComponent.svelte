@@ -12,53 +12,36 @@
     import { setUrlParams } from '../services/quizService'
     import PuzzlePreviewComponent from './widgets/PuzzlePreviewComponent.svelte'
     import PuzzleModeComponent from './widgets/PuzzleModeComponent.svelte'
-    import NumberInputComponent from './widgets/NumberInputComponent.svelte'
     import type { AppSettings } from '../models/AppSettings'
 
     export let appSettings: AppSettings
     export let quiz: Quiz
     let puzzle = getPuzzle(quiz, undefined)
     const dispatch = createEventDispatcher()
-    let invalidInputs: string[] = []
-    let invalidNumberInputs: boolean
     let showSharePanel: boolean
 
     // Sharing
     let textAreaDom: any
     let shareLinkCopied: boolean
 
-    function validateNumberInput(event: any) {
-        toggleInvalidFields(event.detail.id, event.detail.isValid)
-    }
-
-    function toggleInvalidFields(id: string, isValid: boolean) {
-        var idx = invalidInputs.indexOf(id)
-        if (idx >= 0 && isValid) {
-            invalidInputs.splice(idx, 1)
-        } else if (idx < 0 && !isValid) {
-            invalidInputs.push(id)
-        }
-        invalidNumberInputs = invalidInputs.length > 0
-    }
-
     $: isMultiplication = quiz.selectedOperator === Operator.Multiplication
     $: isDivision = quiz.selectedOperator === Operator.Division
     $: isAllOperators = quiz.selectedOperator === Operator.All
     $: hasPuzzleTimeLimit = quiz.puzzleTimeLimit > 0
+    $: hasInvalidRange =
+        quiz.operatorSettings[Operator.Addition].maxValue <
+            quiz.operatorSettings[Operator.Addition].minValue ||
+        quiz.operatorSettings[Operator.Subtraction].maxValue <
+            quiz.operatorSettings[Operator.Subtraction].minValue
 
-    $: validationMultiplicationError =
-        (isMultiplication || isAllOperators) &&
-        quiz.partSettings[Operator.Multiplication].partOne.possibleValues
-            ?.length == 0
+    $: missingPossibleValues =
+        (isMultiplication || isDivision || isAllOperators) &&
+        (quiz.operatorSettings[Operator.Multiplication].possibleValues
+            ?.length == 0 ||
+            quiz.operatorSettings[Operator.Division].possibleValues?.length ==
+                0)
 
-    $: validationDivisionError =
-        (isDivision || isAllOperators) &&
-        quiz.partSettings[Operator.Division].partTwo.possibleValues?.length == 0
-
-    $: validationError =
-        invalidNumberInputs ||
-        validationMultiplicationError ||
-        validationDivisionError
+    $: validationError = missingPossibleValues || hasInvalidRange
 
     function getReady() {
         if (validationError) return
@@ -72,8 +55,8 @@
 
     function updateQuizSettings(updatePuzzlePreview: boolean = true) {
         if (!validationError) {
-            setUrlParams(quiz)
             if (updatePuzzlePreview) getPuzzlePreview()
+            setUrlParams(quiz)
         }
     }
 
@@ -100,6 +83,9 @@
     onMount(() => {
         if (quiz.showSettings) updateQuizSettings()
     })
+
+    let minValues: number[] = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90]
+    let maxValues: number[] = [9, 19, 29, 39, 49, 59, 69, 79, 89, 99]
 </script>
 
 {#if appSettings.displayGreeting}
@@ -148,7 +134,7 @@
                             type="checkbox"
                             class="form-checkbox text-blue-700 h-5 w-5
                             border-gray-500"
-                            on:change="{() => updateQuizSettings()}"
+                            on:blur="{() => updateQuizSettings()}"
                             bind:checked="{quiz.allowNegativeAnswer}" />
                         <span class="ml-2">Tillat negative svar</span>
                     </label>
@@ -168,89 +154,19 @@
                     <h2>
                         {#if isMultiplication}
                             Multiplikand
-                        {:else if isDivision}
-                            Dividend
-                            <small>(intervall)</small>
-                        {:else}
-                            Første ledd
-                            <small>(intervall)</small>
-                        {/if}
+                        {:else if isDivision}Divisor{:else}Intervall{/if}
                     </h2>
-                    <div class="mb-6">
-                        {#if isMultiplication}
-                            <div
-                                transition:slide|local="{appSettings.transitionDuration}">
-                                {#each Array(10) as _, i}
-                                    <label class="flex items-center py-1">
-                                        <input
-                                            type="checkbox"
-                                            class="form-checkbox text-blue-700
-                                            h-5 w-5 border-gray-500"
-                                            on:change="{() => updateQuizSettings()}"
-                                            bind:group="{quiz.partSettings[Operator.Multiplication].partOne.possibleValues}"
-                                            value="{i + 1}" />
-                                        <span class="ml-2">{i + 1}</span>
-                                    </label>
-                                {/each}
-                            </div>
-                        {:else}
-                            <div
-                                transition:slide|local="{appSettings.transitionDuration}">
-                                <div class="flex flex-row">
-                                    <label class="mr-4" for="partOneMin">
-                                        Fra og med
-                                        <NumberInputComponent
-                                            id="{quiz.selectedOperator}-1-min"
-                                            on:change="{() => updateQuizSettings()}"
-                                            on:isValid="{validateNumberInput}"
-                                            min="{1}"
-                                            max="{quiz.partSettings[quiz.selectedOperator].partOne.maxValue - 1 || 1000}"
-                                            bind:value="{quiz.partSettings[quiz.selectedOperator].partOne.minValue}" />
-                                    </label>
-                                    <label for="partOneMax">
-                                        Til og med
-                                        <NumberInputComponent
-                                            id="{quiz.selectedOperator}-1-max"
-                                            on:change="{() => updateQuizSettings()}"
-                                            on:isValid="{validateNumberInput}"
-                                            min="{quiz.partSettings[quiz.selectedOperator].partOne.minValue + 1 || -1000}"
-                                            bind:value="{quiz.partSettings[quiz.selectedOperator].partOne.maxValue}" />
-                                    </label>
-                                </div>
-                                {#if isDivision}
-                                    <div
-                                        class="mt-4"
-                                        transition:slide|local="{appSettings.transitionDuration}">
-                                        <AlertComponent
-                                            message="Intervallverdi ganget med
-                                            divisor" />
-                                    </div>
-                                {/if}
-                            </div>
-                        {/if}
-                    </div>
-                    <h2>
-                        {#if isMultiplication}
-                            Multiplikator
-                            <small>(intervall)</small>
-                        {:else if isDivision}
-                            Divisor
-                        {:else}
-                            Andre ledd
-                            <small>(intervall)</small>
-                        {/if}
-                    </h2>
-                    {#if isDivision}
+                    {#if isMultiplication || isDivision}
                         <div
                             transition:slide|local="{appSettings.transitionDuration}">
-                            {#each Array(10) as _, i}
+                            {#each Array(12) as _, i}
                                 <label class="flex items-center py-1">
                                     <input
                                         type="checkbox"
                                         class="form-checkbox text-blue-700 h-5
                                         w-5 border-gray-500"
-                                        on:change="{() => updateQuizSettings()}"
-                                        bind:group="{quiz.partSettings[Operator.Division].partTwo.possibleValues}"
+                                        on:blur="{() => updateQuizSettings()}"
+                                        bind:group="{quiz.operatorSettings[quiz.selectedOperator].possibleValues}"
                                         value="{i + 1}" />
                                     <span class="ml-2">{i + 1}</span>
                                 </label>
@@ -258,27 +174,41 @@
                         </div>
                     {:else}
                         <div
-                            transition:slide|local="{appSettings.transitionDuration}"
-                            class="flex flex-row">
-                            <label for="partTwoFrom" class="mr-4">
-                                Fra og med
-                                <NumberInputComponent
-                                    id="{quiz.selectedOperator}-2-min"
-                                    min="{1}"
-                                    max="{quiz.partSettings[quiz.selectedOperator].partTwo.maxValue - 1 || 1000}"
-                                    on:change="{() => updateQuizSettings()}"
-                                    on:isValid="{validateNumberInput}"
-                                    bind:value="{quiz.partSettings[quiz.selectedOperator].partTwo.minValue}" />
-                            </label>
-                            <label for="partTwoTo">
-                                Til og med
-                                <NumberInputComponent
-                                    id="{quiz.selectedOperator}-2-max"
-                                    min="{quiz.partSettings[quiz.selectedOperator].partTwo.minValue + 1 || -1000}"
-                                    on:change="{() => updateQuizSettings()}"
-                                    on:isValid="{validateNumberInput}"
-                                    bind:value="{quiz.partSettings[quiz.selectedOperator].partTwo.maxValue}" />
-                            </label>
+                            transition:slide|local="{appSettings.transitionDuration}">
+                            <!-- svelte-ignore a11y-no-onchange -->
+                            <div class="flex flex-row">
+                                <label class="mr-4" for="partOneMin">
+                                    Fra og med
+                                    <select
+                                        class="form-select block"
+                                        bind:value="{quiz.operatorSettings[quiz.selectedOperator].minValue}"
+                                        on:change="{() => updateQuizSettings()}">
+                                        {#each minValues as v}
+                                            <option value="{v}">{v}</option>
+                                        {/each}
+                                    </select>
+                                </label>
+                                <label for="partOneMax">
+                                    Til og med
+                                    <select
+                                        class="form-select block"
+                                        bind:value="{quiz.operatorSettings[quiz.selectedOperator].maxValue}"
+                                        on:change="{() => updateQuizSettings()}">
+                                        {#each maxValues as v}
+                                            <option value="{v}">{v}</option>
+                                        {/each}
+                                    </select>
+                                </label>
+                            </div>
+                            {#if isDivision}
+                                <div
+                                    class="mt-4"
+                                    transition:slide|local="{appSettings.transitionDuration}">
+                                    <AlertComponent
+                                        message="Intervallverdi ganget med
+                                        divisor" />
+                                </div>
+                            {/if}
                         </div>
                     {/if}
                 </div>
@@ -401,12 +331,10 @@
                 </LabelComponent>
                 <textarea
                     class="form-textarea w-full font-mono text-xs"
-                    rows="5"
+                    rows="4"
                     bind:this="{textAreaDom}"
                     value="{window.location.protocol + '//' + window.location.host + window.location.pathname + window.location.search}&title={encodeURIComponent(quiz.sharing.title)}&showSettings={quiz.sharing.showSettings}"></textarea>
-
             </label>
-            <!-- <LabelComponent>Lenke</LabelComponent> -->
         </div>
     {/if}
     <ButtonComponent
@@ -420,7 +348,6 @@
                 label="Del"
                 on:click="{() => (showSharePanel = !showSharePanel)}"
                 disabled="{validationError}"
-                small="{true}"
                 color="{validationError ? 'red' : showSharePanel ? 'purple' : 'blue'}" />
         </div>
     {:else}

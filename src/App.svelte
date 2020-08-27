@@ -28,7 +28,7 @@
 
     let fakeInput: any
 
-    function getReady(event) {
+    function getReady(event: any) {
         quiz = event.detail.quiz
         quiz.state = QuizState.AboutToStart
         appSettings.displayGreeting = false
@@ -44,7 +44,7 @@
         quiz.state = QuizState.Initial
     }
 
-    function completeQuiz(event) {
+    function completeQuiz(event: any) {
         quiz.state = QuizState.Completed
         puzzleSet = event.detail.puzzleSet
     }
@@ -81,7 +81,7 @@
 <main class="container max-w-xl mx-auto px-2 md:px-3 pt-1 pb-2 md:pb-5">
     <h1 class="text-2xl md:text-3xl font-light text-orange-600 mb-1 text-right">
         Regneflyt
-        <small class="text-base">1.2</small>
+        <small class="text-base">1.3</small>
     </h1>
     {#if quiz.state === QuizState.AboutToStart}
         <GetReadyComponent

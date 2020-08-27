@@ -102,7 +102,7 @@
         dispatch('quizTimeout')
     }
 
-    function secondChange(event) {
+    function secondChange(event: any) {
         quizSecondsLeft = event.detail.remainingSeconds
     }
 </script>

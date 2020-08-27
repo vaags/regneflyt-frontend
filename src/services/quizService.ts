@@ -11,58 +11,30 @@ export function getQuiz(): Quiz {
         showSettings: getBoolParam('showSettings'),
         duration: getFloatParam('duration') || 1,
         puzzleTimeLimit: getIntParam('timeLimit') || 5,
-        partSettings: [
+        operatorSettings: [
             {
                 operator: Operator.Addition,
-                partOne: {
-                    minValue: getIntParam('addOneMin') || 1,
-                    maxValue: getIntParam('addOneMax') || 20,
-                    possibleValues: []
-                },
-                partTwo: {
-                    minValue: getIntParam('addTwoMin') || 1,
-                    maxValue: getIntParam('addTwoMax') || 20,
-                    possibleValues: []
-                }
+                minValue: getIntParam('addMin') || 1,
+                maxValue: getIntParam('addMax') || 20,
+                possibleValues: []
             },
             {
                 operator: Operator.Subtraction,
-                partOne: {
-                    minValue: getIntParam('subOneMin') || 1,
-                    maxValue: getIntParam('subOneMax') || 20,
-                    possibleValues: []
-                },
-                partTwo: {
-                    minValue: getIntParam('subTwoMin') || 1,
-                    maxValue: getIntParam('subTwoMax') || 20,
-                    possibleValues: []
-                }
+                minValue: getIntParam('subMin') || 1,
+                maxValue: getIntParam('subMax') || 20,
+                possibleValues: []
             },
             {
                 operator: Operator.Multiplication,
-                partOne: {
-                    minValue: 0,
-                    maxValue: 0,
-                    possibleValues: getNumArrayParam('mulOneValues') || [7]
-                },
-                partTwo: {
-                    minValue: getIntParam('mulTwoMin') || 1,
-                    maxValue: getIntParam('mulTwoMax') || 10,
-                    possibleValues: []
-                }
+                minValue: 0,
+                maxValue: 0,
+                possibleValues: getNumArrayParam('mulValues') || [7]
             },
             {
                 operator: Operator.Division,
-                partOne: {
-                    minValue: getIntParam('divOneMin') || 2,
-                    maxValue: getIntParam('divOneMax') || 20,
-                    possibleValues: []
-                },
-                partTwo: {
-                    minValue: 0,
-                    maxValue: 0,
-                    possibleValues: getNumArrayParam('divTwoValues') || [5]
-                }
+                minValue: 0,
+                maxValue: 0,
+                possibleValues: getNumArrayParam('divValues') || [5]
             },
         ],
         state: QuizState.Initial,
@@ -84,23 +56,15 @@ export function setUrlParams(quiz: Quiz) {
         timeLimit: quiz.puzzleTimeLimit.toString(),
         operator: quiz.selectedOperator.toString(),
         negatives: quiz.allowNegativeAnswer.toString(),
-        addOneMin: quiz.partSettings[Operator.Addition].partOne.minValue?.toString(),
-        addOneMax: quiz.partSettings[Operator.Addition].partOne.maxValue?.toString(),
-        addTwoMin: quiz.partSettings[Operator.Addition].partTwo.minValue?.toString(),
-        addTwoMax: quiz.partSettings[Operator.Addition].partTwo.maxValue?.toString(),
-        subOneMin: quiz.partSettings[Operator.Subtraction].partOne.minValue?.toString(),
-        subOneMax: quiz.partSettings[Operator.Subtraction].partOne.maxValue?.toString(),
-        subTwoMin: quiz.partSettings[Operator.Subtraction].partTwo.minValue?.toString(),
-        subTwoMax: quiz.partSettings[Operator.Subtraction].partTwo.maxValue?.toString(),
-        mulOneValues:
-            quiz.partSettings[Operator.Multiplication].partOne.possibleValues?.toString() ||
+        addMin: quiz.operatorSettings[Operator.Addition].minValue?.toString(),
+        addMax: quiz.operatorSettings[Operator.Addition].maxValue?.toString(),
+        subMin: quiz.operatorSettings[Operator.Subtraction].minValue?.toString(),
+        subMax: quiz.operatorSettings[Operator.Subtraction].maxValue?.toString(),
+        mulValues:
+            quiz.operatorSettings[Operator.Multiplication].possibleValues?.toString() ||
             '',
-        mulTwoMin: quiz.partSettings[Operator.Multiplication].partTwo.minValue?.toString(),
-        mulTwoMax: quiz.partSettings[Operator.Multiplication].partTwo.maxValue?.toString(),
-        divOneMin: quiz.partSettings[Operator.Division].partOne.minValue?.toString(),
-        divOneMax: quiz.partSettings[Operator.Division].partOne.maxValue?.toString(),
-        divTwoValues:
-            quiz.partSettings[3].partTwo.possibleValues?.toString() ||
+        divValues:
+            quiz.operatorSettings[3].possibleValues?.toString() ||
             '',
         puzzleMode: quiz.puzzleMode.toString(),
     }
