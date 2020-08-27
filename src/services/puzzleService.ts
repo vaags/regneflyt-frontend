@@ -11,7 +11,7 @@ export function getPuzzle(quiz: Quiz, previousPuzzle: Puzzle | undefined) {
     const activeOperator: Operator = getOperator(quiz)
 
     const puzzle: Puzzle = {
-        parts: getPuzzleParts(quiz.operatorSettings[activeOperator], previousPuzzle?.parts),
+        parts: getPuzzleParts(quiz.operatorSettings[activeOperator], previousPuzzle?.parts, quiz.allowNegativeAnswer),
         operator: activeOperator,
         timeout: false,
         duration: 0,
@@ -19,23 +19,9 @@ export function getPuzzle(quiz: Quiz, previousPuzzle: Puzzle | undefined) {
         unknownPuzzlePartNumber: getUnknownPuzzlePartNumber(activeOperator, quiz.puzzleMode)
     }
 
-    if (puzzle.operator === Operator.Division) {
-        puzzle.parts[0].generatedValue = puzzle.parts[0].generatedValue * puzzle.parts[1].generatedValue
-    } else if (shouldAvoidNegativeAnswer()) {
-        puzzle.parts = puzzle.parts.reverse();
-    }
-
     puzzle.parts.push(getAnswerPart(puzzle.parts[0].generatedValue, puzzle.parts[1].generatedValue, puzzle.operator))
 
     return puzzle;
-
-    function shouldAvoidNegativeAnswer() {
-        return (
-            !quiz.allowNegativeAnswer &&
-            puzzle.operator === Operator.Subtraction &&
-            puzzle.parts[1].generatedValue > puzzle.parts[0].generatedValue
-        )
-    }
 
 }
 
@@ -49,8 +35,8 @@ function getOperator(quiz: Quiz): Operator {
     return quiz.selectedOperator
 }
 
-function getPuzzleParts(settings: OperatorSettings, previousParts: PuzzlePart[] | undefined): PuzzlePart[] {
-    const parts: PuzzlePart[] = [{ userDefinedValue: undefined, generatedValue: 0 }, { userDefinedValue: undefined, generatedValue: 0 }]
+function getPuzzleParts(settings: OperatorSettings, previousParts: PuzzlePart[] | undefined, allowNegativeAnswer: boolean): PuzzlePart[] {
+    let parts: PuzzlePart[] = [{ userDefinedValue: undefined, generatedValue: 0 }, { userDefinedValue: undefined, generatedValue: 0 }]
 
     switch (settings.operator) {
         case Operator.Addition:
@@ -60,6 +46,9 @@ function getPuzzleParts(settings: OperatorSettings, previousParts: PuzzlePart[] 
         case Operator.Subtraction:
             parts[0].generatedValue = getRandomNumber(settings.minValue, settings.maxValue, previousParts?.[0].generatedValue)
             parts[1].generatedValue = getRandomNumber(settings.minValue, settings.maxValue, previousParts?.[1].generatedValue)
+            if (!allowNegativeAnswer && parts[1].generatedValue > parts[0].generatedValue) {
+                parts = parts.reverse();
+            }
             break;
         case Operator.Multiplication:
             parts[0].generatedValue = getRandomNumberFromArray(settings.possibleValues, previousParts?.[0].generatedValue)
@@ -68,6 +57,7 @@ function getPuzzleParts(settings: OperatorSettings, previousParts: PuzzlePart[] 
         case Operator.Division:
             parts[0].generatedValue = getRandomNumber(1, 10, previousParts?.[0].generatedValue)
             parts[1].generatedValue = getRandomNumberFromArray(settings.possibleValues, previousParts?.[1].generatedValue)
+            parts[0].generatedValue = parts[0].generatedValue * parts[1].generatedValue
             break;
         default:
             throw ('Cannot get puzzleParts: Operator not recognized')
@@ -86,8 +76,6 @@ function getRandomNumberFromArray(numbers: number[], previousNumber: number | un
 
 function getRandomNumber(min: number, max: number, exclude: number | undefined) {
     // Adapted from https://stackoverflow.com/a/34184614
-    // console.log('min', min)
-    // console.log('max', max)
     var rnd = Math.floor(Math.random() * ((exclude === undefined ? max + 1 : max) - min) + min)
     if (exclude !== undefined && rnd >= exclude) rnd++
 
