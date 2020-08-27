@@ -18,8 +18,6 @@
     export let quiz: Quiz
     let puzzle = getPuzzle(quiz, undefined)
     const dispatch = createEventDispatcher()
-    let invalidInputs: string[] = []
-    let invalidNumberInputs: boolean
     let showSharePanel: boolean
 
     // Sharing
@@ -43,8 +41,7 @@
             quiz.operatorSettings[Operator.Division].possibleValues?.length ==
                 0)
 
-    $: validationError =
-        invalidNumberInputs || missingPossibleValues || hasInvalidRange
+    $: validationError = missingPossibleValues || hasInvalidRange
 
     function getReady() {
         if (validationError) return
@@ -58,8 +55,8 @@
 
     function updateQuizSettings(updatePuzzlePreview: boolean = true) {
         if (!validationError) {
-            setUrlParams(quiz)
             if (updatePuzzlePreview) getPuzzlePreview()
+            setUrlParams(quiz)
         }
     }
 
@@ -137,7 +134,7 @@
                             type="checkbox"
                             class="form-checkbox text-blue-700 h-5 w-5
                             border-gray-500"
-                            on:change="{() => updateQuizSettings()}"
+                            on:blur="{() => updateQuizSettings()}"
                             bind:checked="{quiz.allowNegativeAnswer}" />
                         <span class="ml-2">Tillat negative svar</span>
                     </label>
@@ -168,7 +165,7 @@
                                         type="checkbox"
                                         class="form-checkbox text-blue-700 h-5
                                         w-5 border-gray-500"
-                                        on:change="{() => updateQuizSettings()}"
+                                        on:blur="{() => updateQuizSettings()}"
                                         bind:group="{quiz.operatorSettings[quiz.selectedOperator].possibleValues}"
                                         value="{i + 1}" />
                                     <span class="ml-2">{i + 1}</span>
@@ -334,7 +331,7 @@
                 </LabelComponent>
                 <textarea
                     class="form-textarea w-full font-mono text-xs"
-                    rows="5"
+                    rows="4"
                     bind:this="{textAreaDom}"
                     value="{window.location.protocol + '//' + window.location.host + window.location.pathname + window.location.search}&title={encodeURIComponent(quiz.sharing.title)}&showSettings={quiz.sharing.showSettings}"></textarea>
             </label>
@@ -351,7 +348,6 @@
                 label="Del"
                 on:click="{() => (showSharePanel = !showSharePanel)}"
                 disabled="{validationError}"
-                small="{true}"
                 color="{validationError ? 'red' : showSharePanel ? 'purple' : 'blue'}" />
         </div>
     {:else}

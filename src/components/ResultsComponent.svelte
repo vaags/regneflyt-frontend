@@ -17,9 +17,9 @@
     onMount(() => {
         if (!puzzleSet || !puzzleSet.length) return
 
-        const boolReducer = (accumulator, currentValue) =>
+        const boolReducer = (accumulator: any, currentValue: any) =>
             accumulator + (currentValue ? 1 : 0)
-        const intReducer = (accumulator, currentValue) =>
+        const intReducer = (accumulator: any, currentValue: any) =>
             accumulator + currentValue
 
         correctAnswerSum = puzzleSet.map((p) => p.isCorrect).reduce(boolReducer)

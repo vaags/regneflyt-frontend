@@ -28,7 +28,7 @@
 
     let fakeInput: any
 
-    function getReady(event) {
+    function getReady(event: any) {
         quiz = event.detail.quiz
         quiz.state = QuizState.AboutToStart
         appSettings.displayGreeting = false
@@ -44,7 +44,7 @@
         quiz.state = QuizState.Initial
     }
 
-    function completeQuiz(event) {
+    function completeQuiz(event: any) {
         quiz.state = QuizState.Completed
         puzzleSet = event.detail.puzzleSet
     }
