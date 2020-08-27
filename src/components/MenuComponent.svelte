@@ -12,7 +12,6 @@
     import { setUrlParams } from '../services/quizService'
     import PuzzlePreviewComponent from './widgets/PuzzlePreviewComponent.svelte'
     import PuzzleModeComponent from './widgets/PuzzleModeComponent.svelte'
-    import NumberInputComponent from './widgets/NumberInputComponent.svelte'
     import type { AppSettings } from '../models/AppSettings'
 
     export let appSettings: AppSettings
@@ -27,24 +26,13 @@
     let textAreaDom: any
     let shareLinkCopied: boolean
 
-    function validateNumberInput(event: any) {
-        toggleInvalidFields(event.detail.id, event.detail.isValid)
-    }
-
-    function toggleInvalidFields(id: string, isValid: boolean) {
-        var idx = invalidInputs.indexOf(id)
-        if (idx >= 0 && isValid) {
-            invalidInputs.splice(idx, 1)
-        } else if (idx < 0 && !isValid) {
-            invalidInputs.push(id)
-        }
-        invalidNumberInputs = invalidInputs.length > 0
-    }
-
     $: isMultiplication = quiz.selectedOperator === Operator.Multiplication
     $: isDivision = quiz.selectedOperator === Operator.Division
     $: isAllOperators = quiz.selectedOperator === Operator.All
     $: hasPuzzleTimeLimit = quiz.puzzleTimeLimit > 0
+    $: hasInvalidRange =
+        quiz.operatorSettings[quiz.selectedOperator].maxValue <
+        quiz.operatorSettings[quiz.selectedOperator].minValue
 
     $: missingPossibleValues =
         (isMultiplication || isDivision || isAllOperators) &&
@@ -53,7 +41,8 @@
             quiz.operatorSettings[Operator.Division].possibleValues?.length ==
                 0)
 
-    $: validationError = invalidNumberInputs || missingPossibleValues
+    $: validationError =
+        invalidNumberInputs || missingPossibleValues || hasInvalidRange
 
     function getReady() {
         if (validationError) return
@@ -95,6 +84,9 @@
     onMount(() => {
         if (quiz.showSettings) updateQuizSettings()
     })
+
+    let minValues: number[] = [1, 11, 21, 31, 41, 51, 61, 71, 81, 91]
+    let maxValues: number[] = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
 </script>
 
 {#if appSettings.displayGreeting}
@@ -184,27 +176,29 @@
                     {:else}
                         <div
                             transition:slide|local="{appSettings.transitionDuration}">
+                            <!-- svelte-ignore a11y-no-onchange -->
                             <div class="flex flex-row">
                                 <label class="mr-4" for="partOneMin">
                                     Fra og med
-                                    <NumberInputComponent
-                                        id="{quiz.selectedOperator}-1-min"
-                                        on:change="{() => updateQuizSettings()}"
-                                        on:isValid="{validateNumberInput}"
-                                        min="{1}"
-                                        step="{10}"
-                                        max="{quiz.operatorSettings[quiz.selectedOperator].maxValue - 1 || 1000}"
-                                        bind:value="{quiz.operatorSettings[quiz.selectedOperator].minValue}" />
+                                    <select
+                                        class="form-select block"
+                                        bind:value="{quiz.operatorSettings[quiz.selectedOperator].minValue}"
+                                        on:change="{() => updateQuizSettings()}">
+                                        {#each minValues as v}
+                                            <option value="{v}">{v}</option>
+                                        {/each}
+                                    </select>
                                 </label>
                                 <label for="partOneMax">
                                     Til og med
-                                    <NumberInputComponent
-                                        id="{quiz.selectedOperator}-1-max"
-                                        on:change="{() => updateQuizSettings()}"
-                                        on:isValid="{validateNumberInput}"
-                                        step="{10}"
-                                        min="{quiz.operatorSettings[quiz.selectedOperator].minValue + 9 || -1000}"
-                                        bind:value="{quiz.operatorSettings[quiz.selectedOperator].maxValue}" />
+                                    <select
+                                        class="form-select block"
+                                        bind:value="{quiz.operatorSettings[quiz.selectedOperator].maxValue}"
+                                        on:change="{() => updateQuizSettings()}">
+                                        {#each maxValues as v}
+                                            <option value="{v}">{v}</option>
+                                        {/each}
+                                    </select>
                                 </label>
                             </div>
                             {#if isDivision}
