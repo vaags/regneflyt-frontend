@@ -2,9 +2,9 @@ import type { Quiz } from "../models/Quiz";
 import { Operator } from "../models/enums/Operator";
 import type { Puzzle } from "../models/Puzzle";
 import type { PuzzlePart } from "../models/PuzzlePart";
-import type { QuizPuzzlePart } from "../models/QuizPuzzlePart";
 import { PuzzleMode } from "../models/enums/PuzzleMode";
 import { GetEnumValues } from "./enumService";
+import type { OperatorSettings } from "../models/OperatorSettings";
 
 export function getPuzzle(quiz: Quiz, previousPuzzle: Puzzle | undefined) {
 
@@ -12,8 +12,8 @@ export function getPuzzle(quiz: Quiz, previousPuzzle: Puzzle | undefined) {
 
     const puzzle: Puzzle = {
         parts: [
-            getPuzzlePart(quiz.partSettings[activeOperator].partOne, previousPuzzle?.parts[0]),
-            getPuzzlePart(quiz.partSettings[activeOperator].partTwo, previousPuzzle?.parts[1])
+            getPuzzlePart(quiz.operatorSettings[activeOperator], previousPuzzle?.parts[0]),
+            getPuzzlePart(quiz.operatorSettings[activeOperator], previousPuzzle?.parts[1])
         ],
         operator: activeOperator,
         timeout: false,
@@ -55,12 +55,12 @@ function getOperator(quiz: Quiz): Operator {
     return quiz.selectedOperator
 }
 
-function getPuzzlePart(quizPuzzlePart: QuizPuzzlePart, previousPuzzlePart: PuzzlePart | undefined): PuzzlePart {
-    if (quizPuzzlePart.possibleValues?.length > 0) {
+function getPuzzlePart(operatorSettings: OperatorSettings, previousPuzzlePart: PuzzlePart | undefined): PuzzlePart {
+    if (operatorSettings.possibleValues?.length > 0) {
 
-        if (quizPuzzlePart.possibleValues.length === 1) {
+        if (operatorSettings.possibleValues.length === 1) {
             return {
-                generatedValue: quizPuzzlePart.possibleValues[0],
+                generatedValue: operatorSettings.possibleValues[0],
                 userDefinedValue: undefined
             }
         }
@@ -68,22 +68,22 @@ function getPuzzlePart(quizPuzzlePart: QuizPuzzlePart, previousPuzzlePart: Puzzl
         let previousIndex: number | undefined = undefined;
 
         if (previousPuzzlePart !== undefined) {
-            previousIndex = quizPuzzlePart.possibleValues.indexOf(previousPuzzlePart.generatedValue);
+            previousIndex = operatorSettings.possibleValues.indexOf(previousPuzzlePart.generatedValue);
         }
 
         let randomIndex = getRandomNumber(
-            0, quizPuzzlePart.possibleValues.length - 1, previousIndex
+            0, operatorSettings.possibleValues.length - 1, previousIndex
         )
 
         return {
-            generatedValue: quizPuzzlePart.possibleValues[randomIndex],
+            generatedValue: operatorSettings.possibleValues[randomIndex],
             userDefinedValue: undefined
         }
     } else {
         return {
             generatedValue: getRandomNumber(
-                quizPuzzlePart.minValue,
-                quizPuzzlePart.maxValue,
+                operatorSettings.minValue,
+                operatorSettings.maxValue,
                 previousPuzzlePart?.generatedValue),
             userDefinedValue: undefined
         }
