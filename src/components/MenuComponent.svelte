@@ -31,8 +31,10 @@
     $: isAllOperators = quiz.selectedOperator === Operator.All
     $: hasPuzzleTimeLimit = quiz.puzzleTimeLimit > 0
     $: hasInvalidRange =
-        quiz.operatorSettings[quiz.selectedOperator].maxValue <
-        quiz.operatorSettings[quiz.selectedOperator].minValue
+        quiz.operatorSettings[Operator.Addition].maxValue <
+            quiz.operatorSettings[Operator.Addition].minValue ||
+        quiz.operatorSettings[Operator.Subtraction].maxValue <
+            quiz.operatorSettings[Operator.Subtraction].minValue
 
     $: missingPossibleValues =
         (isMultiplication || isDivision || isAllOperators) &&
@@ -85,8 +87,8 @@
         if (quiz.showSettings) updateQuizSettings()
     })
 
-    let minValues: number[] = [1, 11, 21, 31, 41, 51, 61, 71, 81, 91]
-    let maxValues: number[] = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+    let minValues: number[] = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90]
+    let maxValues: number[] = [9, 19, 29, 39, 49, 59, 69, 79, 89, 99]
 </script>
 
 {#if appSettings.displayGreeting}
