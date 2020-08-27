@@ -200,6 +200,15 @@
                                     </select>
                                 </label>
                             </div>
+                            {#if hasInvalidRange}
+                                <div
+                                    transition:slide|local="{appSettings.transitionDuration}"
+                                    class="mt-4">
+                                    <AlertComponent
+                                        color="red"
+                                        message="Intervallet er ugyldig." />
+                                </div>
+                            {/if}
                             {#if isDivision}
                                 <div
                                     class="mt-4"
