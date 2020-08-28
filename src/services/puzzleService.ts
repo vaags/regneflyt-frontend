@@ -31,7 +31,7 @@ function getOperator(quiz: Quiz): Operator {
 }
 
 function getPuzzleParts(settings: OperatorSettings, previousParts: PuzzlePart[] | undefined, allowNegativeAnswer: boolean): PuzzlePart[] {
-    let parts: PuzzlePart[] = Array.from({ length: 3 }, _ => ({ userDefinedValue: undefined, generatedValue: 0 }))
+    const parts: PuzzlePart[] = Array.from({ length: 3 }, _ => ({ userDefinedValue: undefined, generatedValue: 0 }))
 
     switch (settings.operator) {
         case Operator.Addition:
@@ -43,7 +43,7 @@ function getPuzzleParts(settings: OperatorSettings, previousParts: PuzzlePart[] 
             parts[0].generatedValue = getRandomNumber(settings.minValue, settings.maxValue, previousParts?.[0].generatedValue)
             parts[1].generatedValue = getRandomNumber(settings.minValue, settings.maxValue, previousParts?.[1].generatedValue)
             if (!allowNegativeAnswer && parts[1].generatedValue > parts[0].generatedValue) {
-                parts = parts.reverse();
+                [parts[0], parts[1]] = [parts[1], parts[0]]
             }
             parts[2].generatedValue = parts[0].generatedValue - parts[1].generatedValue
             break;
