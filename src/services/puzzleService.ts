@@ -6,11 +6,11 @@ import { PuzzleMode } from "../models/enums/PuzzleMode";
 import { GetEnumValues } from "./enumService";
 import type { OperatorSettings } from "../models/OperatorSettings";
 
-export function getPuzzle(quiz: Quiz, previousPuzzle: Puzzle | undefined) {
+export function getPuzzle(quiz: Quiz, previousPuzzle: Puzzle | undefined): Puzzle {
 
     const activeOperator: Operator = getOperator(quiz)
 
-    const puzzle: Puzzle = {
+    return {
         parts: getPuzzleParts(quiz.operatorSettings[activeOperator], previousPuzzle?.parts, quiz.allowNegativeAnswer),
         operator: activeOperator,
         timeout: false,
@@ -18,11 +18,6 @@ export function getPuzzle(quiz: Quiz, previousPuzzle: Puzzle | undefined) {
         isCorrect: undefined,
         unknownPuzzlePartNumber: getUnknownPuzzlePartNumber(activeOperator, quiz.puzzleMode)
     }
-
-    puzzle.parts.push(getAnswerPart(puzzle.parts[0].generatedValue, puzzle.parts[1].generatedValue, puzzle.operator))
-
-    return puzzle;
-
 }
 
 function getOperator(quiz: Quiz): Operator {
@@ -36,12 +31,14 @@ function getOperator(quiz: Quiz): Operator {
 }
 
 function getPuzzleParts(settings: OperatorSettings, previousParts: PuzzlePart[] | undefined, allowNegativeAnswer: boolean): PuzzlePart[] {
-    let parts: PuzzlePart[] = [{ userDefinedValue: undefined, generatedValue: 0 }, { userDefinedValue: undefined, generatedValue: 0 }]
+    let part = { userDefinedValue: undefined, generatedValue: 0 }
+    let parts: PuzzlePart[] = [part, part, part]
 
     switch (settings.operator) {
         case Operator.Addition:
             parts[0].generatedValue = getRandomNumber(settings.minValue, settings.maxValue, previousParts?.[0].generatedValue)
             parts[1].generatedValue = getRandomNumber(settings.minValue, settings.maxValue, previousParts?.[1].generatedValue)
+            parts[2].generatedValue = parts[0].generatedValue + parts[1].generatedValue
             break;
         case Operator.Subtraction:
             parts[0].generatedValue = getRandomNumber(settings.minValue, settings.maxValue, previousParts?.[0].generatedValue)
@@ -49,15 +46,18 @@ function getPuzzleParts(settings: OperatorSettings, previousParts: PuzzlePart[] 
             if (!allowNegativeAnswer && parts[1].generatedValue > parts[0].generatedValue) {
                 parts = parts.reverse();
             }
+            parts[2].generatedValue = parts[0].generatedValue - parts[1].generatedValue
             break;
         case Operator.Multiplication:
             parts[0].generatedValue = getRandomNumberFromArray(settings.possibleValues, previousParts?.[0].generatedValue)
             parts[1].generatedValue = getRandomNumber(1, 10, previousParts?.[1].generatedValue)
+            parts[2].generatedValue = parts[0].generatedValue * parts[1].generatedValue
             break;
         case Operator.Division:
             parts[0].generatedValue = getRandomNumber(1, 10, previousParts?.[0].generatedValue)
             parts[1].generatedValue = getRandomNumberFromArray(settings.possibleValues, previousParts?.[1].generatedValue)
             parts[0].generatedValue = parts[0].generatedValue * parts[1].generatedValue
+            parts[2].generatedValue = parts[0].generatedValue / parts[1].generatedValue
             break;
         default:
             throw ('Cannot get puzzleParts: Operator not recognized')
@@ -80,31 +80,6 @@ function getRandomNumber(min: number, max: number, exclude: number | undefined) 
     if (exclude !== undefined && rnd >= exclude) rnd++
 
     return rnd
-}
-
-function getAnswerPart(
-    partOne: number,
-    partTwo: number,
-    activeOperator: Operator): PuzzlePart {
-    return {
-        generatedValue: getResult(),
-        userDefinedValue: undefined
-    }
-
-    function getResult(): number {
-        switch (activeOperator) {
-            case Operator.Addition:
-                return partOne + partTwo
-            case Operator.Subtraction:
-                return partOne - partTwo
-            case Operator.Multiplication:
-                return partOne * partTwo
-            case Operator.Division:
-                return partOne / partTwo
-            default:
-                throw new Error("Cannot get result. No valid operator defined");
-        }
-    }
 }
 
 function getUnknownPuzzlePartNumber(operator: Operator, puzzleMode: PuzzleMode): number {
