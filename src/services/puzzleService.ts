@@ -31,8 +31,7 @@ function getOperator(quiz: Quiz): Operator {
 }
 
 function getPuzzleParts(settings: OperatorSettings, previousParts: PuzzlePart[] | undefined, allowNegativeAnswer: boolean): PuzzlePart[] {
-    let part = { userDefinedValue: undefined, generatedValue: 0 }
-    let parts: PuzzlePart[] = [part, part, part]
+    let parts: PuzzlePart[] = Array.from({ length: 3 }, _ => ({ userDefinedValue: undefined, generatedValue: 0 }))
 
     switch (settings.operator) {
         case Operator.Addition:
