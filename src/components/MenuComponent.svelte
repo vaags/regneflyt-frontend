@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { createEventDispatcher, onMount, tick } from 'svelte'
+    import { createEventDispatcher, onMount } from 'svelte'
     import { slide } from 'svelte/transition'
     import ButtonComponent from './widgets/ButtonComponent.svelte'
     import RangeComponent from './widgets/RangeComponent.svelte'
@@ -46,7 +46,7 @@
 
     $: validationError = missingPossibleValues || hasInvalidRange
 
-    // $: !validationError && quiz.selectedOperator && updateQuizSettings()
+    $: !validationError && quiz && updateQuizSettings()
 
     function getReady() {
         if (validationError) return
@@ -58,20 +58,16 @@
         puzzle = getPuzzle(quiz, puzzle)
     }
 
-    async function updateQuizSettings(updatePuzzlePreview: boolean = true) {
-        await tick()
-        if (!validationError) {
-            // quiz.operatorSettings[
-            //     quiz.selectedOperator
-            // ].score = getOperatorScore(
-            //     quiz.operatorSettings[quiz.selectedOperator]
-            // )
-            score = getOperatorScore(
-                quiz.operatorSettings[quiz.selectedOperator]
-            )
-            if (updatePuzzlePreview) getPuzzlePreview()
-            setUrlParams(quiz)
-        }
+    function updateQuizSettings(updatePuzzlePreview: boolean = true) {
+        console.log('update')
+        // quiz.operatorSettings[
+        //     quiz.selectedOperator
+        // ].score = getOperatorScore(
+        //     quiz.operatorSettings[quiz.selectedOperator]
+        // )
+        score = getOperatorScore(quiz.operatorSettings[quiz.selectedOperator])
+        if (updatePuzzlePreview) getPuzzlePreview()
+        setUrlParams(quiz)
     }
 
     function togglePuzzleTimeLimit() {
@@ -126,8 +122,7 @@
                         type="radio"
                         class="form-radio h-5 w-5 text-blue-700 border-gray-500"
                         bind:group="{quiz.selectedOperator}"
-                        value="{operator}"
-                        on:change="{() => updateQuizSettings()}" />
+                        value="{operator}" />
                     <span class="ml-2">
                         <OperatorComponent {operator} returnName="{true}" />
                     </span>
@@ -148,7 +143,6 @@
                             type="checkbox"
                             class="form-checkbox text-blue-700 h-5 w-5
                             border-gray-500"
-                            on:change="{() => updateQuizSettings()}"
                             bind:checked="{quiz.allowNegativeAnswer}" />
                         <span class="ml-2">Tillat negative svar</span>
                     </label>
@@ -184,7 +178,6 @@
                                             type="checkbox"
                                             class="form-checkbox text-blue-700
                                             h-5 w-5 border-gray-500"
-                                            on:blur="{() => updateQuizSettings()}"
                                             bind:group="{quiz.operatorSettings[quiz.selectedOperator].possibleValues}"
                                             value="{i + 1}" />
                                         <span class="ml-2">{i + 1}</span>
@@ -201,8 +194,7 @@
                                     Fra og med
                                     <select
                                         class="form-select block"
-                                        bind:value="{quiz.operatorSettings[quiz.selectedOperator].minValue}"
-                                        on:change="{() => updateQuizSettings()}">
+                                        bind:value="{quiz.operatorSettings[quiz.selectedOperator].minValue}">
                                         {#each minValues as v}
                                             <option value="{v}">{v}</option>
                                         {/each}
@@ -212,8 +204,7 @@
                                     Til og med
                                     <select
                                         class="form-select block"
-                                        bind:value="{quiz.operatorSettings[quiz.selectedOperator].maxValue}"
-                                        on:change="{() => updateQuizSettings()}">
+                                        bind:value="{quiz.operatorSettings[quiz.selectedOperator].maxValue}">
                                         {#each maxValues as v}
                                             <option value="{v}">{v}</option>
                                         {/each}
@@ -252,7 +243,6 @@
                         class="form-radio h-5 w-5 text-blue-700 border-gray-500
                         mr-2"
                         bind:group="{quiz.puzzleMode}"
-                        on:change="{() => updateQuizSettings()}"
                         value="{puzzleMode}" />
                     <PuzzleModeComponent {puzzleMode} />
                 </label>
@@ -299,7 +289,6 @@
                 step="{0.5}"
                 unitLabel=" min"
                 largeLabel="{true}"
-                on:change="{() => updateQuizSettings(false)}"
                 bind:value="{quiz.duration}" />
             <div class="mt-4">
                 <label class="inline-flex items-center">
@@ -324,7 +313,6 @@
                             min="{3}"
                             max="{10}"
                             unitLabel=" s"
-                            on:change="{() => updateQuizSettings(false)}"
                             bind:value="{quiz.puzzleTimeLimit}" />
                     </div>
                 {/if}
