@@ -16,25 +16,29 @@ export function getQuiz(): Quiz {
                 operator: Operator.Addition,
                 minValue: getIntParam('addMin') || 0,
                 maxValue: getIntParam('addMax') || 19,
-                possibleValues: []
+                possibleValues: [],
+                score: 0
             },
             {
                 operator: Operator.Subtraction,
                 minValue: getIntParam('subMin') || 0,
                 maxValue: getIntParam('subMax') || 19,
-                possibleValues: []
+                possibleValues: [],
+                score: 0
             },
             {
                 operator: Operator.Multiplication,
                 minValue: 0,
                 maxValue: 0,
-                possibleValues: getNumArrayParam('mulValues') || [7]
+                possibleValues: getNumArrayParam('mulValues') || [7],
+                score: 0
             },
             {
                 operator: Operator.Division,
                 minValue: 0,
                 maxValue: 0,
-                possibleValues: getNumArrayParam('divValues') || [5]
+                possibleValues: getNumArrayParam('divValues') || [5],
+                score: 0
             },
         ],
         state: QuizState.Initial,

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { createEventDispatcher, onMount } from 'svelte'
+    import { createEventDispatcher, onMount, tick } from 'svelte'
     import { slide } from 'svelte/transition'
     import ButtonComponent from './widgets/ButtonComponent.svelte'
     import RangeComponent from './widgets/RangeComponent.svelte'
@@ -10,6 +10,7 @@
     import { getPuzzle } from '../services/puzzleService'
     import OperatorComponent from './widgets/OperatorComponent.svelte'
     import { setUrlParams } from '../services/quizService'
+    import { getOperatorScore } from '../services/scoreService'
     import PuzzlePreviewComponent from './widgets/PuzzlePreviewComponent.svelte'
     import PuzzleModeComponent from './widgets/PuzzleModeComponent.svelte'
     import type { AppSettings } from '../models/AppSettings'
@@ -23,6 +24,8 @@
     // Sharing
     let textAreaDom: any
     let shareLinkCopied: boolean
+
+    let score: number
 
     $: isMultiplication = quiz.selectedOperator === Operator.Multiplication
     $: isDivision = quiz.selectedOperator === Operator.Division
@@ -43,6 +46,8 @@
 
     $: validationError = missingPossibleValues || hasInvalidRange
 
+    // $: !validationError && quiz.selectedOperator && updateQuizSettings()
+
     function getReady() {
         if (validationError) return
 
@@ -53,8 +58,17 @@
         puzzle = getPuzzle(quiz, puzzle)
     }
 
-    function updateQuizSettings(updatePuzzlePreview: boolean = true) {
+    async function updateQuizSettings(updatePuzzlePreview: boolean = true) {
+        await tick()
         if (!validationError) {
+            // quiz.operatorSettings[
+            //     quiz.selectedOperator
+            // ].score = getOperatorScore(
+            //     quiz.operatorSettings[quiz.selectedOperator]
+            // )
+            score = getOperatorScore(
+                quiz.operatorSettings[quiz.selectedOperator]
+            )
             if (updatePuzzlePreview) getPuzzlePreview()
             setUrlParams(quiz)
         }
@@ -84,8 +98,8 @@
         if (quiz.showSettings) updateQuizSettings()
     })
 
-    let minValues: number[] = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90]
-    let maxValues: number[] = [9, 19, 29, 39, 49, 59, 69, 79, 89, 99]
+    let minValues = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90]
+    let maxValues = [9, 19, 29, 39, 49, 59, 69, 79, 89, 99]
 </script>
 
 {#if appSettings.displayGreeting}
@@ -134,7 +148,7 @@
                             type="checkbox"
                             class="form-checkbox text-blue-700 h-5 w-5
                             border-gray-500"
-                            on:blur="{() => updateQuizSettings()}"
+                            on:change="{() => updateQuizSettings()}"
                             bind:checked="{quiz.allowNegativeAnswer}" />
                         <span class="ml-2">Tillat negative svar</span>
                     </label>
@@ -156,20 +170,26 @@
                             Multiplikand
                         {:else if isDivision}Divisor{:else}Intervall{/if}
                     </h2>
+                    {#if !validationError}
+                        <p>Score: {score}</p>
+                    {/if}
                     {#if isMultiplication || isDivision}
                         <div
                             transition:slide|local="{appSettings.transitionDuration}">
                             {#each Array(12) as _, i}
-                                <label class="flex items-center py-1">
-                                    <input
-                                        type="checkbox"
-                                        class="form-checkbox text-blue-700 h-5
-                                        w-5 border-gray-500"
-                                        on:blur="{() => updateQuizSettings()}"
-                                        bind:group="{quiz.operatorSettings[quiz.selectedOperator].possibleValues}"
-                                        value="{i + 1}" />
-                                    <span class="ml-2">{i + 1}</span>
-                                </label>
+                                <div>
+                                    <label
+                                        class="inline-flex items-center py-1">
+                                        <input
+                                            type="checkbox"
+                                            class="form-checkbox text-blue-700
+                                            h-5 w-5 border-gray-500"
+                                            on:blur="{() => updateQuizSettings()}"
+                                            bind:group="{quiz.operatorSettings[quiz.selectedOperator].possibleValues}"
+                                            value="{i + 1}" />
+                                        <span class="ml-2">{i + 1}</span>
+                                    </label>
+                                </div>
                             {/each}
                         </div>
                     {:else}

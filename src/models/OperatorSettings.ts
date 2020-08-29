@@ -5,4 +5,5 @@ export type OperatorSettings = {
     minValue: number
     maxValue: number
     possibleValues: Array<number>
+    score: number
 }
