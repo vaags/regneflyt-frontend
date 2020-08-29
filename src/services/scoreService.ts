@@ -1,12 +1,15 @@
 import type { OperatorSettings } from "../models/OperatorSettings";
 import { Operator } from "../models/enums/Operator";
-import type { Quiz } from "../models/Quiz";
 
-export function getQuizScore(quiz: Quiz) {
+export function getQuizScore(settings: OperatorSettings[]): OperatorSettings[] {
+    settings.forEach(e => {
+        e.score = getOperatorScore(e)
+    });
 
+    return settings
 }
 
-export function getOperatorScore(settings: OperatorSettings): number {
+function getOperatorScore(settings: OperatorSettings): number {
     switch (settings.operator) {
         case Operator.Addition:
         case Operator.Subtraction:

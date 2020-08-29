@@ -10,10 +10,11 @@
     import { getPuzzle } from '../services/puzzleService'
     import OperatorComponent from './widgets/OperatorComponent.svelte'
     import { setUrlParams } from '../services/quizService'
-    import { getOperatorScore } from '../services/scoreService'
+    import { getQuizScore } from '../services/scoreService'
     import PuzzlePreviewComponent from './widgets/PuzzlePreviewComponent.svelte'
     import PuzzleModeComponent from './widgets/PuzzleModeComponent.svelte'
     import type { AppSettings } from '../models/AppSettings'
+    import type { OperatorSettings } from '../models/OperatorSettings'
 
     export let appSettings: AppSettings
     export let quiz: Quiz
@@ -25,7 +26,7 @@
     let textAreaDom: any
     let shareLinkCopied: boolean
 
-    let score: number
+    let operatorSettings: OperatorSettings[]
 
     $: isMultiplication = quiz.selectedOperator === Operator.Multiplication
     $: isDivision = quiz.selectedOperator === Operator.Division
@@ -51,7 +52,9 @@
     function getReady() {
         if (validationError) return
 
-        dispatch('getReady', { quiz })
+        dispatch('getReady', {
+            quiz: { ...quiz, operatorSettings: operatorSettings },
+        })
     }
 
     function getPuzzlePreview() {
@@ -59,13 +62,7 @@
     }
 
     function updateQuizSettings(updatePuzzlePreview: boolean = true) {
-        console.log('update')
-        // quiz.operatorSettings[
-        //     quiz.selectedOperator
-        // ].score = getOperatorScore(
-        //     quiz.operatorSettings[quiz.selectedOperator]
-        // )
-        score = getOperatorScore(quiz.operatorSettings[quiz.selectedOperator])
+        operatorSettings = getQuizScore(quiz.operatorSettings)
         if (updatePuzzlePreview) getPuzzlePreview()
         setUrlParams(quiz)
     }
@@ -165,7 +162,9 @@
                         {:else if isDivision}Divisor{:else}Intervall{/if}
                     </h2>
                     {#if !validationError}
-                        <p>Score: {score}</p>
+                        <p>
+                            Score: {operatorSettings[quiz.selectedOperator].score}
+                        </p>
                     {/if}
                     {#if isMultiplication || isDivision}
                         <div
