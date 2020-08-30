@@ -30,7 +30,6 @@
     $: isMultiplication = quiz.selectedOperator === Operator.Multiplication
     $: isDivision = quiz.selectedOperator === Operator.Division
     $: isAllOperators = quiz.selectedOperator === Operator.All
-    $: hasPuzzleTimeLimit = quiz.puzzleTimeLimit > 0
     $: hasInvalidRange =
         quiz.operatorSettings[Operator.Addition].maxValue <
             quiz.operatorSettings[Operator.Addition].minValue ||

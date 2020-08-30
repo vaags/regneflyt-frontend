@@ -82,35 +82,8 @@
     }
 }
 
-/* Range slider */
-
-.slider {
-    -webkit-appearance: none;
-    height: 0.5rem;
-    border-radius: 2px;
-    outline: none;
-    @apply bg-white border border-gray-500;
-}
-
-.slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 1.5rem;
-    height: 1.5rem;
-    border-radius: 50%;
-    @apply bg-blue-700;
-    cursor: pointer;
-}
-
-.slider::-moz-range-thumb {
-    width: 1.5rem;
-    height: 1.5rem;
-    border-radius: 50%;
-    @apply bg-blue-700;
-    cursor: pointer;
-}
-
 /* Remove arrows from number input */
+
 input[type='number']::-webkit-inner-spin-button,
 input[type='number']::-webkit-outer-spin-button {
     -webkit-appearance: none;
