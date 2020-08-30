@@ -9,8 +9,8 @@ export function getQuiz(): Quiz {
     return {
         title: urlParams.get('title') || undefined,
         showSettings: getBoolParam('showSettings'),
-        duration: getFloatParam('duration') || 1,
-        puzzleTimeLimit: getIntParam('timeLimit') || 5,
+        duration: getFloatParam('duration') || 0.5,
+        puzzleTimeLimit: getIntParam('timeLimit') || 3,
         operatorSettings: [
             {
                 operator: Operator.Addition,

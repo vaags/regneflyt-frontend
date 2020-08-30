@@ -78,7 +78,7 @@
     }
 
     .card > h2 {
-        @apply text-3xl mb-5 -mt-2;
+        @apply text-3xl mb-4 -mt-2;
     }
 }
 
@@ -127,6 +127,12 @@ input[type='number'] {
 
 ::-moz-placeholder {
     text-align: center;
+}
+
+/* Forms */
+
+.form-select {
+    @apply border-gray-400
 }
 
 @tailwind utilities;

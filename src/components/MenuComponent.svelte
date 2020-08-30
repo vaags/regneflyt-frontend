@@ -2,7 +2,6 @@
     import { createEventDispatcher, onMount } from 'svelte'
     import { slide } from 'svelte/transition'
     import ButtonComponent from './widgets/ButtonComponent.svelte'
-    import RangeComponent from './widgets/RangeComponent.svelte'
     import LabelComponent from './widgets/LabelComponent.svelte'
     import { Operator } from '../models/enums/Operator'
     import type { Quiz } from '../models/Quiz'
@@ -67,14 +66,6 @@
         setUrlParams(quiz)
     }
 
-    function togglePuzzleTimeLimit() {
-        quiz.puzzleTimeLimit === 0
-            ? (quiz.puzzleTimeLimit = 5)
-            : (quiz.puzzleTimeLimit = 0)
-
-        updateQuizSettings(false)
-    }
-
     function copyShareLinkToClipboard() {
         textAreaDom.focus()
         textAreaDom.select()
@@ -91,8 +82,8 @@
         if (quiz.showSettings) updateQuizSettings()
     })
 
-    let minValues = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90]
-    let maxValues = [9, 19, 29, 39, 49, 59, 69, 79, 89, 99]
+    const minValues = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90]
+    const maxValues = [9, 19, 29, 39, 49, 59, 69, 79, 89, 99]
 </script>
 
 {#if appSettings.displayGreeting}
@@ -162,7 +153,7 @@
                         {:else if isDivision}Divisor{:else}Intervall{/if}
                     </h2>
                     {#if !validationError}
-                        <p>
+                        <p class="mb-4">
                             Score: {operatorSettings[quiz.selectedOperator].score}
                         </p>
                     {/if}
@@ -280,41 +271,33 @@
     {#if quiz.showSettings}
         <div class="card">
             <h2>Spilletid</h2>
-            <label for="duration" class="sr-only">Totalt:</label>
-            <RangeComponent
-                min="{0.5}"
-                max="{10}"
-                id="duration"
-                step="{0.5}"
-                unitLabel=" min"
-                largeLabel="{true}"
-                bind:value="{quiz.duration}" />
-            <div class="mt-4">
-                <label class="inline-flex items-center">
-                    <input
-                        id="hasLimit"
-                        type="checkbox"
-                        class="form-checkbox text-blue-700 h-5 w-5
-                        border-gray-500"
-                        on:change="{() => togglePuzzleTimeLimit()}"
-                        bind:checked="{hasPuzzleTimeLimit}" />
-                    <span class="ml-2">Tidsbegrensning per oppgave</span>
+            <div class="flex flex-row">
+                <label class="mr-4">
+                    Totalt
+                    <select
+                        class="form-select block"
+                        bind:value="{quiz.duration}">
+                        <option value="{0.5}">30 sek</option>
+                        <option value="{1}">1 min</option>
+                        <option value="{3}">3 min</option>
+                        <option value="{5}">5 min</option>
+                        <option value="{10}">10 min</option>
+                        <option value="{15}">15 min</option>
+                        <option value="{25}">25 min</option>
+                    </select>
                 </label>
-                {#if quiz.puzzleTimeLimit}
-                    <div
-                        class="mt-1"
-                        transition:slide|local="{appSettings.transitionDuration}">
-                        <label class="sr-only" for="puzzleLimit">
-                            Antall sekunder per oppgave
-                        </label>
-                        <RangeComponent
-                            id="puzzleLimit"
-                            min="{3}"
-                            max="{10}"
-                            unitLabel=" s"
-                            bind:value="{quiz.puzzleTimeLimit}" />
-                    </div>
-                {/if}
+                <label>
+                    Per oppgave
+                    <select
+                        class="form-select block"
+                        bind:value="{quiz.puzzleTimeLimit}">
+                        <option value="{2}">2 sek</option>
+                        <option value="{3}">3 sek</option>
+                        <option value="{5}">5 sek</option>
+                        <option value="{10}">10 sek</option>
+                        <option value="{0}">&#8734;</option>
+                    </select>
+                </label>
             </div>
         </div>
     {/if}
