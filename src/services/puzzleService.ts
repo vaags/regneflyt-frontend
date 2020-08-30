@@ -53,7 +53,7 @@ function getPuzzleParts(settings: OperatorSettings, previousParts: PuzzlePart[] 
             parts[2].generatedValue = parts[0].generatedValue * parts[1].generatedValue
             break;
         case Operator.Division:
-            parts[0].generatedValue = getRandomNumber(1, 10, previousParts?.[0].generatedValue)
+            parts[0].generatedValue = getRandomNumber(1, 10, previousParts ? (previousParts?.[0].generatedValue / previousParts?.[1].generatedValue) : undefined)
             parts[1].generatedValue = getRandomNumberFromArray(settings.possibleValues, previousParts?.[1].generatedValue)
             parts[0].generatedValue = parts[0].generatedValue * parts[1].generatedValue
             parts[2].generatedValue = parts[0].generatedValue / parts[1].generatedValue
@@ -69,6 +69,8 @@ function getRandomNumberFromArray(numbers: number[], previousNumber: number | un
     if (numbers.length === 1) return numbers[0]
 
     let previousIndex = previousNumber ? numbers.indexOf(previousNumber) : undefined
+
+    console.log('previous index', previousIndex)
 
     return numbers[getRandomNumber(0, numbers.length - 1, previousIndex)]
 }
