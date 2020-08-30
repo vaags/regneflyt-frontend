@@ -5,34 +5,53 @@
     import OperatorComponent from './widgets/OperatorComponent.svelte'
     import AlertComponent from './widgets/AlertComponent.svelte'
     import HiddenValueCompontent from './widgets/HiddenValueComponent.svelte'
+    import type { OperatorSettings } from '../models/OperatorSettings'
+    import { getQuizScore } from '../services/scoreService'
 
     const dispatch = createEventDispatcher()
 
-    export let puzzleSet: Array<Puzzle>
+    export let puzzleSet: Puzzle[]
+    export let settings: OperatorSettings[]
 
     let correctAnswerSum: any
     let scorePercentage: any
-    let totalTimeSpent: any
+    let scoreSum: number
 
     onMount(() => {
         if (!puzzleSet || !puzzleSet.length) return
 
+        const scoreSettings = getQuizScore(settings)
+
         const boolReducer = (accumulator: any, currentValue: any) =>
             accumulator + (currentValue ? 1 : 0)
-        const intReducer = (accumulator: any, currentValue: any) =>
-            accumulator + currentValue
+
+        scoreSum = puzzleSet
+            .map((p) =>
+                getPuzzleScore(
+                    p.isCorrect === true,
+                    scoreSettings[p.operator].score,
+                    p.duration
+                )
+            )
+            .reduce((a, b) => a + b)
 
         correctAnswerSum = puzzleSet.map((p) => p.isCorrect).reduce(boolReducer)
 
         scorePercentage = Math.round(
             (correctAnswerSum / puzzleSet.length) * 100
         )
-
-        totalTimeSpent =
-            Math.round(
-                puzzleSet.map((p) => p.duration).reduce(intReducer) * 10
-            ) / 10
     })
+
+    function getPuzzleScore(
+        isCorrect: boolean,
+        operatorScore: number,
+        timeUsed: number
+    ) {
+        if (isCorrect) {
+            return timeUsed < 3 ? operatorScore * 2 : operatorScore
+        }
+        return operatorScore * -1
+    }
 
     function resetQuiz() {
         dispatch('resetQuiz')
@@ -84,25 +103,32 @@
                                 <span title="Galt">❌</span>
                             {/if}
                         </td>
-                        <td class="border-t px-3 py-2">
+                        <td class="border-t px-3 py-2 whitespace-no-wrap">
                             {Math.round(puzzle.duration * 10) / 10} s
-                            {#if puzzle.duration < 3}⭐{/if}
+                        </td>
+                        <td class="border-t px-3 py-2">
+                            {#if puzzle.isCorrect && puzzle.duration < 3}⭐{/if}
                         </td>
                     </tr>
                 {/each}
                 <tr>
-                    <td class="border-t-2 py-2 text-gray-600">Sum</td>
-                    <td class="border-t-2 px-4 py-2" colspan="{2}">
-                        <span class="text-lg">{scorePercentage} %</span>
+                    <td class="border-t-2 py-2 text-gray-600" colspan="{2}">
+                        Sum
+                    </td>
+                    <td class="border-t-2 px-4 py-2">
+                        {scorePercentage} %
                         <span class="text-sm">
                             ({correctAnswerSum} av {puzzleSet.length})
                         </span>
                     </td>
-                    <td class="border-t-2 px-3 py-2">{totalTimeSpent} s</td>
+                    <td class="border-t-2 px-3 py-2" colspan="{2}">
+                        <span class="text-xl">{scoreSum}</span>
+                        poeng
+                    </td>
                 </tr>
             </tbody>
         </table>
     {/if}
 </div>
 
-<ButtonComponent on:click="{resetQuiz}" label="Ny runde" />
+<ButtonComponent on:click="{resetQuiz}" color="green" label="Ny runde" />

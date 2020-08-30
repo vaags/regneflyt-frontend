@@ -251,19 +251,17 @@
                     message="Kan ikke vise forhåndsvisning." />
             </div>
         {:else}
-            <div transition:slide|local="{appSettings.transitionDuration}">
-                <div class="text-center text-2xl md:text-3xl">
-                    <PuzzlePreviewComponent {puzzle} />
-                </div>
-                <div class="text-right">
-                    <button
-                        type="button"
-                        class="text-3xl cursor-pointer focus:outline-none"
-                        title="Nytt oppgave-eksempel"
-                        on:click="{() => getPuzzlePreview()}">
-                        🎲
-                    </button>
-                </div>
+            <div
+                class="text-2xl md:text-3xl text-center"
+                transition:slide|local="{appSettings.transitionDuration}">
+                <PuzzlePreviewComponent {puzzle} />
+                <button
+                    type="button"
+                    class="cursor-pointer focus:outline-none ml-3 float-right"
+                    title="Nytt oppgave-eksempel"
+                    on:click="{() => getPuzzlePreview()}">
+                    🎲
+                </button>
             </div>
         {/if}
     </div>
