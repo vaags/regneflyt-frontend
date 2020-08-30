@@ -86,6 +86,7 @@
                         </td>
                         <td class="border-t px-3 py-2">
                             {Math.round(puzzle.duration * 10) / 10} s
+                            {#if puzzle.duration < 3}⭐{/if}
                         </td>
                     </tr>
                 {/each}
