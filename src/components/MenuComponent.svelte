@@ -50,9 +50,7 @@
     function getReady() {
         if (validationError) return
 
-        dispatch('getReady', {
-            quiz: { ...quiz, operatorSettings: operatorSettings },
-        })
+        dispatch('getReady', { quiz })
     }
 
     function getPuzzlePreview() {
@@ -60,7 +58,7 @@
     }
 
     function updateQuizSettings(updatePuzzlePreview: boolean = true) {
-        operatorSettings = getQuizScore(quiz)
+        if (appSettings.isLocalhost) operatorSettings = getQuizScore(quiz)
         if (updatePuzzlePreview) getPuzzlePreview()
         setUrlParams(quiz)
     }
