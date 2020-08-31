@@ -98,10 +98,7 @@
     {:else if quiz.state === QuizState.Completed}
         <GameOverComponent on:evaluateQuiz="{evaluateQuiz}" />
     {:else if quiz.state === QuizState.Evaluated}
-        <ResultsComponent
-            settings="{quiz.operatorSettings}"
-            {puzzleSet}
-            on:resetQuiz="{resetQuiz}" />
+        <ResultsComponent {quiz} {puzzleSet} on:resetQuiz="{resetQuiz}" />
     {:else}
         <MenuComponent {quiz} on:getReady="{getReady}" {appSettings} />
     {/if}

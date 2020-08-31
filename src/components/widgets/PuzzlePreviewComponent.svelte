@@ -10,7 +10,7 @@
 </script>
 
 {#each puzzle.parts as part, i}
-    {#if puzzle.unknownPuzzlePartNumber === i}
+    {#if puzzle.unknownPuzzlePart === i}
         <span on:click="{() => (showHiddenValue = !showHiddenValue)}">
             <HiddenValueComponent
                 hiddenValue="{part.generatedValue}"

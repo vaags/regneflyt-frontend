@@ -16,7 +16,7 @@ export function getPuzzle(quiz: Quiz, previousPuzzle: Puzzle | undefined): Puzzl
         timeout: false,
         duration: 0,
         isCorrect: undefined,
-        unknownPuzzlePartNumber: getUnknownPuzzlePartNumber(activeOperator, quiz.puzzleMode)
+        unknownPuzzlePart: getUnknownPuzzlePartNumber(activeOperator, quiz.puzzleMode)
     }
 }
 

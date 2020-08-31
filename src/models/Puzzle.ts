@@ -7,5 +7,5 @@ export type Puzzle = {
     duration: number;
     isCorrect: boolean | undefined;
     operator: Operator;
-    unknownPuzzlePartNumber: number;
+    unknownPuzzlePart: number;
 }

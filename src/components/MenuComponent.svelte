@@ -60,7 +60,7 @@
     }
 
     function updateQuizSettings(updatePuzzlePreview: boolean = true) {
-        operatorSettings = getQuizScore(quiz.operatorSettings)
+        operatorSettings = getQuizScore(quiz)
         if (updatePuzzlePreview) getPuzzlePreview()
         setUrlParams(quiz)
     }
@@ -177,7 +177,6 @@
                     {:else}
                         <div
                             transition:slide|local="{appSettings.transitionDuration}">
-                            <!-- svelte-ignore a11y-no-onchange -->
                             <div class="flex flex-row">
                                 <label class="mr-4" for="partOneMin">
                                     Fra og med

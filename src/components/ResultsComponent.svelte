@@ -7,11 +7,12 @@
     import HiddenValueCompontent from './widgets/HiddenValueComponent.svelte'
     import type { OperatorSettings } from '../models/OperatorSettings'
     import { getQuizScore } from '../services/scoreService'
+    import type { Quiz } from '../models/Quiz'
 
     const dispatch = createEventDispatcher()
 
     export let puzzleSet: Puzzle[]
-    export let settings: OperatorSettings[]
+    export let quiz: Quiz
 
     let correctAnswerSum: any
     let scorePercentage: any
@@ -20,19 +21,13 @@
     onMount(() => {
         if (!puzzleSet || !puzzleSet.length) return
 
-        const scoreSettings = getQuizScore(settings)
+        const scoreSettings = getQuizScore(quiz)
 
         const boolReducer = (accumulator: any, currentValue: any) =>
             accumulator + (currentValue ? 1 : 0)
 
         scoreSum = puzzleSet
-            .map((p) =>
-                getPuzzleScore(
-                    p.isCorrect === true,
-                    scoreSettings[p.operator].score,
-                    p.duration
-                )
-            )
+            .map((p) => getPuzzleScore(p, scoreSettings))
             .reduce((a, b) => a + b)
 
         correctAnswerSum = puzzleSet.map((p) => p.isCorrect).reduce(boolReducer)
@@ -42,14 +37,12 @@
         )
     })
 
-    function getPuzzleScore(
-        isCorrect: boolean,
-        operatorScore: number,
-        timeUsed: number
-    ) {
-        if (isCorrect) {
-            return timeUsed < 3 ? operatorScore * 2 : operatorScore
-        }
+    function getPuzzleScore(puzzle: Puzzle, scoreSettings: OperatorSettings[]) {
+        const operatorScore = scoreSettings[puzzle.operator].score
+
+        if (puzzle.isCorrect)
+            return puzzle.duration < 3 ? operatorScore * 2 : operatorScore
+
         return operatorScore * -1
     }
 
@@ -76,7 +69,7 @@
                         </td>
                         <td class="border-t px-4 py-2 whitespace-no-wrap">
                             {#each puzzle.parts as part, i}
-                                {#if puzzle.unknownPuzzlePartNumber === i}
+                                {#if puzzle.unknownPuzzlePart === i}
                                     <HiddenValueCompontent
                                         value="{puzzle.timeout ? '?' : part.userDefinedValue}"
                                         showHiddenValue="{false}"
