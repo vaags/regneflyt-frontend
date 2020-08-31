@@ -151,11 +151,6 @@
                             Multiplikand
                         {:else if isDivision}Divisor{:else}Intervall{/if}
                     </h2>
-                    {#if !validationError}
-                        <p class="mb-4">
-                            Score: {operatorSettings[quiz.selectedOperator].score}
-                        </p>
-                    {/if}
                     {#if isMultiplication || isDivision}
                         <div
                             transition:slide|local="{appSettings.transitionDuration}">
@@ -235,6 +230,21 @@
                     <PuzzleModeComponent {puzzleMode} />
                 </label>
             {/each}
+        </div>
+    {/if}
+    {#if appSettings.isLocalhost && !validationError}
+        <div class="card">
+            <h2>Poeng</h2>
+            <ul>
+                {#each operatorSettings as settings}
+                    <li>
+                        <OperatorComponent
+                            operator="{settings.operator}"
+                            returnName="{true}" />
+                        : {settings.score}
+                    </li>
+                {/each}
+            </ul>
         </div>
     {/if}
     <div class="card">

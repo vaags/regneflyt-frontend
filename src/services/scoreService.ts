@@ -4,10 +4,11 @@ import { PuzzleMode } from "../models/enums/PuzzleMode";
 import type { Quiz } from "../models/Quiz";
 
 export function getQuizScore(quiz: Quiz): OperatorSettings[] {
-    const puzzeModeMultiplier = getPuzzleModeMultiplier(quiz.puzzleMode)
+    const puzzleModeMultiplier = getPuzzleModeMultiplier(quiz.puzzleMode)
+    const allOperatorsMultiplier = quiz.selectedOperator === Operator.All ? 1.5 : 1
 
     quiz.operatorSettings.forEach(e => {
-        e.score = getOperatorScore(e) * puzzeModeMultiplier
+        e.score = getOperatorScore(e) * puzzleModeMultiplier * allOperatorsMultiplier
     });
 
     return quiz.operatorSettings
