@@ -16,7 +16,7 @@ export function getPuzzle(quiz: Quiz, previousPuzzle: Puzzle | undefined): Puzzl
         timeout: false,
         duration: 0,
         isCorrect: undefined,
-        unknownPuzzlePartNumber: getUnknownPuzzlePartNumber(activeOperator, quiz.puzzleMode)
+        unknownPuzzlePart: getUnknownPuzzlePartNumber(activeOperator, quiz.puzzleMode)
     }
 }
 
@@ -53,7 +53,7 @@ function getPuzzleParts(settings: OperatorSettings, previousParts: PuzzlePart[] 
             parts[2].generatedValue = parts[0].generatedValue * parts[1].generatedValue
             break;
         case Operator.Division:
-            parts[0].generatedValue = getRandomNumber(1, 10, previousParts?.[0].generatedValue)
+            parts[0].generatedValue = getRandomNumber(1, 10, getInitialDivisionPartValue(previousParts))
             parts[1].generatedValue = getRandomNumberFromArray(settings.possibleValues, previousParts?.[1].generatedValue)
             parts[0].generatedValue = parts[0].generatedValue * parts[1].generatedValue
             parts[2].generatedValue = parts[0].generatedValue / parts[1].generatedValue
@@ -63,6 +63,12 @@ function getPuzzleParts(settings: OperatorSettings, previousParts: PuzzlePart[] 
     }
 
     return parts
+}
+
+function getInitialDivisionPartValue(puzzleParts: PuzzlePart[] | undefined) {
+    if (!puzzleParts || puzzleParts.length === 0) return undefined
+
+    return puzzleParts[0].generatedValue / puzzleParts[1].generatedValue
 }
 
 function getRandomNumberFromArray(numbers: number[], previousNumber: number | undefined): number {
@@ -85,34 +91,34 @@ function getUnknownPuzzlePartNumber(operator: Operator, puzzleMode: PuzzleMode):
     switch (puzzleMode) {
         case PuzzleMode.Random:
             if (getTrueOrFalse()) {
-                return getAlternateUnknownPuzzlePart()
+                return getAlternateUnknownPuzzlePart(operator)
             } else {
                 return 2
             }
         case PuzzleMode.Alternate: {
-            return getAlternateUnknownPuzzlePart()
+            return getAlternateUnknownPuzzlePart(operator)
         }
         case PuzzleMode.Normal: {
             return 2
         }
     }
+}
 
-    function getAlternateUnknownPuzzlePart() {
-        switch (operator) {
-            case Operator.Addition:
-            case Operator.Subtraction:
-                return getTrueOrFalse() ? 0 : 1
-            case Operator.Multiplication:
-                return 1
-            case Operator.Division:
-                return 0
-            default:
-                throw new Error("No operator defined");
-        }
+function getAlternateUnknownPuzzlePart(operator: Operator) {
+    switch (operator) {
+        case Operator.Addition:
+        case Operator.Subtraction:
+            return getTrueOrFalse() ? 0 : 1
+        case Operator.Multiplication:
+            return 1
+        case Operator.Division:
+            return 0
+        default:
+            throw new Error("No operator defined");
     }
+}
 
-    function getTrueOrFalse() {
-        // Stolen from https://stackoverflow.com/a/36756480
-        return Math.random() >= 0.5
-    }
+function getTrueOrFalse() {
+    // Stolen from https://stackoverflow.com/a/36756480
+    return Math.random() >= 0.5
 }

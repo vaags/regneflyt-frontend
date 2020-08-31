@@ -9,32 +9,36 @@ export function getQuiz(): Quiz {
     return {
         title: urlParams.get('title') || undefined,
         showSettings: getBoolParam('showSettings'),
-        duration: getFloatParam('duration') || 1,
-        puzzleTimeLimit: getIntParam('timeLimit') || 5,
+        duration: getFloatParam('duration') || 0.5,
+        puzzleTimeLimit: getIntParam('timeLimit') || 3,
         operatorSettings: [
             {
                 operator: Operator.Addition,
                 minValue: getIntParam('addMin') || 0,
                 maxValue: getIntParam('addMax') || 19,
-                possibleValues: []
+                possibleValues: [],
+                score: 0
             },
             {
                 operator: Operator.Subtraction,
                 minValue: getIntParam('subMin') || 0,
                 maxValue: getIntParam('subMax') || 19,
-                possibleValues: []
+                possibleValues: [],
+                score: 0
             },
             {
                 operator: Operator.Multiplication,
                 minValue: 0,
                 maxValue: 0,
-                possibleValues: getNumArrayParam('mulValues') || [7]
+                possibleValues: getNumArrayParam('mulValues') || [7],
+                score: 0
             },
             {
                 operator: Operator.Division,
                 minValue: 0,
                 maxValue: 0,
-                possibleValues: getNumArrayParam('divValues') || [5]
+                possibleValues: getNumArrayParam('divValues') || [5],
+                score: 0
             },
         ],
         state: QuizState.Initial,

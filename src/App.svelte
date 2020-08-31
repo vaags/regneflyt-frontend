@@ -81,7 +81,7 @@
 <main class="container max-w-xl mx-auto px-2 md:px-3 pt-1 pb-2 md:pb-5">
     <h1 class="text-2xl md:text-3xl font-light text-orange-600 mb-1 text-right">
         Regneflyt
-        <small class="text-base text-gray-500">1.4</small>
+        <small class="text-base text-gray-500">1.5</small>
     </h1>
     {#if quiz.state === QuizState.AboutToStart}
         <GetReadyComponent
@@ -98,7 +98,7 @@
     {:else if quiz.state === QuizState.Completed}
         <GameOverComponent on:evaluateQuiz="{evaluateQuiz}" />
     {:else if quiz.state === QuizState.Evaluated}
-        <ResultsComponent {puzzleSet} on:resetQuiz="{resetQuiz}" />
+        <ResultsComponent {quiz} {puzzleSet} on:resetQuiz="{resetQuiz}" />
     {:else}
         <MenuComponent {quiz} on:getReady="{getReady}" {appSettings} />
     {/if}

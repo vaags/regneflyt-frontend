@@ -2,7 +2,6 @@
     import { createEventDispatcher, onMount } from 'svelte'
     import { slide } from 'svelte/transition'
     import ButtonComponent from './widgets/ButtonComponent.svelte'
-    import RangeComponent from './widgets/RangeComponent.svelte'
     import LabelComponent from './widgets/LabelComponent.svelte'
     import { Operator } from '../models/enums/Operator'
     import type { Quiz } from '../models/Quiz'
@@ -10,9 +9,11 @@
     import { getPuzzle } from '../services/puzzleService'
     import OperatorComponent from './widgets/OperatorComponent.svelte'
     import { setUrlParams } from '../services/quizService'
+    import { getQuizScore } from '../services/scoreService'
     import PuzzlePreviewComponent from './widgets/PuzzlePreviewComponent.svelte'
     import PuzzleModeComponent from './widgets/PuzzleModeComponent.svelte'
     import type { AppSettings } from '../models/AppSettings'
+    import type { OperatorSettings } from '../models/OperatorSettings'
 
     export let appSettings: AppSettings
     export let quiz: Quiz
@@ -24,10 +25,11 @@
     let textAreaDom: any
     let shareLinkCopied: boolean
 
+    let operatorSettings: OperatorSettings[]
+
     $: isMultiplication = quiz.selectedOperator === Operator.Multiplication
     $: isDivision = quiz.selectedOperator === Operator.Division
     $: isAllOperators = quiz.selectedOperator === Operator.All
-    $: hasPuzzleTimeLimit = quiz.puzzleTimeLimit > 0
     $: hasInvalidRange =
         quiz.operatorSettings[Operator.Addition].maxValue <
             quiz.operatorSettings[Operator.Addition].minValue ||
@@ -43,6 +45,8 @@
 
     $: validationError = missingPossibleValues || hasInvalidRange
 
+    $: !validationError && quiz && updateQuizSettings()
+
     function getReady() {
         if (validationError) return
 
@@ -54,18 +58,9 @@
     }
 
     function updateQuizSettings(updatePuzzlePreview: boolean = true) {
-        if (!validationError) {
-            if (updatePuzzlePreview) getPuzzlePreview()
-            setUrlParams(quiz)
-        }
-    }
-
-    function togglePuzzleTimeLimit() {
-        quiz.puzzleTimeLimit === 0
-            ? (quiz.puzzleTimeLimit = 5)
-            : (quiz.puzzleTimeLimit = 0)
-
-        updateQuizSettings(false)
+        if (appSettings.isLocalhost) operatorSettings = getQuizScore(quiz)
+        if (updatePuzzlePreview) getPuzzlePreview()
+        setUrlParams(quiz)
     }
 
     function copyShareLinkToClipboard() {
@@ -84,8 +79,8 @@
         if (quiz.showSettings) updateQuizSettings()
     })
 
-    let minValues: number[] = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90]
-    let maxValues: number[] = [9, 19, 29, 39, 49, 59, 69, 79, 89, 99]
+    const minValues = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90]
+    const maxValues = [9, 19, 29, 39, 49, 59, 69, 79, 89, 99]
 </script>
 
 {#if appSettings.displayGreeting}
@@ -112,8 +107,7 @@
                         type="radio"
                         class="form-radio h-5 w-5 text-blue-700 border-gray-500"
                         bind:group="{quiz.selectedOperator}"
-                        value="{operator}"
-                        on:change="{() => updateQuizSettings()}" />
+                        value="{operator}" />
                     <span class="ml-2">
                         <OperatorComponent {operator} returnName="{true}" />
                     </span>
@@ -134,7 +128,6 @@
                             type="checkbox"
                             class="form-checkbox text-blue-700 h-5 w-5
                             border-gray-500"
-                            on:blur="{() => updateQuizSettings()}"
                             bind:checked="{quiz.allowNegativeAnswer}" />
                         <span class="ml-2">Tillat negative svar</span>
                     </label>
@@ -160,29 +153,29 @@
                         <div
                             transition:slide|local="{appSettings.transitionDuration}">
                             {#each Array(12) as _, i}
-                                <label class="flex items-center py-1">
-                                    <input
-                                        type="checkbox"
-                                        class="form-checkbox text-blue-700 h-5
-                                        w-5 border-gray-500"
-                                        on:blur="{() => updateQuizSettings()}"
-                                        bind:group="{quiz.operatorSettings[quiz.selectedOperator].possibleValues}"
-                                        value="{i + 1}" />
-                                    <span class="ml-2">{i + 1}</span>
-                                </label>
+                                <div>
+                                    <label
+                                        class="inline-flex items-center py-1">
+                                        <input
+                                            type="checkbox"
+                                            class="form-checkbox text-blue-700
+                                            h-5 w-5 border-gray-500"
+                                            bind:group="{quiz.operatorSettings[quiz.selectedOperator].possibleValues}"
+                                            value="{i + 1}" />
+                                        <span class="ml-2">{i + 1}</span>
+                                    </label>
+                                </div>
                             {/each}
                         </div>
                     {:else}
                         <div
                             transition:slide|local="{appSettings.transitionDuration}">
-                            <!-- svelte-ignore a11y-no-onchange -->
                             <div class="flex flex-row">
                                 <label class="mr-4" for="partOneMin">
                                     Fra og med
                                     <select
                                         class="form-select block"
-                                        bind:value="{quiz.operatorSettings[quiz.selectedOperator].minValue}"
-                                        on:change="{() => updateQuizSettings()}">
+                                        bind:value="{quiz.operatorSettings[quiz.selectedOperator].minValue}">
                                         {#each minValues as v}
                                             <option value="{v}">{v}</option>
                                         {/each}
@@ -192,8 +185,7 @@
                                     Til og med
                                     <select
                                         class="form-select block"
-                                        bind:value="{quiz.operatorSettings[quiz.selectedOperator].maxValue}"
-                                        on:change="{() => updateQuizSettings()}">
+                                        bind:value="{quiz.operatorSettings[quiz.selectedOperator].maxValue}">
                                         {#each maxValues as v}
                                             <option value="{v}">{v}</option>
                                         {/each}
@@ -232,11 +224,25 @@
                         class="form-radio h-5 w-5 text-blue-700 border-gray-500
                         mr-2"
                         bind:group="{quiz.puzzleMode}"
-                        on:change="{() => updateQuizSettings()}"
                         value="{puzzleMode}" />
                     <PuzzleModeComponent {puzzleMode} />
                 </label>
             {/each}
+        </div>
+    {/if}
+    {#if appSettings.isLocalhost && !validationError}
+        <div class="card">
+            <h2>Poeng</h2>
+            <ul>
+                {#each operatorSettings as settings}
+                    <li>
+                        <OperatorComponent
+                            operator="{settings.operator}"
+                            returnName="{true}" />
+                        : {settings.score}
+                    </li>
+                {/each}
+            </ul>
         </div>
     {/if}
     <div class="card">
@@ -252,62 +258,50 @@
                     message="Kan ikke vise forhåndsvisning." />
             </div>
         {:else}
-            <div transition:slide|local="{appSettings.transitionDuration}">
-                <div class="text-center text-2xl md:text-3xl">
-                    <PuzzlePreviewComponent {puzzle} />
-                </div>
-                <div class="text-right">
-                    <button
-                        type="button"
-                        class="text-3xl cursor-pointer focus:outline-none"
-                        title="Nytt oppgave-eksempel"
-                        on:click="{() => getPuzzlePreview()}">
-                        🎲
-                    </button>
-                </div>
+            <div
+                class="text-2xl md:text-3xl text-center"
+                transition:slide|local="{appSettings.transitionDuration}">
+                <PuzzlePreviewComponent {puzzle} />
+                <button
+                    type="button"
+                    class="cursor-pointer focus:outline-none ml-3 float-right"
+                    title="Nytt oppgave-eksempel"
+                    on:click="{() => getPuzzlePreview()}">
+                    🎲
+                </button>
             </div>
         {/if}
     </div>
     {#if quiz.showSettings}
         <div class="card">
             <h2>Spilletid</h2>
-            <label for="duration" class="sr-only">Totalt:</label>
-            <RangeComponent
-                min="{0.5}"
-                max="{10}"
-                id="duration"
-                step="{0.5}"
-                unitLabel=" min"
-                largeLabel="{true}"
-                on:change="{() => updateQuizSettings(false)}"
-                bind:value="{quiz.duration}" />
-            <div class="mt-4">
-                <label class="inline-flex items-center">
-                    <input
-                        id="hasLimit"
-                        type="checkbox"
-                        class="form-checkbox text-blue-700 h-5 w-5
-                        border-gray-500"
-                        on:change="{() => togglePuzzleTimeLimit()}"
-                        bind:checked="{hasPuzzleTimeLimit}" />
-                    <span class="ml-2">Tidsbegrensning per oppgave</span>
+            <div class="flex flex-row">
+                <label class="mr-4">
+                    Totalt
+                    <select
+                        class="form-select block"
+                        bind:value="{quiz.duration}">
+                        <option value="{0.5}">30 sek</option>
+                        <option value="{1}">1 min</option>
+                        <option value="{3}">3 min</option>
+                        <option value="{5}">5 min</option>
+                        <option value="{10}">10 min</option>
+                        <option value="{15}">15 min</option>
+                        <option value="{25}">25 min</option>
+                    </select>
                 </label>
-                {#if quiz.puzzleTimeLimit}
-                    <div
-                        class="mt-1"
-                        transition:slide|local="{appSettings.transitionDuration}">
-                        <label class="sr-only" for="puzzleLimit">
-                            Antall sekunder per oppgave
-                        </label>
-                        <RangeComponent
-                            id="puzzleLimit"
-                            min="{3}"
-                            max="{10}"
-                            unitLabel=" s"
-                            on:change="{() => updateQuizSettings(false)}"
-                            bind:value="{quiz.puzzleTimeLimit}" />
-                    </div>
-                {/if}
+                <label>
+                    Per oppgave
+                    <select
+                        class="form-select block"
+                        bind:value="{quiz.puzzleTimeLimit}">
+                        <option value="{2}">2 sek</option>
+                        <option value="{3}">3 sek</option>
+                        <option value="{5}">5 sek</option>
+                        <option value="{10}">10 sek</option>
+                        <option value="{0}">&#8734;</option>
+                    </select>
+                </label>
             </div>
         </div>
     {/if}

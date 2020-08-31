@@ -30,8 +30,7 @@
     $: quizAlmostFinished = quizSecondsLeft <= 5
 
     $: missingUserInput =
-        puzzle.parts[puzzle.unknownPuzzlePartNumber].userDefinedValue ===
-        undefined
+        puzzle.parts[puzzle.unknownPuzzlePart].userDefinedValue === undefined
 
     function generatePuzzle(
         previousPuzzle: Puzzle | undefined,
@@ -69,10 +68,7 @@
     async function completePuzzle(generateNextPuzzle: boolean) {
         puzzleTimeoutState = TimerState.Stopped
         await tick() // Wait for timeoutcomponent to reset puzzle timer (it listens to the puzzleTimeoutState value)
-        puzzle.isCorrect = answerIsCorrect(
-            puzzle,
-            puzzle.unknownPuzzlePartNumber
-        )
+        puzzle.isCorrect = answerIsCorrect(puzzle, puzzle.unknownPuzzlePart)
         puzzle.duration = (Date.now() - startTime) / 1000
 
         dispatch('addPuzzle', { puzzle: { ...puzzle } })
@@ -122,7 +118,7 @@
         <div class="my-8 text-center text-3xl md:text-4xl">
             <div>
                 {#each puzzle.parts as part, i}
-                    {#if puzzle.unknownPuzzlePartNumber === i}
+                    {#if puzzle.unknownPuzzlePart === i}
                         <PuzzleInputComponent
                             disabled="{puzzle.timeout}"
                             focus="{!showWarning}"
