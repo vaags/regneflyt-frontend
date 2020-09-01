@@ -13,8 +13,4 @@ export type Quiz = {
     allowNegativeAnswer: boolean
     puzzleMode: PuzzleMode
     showSettings: boolean
-    sharing: {
-        title: string,
-        showSettings: boolean
-    }
 }

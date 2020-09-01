@@ -24,6 +24,7 @@
     // Sharing
     let textAreaDom: any
     let shareLinkCopied: boolean
+    let shareTitle: string
 
     let operatorSettings: OperatorSettings[]
 
@@ -60,7 +61,7 @@
     function updateQuizSettings(updatePuzzlePreview: boolean = true) {
         if (appSettings.isLocalhost) operatorSettings = getQuizScore(quiz)
         if (updatePuzzlePreview) getPuzzlePreview()
-        setUrlParams(quiz)
+        if (quiz.showSettings) setUrlParams(quiz)
     }
 
     function copyShareLinkToClipboard() {
@@ -109,7 +110,9 @@
                         bind:group="{quiz.selectedOperator}"
                         value="{operator}" />
                     <span class="ml-2">
-                        <OperatorComponent {operator} returnName="{true}" />
+                        <OperatorComponent
+                            operator="{operator}"
+                            returnName="{true}" />
                     </span>
                 </label>
             {/each}
@@ -127,7 +130,7 @@
                         <input
                             type="checkbox"
                             class="form-checkbox text-blue-700 h-5 w-5
-                            border-gray-500"
+                                border-gray-500"
                             bind:checked="{quiz.allowNegativeAnswer}" />
                         <span class="ml-2">Tillat negative svar</span>
                     </label>
@@ -159,7 +162,7 @@
                                         <input
                                             type="checkbox"
                                             class="form-checkbox text-blue-700
-                                            h-5 w-5 border-gray-500"
+                                                h-5 w-5 border-gray-500"
                                             bind:group="{quiz.operatorSettings[quiz.selectedOperator].possibleValues}"
                                             value="{i + 1}" />
                                         <span class="ml-2">{i + 1}</span>
@@ -172,8 +175,7 @@
                             transition:slide|local="{appSettings.transitionDuration}">
                             <div class="flex flex-row">
                                 <label class="mr-4" for="partOneMin">
-                                    Fra og med
-                                    <select
+                                    Fra og med <select
                                         class="form-select block"
                                         bind:value="{quiz.operatorSettings[quiz.selectedOperator].minValue}">
                                         {#each minValues as v}
@@ -182,8 +184,7 @@
                                     </select>
                                 </label>
                                 <label for="partOneMax">
-                                    Til og med
-                                    <select
+                                    Til og med <select
                                         class="form-select block"
                                         bind:value="{quiz.operatorSettings[quiz.selectedOperator].maxValue}">
                                         {#each maxValues as v}
@@ -222,15 +223,15 @@
                     <input
                         type="radio"
                         class="form-radio h-5 w-5 text-blue-700 border-gray-500
-                        mr-2"
+                            mr-2"
                         bind:group="{quiz.puzzleMode}"
                         value="{puzzleMode}" />
-                    <PuzzleModeComponent {puzzleMode} />
+                    <PuzzleModeComponent puzzleMode="{puzzleMode}" />
                 </label>
             {/each}
         </div>
     {/if}
-    {#if appSettings.isLocalhost && !validationError}
+    {#if appSettings.isLocalhost && quiz.showSettings && !validationError}
         <div class="card">
             <h2>Poeng</h2>
             <ul>
@@ -246,10 +247,12 @@
         </div>
     {/if}
     <div class="card">
-        {#if quiz.title}
+        {#if quiz.title && quiz.title !== 'undefined'}
             <LabelComponent>Forhåndsvisning</LabelComponent>
+            <h2>{quiz.title}</h2>
+        {:else}
+            <h2>Forhåndsvisning</h2>
         {/if}
-        <h2>{quiz.title || 'Forhåndsvisning'}</h2>
 
         {#if validationError}
             <div transition:slide|local="{appSettings.transitionDuration}">
@@ -261,7 +264,7 @@
             <div
                 class="text-2xl md:text-3xl text-center"
                 transition:slide|local="{appSettings.transitionDuration}">
-                <PuzzlePreviewComponent {puzzle} />
+                <PuzzlePreviewComponent puzzle="{puzzle}" />
                 <button
                     type="button"
                     class="cursor-pointer focus:outline-none ml-3 float-right"
@@ -277,8 +280,7 @@
             <h2>Spilletid</h2>
             <div class="flex flex-row">
                 <label class="mr-4">
-                    Totalt
-                    <select
+                    Totalt <select
                         class="form-select block"
                         bind:value="{quiz.duration}">
                         <option value="{0.5}">30 sek</option>
@@ -286,20 +288,16 @@
                         <option value="{3}">3 min</option>
                         <option value="{5}">5 min</option>
                         <option value="{10}">10 min</option>
-                        <option value="{15}">15 min</option>
-                        <option value="{25}">25 min</option>
                     </select>
                 </label>
                 <label>
-                    Per oppgave
-                    <select
+                    Per oppgave <select
                         class="form-select block"
                         bind:value="{quiz.puzzleTimeLimit}">
                         <option value="{2}">2 sek</option>
                         <option value="{3}">3 sek</option>
                         <option value="{5}">5 sek</option>
                         <option value="{10}">10 sek</option>
-                        <option value="{0}">&#8734;</option>
                     </select>
                 </label>
             </div>
@@ -310,22 +308,8 @@
             class="card"
             transition:slide|local="{appSettings.transitionDuration}">
             <h2>Deling</h2>
-            <label class="sr-only" for="shareTitle">Lenke</label>
-            <input
-                id="shareTitle"
-                type="text"
-                maxlength="50"
-                on:keyup="{() => (shareLinkCopied = false)}"
-                placeholder="Tittel"
-                class="form-input w-3/4"
-                bind:value="{quiz.sharing.title}" />
-            <label class="inline-flex items-center mt-4">
-                <input
-                    type="checkbox"
-                    on:change="{() => (shareLinkCopied = false)}"
-                    class="form-checkbox text-blue-700 h-5 w-5 border-gray-500"
-                    bind:checked="{quiz.sharing.showSettings}" />
-                <span class="ml-2">Vis innstillinger</span>
+            <label>Tittel <input type="text" maxlength="50" on:keyup="{() => (shareLinkCopied = false)}" class="form-input
+                        w-3/4 block" bind:value="{shareTitle}" />
             </label>
             <label class="block mt-4">
                 Lenke
@@ -336,7 +320,7 @@
                     class="form-textarea w-full font-mono text-xs"
                     rows="4"
                     bind:this="{textAreaDom}"
-                    value="{window.location.protocol + '//' + window.location.host + window.location.pathname + window.location.search}&title={encodeURIComponent(quiz.sharing.title)}&showSettings={quiz.sharing.showSettings}"></textarea>
+                    value="{window.location.protocol + '//' + window.location.host + window.location.pathname + window.location.search}&title={encodeURIComponent(shareTitle)}&showSettings=false"></textarea>
             </label>
         </div>
     {/if}
@@ -356,8 +340,8 @@
     {:else}
         <div class="float-right">
             <ButtonComponent
-                label="Vis innstillinger"
-                small="{true}"
+                label="Meny"
+                color="gray"
                 on:click="{() => (quiz.showSettings = true)}" />
         </div>
     {/if}

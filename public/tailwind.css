@@ -44,6 +44,14 @@
     @apply bg-purple-700 border-purple-800;
 }
 
+.btn-gray {
+    @apply bg-gray-600 border-gray-700;
+}
+
+.btn-gray:hover {
+    @apply bg-gray-700 border-gray-800;
+}
+
 /* Alerts */
 
 .alert-blue {

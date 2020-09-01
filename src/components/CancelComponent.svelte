@@ -30,15 +30,12 @@
     {:else}
         {#if isLocalhost}
             <span class="mr-1">
-                <ButtonComponent
-                    on:click="{completeQuiz}"
-                    small="{true}"
-                    label="Fullfør" />
+                <ButtonComponent on:click="{completeQuiz}" label="Fullfør" />
             </span>
         {/if}
         <ButtonComponent
-            small="{true}"
             on:click="{toggleWarning}"
+            color="gray"
             label="Avbryt" />
     {/if}
 </div>
