@@ -1,5 +1,6 @@
 <script lang="ts">
-    import { createEventDispatcher, onMount } from 'svelte'
+    import * as animateScroll from 'svelte-scrollto'
+    import { createEventDispatcher, onMount, tick } from 'svelte'
     import { slide } from 'svelte/transition'
     import ButtonComponent from './widgets/ButtonComponent.svelte'
     import LabelComponent from './widgets/LabelComponent.svelte'
@@ -23,6 +24,7 @@
 
     // Sharing
     let textAreaDom: any
+    let titleDom: any
     let shareLinkCopied: boolean
     let shareTitle: string
 
@@ -73,6 +75,15 @@
             console.error('unable to copy share link')
         } else {
             shareLinkCopied = true
+        }
+    }
+
+    async function toggleSharePanel() {
+        showSharePanel = !showSharePanel
+        if (showSharePanel) {
+            await tick()
+            titleDom.focus()
+            animateScroll.scrollToBottom()
         }
     }
 
@@ -308,7 +319,7 @@
             class="card"
             transition:slide|local="{appSettings.transitionDuration}">
             <h2>Deling</h2>
-            <label>Tittel <input type="text" maxlength="50" on:keyup="{() => (shareLinkCopied = false)}" class="form-input
+            <label>Tittel <input type="text" maxlength="50" bind:this="{titleDom}" on:keyup="{() => (shareLinkCopied = false)}" class="form-input
                         w-3/4 block" bind:value="{shareTitle}" />
             </label>
             <label class="block mt-4">
@@ -333,7 +344,7 @@
         <div class="float-right">
             <ButtonComponent
                 label="Del"
-                on:click="{() => (showSharePanel = !showSharePanel)}"
+                on:click="{toggleSharePanel}"
                 disabled="{validationError}"
                 color="{validationError ? 'red' : showSharePanel ? 'purple' : 'blue'}" />
         </div>
