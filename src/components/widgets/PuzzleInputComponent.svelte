@@ -23,10 +23,10 @@
 </script>
 
 <input
-    {disabled}
+    disabled="{disabled}"
     bind:value
     bind:this="{ref}"
-    class="border {displayError ? 'validation-error-border' : ''} rounded w-24
-    py-2 px-3 leading-tight focus:outline-none"
+    class="border {displayError ? 'validation-error-border' : ''} rounded w-24 py-2
+        px-3 leading-tight focus:outline-none"
     type="number"
     placeholder="?" />
