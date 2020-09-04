@@ -2,8 +2,46 @@ import type { OperatorSettings } from "../models/OperatorSettings";
 import { Operator } from "../models/enums/Operator";
 import { PuzzleMode } from "../models/enums/PuzzleMode";
 import type { Quiz } from "../models/Quiz";
+import type { QuizScores } from "../models/QuizScores";
+import type { Puzzle } from "../models/Puzzle";
 
-export function getQuizScore(quiz: Quiz): OperatorSettings[] {
+export function getQuizScoreSum(quiz: Quiz, puzzleSet: Puzzle[]): QuizScores {
+    let quizScores: QuizScores = {
+        totalScore: 0,
+        correctAnswerCount: 0,
+        correctAnswerPercentage: 0
+    }
+
+    if (!puzzleSet || !puzzleSet.length) return quizScores
+
+    const scoreSettings = getOperatorScoreSettings(quiz)
+
+    const boolReducer = (accumulator: any, currentValue: any) =>
+        accumulator + (currentValue ? 1 : 0)
+
+    quizScores.totalScore = puzzleSet
+        .map((p) => getPuzzleScore(p, scoreSettings))
+        .reduce((a, b) => a + b)
+
+    quizScores.correctAnswerCount = puzzleSet.map((p) => p.isCorrect).reduce(boolReducer)
+
+    quizScores.correctAnswerPercentage = Math.round(
+        (quizScores.correctAnswerCount / puzzleSet.length) * 100
+    )
+
+    return quizScores
+}
+
+function getPuzzleScore(puzzle: Puzzle, scoreSettings: OperatorSettings[]) {
+    const operatorScore = scoreSettings[puzzle.operator].score
+
+    if (puzzle.isCorrect)
+        return puzzle.duration < 3 ? operatorScore * 2 : operatorScore
+
+    return operatorScore * -1
+}
+
+export function getOperatorScoreSettings(quiz: Quiz): OperatorSettings[] {
     const puzzleModeMultiplier = getPuzzleModeMultiplier(quiz.puzzleMode)
     const allOperatorsMultiplier = quiz.selectedOperator === Operator.All ? 1.5 : 1
 

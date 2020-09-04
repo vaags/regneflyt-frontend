@@ -8,11 +8,18 @@
     import GameOverComponent from './components/GameOverComponent.svelte'
     import type { Puzzle } from './models/Puzzle'
     import type { AppSettings } from './models/AppSettings'
+    import type { QuizScores } from './models/QuizScores'
     import { getQuiz } from './services/quizService'
     import { Operator } from './models/enums/Operator'
     import { GetEnumValues } from './services/enumService'
     import { PuzzleMode } from './models/enums/PuzzleMode'
     import { QuizState } from './models/enums/QuizState'
+    import { getQuizScoreSum } from './services/scoreService'
+    import type { Quiz } from './models/Quiz'
+    import type { Highscore } from './models/Highscore'
+
+    let quizScores: QuizScores
+    let highScores: Highscore[]
 
     const appSettings: AppSettings = {
         isLocalhost: location.hostname === 'localhost',
@@ -22,7 +29,12 @@
         operators: GetEnumValues(Operator),
         puzzleModes: GetEnumValues(PuzzleMode),
         displayGreeting: true,
+        endpoint: '',
     }
+
+    appSettings.isLocalhost
+        ? (appSettings.endpoint = 'https://localhost:44311/api/score')
+        : 'https://regneflyt.azurewebsites.net/api/score'
 
     let puzzleSet: Puzzle[]
     let quiz = getQuiz()
@@ -45,9 +57,11 @@
         quiz.state = QuizState.Initial
     }
 
-    function completeQuiz(event: any) {
+    async function completeQuiz(event: any) {
         quiz.state = QuizState.Completed
         puzzleSet = event.detail.puzzleSet
+
+        await updateHighscores(quiz, puzzleSet)
     }
 
     function evaluateQuiz() {
@@ -59,8 +73,39 @@
     }
 
     onMount(() => {
-        addAnalytics()
+        if (!appSettings.isLocalhost) addAnalytics()
     })
+
+    async function updateHighscores(quiz: Quiz, puzzleSet: Puzzle[]) {
+        quizScores = getQuizScoreSum(quiz, puzzleSet)
+
+        console.log('quiz scores', quizScores)
+
+        let response = await fetch(appSettings.endpoint)
+        highScores = await response.json()
+
+        console.log('scores', highScores)
+
+        let lowestScore = Math.min(...highScores.map((o) => o.scoreSum))
+
+        console.log('lowest score', lowestScore)
+
+        if (quizScores.totalScore > lowestScore) {
+            console.log('posting new score')
+            // Post highscore to api
+            let response = await fetch(appSettings.endpoint, {
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(quizScores.totalScore),
+            })
+
+            let newHighscore = await response.json()
+
+            console.log('new highscore', newHighscore)
+        }
+    }
 
     function addAnalytics() {
         // Simple Web Analytics tracking code

@@ -1,6 +1,7 @@
 
-export type HighScore = {
+export type Highscore = {
+    id: number
     name: string
-    score: number
+    scoreSum: number
     date: Date
 }

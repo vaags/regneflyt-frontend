@@ -10,7 +10,7 @@
     import { getPuzzle } from '../services/puzzleService'
     import OperatorComponent from './widgets/OperatorComponent.svelte'
     import { setUrlParams } from '../services/quizService'
-    import { getQuizScore } from '../services/scoreService'
+    import { getOperatorScoreSettings } from '../services/scoreService'
     import PuzzlePreviewComponent from './widgets/PuzzlePreviewComponent.svelte'
     import PuzzleModeComponent from './widgets/PuzzleModeComponent.svelte'
     import type { AppSettings } from '../models/AppSettings'
@@ -61,7 +61,8 @@
     }
 
     function updateQuizSettings(updatePuzzlePreview: boolean = true) {
-        if (appSettings.isLocalhost) operatorSettings = getQuizScore(quiz)
+        if (appSettings.isLocalhost)
+            operatorSettings = getOperatorScoreSettings(quiz)
         if (updatePuzzlePreview) getPuzzlePreview()
         if (quiz.showSettings) setUrlParams(quiz)
     }
