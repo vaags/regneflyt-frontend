@@ -59,19 +59,19 @@
     }
 
     onMount(() => {
-        if (!appSettings.isLocalhost) addAnalytics()
+        addAnalytics()
     })
 
     function addAnalytics() {
         // Simple Web Analytics tracking code
         // https://simple-web-analytics.com/app
-        console.log('fetch analytics')
         if (
             !sessionStorage.getItem('_swa') &&
             document.referrer.indexOf(
                 location.protocol + '//' + location.host
             ) !== 0
         ) {
+            console.log('fetch analytics')
             fetch(
                 'https://simple-web-analytics.com/track?' +
                     new URLSearchParams({
