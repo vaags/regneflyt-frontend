@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { onMount } from 'svelte'
     import * as animateScroll from 'svelte-scrollto'
     import MenuComponent from './components/MenuComponent.svelte'
     import ResultsComponent from './components/ResultsComponent.svelte'
@@ -55,6 +56,32 @@
 
     function resetQuiz() {
         quiz.state = QuizState.Initial
+    }
+
+    onMount(() => {
+        if (!appSettings.isLocalhost) addAnalytics()
+    })
+
+    function addAnalytics() {
+        // Simple Web Analytics tracking code
+        // https://simple-web-analytics.com/app
+        if (
+            !sessionStorage.getItem('_swa') &&
+            document.referrer.indexOf(
+                location.protocol + '//' + location.host
+            ) !== 0
+        ) {
+            fetch(
+                'https://simple-web-analytics.com/track?' +
+                    new URLSearchParams({
+                        referrer: document.referrer,
+                        screen: screen.width + 'x' + screen.height,
+                        site: 'regneflyt',
+                        utcoffset: '0',
+                    })
+            )
+        }
+        sessionStorage.setItem('_swa', '1')
     }
 
     function fakeInputFocus() {
