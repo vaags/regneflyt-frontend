@@ -71,7 +71,6 @@
                 location.protocol + '//' + location.host
             ) !== 0
         ) {
-            console.log('fetch analytics')
             fetch(
                 'https://simple-web-analytics.com/track?' +
                     new URLSearchParams({
