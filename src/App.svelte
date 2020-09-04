@@ -65,6 +65,7 @@
     function addAnalytics() {
         // Simple Web Analytics tracking code
         // https://simple-web-analytics.com/app
+        console.log('fetch analytics')
         if (
             !sessionStorage.getItem('_swa') &&
             document.referrer.indexOf(
