@@ -88,13 +88,15 @@
 
         highScores = await getData(appSettings.endpoint)
 
-        hasHighscore = userHasHighscore(highScores, quizScores)
+        if (highScores) {
+            hasHighscore = userHasHighscore(highScores, quizScores)
+        }
 
         apiRequestComplete = true
     }
 
     function userHasHighscore(
-        highscores: Highscore[],
+        highScores: Highscore[],
         quizScores: QuizScores
     ): boolean {
         let lowestHighscore = Math.min(...highScores.map((o) => o.scoreSum))

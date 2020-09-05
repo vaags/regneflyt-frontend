@@ -108,7 +108,7 @@
         <div
             class="float-right {quizAlmostFinished ? 'text-yellow-700 font-semibold' : 'text-gray-700'}">
             <TimeoutComponent
-                {seconds}
+                seconds="{seconds}"
                 state="{quizTimeoutState}"
                 on:secondChange="{secondChange}"
                 on:finished="{quizTimeout}"
@@ -122,7 +122,7 @@
                         <PuzzleInputComponent
                             disabled="{puzzle.timeout}"
                             focus="{!showWarning}"
-                            {displayError}
+                            displayError="{displayError}"
                             bind:value="{part.userDefinedValue}" />
                     {:else}
                         <TweenedValueComponent value="{part.generatedValue}" />
@@ -131,9 +131,7 @@
                         <span>
                             <OperatorComponent operator="{puzzle.operator}" />
                         </span>
-                    {:else if i === 1}
-                        <span class="mr-2">=</span>
-                    {/if}
+                    {:else if i === 1}<span class="mr-2">=</span>{/if}
                 {/each}
             </div>
             {#if quiz.puzzleTimeLimit}
@@ -160,7 +158,8 @@
         <ButtonComponent
             disabled="{displayError}"
             on:click="{() => (puzzle.timeout ? (puzzle = generatePuzzle(puzzle, true)) : completePuzzleIfValid())}"
-            label="Neste"
-            color="{displayError ? 'red' : puzzle.timeout ? 'yellow' : 'green'}" />
+            color="{displayError ? 'red' : puzzle.timeout ? 'yellow' : 'green'}">
+            Neste
+        </ButtonComponent>
     </div>
 </form>

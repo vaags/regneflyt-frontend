@@ -337,24 +337,27 @@
         </div>
     {/if}
     <ButtonComponent
-        label="Start"
         on:click="{() => getReady()}"
         disabled="{validationError}"
-        color="{validationError ? 'red' : 'green'}" />
+        color="{validationError ? 'red' : 'green'}">
+        Start
+    </ButtonComponent>
     {#if quiz.showSettings}
         <div class="float-right">
             <ButtonComponent
-                label="Del"
                 on:click="{toggleSharePanel}"
                 disabled="{validationError}"
-                color="{validationError ? 'red' : showSharePanel ? 'purple' : 'blue'}" />
+                color="{validationError ? 'red' : showSharePanel ? 'purple' : 'blue'}">
+                Del
+            </ButtonComponent>
         </div>
     {:else}
         <div class="float-right">
             <ButtonComponent
-                label="Meny"
                 color="gray"
-                on:click="{() => (quiz.showSettings = true)}" />
+                on:click="{() => (quiz.showSettings = true)}">
+                Meny
+            </ButtonComponent>
         </div>
     {/if}
 </form>

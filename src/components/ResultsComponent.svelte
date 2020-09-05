@@ -42,7 +42,10 @@
     }
 
     onMount(() => {
-        if (hasHighscore) userHighScore.scoreSum = quizScores.totalScore
+        if (hasHighscore) {
+            userHighScore.scoreSum = quizScores.totalScore
+            titleDom.focus()
+        }
     })
 
     function resetQuiz() {
@@ -50,47 +53,42 @@
     }
 </script>
 
-{#if hasHighscore && !apiRequestComplete}
-    <div class="card">
-        <h2>Gratulerer!</h2>
-        <AlertComponent
-            color="blue"
-            message="Du har fått en highscore! 🤩 Skriv inn navnet ditt under for å vise det til alle andre." />
-        <form class="mt-4">
-            <label>Navn<br />
-                <input
-                    type="text"
-                    maxlength="20"
-                    bind:this="{titleDom}"
-                    class="form-input w-3/4"
-                    bind:value="{userHighScore.name}" />
-            </label>
+{#if hasHighscore}
+    {#if apiRequestComplete}
+        <div class="mb-4">
+            <AlertComponent color="blue" message="Din highscore er lagret." />
+        </div>
+    {:else}
+        <form>
+            <div class="card">
+                <h2>Gratulerer!</h2>
+                <div class="mb-4">
+                    <AlertComponent
+                        color="blue"
+                        message="Du har fått en highscore! 🤩 Lagre navnet ditt for å vise det fram." />
+                </div>
+                <label>Navn<br />
+                    <input
+                        type="text"
+                        maxlength="20"
+                        bind:this="{titleDom}"
+                        class="form-input w-3/4"
+                        bind:value="{userHighScore.name}" />
+                </label>
+            </div>
+            <div class="mb-3">
+                <ButtonComponent
+                    on:click="{() => postHighscore()}"
+                    disabled="{!userHighScore.name || apiIsPosting}"
+                    color="{!userHighScore.name ? 'gray' : 'green'}">
+                    {#if apiIsPosting}
+                        <span class="animate-pulse">⚙️</span>
+                    {:else}Lagre{/if}
+                </ButtonComponent>
+            </div>
         </form>
-    </div>
-    <div class="mb-3">
-        <ButtonComponent
-            label="Lagre"
-            on:click="{() => postHighscore()}"
-            disabled="{!userHighScore.name || apiIsPosting}"
-            color="{!userHighScore.name ? 'gray' : 'green'}" />
-    </div>
+    {/if}
 {/if}
-
-<div class="card">
-    <h2>Highscores</h2>
-
-    <table class="table-auto w-full">
-        {#each highScores as score, i}
-            <tr>
-                <td class="border-t py-2 text-gray-600">{i + 1}</td>
-                <td class="border-t px-4 py-2">{score.name}</td>
-                <td class="border-t px-4 py-2 whitespace-no-wrap">
-                    {score.scoreSum.toLocaleString()}
-                </td>
-            </tr>
-        {/each}
-    </table>
-</div>
 
 <div class="card">
     <h2>Resultater</h2>
@@ -156,4 +154,22 @@
     {/if}
 </div>
 
-<ButtonComponent on:click="{resetQuiz}" color="green" label="Ny runde" />
+{#if highScores}
+    <div class="card">
+        <h2>Highscores</h2>
+
+        <table class="table-auto w-full">
+            {#each highScores as score, i}
+                <tr>
+                    <td class="border-t py-2 text-gray-600">{i + 1}</td>
+                    <td class="border-t px-4 py-2">{score.name}</td>
+                    <td class="border-t px-4 py-2 whitespace-no-wrap">
+                        {score.scoreSum.toLocaleString()}
+                    </td>
+                </tr>
+            {/each}
+        </table>
+    </div>
+{/if}
+
+<ButtonComponent on:click="{resetQuiz}" color="green">Ny runde</ButtonComponent>

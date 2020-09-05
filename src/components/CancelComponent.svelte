@@ -24,18 +24,21 @@
     {#if showWarning}
         <p class="mb-2 text-gray-100">Ønsker du å avbryte?</p>
         <span class="mr-1">
-            <ButtonComponent on:click="{abortQuiz}" label="ja" color="red" />
+            <ButtonComponent on:click="{abortQuiz}" color="red">
+                Ja
+            </ButtonComponent>
         </span>
-        <ButtonComponent on:click="{toggleWarning}" label="Nei" />
+        <ButtonComponent on:click="{toggleWarning}">Nei</ButtonComponent>
     {:else}
         {#if isLocalhost}
             <span class="mr-1">
-                <ButtonComponent on:click="{completeQuiz}" label="Fullfør" />
+                <ButtonComponent on:click="{completeQuiz}">
+                    Fullfør
+                </ButtonComponent>
             </span>
         {/if}
-        <ButtonComponent
-            on:click="{toggleWarning}"
-            color="gray"
-            label="Avbryt" />
+        <ButtonComponent on:click="{toggleWarning}" color="gray">
+            Avbryt
+        </ButtonComponent>
     {/if}
 </div>
