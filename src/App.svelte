@@ -38,7 +38,9 @@
         endpoint: '',
     }
 
-    appSettings.isLocalhost ? (appSettings.endpoint = localApi) : remoteApi
+    appSettings.isLocalhost
+        ? (appSettings.endpoint = localApi)
+        : (appSettings.endpoint = remoteApi)
 
     let puzzleSet: Puzzle[]
     let quiz = getQuiz()
