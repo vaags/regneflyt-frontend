@@ -15,12 +15,14 @@
     import { PuzzleMode } from './models/enums/PuzzleMode'
     import { QuizState } from './models/enums/QuizState'
     import { getQuizScoreSum } from './services/scoreService'
+    import { getData } from './services/apiService'
     import type { Quiz } from './models/Quiz'
     import type { Highscore } from './models/Highscore'
 
     let quizScores: QuizScores
     let highScores: Highscore[]
     let apiRequestComplete: boolean = false
+    let hasHighscore: boolean
 
     const localApi = 'https://localhost:44311/api/score'
     const remoteApi = 'https://regneflyt.azurewebsites.net/api/score'
@@ -82,34 +84,22 @@
         apiRequestComplete = false
         quizScores = getQuizScoreSum(quiz, puzzleSet)
 
-        console.log('quiz scores', quizScores)
+        highScores = await getData(appSettings.endpoint)
 
-        let response = await fetch(appSettings.endpoint)
-        highScores = await response.json()
-
-        console.log('scores', highScores)
-
-        let lowestScore = Math.min(...highScores.map((o) => o.scoreSum))
-
-        console.log('lowest score', lowestScore)
-
-        if (quizScores.totalScore > lowestScore) {
-            console.log('posting new score')
-            // Post highscore to api
-            let response = await fetch(appSettings.endpoint, {
-                method: 'post',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(quizScores.totalScore),
-            })
-
-            let newHighscore = await response.json()
-
-            console.log('new highscore', newHighscore)
-        }
+        hasHighscore = userHasHighscore(highScores, quizScores)
 
         apiRequestComplete = true
+    }
+
+    function userHasHighscore(
+        highscores: Highscore[],
+        quizScores: QuizScores
+    ): boolean {
+        let lowestHighscore = Math.min(...highScores.map((o) => o.scoreSum))
+
+        console.log('lowest highscore', lowestHighscore)
+
+        return lowestHighscore < quizScores.totalScore
     }
 
     function addAnalytics() {
@@ -178,6 +168,9 @@
     {:else if quiz.state === QuizState.Evaluated}
         <ResultsComponent
             quizScores="{quizScores}"
+            appSettings="{appSettings}"
+            highScores="{highScores}"
+            hasHighscore="{hasHighscore}"
             puzzleSet="{puzzleSet}"
             on:resetQuiz="{resetQuiz}" />
     {:else}

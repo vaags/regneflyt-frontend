@@ -6,16 +6,91 @@
     import AlertComponent from './widgets/AlertComponent.svelte'
     import HiddenValueCompontent from './widgets/HiddenValueComponent.svelte'
     import type { QuizScores } from '../models/QuizScores'
+    import type { AppSettings } from '../models/AppSettings'
+    import { postData } from '../services/apiService'
+    import type { Highscore } from '../models/Highscore'
 
     const dispatch = createEventDispatcher()
 
+    export let hasHighscore: boolean
     export let puzzleSet: Puzzle[]
     export let quizScores: QuizScores
+    export let appSettings: AppSettings
+    export let highScores: Highscore[]
+
+    let userHighScore: Highscore = {
+        id: 0,
+        scoreSum: 0,
+        name: '',
+    }
+    let titleDom: any
+    let apiRequestComplete: boolean = false
+    let apiIsPosting: boolean = false
+
+    async function postHighscore() {
+        if (hasHighscore) {
+            apiIsPosting = true
+            apiRequestComplete = false
+
+            highScores = await postData(appSettings.endpoint, userHighScore)
+
+            console.log('new highscore', highScores)
+
+            apiIsPosting = false
+            apiRequestComplete = true
+        }
+    }
+
+    onMount(() => {
+        if (hasHighscore) userHighScore.scoreSum = quizScores.totalScore
+    })
 
     function resetQuiz() {
         dispatch('resetQuiz')
     }
 </script>
+
+{#if hasHighscore && !apiRequestComplete}
+    <div class="card">
+        <h2>Gratulerer!</h2>
+        <AlertComponent
+            color="blue"
+            message="Du har fått en highscore! 🤩 Skriv inn navnet ditt under for å vise det til alle andre." />
+        <form class="mt-4">
+            <label>Navn<br />
+                <input
+                    type="text"
+                    maxlength="20"
+                    bind:this="{titleDom}"
+                    class="form-input w-3/4"
+                    bind:value="{userHighScore.name}" />
+            </label>
+        </form>
+    </div>
+    <div class="mb-3">
+        <ButtonComponent
+            label="Lagre"
+            on:click="{() => postHighscore()}"
+            disabled="{!userHighScore.name || apiIsPosting}"
+            color="{!userHighScore.name ? 'gray' : 'green'}" />
+    </div>
+{/if}
+
+<div class="card">
+    <h2>Highscores</h2>
+
+    <table class="table-auto w-full">
+        {#each highScores as score, i}
+            <tr>
+                <td class="border-t py-2 text-gray-600">{i + 1}</td>
+                <td class="border-t px-4 py-2">{score.name}</td>
+                <td class="border-t px-4 py-2 whitespace-no-wrap">
+                    {score.scoreSum.toLocaleString()}
+                </td>
+            </tr>
+        {/each}
+    </table>
+</div>
 
 <div class="card">
     <h2>Resultater</h2>
@@ -28,11 +103,7 @@
             <tbody>
                 {#each puzzleSet as puzzle, i}
                     <tr>
-                        <td
-                            class="border-t py-2 whitespace-no-wrap
-                                text-gray-600">
-                            {i + 1}
-                        </td>
+                        <td class="border-t py-2 text-gray-600">{i + 1}</td>
                         <td class="border-t px-4 py-2 whitespace-no-wrap">
                             {#each puzzle.parts as part, i}
                                 {#if puzzle.unknownPuzzlePart === i}

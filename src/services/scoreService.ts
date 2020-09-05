@@ -29,6 +29,8 @@ export function getQuizScoreSum(quiz: Quiz, puzzleSet: Puzzle[]): QuizScores {
         (quizScores.correctAnswerCount / puzzleSet.length) * 100
     )
 
+    console.log('quiz scores', quizScores)
+
     return quizScores
 }
 
