@@ -2,9 +2,12 @@
     import { createEventDispatcher } from 'svelte'
     import TimeoutComponent from './widgets/TimeoutComponent.svelte'
 
+    export let apiRequestComplete: boolean
     const dispatch = createEventDispatcher()
 
-    function evaluateQuiz() {
+    let timeoutReached: boolean = false
+
+    $: if (timeoutReached && apiRequestComplete) {
         dispatch('evaluateQuiz')
     }
 </script>
@@ -18,6 +21,6 @@
             hidden="{true}"
             seconds="{3}"
             fadeOnSecondChange="{true}"
-            on:finished="{evaluateQuiz}" />
+            on:finished="{() => (timeoutReached = true)}" />
     </p>
 </div>

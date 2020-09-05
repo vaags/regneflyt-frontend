@@ -20,6 +20,10 @@
 
     let quizScores: QuizScores
     let highScores: Highscore[]
+    let apiRequestComplete: boolean = false
+
+    const localApi = 'https://localhost:44311/api/score'
+    const remoteApi = 'https://regneflyt.azurewebsites.net/api/score'
 
     const appSettings: AppSettings = {
         isLocalhost: location.hostname === 'localhost',
@@ -32,9 +36,7 @@
         endpoint: '',
     }
 
-    appSettings.isLocalhost
-        ? (appSettings.endpoint = 'https://localhost:44311/api/score')
-        : 'https://regneflyt.azurewebsites.net/api/score'
+    appSettings.isLocalhost ? (appSettings.endpoint = localApi) : remoteApi
 
     let puzzleSet: Puzzle[]
     let quiz = getQuiz()
@@ -77,6 +79,7 @@
     })
 
     async function updateHighscores(quiz: Quiz, puzzleSet: Puzzle[]) {
+        apiRequestComplete = false
         quizScores = getQuizScoreSum(quiz, puzzleSet)
 
         console.log('quiz scores', quizScores)
@@ -105,6 +108,8 @@
 
             console.log('new highscore', newHighscore)
         }
+
+        apiRequestComplete = true
     }
 
     function addAnalytics() {
@@ -167,7 +172,9 @@
             on:completeQuiz="{completeQuiz}"
             appSettings="{appSettings}" />
     {:else if quiz.state === QuizState.Completed}
-        <GameOverComponent on:evaluateQuiz="{evaluateQuiz}" />
+        <GameOverComponent
+            apiRequestComplete="{apiRequestComplete}"
+            on:evaluateQuiz="{evaluateQuiz}" />
     {:else if quiz.state === QuizState.Evaluated}
         <ResultsComponent
             quiz="{quiz}"
