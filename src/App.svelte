@@ -177,7 +177,7 @@
             on:evaluateQuiz="{evaluateQuiz}" />
     {:else if quiz.state === QuizState.Evaluated}
         <ResultsComponent
-            quiz="{quiz}"
+            quizScores="{quizScores}"
             puzzleSet="{puzzleSet}"
             on:resetQuiz="{resetQuiz}" />
     {:else}

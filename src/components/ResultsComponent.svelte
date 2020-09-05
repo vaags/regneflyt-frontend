@@ -5,15 +5,12 @@
     import OperatorComponent from './widgets/OperatorComponent.svelte'
     import AlertComponent from './widgets/AlertComponent.svelte'
     import HiddenValueCompontent from './widgets/HiddenValueComponent.svelte'
-    import { getQuizScoreSum } from '../services/scoreService'
-    import type { Quiz } from '../models/Quiz'
+    import type { QuizScores } from '../models/QuizScores'
 
     const dispatch = createEventDispatcher()
 
     export let puzzleSet: Puzzle[]
-    export let quiz: Quiz
-
-    let quizScores = getQuizScoreSum(quiz, puzzleSet)
+    export let quizScores: QuizScores
 
     function resetQuiz() {
         dispatch('resetQuiz')
