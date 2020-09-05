@@ -23,21 +23,22 @@
         scoreSum: 0,
         name: '',
     }
+
     let titleDom: any
     let apiRequestComplete: boolean = false
     let apiIsPosting: boolean = false
+    let apiError: boolean = false
 
     async function postHighscore() {
         if (hasHighscore) {
+            apiError = false
             apiIsPosting = true
             apiRequestComplete = false
 
             highScores = await postData(appSettings.endpoint, userHighScore)
 
-            console.log('new highscore', highScores)
-
+            !highScores ? (apiError = true) : (apiRequestComplete = true)
             apiIsPosting = false
-            apiRequestComplete = true
         }
     }
 
@@ -76,6 +77,13 @@
                         bind:value="{userHighScore.name}" />
                 </label>
             </div>
+            {#if apiError}
+                <div class="mb-3">
+                    <AlertComponent
+                        color="red"
+                        message="Det oppstod en feil ved lagring. Prøv igjen." />
+                </div>
+            {/if}
             <div class="mb-3">
                 <ButtonComponent
                     on:click="{() => postHighscore()}"
