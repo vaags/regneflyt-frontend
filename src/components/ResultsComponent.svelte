@@ -19,7 +19,6 @@
     export let highScores: Highscore[]
 
     let userHighScore: Highscore = {
-        id: 0,
         scoreSum: 0,
         name: '',
     }
