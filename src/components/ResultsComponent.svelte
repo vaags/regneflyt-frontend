@@ -99,7 +99,7 @@
 
 <div class="card">
     <h2>Resultater</h2>
-    {#if !puzzleSet || !puzzleSet.length}
+    {#if !puzzleSet?.length}
         <AlertComponent
             color="yellow"
             message="Ingen fullførte oppgaver ble funnet." />
@@ -161,7 +161,7 @@
     {/if}
 </div>
 
-{#if highScores}
+{#if highScores?.length}
     <div class="card">
         <h2>Highscores</h2>
 

@@ -1,18 +1,21 @@
 
 export async function getData(endpoint: string) {
-
     try {
         const response = await fetch(endpoint)
-        const jsonResponse = await response.json()
 
-        console.log('api get response', jsonResponse)
-        return jsonResponse
+        if (response.ok) {
+            const jsonResponse = await response.json()
+            console.log('api get response', jsonResponse)
+            return jsonResponse
 
+        } else {
+            console.error('api returned error for GET request')
+            return null
+        }
     } catch (error) {
-        console.error('api returned error for GET request', error)
+        console.error(error)
         return null
     }
-
 }
 
 export async function postData(endpoint: string, data: object) {
@@ -25,14 +28,18 @@ export async function postData(endpoint: string, data: object) {
             body: JSON.stringify(data),
         })
 
-        const jsonResponse = await response.json()
+        if (response.ok) {
+            const jsonResponse = await response.json()
 
-        console.log('api post response', jsonResponse)
+            console.log('api post response', jsonResponse)
 
-        return jsonResponse
+            return jsonResponse
+
+        } else {
+            console.error('api returned error for POST request')
+        }
     } catch (error) {
-        console.error('api returned error for POST request', error)
+        console.error(error)
         return null
     }
-
 }

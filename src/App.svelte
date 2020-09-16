@@ -99,6 +99,8 @@
         highScores: Highscore[],
         quizScores: QuizScores
     ): boolean {
+        if (quizScores.totalScore > 0 && highScores.length < 10) return true
+
         let lowestHighscore = Math.min(...highScores.map((o) => o.scoreSum))
 
         console.log('lowest highscore', lowestHighscore)
