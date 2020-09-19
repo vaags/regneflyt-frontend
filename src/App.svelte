@@ -23,24 +23,26 @@
     let highScores: Highscore[]
     let apiRequestComplete: boolean = false
     let hasHighscore: boolean
+    export let apiKey: string
+    export let apiEndpoint: string
+    export let isProduction: boolean
 
-    const localApi = 'https://localhost:44311/api/score'
-    const remoteApi = 'https://regneflyt.azurewebsites.net/api/score'
+    console.log('is prod', isProduction)
 
     const appSettings: AppSettings = {
-        isLocalhost: location.hostname === 'localhost',
+        isProduction: isProduction,
         transitionDuration: {
             duration: 200,
         },
         operators: GetEnumValues(Operator),
         puzzleModes: GetEnumValues(PuzzleMode),
         displayGreeting: true,
-        endpoint: '',
+        apiEndpoint: apiEndpoint,
+        apiKey: apiKey,
     }
 
-    appSettings.isLocalhost
-        ? (appSettings.endpoint = localApi)
-        : (appSettings.endpoint = remoteApi)
+    console.log('apiKey', appSettings.apiKey)
+    console.log('apiEndpoint', appSettings.apiEndpoint)
 
     let puzzleSet: Puzzle[]
     let quiz = getQuiz()
@@ -79,14 +81,14 @@
     }
 
     onMount(() => {
-        if (!appSettings.isLocalhost) addAnalytics()
+        if (appSettings.isProduction) addAnalytics()
     })
 
     async function updateHighscores(quiz: Quiz, puzzleSet: Puzzle[]) {
         apiRequestComplete = false
         quizScores = getQuizScoreSum(quiz, puzzleSet)
 
-        highScores = await getData(appSettings.endpoint)
+        highScores = await getData(appSettings.apiEndpoint)
 
         if (highScores) {
             hasHighscore = userHasHighscore(highScores, quizScores)

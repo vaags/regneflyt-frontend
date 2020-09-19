@@ -5,6 +5,7 @@ import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import sveltePreprocess from 'svelte-preprocess';
 import typescript from '@rollup/plugin-typescript';
+import replace from '@rollup/plugin-replace';
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -38,6 +39,11 @@ export default {
 		file: 'public/build/bundle.js'
 	},
 	plugins: [
+		replace({
+			IS_PRODUCTION: production,
+			API_KEY: production ? process.env.API_KEY : 'regneflyt',
+			API_ENDPOINT: production ? process.env.API_ENDPOINT : 'https://localhost:44311/api/score'
+		}),
 		svelte({
 			// enable run-time checks when not in production
 			dev: !production,

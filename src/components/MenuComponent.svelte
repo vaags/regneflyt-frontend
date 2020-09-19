@@ -61,7 +61,7 @@
     }
 
     function updateQuizSettings(updatePuzzlePreview: boolean = true) {
-        if (appSettings.isLocalhost)
+        if (!appSettings.isProduction)
             operatorSettings = getOperatorScoreSettings(quiz)
         if (updatePuzzlePreview) getPuzzlePreview()
         if (quiz.showSettings) setUrlParams(quiz)
@@ -243,7 +243,7 @@
             {/each}
         </div>
     {/if}
-    {#if appSettings.isLocalhost && quiz.showSettings && !validationError}
+    {#if !appSettings.isProduction && quiz.showSettings && !validationError}
         <div class="card">
             <h2>Poeng</h2>
             <ul>

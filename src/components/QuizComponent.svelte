@@ -28,12 +28,12 @@
 
 <PuzzleComponent
     seconds="{quiz.duration * 60}"
-    {showWarning}
-    {quiz}
+    showWarning="{showWarning}"
+    quiz="{quiz}"
     on:quizTimeout="{completeQuiz}"
     on:addPuzzle="{addPuzzle}" />
 
 <CancelComponent
-    isLocalhost="{appSettings.isLocalhost}"
+    isProduction="{appSettings.isProduction}"
     on:abortQuiz="{abortQuiz}"
     on:completeQuiz="{completeQuiz}" />

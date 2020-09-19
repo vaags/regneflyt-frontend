@@ -35,6 +35,6 @@
 </div>
 
 <CancelComponent
-    isLocalhost="{appSettings.isLocalhost}"
+    isProduction="{appSettings.isProduction}"
     on:abortQuiz="{abortQuiz}"
     on:completeQuiz="{completeQuiz}" />
