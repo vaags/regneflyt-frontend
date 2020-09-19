@@ -1,7 +1,12 @@
 
-export async function getData(endpoint: string) {
+export async function getData(endpoint: string, apiKey: string) {
     try {
-        const response = await fetch(endpoint)
+        const response = await fetch(endpoint, {
+            method: 'get',
+            headers: {
+                'ApiKey': apiKey
+            }
+        })
 
         if (response.ok) {
             const jsonResponse = await response.json()
@@ -18,12 +23,13 @@ export async function getData(endpoint: string) {
     }
 }
 
-export async function postData(endpoint: string, data: object) {
+export async function postData(endpoint: string, apiKey: string, data: object) {
     try {
         const response = await fetch(endpoint, {
             method: 'post',
             headers: {
                 'Content-Type': 'application/json',
+                'ApiKey': apiKey
             },
             body: JSON.stringify(data),
         })

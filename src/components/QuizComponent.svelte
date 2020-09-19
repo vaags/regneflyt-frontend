@@ -34,6 +34,6 @@
     on:addPuzzle="{addPuzzle}" />
 
 <CancelComponent
-    isProduction="{appSettings.isProduction}"
+    showCancelButton="{!appSettings.isProduction}"
     on:abortQuiz="{abortQuiz}"
     on:completeQuiz="{completeQuiz}" />

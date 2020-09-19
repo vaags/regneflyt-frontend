@@ -25,12 +25,10 @@
     let hasHighscore: boolean
     export let apiKey: string
     export let apiEndpoint: string
-    export let isProduction: boolean
-
-    console.log('is prod', isProduction)
+    export let isProduction: string
 
     const appSettings: AppSettings = {
-        isProduction: isProduction,
+        isProduction: isProduction === 'true',
         transitionDuration: {
             duration: 200,
         },
@@ -41,6 +39,7 @@
         apiKey: apiKey,
     }
 
+    console.log('is prod', appSettings.isProduction)
     console.log('apiKey', appSettings.apiKey)
     console.log('apiEndpoint', appSettings.apiEndpoint)
 
@@ -88,7 +87,7 @@
         apiRequestComplete = false
         quizScores = getQuizScoreSum(quiz, puzzleSet)
 
-        highScores = await getData(appSettings.apiEndpoint)
+        highScores = await getData(appSettings.apiEndpoint, appSettings.apiKey)
 
         if (highScores) {
             hasHighscore = userHasHighscore(highScores, quizScores)

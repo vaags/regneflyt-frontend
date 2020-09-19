@@ -34,7 +34,11 @@
             apiIsPosting = true
             apiRequestComplete = false
 
-            highScores = await postData(appSettings.apiEndpoint, userHighScore)
+            highScores = await postData(
+                appSettings.apiEndpoint,
+                appSettings.apiKey,
+                userHighScore
+            )
 
             !highScores ? (apiError = true) : (apiRequestComplete = true)
             apiIsPosting = false
