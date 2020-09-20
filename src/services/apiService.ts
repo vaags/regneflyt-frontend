@@ -10,7 +10,6 @@ export async function getData(endpoint: string, apiKey: string) {
 
         if (response.ok) {
             const jsonResponse = await response.json()
-            console.log('api get response', jsonResponse)
             return jsonResponse
 
         } else {
@@ -36,8 +35,6 @@ export async function postData(endpoint: string, apiKey: string, data: object) {
 
         if (response.ok) {
             const jsonResponse = await response.json()
-
-            console.log('api post response', jsonResponse)
 
             return jsonResponse
 

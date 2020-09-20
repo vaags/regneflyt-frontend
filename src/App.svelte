@@ -39,10 +39,6 @@
         apiKey: apiKey,
     }
 
-    console.log('is prod', appSettings.isProduction)
-    console.log('apiKey', appSettings.apiKey)
-    console.log('apiEndpoint', appSettings.apiEndpoint)
-
     let puzzleSet: Puzzle[]
     let quiz = getQuiz()
 
@@ -103,8 +99,6 @@
         if (quizScores.totalScore > 0 && highScores.length < 10) return true
 
         let lowestHighscore = Math.min(...highScores.map((o) => o.scoreSum))
-
-        console.log('lowest highscore', lowestHighscore)
 
         return lowestHighscore < quizScores.totalScore
     }
