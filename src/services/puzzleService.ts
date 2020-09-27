@@ -3,7 +3,6 @@ import { Operator } from "../models/enums/Operator";
 import type { Puzzle } from "../models/Puzzle";
 import type { PuzzlePart } from "../models/PuzzlePart";
 import { PuzzleMode } from "../models/enums/PuzzleMode";
-import { GetEnumValues } from "./enumService";
 import type { OperatorSettings } from "../models/OperatorSettings";
 
 export function getPuzzle(quiz: Quiz, previousPuzzle: Puzzle | undefined): Puzzle {
@@ -22,9 +21,7 @@ export function getPuzzle(quiz: Quiz, previousPuzzle: Puzzle | undefined): Puzzl
 
 function getOperator(quiz: Quiz): Operator {
     if (quiz.selectedOperator === Operator.All) {
-        let random = Math.ceil(Math.random() * 4)
-
-        return GetEnumValues(Operator)[random - 1] as Operator;
+        return Math.ceil(Math.random() * 4) - 1 as Operator;
     }
 
     return quiz.selectedOperator
