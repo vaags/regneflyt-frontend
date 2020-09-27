@@ -67,9 +67,12 @@
 
     async function completePuzzle(generateNextPuzzle: boolean) {
         puzzleTimeoutState = TimerState.Stopped
+        let finishTime = Date.now()
         await tick() // Wait for timeoutcomponent to reset puzzle timer (it listens to the puzzleTimeoutState value)
-        puzzle.isCorrect = answerIsCorrect(puzzle, puzzle.unknownPuzzlePart)
-        puzzle.duration = (Date.now() - startTime) / 1000
+        puzzle.isCorrect = puzzle.timeout
+            ? false
+            : answerIsCorrect(puzzle, puzzle.unknownPuzzlePart)
+        puzzle.duration = (finishTime - startTime) / 1000
 
         dispatch('addPuzzle', { puzzle: { ...puzzle } })
 
