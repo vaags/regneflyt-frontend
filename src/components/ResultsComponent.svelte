@@ -104,19 +104,19 @@
 
 <div class="card">
     <h2>Resultater</h2>
-    <label class="inline-flex items-center my-4">
-        <input
-            type="checkbox"
-            class="form-checkbox text-blue-700 h-5 w-5
-                    border-gray-500"
-            bind:checked="{showCorrectAnswer}" />
-        <span class="ml-2">Vis fasit</span>
-    </label>
     {#if !puzzleSet?.length}
         <AlertComponent
             color="yellow"
             message="Ingen fullførte oppgaver ble funnet." />
     {:else}
+        <label class="inline-flex items-center my-4">
+            <input
+                type="checkbox"
+                class="form-checkbox text-blue-700 h-5 w-5
+                    border-gray-500"
+                bind:checked="{showCorrectAnswer}" />
+            <span class="ml-2">Vis fasit</span>
+        </label>
         <table class="table-auto w-full">
             <tbody>
                 {#each puzzleSet as puzzle, i}

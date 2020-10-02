@@ -100,13 +100,10 @@
     <div
         class="card text-sm"
         transition:slide|local="{appSettings.transitionDuration}">
-        <p class="mb-2">
-            Regneflyt er et mattespill som trener deg i hoderegning.
-        </p>
-        <p>
-            Velg hvordan du vil trene nedenfor. Ved spillets slutt vil du få en
-            vurdering.
-        </p>
+        <p>Regneflyt er et mattespill som trener deg i hoderegning.</p>
+        {#if quiz.showSettings}
+            <p class="mt-2">Velg hvordan du vil trene nedenfor.</p>
+        {/if}
     </div>
 {/if}
 
@@ -187,7 +184,8 @@
                             transition:slide|local="{appSettings.transitionDuration}">
                             <div class="flex flex-row">
                                 <label class="mr-4" for="partOneMin">
-                                    Fra og med <select
+                                    Fra og med
+                                    <select
                                         class="form-select block"
                                         bind:value="{quiz.operatorSettings[quiz.selectedOperator].minValue}">
                                         {#each minValues as v}
@@ -196,7 +194,8 @@
                                     </select>
                                 </label>
                                 <label for="partOneMax">
-                                    Til og med <select
+                                    Til og med
+                                    <select
                                         class="form-select block"
                                         bind:value="{quiz.operatorSettings[quiz.selectedOperator].maxValue}">
                                         {#each maxValues as v}
@@ -252,7 +251,8 @@
                         <OperatorComponent
                             operator="{settings.operator}"
                             returnName="{true}" />
-                        : {settings.score}
+                        :
+                        {settings.score}
                     </li>
                 {/each}
             </ul>
@@ -292,7 +292,8 @@
             <h2>Spilletid</h2>
             <div class="flex flex-row">
                 <label class="mr-4">
-                    Totalt <select
+                    Totalt
+                    <select
                         class="form-select block"
                         bind:value="{quiz.duration}">
                         <option value="{0.5}">30 sek</option>
@@ -303,7 +304,8 @@
                     </select>
                 </label>
                 <label>
-                    Per oppgave <select
+                    Per oppgave
+                    <select
                         class="form-select block"
                         bind:value="{quiz.puzzleTimeLimit}">
                         <option value="{2}">2 sek</option>
@@ -320,8 +322,15 @@
             class="card"
             transition:slide|local="{appSettings.transitionDuration}">
             <h2>Deling</h2>
-            <label>Tittel <input type="text" maxlength="50" bind:this="{titleDom}" on:keyup="{() => (shareLinkCopied = false)}" class="form-input
-                        w-3/4 block" bind:value="{shareTitle}" />
+            <label>Tittel
+                <input
+                    type="text"
+                    maxlength="50"
+                    bind:this="{titleDom}"
+                    on:keyup="{() => (shareLinkCopied = false)}"
+                    class="form-input
+                        w-3/4 block"
+                    bind:value="{shareTitle}" />
             </label>
             <label class="block mt-4">
                 Lenke
