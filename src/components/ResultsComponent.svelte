@@ -27,6 +27,7 @@
     let apiRequestComplete: boolean = false
     let apiIsPosting: boolean = false
     let apiError: boolean = false
+    let showCorrectAnswer: boolean = false
 
     async function postHighscore() {
         if (hasHighscore) {
@@ -103,6 +104,14 @@
 
 <div class="card">
     <h2>Resultater</h2>
+    <label class="inline-flex items-center my-4">
+        <input
+            type="checkbox"
+            class="form-checkbox text-blue-700 h-5 w-5
+                    border-gray-500"
+            bind:checked="{showCorrectAnswer}" />
+        <span class="ml-2">Vis fasit</span>
+    </label>
     {#if !puzzleSet?.length}
         <AlertComponent
             color="yellow"
@@ -118,7 +127,7 @@
                                 {#if puzzle.unknownPuzzlePart === i}
                                     <HiddenValueCompontent
                                         value="{puzzle.timeout ? '?' : part.userDefinedValue}"
-                                        showHiddenValue="{false}"
+                                        showHiddenValue="{showCorrectAnswer}"
                                         hiddenValue="{part.generatedValue}" />
                                 {:else}<span>{part.generatedValue}</span>{/if}
                                 {#if i === 0}
@@ -139,7 +148,8 @@
                             {:else}<span title="Galt">❌</span>{/if}
                         </td>
                         <td class="border-t px-3 py-2 whitespace-no-wrap">
-                            {Math.round(puzzle.duration * 10) / 10} s
+                            {Math.round(puzzle.duration * 10) / 10}
+                            s
                         </td>
                         <td class="border-t px-3 py-2">
                             {#if puzzle.isCorrect && puzzle.duration < 3}⭐{/if}
@@ -151,13 +161,17 @@
                         Sum
                     </td>
                     <td class="border-t-2 px-4 py-2">
-                        {quizScores.correctAnswerPercentage} % <span
-                            class="text-sm">
-                            ({quizScores.correctAnswerCount} av {puzzleSet.length})
+                        {quizScores.correctAnswerPercentage}
+                        %
+                        <span class="text-sm">
+                            ({quizScores.correctAnswerCount}
+                            av
+                            {puzzleSet.length})
                         </span>
                     </td>
                     <td class="border-t-2 px-3 py-2" colspan="{2}">
-                        <span class="text-xl">{quizScores.totalScore}</span> poeng
+                        <span class="text-xl">{quizScores.totalScore}</span>
+                        poeng
                     </td>
                 </tr>
             </tbody>
