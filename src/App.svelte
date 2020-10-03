@@ -18,6 +18,7 @@
     import { getData } from './services/apiService'
     import type { Quiz } from './models/Quiz'
     import type { Highscore } from './models/Highscore'
+    import HighscoresComponent from './components/HighscoresComponent.svelte'
 
     let quizScores: QuizScores
     let highScores: Highscore[]
@@ -27,7 +28,7 @@
     export let apiEndpoint: string
     export let isProduction: string
 
-    const appSettings: AppSettings = {
+    let appSettings: AppSettings = {
         isProduction: isProduction === 'true',
         transitionDuration: {
             duration: 200,
@@ -37,6 +38,7 @@
         displayGreeting: true,
         apiEndpoint: apiEndpoint,
         apiKey: apiKey,
+        showHighscores: false,
     }
 
     let puzzleSet: Puzzle[]
@@ -50,6 +52,11 @@
         appSettings.displayGreeting = false
         animateScroll.scrollToTop()
         fakeInputFocus()
+    }
+
+    function toggleShowHighscores() {
+        appSettings.showHighscores = !appSettings.showHighscores
+        if (!highScores) getHighscores()
     }
 
     function startQuiz() {
@@ -80,15 +87,18 @@
     })
 
     async function updateHighscores(quiz: Quiz, puzzleSet: Puzzle[]) {
-        apiRequestComplete = false
         quizScores = getQuizScoreSum(quiz, puzzleSet)
 
-        highScores = await getData(appSettings.apiEndpoint, appSettings.apiKey)
+        await getHighscores()
 
         if (highScores) {
             hasHighscore = userHasHighscore(highScores, quizScores)
         }
+    }
 
+    async function getHighscores() {
+        apiRequestComplete = false
+        highScores = await getData(appSettings.apiEndpoint, appSettings.apiKey)
         apiRequestComplete = true
     }
 
@@ -149,9 +159,14 @@
 <main class="container max-w-xl mx-auto px-2 md:px-3 pt-1 pb-2 md:pb-5">
     <h1 class="text-2xl md:text-3xl font-light text-orange-600 mb-1 text-right">
         Regneflyt
-        <small class="text-base text-gray-500">1.7.3</small>
+        <small class="text-base text-gray-500">1.8</small>
     </h1>
-    {#if quiz.state === QuizState.AboutToStart}
+    {#if appSettings.showHighscores}
+        <HighscoresComponent
+            highScores="{highScores}"
+            appSettings="{appSettings}"
+            on:toggleShowHighscores="{toggleShowHighscores}" />
+    {:else if quiz.state === QuizState.AboutToStart}
         <GetReadyComponent
             appSettings="{appSettings}"
             on:startQuiz="{startQuiz}"
@@ -179,6 +194,7 @@
         <MenuComponent
             quiz="{quiz}"
             on:getReady="{getReady}"
+            on:toggleShowHighscores="{toggleShowHighscores}"
             appSettings="{appSettings}" />
     {/if}
 </main>

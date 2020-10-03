@@ -10,5 +10,6 @@ export type AppSettings = {
     puzzleModes: PuzzleMode[]
     displayGreeting: boolean,
     apiEndpoint: string,
-    apiKey: string
+    apiKey: string,
+    showHighscores: boolean
 }

@@ -56,6 +56,10 @@
         dispatch('getReady', { quiz })
     }
 
+    function toggleShowHighscores() {
+        dispatch('toggleShowHighscores')
+    }
+
     function getPuzzlePreview() {
         puzzle = getPuzzle(quiz, puzzle)
     }
@@ -351,22 +355,23 @@
         color="{validationError ? 'red' : 'green'}">
         Start
     </ButtonComponent>
-    {#if quiz.showSettings}
-        <div class="float-right">
+    <div class="float-right">
+        <ButtonComponent on:click="{toggleShowHighscores}" color="gray">
+            Topp 10
+        </ButtonComponent>
+        {#if quiz.showSettings}
             <ButtonComponent
                 on:click="{toggleSharePanel}"
                 disabled="{validationError}"
                 color="{validationError ? 'red' : showSharePanel ? 'purple' : 'blue'}">
                 Del
             </ButtonComponent>
-        </div>
-    {:else}
-        <div class="float-right">
+        {:else}
             <ButtonComponent
                 color="gray"
                 on:click="{() => (quiz.showSettings = true)}">
                 Meny
             </ButtonComponent>
-        </div>
-    {/if}
+        {/if}
+    </div>
 </form>

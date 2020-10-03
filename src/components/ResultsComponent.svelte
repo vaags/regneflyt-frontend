@@ -10,6 +10,7 @@
     import type { AppSettings } from '../models/AppSettings'
     import { postData } from '../services/apiService'
     import type { Highscore } from '../models/Highscore'
+    import HighscoreTableComponent from './widgets/HighscoreTableComponent.svelte'
 
     const dispatch = createEventDispatcher()
 
@@ -62,7 +63,7 @@
 {#if hasHighscore}
     {#if apiRequestComplete}
         <div class="mb-4" transition:slide="{appSettings.transitionDuration}">
-            <AlertComponent color="blue" message="Din highscore er lagret!" />
+            <AlertComponent message="Ditt navn er lagret!" />
         </div>
     {:else}
         <form transition:slide="{appSettings.transitionDuration}">
@@ -70,8 +71,7 @@
                 <h2>Gratulerer!</h2>
                 <div class="mb-4">
                     <AlertComponent
-                        color="blue"
-                        message="Du har fått en highscore! 🤩 Lagre navnet ditt for å vise det fram." />
+                        message="Du er blant de 10 beste! 🤩 Skriv inn navnet ditt for å vise det fram." />
                 </div>
                 <label>Navn<br />
                     <input
@@ -180,22 +180,9 @@
     {/if}
 </div>
 
-{#if highScores?.length}
-    <div class="card">
-        <h2>Highscores</h2>
-
-        <table class="table-auto w-full">
-            {#each highScores as score, i}
-                <tr>
-                    <td class="border-t py-2 text-gray-600">{i + 1}</td>
-                    <td class="border-t px-4 py-2">{score.name}</td>
-                    <td class="border-t px-4 py-2 whitespace-no-wrap">
-                        {score.scoreSum.toLocaleString()}
-                    </td>
-                </tr>
-            {/each}
-        </table>
-    </div>
-{/if}
+<div class="card">
+    <h2>Topp 10</h2>
+    <HighscoreTableComponent highScores="{highScores}" />
+</div>
 
 <ButtonComponent on:click="{resetQuiz}" color="green">Ny runde</ButtonComponent>
