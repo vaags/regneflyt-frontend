@@ -1,6 +1,7 @@
 <script lang="ts">
     import type { Puzzle } from '../models/Puzzle'
     import { createEventDispatcher, onMount } from 'svelte'
+    import { slide } from 'svelte/transition'
     import ButtonComponent from './widgets/ButtonComponent.svelte'
     import OperatorComponent from './widgets/OperatorComponent.svelte'
     import AlertComponent from './widgets/AlertComponent.svelte'
@@ -60,11 +61,11 @@
 
 {#if hasHighscore}
     {#if apiRequestComplete}
-        <div class="mb-4">
-            <AlertComponent color="blue" message="Din highscore er lagret." />
+        <div class="mb-4" transition:slide="{appSettings.transitionDuration}">
+            <AlertComponent color="blue" message="Din highscore er lagret!" />
         </div>
     {:else}
-        <form>
+        <form transition:slide="{appSettings.transitionDuration}">
             <div class="card">
                 <h2>Gratulerer!</h2>
                 <div class="mb-4">
