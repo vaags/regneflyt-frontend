@@ -30,6 +30,6 @@
     {/if}
 </div>
 
-<ButtonComponent on:click="{toggleShowHighscores}" color="gray">
-    Meny
+<ButtonComponent color="green" on:click="{toggleShowHighscores}">
+    Tilbake
 </ButtonComponent>
