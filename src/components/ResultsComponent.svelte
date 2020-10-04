@@ -185,4 +185,4 @@
     <HighscoreTableComponent highScores="{highScores}" />
 </div>
 
-<ButtonComponent on:click="{resetQuiz}" color="green">Ny runde</ButtonComponent>
+<ButtonComponent on:click="{resetQuiz}" color="green">Tilbake</ButtonComponent>
