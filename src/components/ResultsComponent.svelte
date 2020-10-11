@@ -180,9 +180,11 @@
     {/if}
 </div>
 
-<div class="card">
-    <h2>Topp 10</h2>
-    <HighscoreTableComponent highScores="{highScores}" />
-</div>
+{#if highScores}
+    <div class="card">
+        <h2>Topp 10</h2>
+        <HighscoreTableComponent highScores="{highScores}" />
+    </div>
+{/if}
 
 <ButtonComponent on:click="{resetQuiz}" color="green">Tilbake</ButtonComponent>

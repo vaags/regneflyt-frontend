@@ -32,7 +32,7 @@
 
     $: isMultiplication = quiz.selectedOperator === Operator.Multiplication
     $: isDivision = quiz.selectedOperator === Operator.Division
-    $: isAllOperators = quiz.selectedOperator === Operator.All
+    $: isAllOperators = quiz.selectedOperator === 'all'
     $: hasInvalidRange =
         quiz.operatorSettings[Operator.Addition].maxValue <
             quiz.operatorSettings[Operator.Addition].minValue ||
@@ -129,108 +129,102 @@
                     </span>
                 </label>
             {/each}
-            {#if isAllOperators}
-                <div
-                    class="mt-4 mb-2"
-                    transition:slide|local="{appSettings.transitionDuration}">
-                    <AlertComponent
-                        message="De valgte innstillingene for alle fire
-                        regnearter vil bli brukt." />
-                </div>
-            {:else if quiz.selectedOperator === Operator.Subtraction}
-                <div transition:slide|local="{appSettings.transitionDuration}">
-                    <label class="inline-flex items-center mt-4">
-                        <input
-                            type="checkbox"
-                            class="form-checkbox text-blue-700 h-5 w-5
-                                border-gray-500"
-                            bind:checked="{quiz.allowNegativeAnswer}" />
-                        <span class="ml-2">Tillat negative svar</span>
-                    </label>
-                </div>
-            {/if}
+            <label class="flex items-center py-1">
+                <input
+                    type="radio"
+                    class="form-radio h-5 w-5 text-blue-700 border-gray-500"
+                    bind:group="{quiz.selectedOperator}"
+                    value="all" />
+                <span class="ml-2">Alle</span>
+            </label>
         </div>
-        {#if !isAllOperators}
-            <div
-                transition:slide|local="{appSettings.transitionDuration}"
-                class="mb-3">
-                <div class="card">
-                    <LabelComponent>
-                        <OperatorComponent
-                            returnName="{true}"
-                            operator="{quiz.selectedOperator}" />
-                    </LabelComponent>
-                    <h2>
-                        {#if isMultiplication}
-                            Multiplikand
-                        {:else if isDivision}Divisor{:else}Intervall{/if}
-                    </h2>
-                    {#if isMultiplication || isDivision}
-                        <div
-                            transition:slide|local="{appSettings.transitionDuration}">
-                            {#each Array(12) as _, i}
-                                <div>
-                                    <label
-                                        class="inline-flex items-center py-1">
-                                        <input
-                                            type="checkbox"
-                                            class="form-checkbox text-blue-700
+
+        {#each appSettings.operators as operator}
+            {#if operator === quiz.selectedOperator || isAllOperators}
+                <div
+                    transition:slide|local="{appSettings.transitionDuration}"
+                    class="mb-3">
+                    <div class="card">
+                        <LabelComponent>
+                            <OperatorComponent
+                                returnName="{true}"
+                                operator="{operator}" />
+                        </LabelComponent>
+                        <h2>
+                            {#if operator === Operator.Multiplication}
+                                Multiplikand
+                            {:else if operator === Operator.Division}
+                                Divisor
+                            {:else}Intervall{/if}
+                        </h2>
+                        {#if operator === Operator.Multiplication || operator === Operator.Division}
+                            <div
+                                transition:slide|local="{appSettings.transitionDuration}">
+                                {#each Array(12) as _, i}
+                                    <div>
+                                        <label
+                                            class="inline-flex items-center py-1">
+                                            <input
+                                                type="checkbox"
+                                                class="form-checkbox text-blue-700
                                                 h-5 w-5 border-gray-500"
-                                            bind:group="{quiz.operatorSettings[quiz.selectedOperator].possibleValues}"
-                                            value="{i + 1}" />
-                                        <span class="ml-2">{i + 1}</span>
+                                                bind:group="{quiz.operatorSettings[operator].possibleValues}"
+                                                value="{i + 1}" />
+                                            <span class="ml-2">{i + 1}</span>
+                                        </label>
+                                    </div>
+                                {/each}
+                            </div>
+                        {:else}
+                            <div
+                                transition:slide|local="{appSettings.transitionDuration}">
+                                <div class="flex flex-row">
+                                    <label class="mr-4" for="partOneMin">
+                                        Fra og med
+                                        <select
+                                            class="form-select block"
+                                            bind:value="{quiz.operatorSettings[operator].minValue}">
+                                            {#each minValues as v}
+                                                <option value="{v}">{v}</option>
+                                            {/each}
+                                        </select>
+                                    </label>
+                                    <label for="partOneMax">
+                                        Til og med
+                                        <select
+                                            class="form-select block"
+                                            bind:value="{quiz.operatorSettings[operator].maxValue}">
+                                            {#each maxValues as v}
+                                                <option value="{v}">{v}</option>
+                                            {/each}
+                                        </select>
                                     </label>
                                 </div>
-                            {/each}
-                        </div>
-                    {:else}
-                        <div
-                            transition:slide|local="{appSettings.transitionDuration}">
-                            <div class="flex flex-row">
-                                <label class="mr-4" for="partOneMin">
-                                    Fra og med
-                                    <select
-                                        class="form-select block"
-                                        bind:value="{quiz.operatorSettings[quiz.selectedOperator].minValue}">
-                                        {#each minValues as v}
-                                            <option value="{v}">{v}</option>
-                                        {/each}
-                                    </select>
-                                </label>
-                                <label for="partOneMax">
-                                    Til og med
-                                    <select
-                                        class="form-select block"
-                                        bind:value="{quiz.operatorSettings[quiz.selectedOperator].maxValue}">
-                                        {#each maxValues as v}
-                                            <option value="{v}">{v}</option>
-                                        {/each}
-                                    </select>
-                                </label>
+                                {#if hasInvalidRange}
+                                    <div
+                                        transition:slide|local="{appSettings.transitionDuration}"
+                                        class="mt-4">
+                                        <AlertComponent
+                                            color="red"
+                                            message="Intervallet er ugyldig." />
+                                    </div>
+                                {/if}
                             </div>
-                            {#if hasInvalidRange}
-                                <div
-                                    transition:slide|local="{appSettings.transitionDuration}"
-                                    class="mt-4">
-                                    <AlertComponent
-                                        color="red"
-                                        message="Intervallet er ugyldig." />
-                                </div>
+                            {#if operator === Operator.Subtraction}
+                                <label class="inline-flex items-center mt-4">
+                                    <input
+                                        type="checkbox"
+                                        class="form-checkbox text-blue-700 h-5 w-5
+                                            border-gray-500"
+                                        bind:checked="{quiz.allowNegativeAnswer}" />
+                                    <span class="ml-2">Tillat negative svar</span>
+                                </label>
                             {/if}
-                            {#if isDivision}
-                                <div
-                                    class="mt-4"
-                                    transition:slide|local="{appSettings.transitionDuration}">
-                                    <AlertComponent
-                                        message="Intervallverdi ganget med
-                                        divisor" />
-                                </div>
-                            {/if}
-                        </div>
-                    {/if}
+                        {/if}
+                    </div>
                 </div>
-            </div>
-        {/if}
+            {/if}
+        {/each}
         <div class="card">
             <h2>Oppgaveform</h2>
             {#each appSettings.puzzleModes as puzzleMode}

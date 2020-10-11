@@ -9,7 +9,7 @@ export type Quiz = {
     puzzleTimeLimit: number
     operatorSettings: OperatorSettings[]
     state: QuizState
-    selectedOperator: Operator
+    selectedOperator: Operator | 'all'
     allowNegativeAnswer: boolean
     puzzleMode: PuzzleMode
     showSettings: boolean

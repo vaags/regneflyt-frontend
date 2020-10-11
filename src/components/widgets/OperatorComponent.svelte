@@ -1,7 +1,7 @@
 <script lang="ts">
     import { Operator } from '../../models/enums/Operator'
 
-    export let operator: Operator
+    export let operator: Operator | 'all'
     export let returnName: boolean = false
 </script>
 
@@ -13,6 +13,6 @@
     {@html returnName ? 'Multiplikasjon' : '&#215;'}
 {:else if operator === Operator.Division}
     {@html returnName ? 'Divisjon' : '&#247;'}
-{:else if operator === Operator.All}
+{:else if operator === 'all'}
     {@html returnName ? 'Alle' : '&#8704'}
 {/if}
