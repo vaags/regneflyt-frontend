@@ -32,7 +32,7 @@
 
     $: isMultiplication = quiz.selectedOperator === Operator.Multiplication
     $: isDivision = quiz.selectedOperator === Operator.Division
-    $: isAllOperators = quiz.selectedOperator === 'all'
+    $: isAllOperators = quiz.selectedOperator === 4
     $: hasInvalidRange =
         quiz.operatorSettings[Operator.Addition].maxValue <
             quiz.operatorSettings[Operator.Addition].minValue ||
@@ -134,7 +134,7 @@
                     type="radio"
                     class="form-radio h-5 w-5 text-blue-700 border-gray-500"
                     bind:group="{quiz.selectedOperator}"
-                    value="all" />
+                    value="{4}" />
                 <span class="ml-2">Alle</span>
             </label>
         </div>

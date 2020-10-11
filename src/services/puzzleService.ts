@@ -20,7 +20,7 @@ export function getPuzzle(quiz: Quiz, previousPuzzle: Puzzle | undefined): Puzzl
 }
 
 function getOperator(quiz: Quiz): Operator {
-    if (quiz.selectedOperator === 'all') {
+    if (quiz.selectedOperator === 4) {
         return Math.ceil(Math.random() * 4) - 1 as Operator;
     }
 

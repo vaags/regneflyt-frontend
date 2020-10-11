@@ -43,7 +43,7 @@ function getPuzzleScore(puzzle: Puzzle, scoreSettings: OperatorSettings[]) {
 
 export function getOperatorScoreSettings(quiz: Quiz): OperatorSettings[] {
     const puzzleModeMultiplier = getPuzzleModeMultiplier(quiz.puzzleMode)
-    const allOperatorsMultiplier = quiz.selectedOperator === 'all' ? 1.5 : 1
+    const allOperatorsMultiplier = quiz.selectedOperator === 4 ? 1.5 : 1
 
     quiz.operatorSettings.forEach(e => {
         e.score = getOperatorScore(e) * puzzleModeMultiplier * allOperatorsMultiplier
