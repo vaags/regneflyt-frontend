@@ -6,7 +6,7 @@ import type { QuizScores } from "../models/QuizScores";
 import type { Puzzle } from "../models/Puzzle";
 
 export function getQuizScoreSum(quiz: Quiz, puzzleSet: Puzzle[]): QuizScores {
-    let quizScores: QuizScores = {
+    const quizScores: QuizScores = {
         totalScore: 0,
         correctAnswerCount: 0,
         correctAnswerPercentage: 0
@@ -14,31 +14,38 @@ export function getQuizScoreSum(quiz: Quiz, puzzleSet: Puzzle[]): QuizScores {
 
     if (!puzzleSet || !puzzleSet.length) return quizScores
 
-    const scoreSettings = getOperatorScoreSettings(quiz)
-
-    quizScores.totalScore = puzzleSet
-        .map((p) => getPuzzleScore(p, scoreSettings))
-        .reduce((a, b) => a + b)
-
-    const boolReducer = (accumulator: any, currentValue: any) =>
-        accumulator + (currentValue ? 1 : 0)
-
-    quizScores.correctAnswerCount = puzzleSet.map((p) => p.isCorrect).reduce(boolReducer)
-
-    quizScores.correctAnswerPercentage = Math.round(
-        (quizScores.correctAnswerCount / puzzleSet.length) * 100
-    )
+    setTotalScore();
+    setCorrectAnswerCountAndPercentage();
 
     return quizScores
+
+    function setTotalScore() {
+        const scoreSettings = getOperatorScoreSettings(quiz);
+
+        quizScores.totalScore = puzzleSet
+            .map((p) => getPuzzleScore(p, scoreSettings))
+            .reduce((a, b) => a + b);
+    }
+
+    function setCorrectAnswerCountAndPercentage() {
+        const boolReducer = (accumulator: any, currentValue: any) => accumulator + (currentValue ? 1 : 0);
+
+        quizScores.correctAnswerCount = puzzleSet.map((p) => p.isCorrect).reduce(boolReducer);
+
+        quizScores.correctAnswerPercentage = Math.round(
+            (quizScores.correctAnswerCount / puzzleSet.length) * 100
+        );
+    }
 }
 
 function getPuzzleScore(puzzle: Puzzle, scoreSettings: OperatorSettings[]) {
     const operatorScore = scoreSettings[puzzle.operator].score
 
-    if (puzzle.isCorrect)
+    if (puzzle.isCorrect) {
         return puzzle.duration < 3 ? operatorScore * 2 : operatorScore
-
-    return operatorScore * -1
+    } else {
+        return operatorScore * -1
+    }
 }
 
 export function getOperatorScoreSettings(quiz: Quiz): OperatorSettings[] {
