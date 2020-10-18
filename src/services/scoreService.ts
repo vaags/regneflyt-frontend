@@ -16,12 +16,12 @@ export function getQuizScoreSum(quiz: Quiz, puzzleSet: Puzzle[]): QuizScores {
 
     const scoreSettings = getOperatorScoreSettings(quiz)
 
-    const boolReducer = (accumulator: any, currentValue: any) =>
-        accumulator + (currentValue ? 1 : 0)
-
     quizScores.totalScore = puzzleSet
         .map((p) => getPuzzleScore(p, scoreSettings))
         .reduce((a, b) => a + b)
+
+    const boolReducer = (accumulator: any, currentValue: any) =>
+        accumulator + (currentValue ? 1 : 0)
 
     quizScores.correctAnswerCount = puzzleSet.map((p) => p.isCorrect).reduce(boolReducer)
 
