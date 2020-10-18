@@ -35,7 +35,7 @@
     "svelte-check": "^1.0.60",
     "svelte-preprocess": "^4.5.1",
     "svelte-scrollto": "^0.2.0",
-    "tailwindcss": "^1.9.3",
+    "tailwindcss": "^1.9.4",
     "tslib": "^2.0.3",
     "typescript": "^4.0.3"
   },
