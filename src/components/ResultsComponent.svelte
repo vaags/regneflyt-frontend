@@ -30,6 +30,7 @@
     let apiIsPosting: boolean = false
     let apiError: boolean = false
     let showCorrectAnswer: boolean = false
+    let highscorePlacement: number
 
     async function postHighscore() {
         apiError = false
@@ -55,6 +56,17 @@
     onMount(() => {
         if (hasHighscore) {
             userHighScore.scoreSum = quizScores.totalScore
+            if (highScores?.length > 1) {
+                highscorePlacement =
+                    highScores.findIndex(
+                        (s) => s.scoreSum < userHighScore.scoreSum
+                    ) + 1
+                if (!highscorePlacement) {
+                    highscorePlacement = highScores.length + 1
+                }
+            } else {
+                highscorePlacement = 1
+            }
             titleDom.focus()
         }
     })
@@ -75,7 +87,7 @@
                 <h2>Gratulerer!</h2>
                 <div class="mb-4">
                     <AlertComponent
-                        message="Du er blant de 10 beste! 🤩 Skriv inn initialene dine under for å vise det fram." />
+                        message="Du fikk {quizScores.totalScore.toLocaleString()} poeng, og er nummer {highscorePlacement} i listen over de 10 beste! 🤩 Skriv inn initialene dine under for å vise det fram." />
                 </div>
                 <label>Initialer<br />
                     <input
@@ -175,7 +187,8 @@
                         </span>
                     </td>
                     <td class="border-t-2 px-3 py-2" colspan="{2}">
-                        <span class="text-xl">{quizScores.totalScore}</span>
+                        <span
+                            class="text-xl">{quizScores.totalScore.toLocaleString()}</span>
                         poeng
                     </td>
                 </tr>
