@@ -32,20 +32,18 @@
     let showCorrectAnswer: boolean = false
 
     async function postHighscore() {
-        if (hasHighscore) {
-            apiError = false
-            apiIsPosting = true
-            apiRequestComplete = false
+        apiError = false
+        apiIsPosting = true
+        apiRequestComplete = false
 
-            highScores = await postData(
-                appSettings.apiEndpoint,
-                appSettings.apiKey,
-                userHighScore
-            )
+        highScores = await postData(
+            appSettings.apiEndpoint,
+            appSettings.apiKey,
+            userHighScore
+        )
 
-            !highScores ? (apiError = true) : (apiRequestComplete = true)
-            apiIsPosting = false
-        }
+        !highScores ? (apiError = true) : (apiRequestComplete = true)
+        apiIsPosting = false
     }
 
     onMount(() => {
