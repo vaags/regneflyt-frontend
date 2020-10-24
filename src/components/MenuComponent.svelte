@@ -204,9 +204,9 @@
                                     <div
                                         transition:slide|local="{appSettings.transitionDuration}"
                                         class="mt-4">
-                                        <AlertComponent
-                                            color="red"
-                                            message="Intervallet er ugyldig." />
+                                        <AlertComponent color="red">
+                                            Intervallet er ugyldig.
+                                        </AlertComponent>
                                     </div>
                                 {/if}
                             </div>
@@ -266,9 +266,9 @@
 
         {#if validationError}
             <div transition:slide|local="{appSettings.transitionDuration}">
-                <AlertComponent
-                    color="yellow"
-                    message="Kan ikke vise forhåndsvisning." />
+                <AlertComponent color="yellow">
+                    Kan ikke vise forhåndsvisning.
+                </AlertComponent>
             </div>
         {:else}
             <div

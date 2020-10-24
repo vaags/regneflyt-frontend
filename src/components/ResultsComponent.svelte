@@ -56,12 +56,13 @@
     onMount(() => {
         if (hasHighscore) {
             userHighScore.scoreSum = quizScores.totalScore
-            if (highScores?.length > 1) {
+            if (highScores.length > 1) {
                 highscorePlacement =
                     highScores.findIndex(
                         (s) => s.scoreSum < userHighScore.scoreSum
                     ) + 1
                 if (!highscorePlacement) {
+                    // No lower score found - is given last place
                     highscorePlacement = highScores.length + 1
                 }
             } else {
@@ -79,15 +80,21 @@
 {#if hasHighscore}
     {#if apiRequestComplete}
         <div class="mb-4" transition:slide="{appSettings.transitionDuration}">
-            <AlertComponent message="Ditt navn er lagret!" />
+            <AlertComponent>Ditt navn er lagret!</AlertComponent>
         </div>
     {:else}
         <form transition:slide="{appSettings.transitionDuration}">
             <div class="card">
                 <h2>Gratulerer!</h2>
                 <div class="mb-4">
-                    <AlertComponent
-                        message="Du fikk {quizScores.totalScore.toLocaleString()} poeng, og er nummer {highscorePlacement} i listen over de 10 beste! 🤩 Skriv inn initialene dine under for å vise det fram." />
+                    <AlertComponent>
+                        Du fikk
+                        {quizScores.totalScore.toLocaleString()}
+                        poeng, og er nummer
+                        {highscorePlacement}
+                        i listen over de 10 beste! 🤩 Skriv inn initialene dine
+                        under for å vise det fram.
+                    </AlertComponent>
                 </div>
                 <label>Initialer<br />
                     <input
@@ -100,9 +107,9 @@
             </div>
             {#if apiError}
                 <div class="mb-3">
-                    <AlertComponent
-                        color="red"
-                        message="Det oppstod en feil ved lagring. Prøv igjen." />
+                    <AlertComponent color="red">
+                        Det oppstod en feil ved lagring. Prøv igjen.
+                    </AlertComponent>
                 </div>
             {/if}
             <div class="mb-3">
@@ -122,9 +129,9 @@
 <div class="card">
     <h2>Resultater</h2>
     {#if !puzzleSet?.length}
-        <AlertComponent
-            color="yellow"
-            message="Ingen fullførte oppgaver ble funnet." />
+        <AlertComponent color="yellow">
+            Ingen fullførte oppgaver ble funnet.
+        </AlertComponent>
     {:else}
         <label class="inline-flex items-center my-4">
             <input
@@ -200,7 +207,9 @@
 {#if highScores}
     <div class="card">
         <h2>Topp 10</h2>
-        <HighscoreTableComponent highScores="{highScores}" />
+        <HighscoreTableComponent
+            highlightRowNumber="{apiRequestComplete ? highscorePlacement : undefined}"
+            highScores="{highScores}" />
     </div>
 {/if}
 

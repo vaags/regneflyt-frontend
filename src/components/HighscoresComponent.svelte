@@ -25,7 +25,7 @@
         </div>
     {:else}
         <div transition:slide|local="{appSettings.transitionDuration}">
-            <AlertComponent message="Laster topp 10 ..." />
+            <AlertComponent>Laster topp 10 ...</AlertComponent>
         </div>
     {/if}
 </div>
