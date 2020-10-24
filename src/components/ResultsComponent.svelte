@@ -42,7 +42,13 @@
             userHighScore
         )
 
-        !highScores ? (apiError = true) : (apiRequestComplete = true)
+        if (!highScores) {
+            apiError = true
+        } else {
+            apiRequestComplete = true
+            dispatch('setHighscores', { highScores })
+        }
+
         apiIsPosting = false
     }
 
