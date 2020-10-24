@@ -75,14 +75,14 @@
                 <h2>Gratulerer!</h2>
                 <div class="mb-4">
                     <AlertComponent
-                        message="Du er blant de 10 beste! 🤩 Skriv inn navnet ditt for å vise det fram." />
+                        message="Du er blant de 10 beste! 🤩 Skriv inn initialene dine under for å vise det fram." />
                 </div>
-                <label>Navn<br />
+                <label>Initialer<br />
                     <input
                         type="text"
-                        maxlength="20"
+                        maxlength="3"
                         bind:this="{titleDom}"
-                        class="form-input w-3/4"
+                        class="form-input w-20 uppercase"
                         bind:value="{userHighScore.name}" />
                 </label>
             </div>
