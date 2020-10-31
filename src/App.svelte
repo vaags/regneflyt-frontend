@@ -1,4 +1,5 @@
 <script lang="ts">
+    import Tailwindcss from './Tailwind.svelte'
     import { onMount } from 'svelte'
     import * as animateScroll from 'svelte-scrollto'
     import MenuComponent from './components/MenuComponent.svelte'

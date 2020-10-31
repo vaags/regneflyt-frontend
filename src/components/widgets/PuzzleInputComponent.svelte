@@ -26,7 +26,7 @@
     disabled="{disabled}"
     bind:value
     bind:this="{ref}"
-    class="border {displayError ? 'validation-error-border' : ''} rounded w-24 py-2
+    class="border {displayError ? 'border-red-600' : ''} rounded w-24 py-2
         px-3 leading-tight focus:outline-none"
     type="number"
     placeholder="?" />

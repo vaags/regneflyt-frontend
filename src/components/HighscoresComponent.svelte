@@ -1,5 +1,6 @@
 <script lang="ts">
     import type { Highscore } from '../models/Highscore'
+    import CardComponent from './widgets/CardComponent.svelte'
     import { slide } from 'svelte/transition'
     import { createEventDispatcher } from 'svelte'
     import ButtonComponent from './widgets/ButtonComponent.svelte'
@@ -17,8 +18,7 @@
     export let appSettings: AppSettings
 </script>
 
-<div class="card">
-    <h2>Topp 10</h2>
+<CardComponent heading="Topp 10">
     {#if highScores}
         <div transition:slide|local="{appSettings.transitionDuration}">
             <HighscoreTableComponent highScores="{highScores}" />
@@ -28,7 +28,7 @@
             <AlertComponent>Laster topp 10 ...</AlertComponent>
         </div>
     {/if}
-</div>
+</CardComponent>
 
 <ButtonComponent color="green" on:click="{toggleShowHighscores}">
     Tilbake

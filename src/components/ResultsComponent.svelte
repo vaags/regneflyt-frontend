@@ -1,6 +1,7 @@
 <script lang="ts">
     import type { Puzzle } from '../models/Puzzle'
     import { createEventDispatcher, onMount } from 'svelte'
+    import CardComponent from './widgets/CardComponent.svelte'
     import { slide } from 'svelte/transition'
     import ButtonComponent from './widgets/ButtonComponent.svelte'
     import OperatorComponent from './widgets/OperatorComponent.svelte'
@@ -84,8 +85,7 @@
         </div>
     {:else}
         <form transition:slide="{appSettings.transitionDuration}">
-            <div class="card">
-                <h2>Gratulerer!</h2>
+            <CardComponent heading="Gratulerer!">
                 <div class="mb-4">
                     <AlertComponent>
                         Du fikk
@@ -104,7 +104,7 @@
                         class="form-input w-20 uppercase"
                         bind:value="{userHighScore.name}" />
                 </label>
-            </div>
+            </CardComponent>
             {#if apiError}
                 <div class="mb-3">
                     <AlertComponent color="red">
@@ -126,8 +126,7 @@
     {/if}
 {/if}
 
-<div class="card">
-    <h2>Resultater</h2>
+<CardComponent heading="Resultater">
     {#if !puzzleSet?.length}
         <AlertComponent color="yellow">
             Ingen fullførte oppgaver ble funnet.
@@ -202,15 +201,14 @@
             </tbody>
         </table>
     {/if}
-</div>
+</CardComponent>
 
 {#if highScores}
-    <div class="card">
-        <h2>Topp 10</h2>
+    <CardComponent heading="Topp 10">
         <HighscoreTableComponent
             highlightRowNumber="{apiRequestComplete ? highscorePlacement : undefined}"
             highScores="{highScores}" />
-    </div>
+    </CardComponent>
 {/if}
 
 <ButtonComponent on:click="{resetQuiz}" color="green">Tilbake</ButtonComponent>
