@@ -50,7 +50,7 @@ export default {
 			// we'll extract any component CSS out into
 			// a separate file - better for performance
 			css: css => {
-				css.write('public/build/bundle.css');
+				css.write('bundle.css');
 			},
 			preprocess: sveltePreprocess(),
 		}),
@@ -65,7 +65,10 @@ export default {
 			dedupe: ['svelte']
 		}),
 		commonjs(),
-		typescript({ sourceMap: !production }),
+		typescript({
+			sourceMap: !production,
+			inlineSources: !production
+		}),
 
 		// In dev mode, call `npm run start` once
 		// the bundle has been generated
