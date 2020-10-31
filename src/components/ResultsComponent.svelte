@@ -4,7 +4,6 @@
     import CardComponent from './widgets/CardComponent.svelte'
     import { slide } from 'svelte/transition'
     import ButtonComponent from './widgets/ButtonComponent.svelte'
-    import OperatorComponent from './widgets/OperatorComponent.svelte'
     import AlertComponent from './widgets/AlertComponent.svelte'
     import HiddenValueCompontent from './widgets/HiddenValueComponent.svelte'
     import type { QuizScores } from '../models/QuizScores'
@@ -12,6 +11,7 @@
     import { postData } from '../services/apiService'
     import type { Highscore } from '../models/Highscore'
     import HighscoreTableComponent from './widgets/HighscoreTableComponent.svelte'
+    import { getLabel } from '../services/labelService'
 
     const dispatch = createEventDispatcher()
 
@@ -155,8 +155,7 @@
                                 {:else}<span>{part.generatedValue}</span>{/if}
                                 {#if i === 0}
                                     <span>
-                                        <OperatorComponent
-                                            operator="{puzzle.operator}" />
+                                        {@html getLabel(puzzle.operator)}
                                     </span>
                                 {:else if i === 1}
                                     <span class="mr-1">=</span>

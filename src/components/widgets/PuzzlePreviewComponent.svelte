@@ -1,7 +1,7 @@
 <script lang="ts">
     import type { Puzzle } from '../../models/Puzzle'
+    import { getLabel } from '../../services/labelService'
     import HiddenValueComponent from './HiddenValueComponent.svelte'
-    import OperatorComponent from './OperatorComponent.svelte'
     import TweenedValueComponent from './TweenedValueComponent.svelte'
 
     export let puzzle: Puzzle
@@ -14,7 +14,7 @@
         <span on:click="{() => (showHiddenValue = !showHiddenValue)}">
             <HiddenValueComponent
                 hiddenValue="{part.generatedValue}"
-                {showHiddenValue}
+                showHiddenValue="{showHiddenValue}"
                 value="?" />
         </span>
     {:else}
@@ -22,9 +22,7 @@
     {/if}
     {#if i === 0}
         <span>
-            <OperatorComponent operator="{puzzle.operator}" />
+            {@html getLabel(puzzle.operator)}
         </span>
-    {:else if i === 1}
-        <span class="mr-2">=</span>
-    {/if}
+    {:else if i === 1}<span class="mr-2">=</span>{/if}
 {/each}

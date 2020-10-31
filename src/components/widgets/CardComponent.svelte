@@ -12,6 +12,7 @@
             {@html getLabel(label, true)}
         </LabelComponent>
     {/if}
+    <slot name="label" />
     {#if heading}
         <h2 class="mb-4 text-2xl -mt-1 font-light md:text-3xl md:mb-4 md:-mt-2">
             {heading}

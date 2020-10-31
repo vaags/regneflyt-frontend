@@ -1,7 +1,6 @@
 import { Operator } from '../models/enums/Operator'
 
 export function getLabel(label: Operator | 'all' | string, returnName: boolean = false): string {
-    console.log('label', label)
     switch (label) {
         case Operator.Addition:
             return returnName ? 'Addisjon' : '&#43;'
