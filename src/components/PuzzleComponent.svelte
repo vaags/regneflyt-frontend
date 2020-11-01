@@ -2,10 +2,10 @@
     import { createEventDispatcher, tick } from 'svelte'
     import ButtonComponent from './widgets/ButtonComponent.svelte'
     import TweenedValueComponent from './widgets/TweenedValueComponent.svelte'
-    import OperatorComponent from './widgets/OperatorComponent.svelte'
     import PuzzleInputComponent from './widgets/PuzzleInputComponent.svelte'
     import TimeoutComponent from './widgets/TimeoutComponent.svelte'
     import { getPuzzle } from '../services/puzzleService'
+    import CardComponent from './widgets/CardComponent.svelte'
     import type { Quiz } from '../models/Quiz'
     import type { Puzzle } from '../models/Puzzle'
     import { TimerState } from '../models/enums/TimerState'
@@ -13,6 +13,7 @@
     export let quiz: Quiz
     export let showWarning: boolean
     export let seconds: number
+    export let operatorSigns: string[]
 
     const dispatch = createEventDispatcher()
     let quizSecondsLeft: number = seconds
@@ -38,7 +39,7 @@
     ) {
         puzzleNumber++
 
-        let puzzle = getPuzzle(quiz, previousPuzzle)
+        let puzzle = getPuzzle(quiz, operatorSigns, previousPuzzle)
         puzzle.timeout = false
         puzzleTimeoutState = TimerState.Started
 
@@ -107,8 +108,9 @@
 </script>
 
 <form>
-    <div class="card pb-6">
+    <CardComponent heading="Oppgave {puzzleNumber}">
         <div
+            slot="label"
             class="float-right {quizAlmostFinished ? 'text-yellow-700 font-semibold' : 'text-gray-700'}">
             <TimeoutComponent
                 seconds="{seconds}"
@@ -117,7 +119,6 @@
                 on:finished="{quizTimeout}"
                 showMinutes="{true}" />
         </div>
-        <h2>Oppgave {puzzleNumber}</h2>
         <div class="my-8 text-center text-3xl md:text-4xl">
             <div>
                 {#each puzzle.parts as part, i}
@@ -132,7 +133,7 @@
                     {/if}
                     {#if i === 0}
                         <span>
-                            <OperatorComponent operator="{puzzle.operator}" />
+                            {@html puzzle.operatorLabel}
                         </span>
                     {:else if i === 1}<span class="mr-2">=</span>{/if}
                 {/each}
@@ -156,7 +157,7 @@
                 </div>
             {/if}
         </div>
-    </div>
+    </CardComponent>
     <div class="float-left {puzzle.timeout ? 'animate-pulse' : ''}">
         <ButtonComponent
             disabled="{displayError}"

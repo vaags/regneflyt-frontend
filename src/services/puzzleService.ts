@@ -5,13 +5,14 @@ import type { PuzzlePart } from "../models/PuzzlePart";
 import { PuzzleMode } from "../models/enums/PuzzleMode";
 import type { OperatorSettings } from "../models/OperatorSettings";
 
-export function getPuzzle(quiz: Quiz, previousPuzzle: Puzzle | undefined): Puzzle {
+export function getPuzzle(quiz: Quiz, operatorSigns: string[], previousPuzzle: Puzzle | undefined = undefined): Puzzle {
 
     const activeOperator: Operator = getOperator(quiz)
 
     return {
         parts: getPuzzleParts(quiz.operatorSettings[activeOperator], previousPuzzle?.parts, quiz.allowNegativeAnswer),
         operator: activeOperator,
+        operatorLabel: operatorSigns[activeOperator],
         timeout: false,
         duration: 0,
         isCorrect: undefined,

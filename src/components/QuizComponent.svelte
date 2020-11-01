@@ -30,6 +30,7 @@
     seconds="{quiz.duration * 60}"
     showWarning="{showWarning}"
     quiz="{quiz}"
+    operatorSigns="{appSettings.operatorSigns}"
     on:quizTimeout="{completeQuiz}"
     on:addPuzzle="{addPuzzle}" />
 

@@ -7,5 +7,6 @@ export type Puzzle = {
     duration: number;
     isCorrect: boolean | undefined;
     operator: Operator;
+    operatorLabel: string;
     unknownPuzzlePart: number;
 }

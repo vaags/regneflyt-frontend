@@ -3,12 +3,12 @@
     import { createEventDispatcher, onMount, tick } from 'svelte'
     import { slide } from 'svelte/transition'
     import ButtonComponent from './widgets/ButtonComponent.svelte'
+    import CardComponent from './widgets/CardComponent.svelte'
     import LabelComponent from './widgets/LabelComponent.svelte'
     import { Operator } from '../models/enums/Operator'
     import type { Quiz } from '../models/Quiz'
     import AlertComponent from './widgets/AlertComponent.svelte'
     import { getPuzzle } from '../services/puzzleService'
-    import OperatorComponent from './widgets/OperatorComponent.svelte'
     import { setUrlParams } from '../services/quizService'
     import { getOperatorScoreSettings } from '../services/scoreService'
     import PuzzlePreviewComponent from './widgets/PuzzlePreviewComponent.svelte'
@@ -18,7 +18,7 @@
 
     export let appSettings: AppSettings
     export let quiz: Quiz
-    let puzzle = getPuzzle(quiz, undefined)
+    let puzzle = getPuzzle(quiz, appSettings.operatorSigns)
     const dispatch = createEventDispatcher()
     let showSharePanel: boolean
 
@@ -61,7 +61,7 @@
     }
 
     function getPuzzlePreview() {
-        puzzle = getPuzzle(quiz, puzzle)
+        puzzle = getPuzzle(quiz, appSettings.operatorSigns, puzzle)
     }
 
     function updateQuizSettings(updatePuzzlePreview: boolean = true) {
@@ -101,32 +101,27 @@
 </script>
 
 {#if appSettings.displayGreeting}
-    <div
-        class="card text-sm"
-        transition:slide|local="{appSettings.transitionDuration}">
-        <p>Regneflyt er et mattespill som trener deg i hoderegning.</p>
+    <CardComponent>
+        <p class="text-sm">
+            Regneflyt er et mattespill som trener deg i hoderegning.
+        </p>
         {#if quiz.showSettings}
-            <p class="mt-2">Velg hvordan du vil trene nedenfor.</p>
+            <p class="mt-2 text-sm">Velg hvordan du vil trene nedenfor.</p>
         {/if}
-    </div>
+    </CardComponent>
 {/if}
 
 <form>
     {#if quiz.showSettings}
-        <div class="card">
-            <h2>Regneart</h2>
-            {#each appSettings.operators as operator}
+        <CardComponent heading="Regneart">
+            {#each appSettings.operators as operator, i}
                 <label class="flex items-center py-1">
                     <input
                         type="radio"
                         class="form-radio h-5 w-5 text-blue-700 border-gray-500"
                         bind:group="{quiz.selectedOperator}"
                         value="{operator}" />
-                    <span class="ml-2">
-                        <OperatorComponent
-                            operator="{operator}"
-                            returnName="{true}" />
-                    </span>
+                    <span class="ml-2">{appSettings.operatorLabels[i]}</span>
                 </label>
             {/each}
             <label class="flex items-center py-1">
@@ -137,26 +132,15 @@
                     value="{4}" />
                 <span class="ml-2">Alle</span>
             </label>
-        </div>
-
+        </CardComponent>
         {#each appSettings.operators as operator}
             {#if operator === quiz.selectedOperator || isAllOperators}
                 <div
                     transition:slide|local="{appSettings.transitionDuration}"
                     class="mb-3">
-                    <div class="card">
-                        <LabelComponent>
-                            <OperatorComponent
-                                returnName="{true}"
-                                operator="{operator}" />
-                        </LabelComponent>
-                        <h2>
-                            {#if operator === Operator.Multiplication}
-                                Multiplikand
-                            {:else if operator === Operator.Division}
-                                Divisor
-                            {:else}Intervall{/if}
-                        </h2>
+                    <CardComponent
+                        heading="{operator === Operator.Multiplication ? 'Multiplikand' : operator === Operator.Division ? 'Divisor' : 'Intervall'}"
+                        label="{appSettings.operatorLabels[operator]}">
                         {#if operator === Operator.Multiplication || operator === Operator.Division}
                             <div
                                 transition:slide|local="{appSettings.transitionDuration}">
@@ -221,12 +205,11 @@
                                 </label>
                             {/if}
                         {/if}
-                    </div>
+                    </CardComponent>
                 </div>
             {/if}
         {/each}
-        <div class="card">
-            <h2>Oppgaveform</h2>
+        <CardComponent heading="Oppgaveform">
             {#each appSettings.puzzleModes as puzzleMode}
                 <label class="flex items-center py-1">
                     <input
@@ -238,32 +221,24 @@
                     <PuzzleModeComponent puzzleMode="{puzzleMode}" />
                 </label>
             {/each}
-        </div>
+        </CardComponent>
     {/if}
     {#if !appSettings.isProduction && quiz.showSettings && !validationError}
-        <div class="card">
-            <h2>Poeng</h2>
+        <CardComponent heading="Poeng">
             <ul>
                 {#each operatorSettings as settings}
                     <li>
-                        <OperatorComponent
-                            operator="{settings.operator}"
-                            returnName="{true}" />
+                        {appSettings.operatorLabels[settings.operator]}
                         :
                         {settings.score}
                     </li>
                 {/each}
             </ul>
-        </div>
+        </CardComponent>
     {/if}
-    <div class="card">
-        {#if quiz.title && quiz.title !== 'undefined'}
-            <LabelComponent>Forhåndsvisning</LabelComponent>
-            <h2>{quiz.title}</h2>
-        {:else}
-            <h2>Forhåndsvisning</h2>
-        {/if}
-
+    <CardComponent
+        heading="{quiz.title || 'Forhåndsvisning'}"
+        label="{quiz.title ? 'Forhåndsvisning' : ''}">
         {#if validationError}
             <div transition:slide|local="{appSettings.transitionDuration}">
                 <AlertComponent color="yellow">
@@ -284,10 +259,9 @@
                 </button>
             </div>
         {/if}
-    </div>
+    </CardComponent>
     {#if quiz.showSettings}
-        <div class="card">
-            <h2>Spilletid</h2>
+        <CardComponent heading="Spilletid">
             <div class="flex flex-row">
                 <label class="mr-4">
                     Totalt
@@ -313,34 +287,33 @@
                     </select>
                 </label>
             </div>
-        </div>
+        </CardComponent>
     {/if}
     {#if showSharePanel}
-        <div
-            class="card"
-            transition:slide|local="{appSettings.transitionDuration}">
-            <h2>Deling</h2>
-            <label>Tittel
-                <input
-                    type="text"
-                    maxlength="50"
-                    bind:this="{titleDom}"
-                    on:keyup="{() => (shareLinkCopied = false)}"
-                    class="form-input
-                        w-3/4 block"
-                    bind:value="{shareTitle}" />
-            </label>
-            <label class="block mt-4">
-                Lenke
-                <LabelComponent on:click="{copyShareLinkToClipboard}">
-                    {shareLinkCopied ? 'Kopiert!' : 'Trykk for å kopiere'}
-                </LabelComponent>
-                <textarea
-                    class="form-textarea w-full font-mono text-xs"
-                    rows="4"
-                    bind:this="{textAreaDom}"
-                    value="{window.location.protocol + '//' + window.location.host + window.location.pathname + window.location.search}&title={encodeURIComponent(shareTitle)}&showSettings=false"></textarea>
-            </label>
+        <div transition:slide|local="{appSettings.transitionDuration}">
+            <CardComponent heading="Deling">
+                <label>Tittel
+                    <input
+                        type="text"
+                        maxlength="50"
+                        bind:this="{titleDom}"
+                        on:keyup="{() => (shareLinkCopied = false)}"
+                        class="form-input
+                            w-3/4 block"
+                        bind:value="{shareTitle}" />
+                </label>
+                <label class="block mt-4">
+                    Lenke
+                    <LabelComponent on:click="{copyShareLinkToClipboard}">
+                        {shareLinkCopied ? 'Kopiert!' : 'Trykk for å kopiere'}
+                    </LabelComponent>
+                    <textarea
+                        class="form-textarea w-full font-mono text-xs"
+                        rows="4"
+                        bind:this="{textAreaDom}"
+                        value="{window.location.protocol + '//' + window.location.host + window.location.pathname + window.location.search}&title={encodeURIComponent(shareTitle)}&showSettings=false"></textarea>
+                </label>
+            </CardComponent>
         </div>
     {/if}
     <ButtonComponent
