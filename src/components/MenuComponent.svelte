@@ -12,9 +12,9 @@
     import { setUrlParams } from '../services/quizService'
     import { getOperatorScoreSettings } from '../services/scoreService'
     import PuzzlePreviewComponent from './widgets/PuzzlePreviewComponent.svelte'
-    import PuzzleModeComponent from './widgets/PuzzleModeComponent.svelte'
     import type { AppSettings } from '../models/AppSettings'
     import type { OperatorSettings } from '../models/OperatorSettings'
+    import { PuzzleMode } from '../models/enums/PuzzleMode'
 
     export let appSettings: AppSettings
     export let quiz: Quiz
@@ -218,7 +218,16 @@
                             mr-2"
                         bind:group="{quiz.puzzleMode}"
                         value="{puzzleMode}" />
-                    <PuzzleModeComponent puzzleMode="{puzzleMode}" />
+                    <span>
+                        {#if puzzleMode === PuzzleMode.Normal}
+                            Normal
+                            <span class="text-sm">(Svaret er ukjent)</span>
+                        {:else if puzzleMode === PuzzleMode.Alternate}
+                            Omvendt
+                            <span class="text-sm">(Første eller andre ledd er
+                                ukjent)</span>
+                        {:else}Tilfeldig{/if}
+                    </span>
                 </label>
             {/each}
         </CardComponent>
