@@ -9,11 +9,11 @@
     import type { Quiz } from '../models/Quiz'
     import type { Puzzle } from '../models/Puzzle'
     import { TimerState } from '../models/enums/TimerState'
-    import { getLabel } from '../services/labelService'
 
     export let quiz: Quiz
     export let showWarning: boolean
     export let seconds: number
+    export let operatorSigns: string[]
 
     const dispatch = createEventDispatcher()
     let quizSecondsLeft: number = seconds
@@ -39,7 +39,7 @@
     ) {
         puzzleNumber++
 
-        let puzzle = getPuzzle(quiz, previousPuzzle)
+        let puzzle = getPuzzle(quiz, operatorSigns, previousPuzzle)
         puzzle.timeout = false
         puzzleTimeoutState = TimerState.Started
 
@@ -133,7 +133,7 @@
                     {/if}
                     {#if i === 0}
                         <span>
-                            {@html getLabel(puzzle.operator)}
+                            {@html puzzle.operatorLabel}
                         </span>
                     {:else if i === 1}<span class="mr-2">=</span>{/if}
                 {/each}

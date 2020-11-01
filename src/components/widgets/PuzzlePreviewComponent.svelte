@@ -1,6 +1,5 @@
 <script lang="ts">
     import type { Puzzle } from '../../models/Puzzle'
-    import { getLabel } from '../../services/labelService'
     import HiddenValueComponent from './HiddenValueComponent.svelte'
     import TweenedValueComponent from './TweenedValueComponent.svelte'
 
@@ -22,7 +21,7 @@
     {/if}
     {#if i === 0}
         <span>
-            {@html getLabel(puzzle.operator)}
+            {@html puzzle.operatorLabel}
         </span>
     {:else if i === 1}<span class="mr-2">=</span>{/if}
 {/each}

@@ -7,7 +7,7 @@ const urlParams = new URLSearchParams(window.location.search)
 
 export function getQuiz(): Quiz {
     return {
-        title: urlParams.get('title') || undefined,
+        title: getStringParam('title'),
         showSettings: getBoolParam('showSettings'),
         duration: getFloatParam('duration') || 0.5,
         puzzleTimeLimit: getIntParam('timeLimit') || 3,
@@ -77,13 +77,19 @@ export function setUrlParams(quiz: Quiz) {
 }
 
 function getIntParam(param: string): number {
-    let value = urlParams.get(param)
+    const value = urlParams.get(param)
 
     return value ? parseInt(value) : 0
 }
 
+function getStringParam(param: string): string | undefined {
+    const value = urlParams.get(param)
+
+    return value && value !== 'undefined' ? value : undefined
+}
+
 function getFloatParam(param: string): number {
-    let value = urlParams.get(param)
+    const value = urlParams.get(param)
 
     return value ? parseFloat(value) : 0
 }

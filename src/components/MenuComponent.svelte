@@ -1,7 +1,6 @@
 <script lang="ts">
     import * as animateScroll from 'svelte-scrollto'
     import { createEventDispatcher, onMount, tick } from 'svelte'
-    import { getLabel } from '../services/labelService'
     import { slide } from 'svelte/transition'
     import ButtonComponent from './widgets/ButtonComponent.svelte'
     import CardComponent from './widgets/CardComponent.svelte'
@@ -19,7 +18,7 @@
 
     export let appSettings: AppSettings
     export let quiz: Quiz
-    let puzzle = getPuzzle(quiz, undefined)
+    let puzzle = getPuzzle(quiz, appSettings.operatorSigns)
     const dispatch = createEventDispatcher()
     let showSharePanel: boolean
 
@@ -62,7 +61,7 @@
     }
 
     function getPuzzlePreview() {
-        puzzle = getPuzzle(quiz, puzzle)
+        puzzle = getPuzzle(quiz, appSettings.operatorSigns, puzzle)
     }
 
     function updateQuizSettings(updatePuzzlePreview: boolean = true) {
@@ -115,14 +114,14 @@
 <form>
     {#if quiz.showSettings}
         <CardComponent heading="Regneart">
-            {#each appSettings.operators as operator}
+            {#each appSettings.operators as operator, i}
                 <label class="flex items-center py-1">
                     <input
                         type="radio"
                         class="form-radio h-5 w-5 text-blue-700 border-gray-500"
                         bind:group="{quiz.selectedOperator}"
                         value="{operator}" />
-                    <span class="ml-2">{@html getLabel(operator, true)}</span>
+                    <span class="ml-2">{appSettings.operatorLabels[i]}</span>
                 </label>
             {/each}
             <label class="flex items-center py-1">
@@ -141,7 +140,7 @@
                     class="mb-3">
                     <CardComponent
                         heading="{operator === Operator.Multiplication ? 'Multiplikand' : operator === Operator.Division ? 'Divisor' : 'Intervall'}"
-                        label="{operator}">
+                        label="{appSettings.operatorLabels[operator]}">
                         {#if operator === Operator.Multiplication || operator === Operator.Division}
                             <div
                                 transition:slide|local="{appSettings.transitionDuration}">
@@ -226,11 +225,10 @@
     {/if}
     {#if !appSettings.isProduction && quiz.showSettings && !validationError}
         <CardComponent heading="Poeng">
-            <h2>Poeng</h2>
             <ul>
                 {#each operatorSettings as settings}
                     <li>
-                        {@html getLabel(settings.operator, true)}
+                        {appSettings.operatorLabels[settings.operator]}
                         :
                         {settings.score}
                     </li>
@@ -239,7 +237,7 @@
         </CardComponent>
     {/if}
     <CardComponent
-        heading="{quiz.title ?? 'Forhåndsvisning'}"
+        heading="{quiz.title || 'Forhåndsvisning'}"
         label="{quiz.title ? 'Forhåndsvisning' : ''}">
         {#if validationError}
             <div transition:slide|local="{appSettings.transitionDuration}">

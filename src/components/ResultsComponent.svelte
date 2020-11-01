@@ -11,7 +11,6 @@
     import { postData } from '../services/apiService'
     import type { Highscore } from '../models/Highscore'
     import HighscoreTableComponent from './widgets/HighscoreTableComponent.svelte'
-    import { getLabel } from '../services/labelService'
 
     const dispatch = createEventDispatcher()
 
@@ -155,7 +154,7 @@
                                 {:else}<span>{part.generatedValue}</span>{/if}
                                 {#if i === 0}
                                     <span>
-                                        {@html getLabel(puzzle.operator)}
+                                        {@html appSettings.operatorSigns[puzzle.operator]}
                                     </span>
                                 {:else if i === 1}
                                     <span class="mr-1">=</span>

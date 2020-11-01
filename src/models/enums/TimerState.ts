@@ -1,7 +1,7 @@
 export enum TimerState {
-    Initialized,
-    Started,
-    Resumed,
-    Stopped,
-    Finished
+    Initialized = 0,
+    Started = 1,
+    Resumed = 2,
+    Stopped = 3,
+    Finished = 4
 }
