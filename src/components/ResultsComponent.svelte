@@ -14,7 +14,7 @@
 
     const dispatch = createEventDispatcher()
 
-    export let hasHighscore: boolean
+    export let highscorePosition: number | undefined
     export let puzzleSet: Puzzle[]
     export let quizScores: QuizScores
     export let appSettings: AppSettings
@@ -30,7 +30,6 @@
     let apiIsPosting: boolean = false
     let apiError: boolean = false
     let showCorrectAnswer: boolean = false
-    let highscorePlacement: number
 
     async function postHighscore() {
         apiError = false
@@ -54,22 +53,7 @@
     }
 
     onMount(() => {
-        if (hasHighscore) {
-            userHighScore.scoreSum = quizScores.totalScore
-            if (highScores.length > 1) {
-                highscorePlacement =
-                    highScores.findIndex(
-                        (s) => s.scoreSum < userHighScore.scoreSum
-                    ) + 1
-                if (!highscorePlacement) {
-                    // No lower score found - is given last place
-                    highscorePlacement = highScores.length + 1
-                }
-            } else {
-                highscorePlacement = 1
-            }
-            titleDom.focus()
-        }
+        if (highscorePosition) titleDom.focus()
     })
 
     function resetQuiz() {
@@ -77,7 +61,7 @@
     }
 </script>
 
-{#if hasHighscore}
+{#if highscorePosition}
     {#if apiRequestComplete}
         <div class="mb-4" transition:slide="{appSettings.transitionDuration}">
             <AlertComponent>Ditt navn er lagret!</AlertComponent>
@@ -90,7 +74,7 @@
                         Du fikk
                         {quizScores.totalScore.toLocaleString()}
                         poeng, og er nummer
-                        {highscorePlacement}
+                        {highscorePosition}
                         i listen over de 10 beste! 🤩 Skriv inn initialene dine
                         under for å vise det fram.
                     </AlertComponent>
@@ -204,7 +188,7 @@
 {#if highScores}
     <CardComponent heading="Topp 10">
         <HighscoreTableComponent
-            highlightRowNumber="{apiRequestComplete ? highscorePlacement : undefined}"
+            highlightRowNumber="{apiRequestComplete ? highscorePosition : undefined}"
             highScores="{highScores}" />
     </CardComponent>
 {/if}

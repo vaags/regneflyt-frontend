@@ -15,19 +15,23 @@
     import { GetEnumValues } from './services/enumService'
     import { PuzzleMode } from './models/enums/PuzzleMode'
     import { QuizState } from './models/enums/QuizState'
-    import { getQuizScoreSum } from './services/scoreService'
+    import {
+        getQuizScoreSum,
+        getHighscorePosition,
+    } from './services/scoreService'
     import { getData } from './services/apiService'
     import type { Quiz } from './models/Quiz'
     import type { Highscore } from './models/Highscore'
     import HighscoresComponent from './components/HighscoresComponent.svelte'
 
-    let quizScores: QuizScores
-    let highScores: Highscore[]
-    let apiRequestComplete: boolean = false
-    let hasHighscore: boolean
     export let apiKey: string
     export let apiEndpoint: string
     export let isProduction: string
+
+    let quizScores: QuizScores
+    let highScores: Highscore[]
+    let apiRequestComplete: boolean = false
+    let highscorePosition: number | undefined
 
     let appSettings: AppSettings = {
         isProduction: isProduction === 'true',
@@ -100,9 +104,7 @@
 
         await getHighscores()
 
-        if (highScores) {
-            hasHighscore = userHasHighscore(highScores, quizScores)
-        }
+        highscorePosition = getHighscorePosition(highScores, quizScores)
     }
 
     function setHighscores(event: any) {
@@ -113,17 +115,6 @@
         apiRequestComplete = false
         highScores = await getData(appSettings.apiEndpoint, appSettings.apiKey)
         apiRequestComplete = true
-    }
-
-    function userHasHighscore(
-        highScores: Highscore[],
-        quizScores: QuizScores
-    ): boolean {
-        if (quizScores.totalScore > 0 && highScores.length < 10) return true
-
-        let lowestHighscore = Math.min(...highScores.map((o) => o.scoreSum))
-
-        return lowestHighscore < quizScores.totalScore
     }
 
     function addAnalytics() {
@@ -172,7 +163,7 @@
 <main class="container max-w-xl mx-auto px-2 md:px-3 pt-1 pb-2 md:pb-5">
     <h1 class="text-2xl md:text-3xl font-light text-orange-600 mb-1 text-right">
         Regneflyt
-        <small class="text-base text-gray-500">1.13</small>
+        <small class="text-base text-gray-500">1.14</small>
     </h1>
     {#if appSettings.showHighscores}
         <HighscoresComponent
@@ -200,7 +191,7 @@
             quizScores="{quizScores}"
             appSettings="{appSettings}"
             highScores="{highScores}"
-            hasHighscore="{hasHighscore}"
+            highscorePosition="{highscorePosition}"
             puzzleSet="{puzzleSet}"
             on:setHighscores="{setHighscores}"
             on:resetQuiz="{resetQuiz}" />
