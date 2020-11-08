@@ -1,8 +1,8 @@
 <script lang="ts">
     import Tailwindcss from './Tailwind.svelte'
     import { onMount } from 'svelte'
-    import * as animateScroll from 'svelte-scrollto'
     import type { Highscore } from './models/Highscore'
+    import * as animateScroll from 'svelte-scrollto'
     import MenuComponent from './components/MenuComponent.svelte'
     import ResultsComponent from './components/ResultsComponent.svelte'
     import QuizComponent from './components/QuizComponent.svelte'
@@ -16,7 +16,7 @@
         fakeInputFocus,
         getAppSettings,
     } from './services/appService'
-    import { QuizState } from './models/enums/QuizState'
+    import { QuizState } from './models/constants/QuizState'
     import {
         getQuizScoreSum,
         getHighscorePosition,
@@ -103,7 +103,7 @@
 <main class="container max-w-xl mx-auto px-2 md:px-3 pt-1 pb-2 md:pb-5">
     <h1 class="text-2xl md:text-3xl font-light text-orange-600 mb-1 text-right">
         Regneflyt
-        <small class="text-base text-gray-500">1.15</small>
+        <small class="text-base text-gray-500">1.16</small>
     </h1>
     {#if appSettings.showHighscores}
         <HighscoresComponent

@@ -1,8 +1,8 @@
 import type { Quiz } from "../models/Quiz";
-import { Operator } from "../models/enums/Operator";
+import { Operator } from "../models/constants/Operator";
 import type { Puzzle } from "../models/Puzzle";
 import type { PuzzlePart } from "../models/PuzzlePart";
-import { PuzzleMode } from "../models/enums/PuzzleMode";
+import { PuzzleMode } from "../models/constants/PuzzleMode";
 import type { OperatorSettings } from "../models/OperatorSettings";
 
 export function getPuzzle(quiz: Quiz, operatorSigns: string[], previousPuzzle: Puzzle | undefined = undefined): Puzzle {
@@ -93,12 +93,11 @@ function getUnknownPuzzlePartNumber(operator: Operator, puzzleMode: PuzzleMode):
             } else {
                 return 2
             }
-        case PuzzleMode.Alternate: {
+        case PuzzleMode.Alternate:
             return getAlternateUnknownPuzzlePart(operator)
-        }
-        case PuzzleMode.Normal: {
+        case PuzzleMode.Normal:
+        default:
             return 2
-        }
     }
 }
 

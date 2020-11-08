@@ -1,7 +1,4 @@
 import type { AppSettings } from "../models/AppSettings";
-import { Operator } from "../models/enums/Operator";
-import { PuzzleMode } from "../models/enums/PuzzleMode";
-import { GetEnumValues } from "./enumService";
 
 export function getAppSettings(isProduction: string, apiEndpoint: string, apiKey: string): AppSettings {
     return {
@@ -9,7 +6,6 @@ export function getAppSettings(isProduction: string, apiEndpoint: string, apiKey
         transitionDuration: {
             duration: 200,
         },
-        operators: GetEnumValues(Operator),
         operatorLabels: [
             'Addisjon',
             'Subtraksjon',
@@ -18,7 +14,6 @@ export function getAppSettings(isProduction: string, apiEndpoint: string, apiKey
             'Alle',
         ],
         operatorSigns: ['&#43;', '&#8722;', '&#215;', '&#247;', '&#8704'],
-        puzzleModes: GetEnumValues(PuzzleMode),
         displayGreeting: true,
         apiEndpoint: apiEndpoint,
         apiKey: apiKey,

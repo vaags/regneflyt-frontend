@@ -8,7 +8,7 @@
     import CardComponent from './widgets/CardComponent.svelte'
     import type { Quiz } from '../models/Quiz'
     import type { Puzzle } from '../models/Puzzle'
-    import { TimerState } from '../models/enums/TimerState'
+    import { TimerState } from '../models/constants/TimerState'
 
     export let quiz: Quiz
     export let showWarning: boolean

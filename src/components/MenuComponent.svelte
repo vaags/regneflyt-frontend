@@ -5,7 +5,7 @@
     import ButtonComponent from './widgets/ButtonComponent.svelte'
     import CardComponent from './widgets/CardComponent.svelte'
     import LabelComponent from './widgets/LabelComponent.svelte'
-    import { Operator } from '../models/enums/Operator'
+    import { Operator } from '../models/constants/Operator'
     import type { Quiz } from '../models/Quiz'
     import AlertComponent from './widgets/AlertComponent.svelte'
     import { getPuzzle } from '../services/puzzleService'
@@ -14,7 +14,7 @@
     import PuzzlePreviewComponent from './widgets/PuzzlePreviewComponent.svelte'
     import type { AppSettings } from '../models/AppSettings'
     import type { OperatorSettings } from '../models/OperatorSettings'
-    import { PuzzleMode } from '../models/enums/PuzzleMode'
+    import { PuzzleMode } from '../models/constants/PuzzleMode'
 
     export let appSettings: AppSettings
     export let quiz: Quiz
@@ -114,7 +114,7 @@
 <form>
     {#if quiz.showSettings}
         <CardComponent heading="Regneart">
-            {#each appSettings.operators as operator, i}
+            {#each Object.values(Operator) as operator, i}
                 <label class="flex items-center py-1">
                     <input
                         type="radio"
@@ -133,7 +133,7 @@
                 <span class="ml-2">Alle</span>
             </label>
         </CardComponent>
-        {#each appSettings.operators as operator}
+        {#each Object.values(Operator) as operator}
             {#if operator === quiz.selectedOperator || isAllOperators}
                 <div
                     transition:slide|local="{appSettings.transitionDuration}"
@@ -210,7 +210,7 @@
             {/if}
         {/each}
         <CardComponent heading="Oppgaveform">
-            {#each appSettings.puzzleModes as puzzleMode}
+            {#each Object.values(PuzzleMode) as puzzleMode}
                 <label class="flex items-center py-1">
                     <input
                         type="radio"

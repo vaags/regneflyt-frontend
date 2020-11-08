@@ -1,4 +1,4 @@
-import type { Operator } from "./enums/Operator"
+import type { Operator } from "./constants/Operator"
 
 export type OperatorSettings = {
     operator: Operator

@@ -1,7 +1,7 @@
 import type { Quiz } from "../models/Quiz"
-import { Operator } from "../models/enums/Operator"
-import { PuzzleMode } from "../models/enums/PuzzleMode";
-import { QuizState } from "../models/enums/QuizState";
+import { Operator } from "../models/constants/Operator"
+import { PuzzleMode } from "../models/constants/PuzzleMode";
+import { QuizState } from "../models/constants/QuizState";
 
 const urlParams = new URLSearchParams(window.location.search)
 

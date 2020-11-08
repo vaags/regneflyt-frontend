@@ -1,7 +1,7 @@
-import type { Operator } from "./enums/Operator";
-import type { PuzzleMode } from "./enums/PuzzleMode"
+import type { Operator } from "./constants/Operator"
+import type { PuzzleMode } from "./constants/PuzzleMode"
 import type { OperatorSettings } from "./OperatorSettings"
-import type { QuizState } from "./enums/QuizState"
+import type { QuizState } from "./constants/QuizState"
 
 export type Quiz = {
     title: string | undefined

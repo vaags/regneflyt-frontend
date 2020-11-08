@@ -1,4 +1,4 @@
-import type { Operator } from "./enums/Operator"
+import type { Operator } from "./constants/Operator"
 import type { PuzzlePart } from "./PuzzlePart"
 
 export type Puzzle = {

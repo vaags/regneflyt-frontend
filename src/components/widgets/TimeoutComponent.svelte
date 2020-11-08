@@ -1,7 +1,7 @@
 <script lang="ts">
     import { onDestroy, onMount, createEventDispatcher } from 'svelte'
     import { tweened } from 'svelte/motion'
-    import { TimerState } from '../../models/enums/TimerState'
+    import { TimerState } from '../../models/constants/TimerState'
     import TimeComponent from './TimeComponent.svelte'
 
     export let seconds: number

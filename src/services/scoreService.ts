@@ -1,10 +1,10 @@
 import type { OperatorSettings } from "../models/OperatorSettings";
-import { Operator } from "../models/enums/Operator";
-import { PuzzleMode } from "../models/enums/PuzzleMode";
+import { Operator } from "../models/constants/Operator";
+import { PuzzleMode } from "../models/constants/PuzzleMode";
 import type { Quiz } from "../models/Quiz";
 import type { QuizScores } from "../models/QuizScores";
 import type { Puzzle } from "../models/Puzzle";
-import type { Highscore } from "../models/HighScore";
+import type { Highscore } from "../models/Highscore";
 
 export function getQuizScoreSum(quiz: Quiz, puzzleSet: Puzzle[]): QuizScores {
     const quizScores: QuizScores = {
@@ -63,12 +63,15 @@ export function getOperatorScoreSettings(quiz: Quiz): OperatorSettings[] {
 export function getHighscorePosition(highScores: Highscore[], quizScores: QuizScores): number | undefined {
     if (quizScores.totalScore <= 0) return undefined
 
-    if (!highScores) return 1
+    if (!highScores.length) return 1
 
-    return (
-        highScores.findIndex((s) => s.scoreSum < quizScores.totalScore) +
-        1 || highScores.length + 1
-    )
+    const position = highScores.findIndex((s) => s.scoreSum < quizScores.totalScore);
+
+    if (position) {
+        return position + 1
+    } else {
+        return highScores.length < 10 ? highScores.length + 1 : undefined
+    }
 }
 
 function getOperatorScore(settings: OperatorSettings): number {
