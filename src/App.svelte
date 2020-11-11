@@ -33,13 +33,14 @@
     let highScores: Highscore[]
     let apiRequestComplete: boolean = false
     let highscorePosition: number | undefined
-
     let appSettings = getAppSettings(isProduction, apiEndpoint, apiKey)
-
     let puzzleSet: Puzzle[]
     let quiz = getQuiz()
-
     let fakeInput: any
+    let userHighScore: Highscore = {
+        scoreSum: 0,
+        name: '',
+    }
 
     function getReady(event: any) {
         quiz = event.detail.quiz
@@ -87,6 +88,8 @@
         await getHighscores()
 
         highscorePosition = getHighscorePosition(highScores, quizScores)
+
+        if (highscorePosition) userHighScore.scoreSum = quizScores.totalScore
     }
 
     function setHighscores(event: any) {
@@ -103,7 +106,7 @@
 <main class="container max-w-xl mx-auto px-2 md:px-3 pt-1 pb-2 md:pb-5">
     <h1 class="text-2xl md:text-3xl font-light text-orange-600 mb-1 text-right">
         Regneflyt
-        <small class="text-base text-gray-500">1.16</small>
+        <small class="text-base text-gray-500">1.17</small>
     </h1>
     {#if appSettings.showHighscores}
         <HighscoresComponent
@@ -132,6 +135,7 @@
             appSettings="{appSettings}"
             highScores="{highScores}"
             highscorePosition="{highscorePosition}"
+            userHighScore="{userHighScore}"
             puzzleSet="{puzzleSet}"
             on:setHighscores="{setHighscores}"
             on:resetQuiz="{resetQuiz}" />

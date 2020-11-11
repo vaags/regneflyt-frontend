@@ -19,11 +19,7 @@
     export let quizScores: QuizScores
     export let appSettings: AppSettings
     export let highScores: Highscore[]
-
-    let userHighScore: Highscore = {
-        scoreSum: 0,
-        name: '',
-    }
+    export let userHighScore: Highscore
 
     let titleDom: any
     let apiRequestComplete: boolean = false

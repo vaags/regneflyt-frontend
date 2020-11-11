@@ -67,7 +67,7 @@ export function getHighscorePosition(highScores: Highscore[], quizScores: QuizSc
 
     const position = highScores.findIndex((s) => s.scoreSum < quizScores.totalScore);
 
-    if (position) {
+    if (position >= 0) {
         return position + 1
     } else {
         return highScores.length < 10 ? highScores.length + 1 : undefined

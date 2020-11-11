@@ -10,7 +10,7 @@ export function getQuiz(): Quiz {
         title: getStringParam('title'),
         showSettings: getBoolParam('showSettings'),
         duration: getFloatParam('duration') || 0.5,
-        puzzleTimeLimit: getIntParam('timeLimit') || 3,
+        puzzleTimeLimit: getIntParam('timeLimit') ?? 3,
         operatorSettings: [
             {
                 operator: Operator.Addition,
@@ -76,10 +76,10 @@ export function setUrlParams(quiz: Quiz) {
     )
 }
 
-function getIntParam(param: string): number {
+function getIntParam(param: string): number | undefined {
     const value = urlParams.get(param)
 
-    return value ? parseInt(value) : 0
+    return value != null ? parseInt(value) : undefined
 }
 
 function getStringParam(param: string): string | undefined {
