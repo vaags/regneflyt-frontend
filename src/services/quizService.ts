@@ -43,7 +43,7 @@ export function getQuiz(): Quiz {
         ],
         state: QuizState.Initial,
         selectedOperator:
-            (getIntParam('operator') as Operator) ?? 4,
+            (getIntParam('operator') as Operator) ?? 0,
         allowNegativeAnswer: getBoolParam('negatives'),
         puzzleMode:
             (getIntParam('puzzleMode') as PuzzleMode) || PuzzleMode.Normal
