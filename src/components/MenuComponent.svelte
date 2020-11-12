@@ -289,11 +289,11 @@
                     <select
                         class="form-select block"
                         bind:value="{quiz.puzzleTimeLimit}">
-                        <option value="{0}">Ingen</option>
                         <option value="{2}">2 sek</option>
                         <option value="{3}">3 sek</option>
                         <option value="{5}">5 sek</option>
                         <option value="{10}">10 sek</option>
+                        <option value="{0}">Ubegrenset</option>
                     </select>
                 </label>
             </div>
