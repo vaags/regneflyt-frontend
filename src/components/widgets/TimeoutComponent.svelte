@@ -55,12 +55,11 @@
 
         secondIntervalDelayHandler = setTimeout(() => {
             secondsIntervalHandler = setInterval(() => {
-                console.log('seconds change')
                 remainingSeconds--
                 if (fadeOnSecondChange) fadeOut()
                 dispatch('secondChange', { remainingSeconds })
             }, 1000)
-        }, remainingMilliseconds % 1000)
+        }, remainingMilliseconds % 1000) // Must be delayed to account for completion and pauses in-between seconds
 
         millisecondsIntervalHandler = setInterval(() => {
             remainingMilliseconds -= intervalDuration
@@ -114,7 +113,6 @@
     })
 
     onDestroy(() => {
-        console.log('destroy')
         clearTimeHandlers()
     })
 
