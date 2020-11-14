@@ -11,19 +11,23 @@
     export let showProgressBar: boolean = false
     export let hidden: boolean = false
 
+    const intervalDuration = 100
     const percentageTweened = tweened(0, {
-        duration: 100,
+        duration: intervalDuration,
     })
 
     const dispatch = createEventDispatcher()
     let internalState: TimerState = TimerState.Initialized
-    let tickerHandles: number[] = [2]
+    let timeoutHandler: number // Used to keep track of total time left
+    let millisecondsIntervalHandler: number // Used to update progress bar and "seconds left"-indicator on set intervals
+    let secondsIntervalHandler: number // Used to update progress bar and "seconds left"-indicator on set intervals
+    let secondIntervalDelayHandler: number
     const milliseconds = seconds * 1000
-    let remainingSeconds: number = seconds
+    let remainingSeconds = seconds
     let remainingMilliseconds: number
     let transparentText: boolean = false
     let percentageCompleted: number = 0
-    const transitionDelayCompensation = 100
+    const transitionDelayCompensation = intervalDuration // Because of transition delay (tweening), internal time keeping must be 100 ms ahead of actual time left.
 
     $: if (state && internalState !== state) {
         switch (state) {
@@ -31,7 +35,7 @@
                 start(undefined)
                 break
             case TimerState.Resumed:
-                resume()
+                start(remainingMilliseconds)
                 break
             case TimerState.Stopped:
                 stop()
@@ -41,64 +45,68 @@
     }
 
     function start(resumeMilliseconds: number | undefined) {
-        clearTickers()
+        clearTimeHandlers()
+        setInitialProgress()
 
-        percentageCompleted = (100 / milliseconds) * 100 // Must be 100 ms ahead of actual time left, to account for transition time.
-        remainingSeconds = resumeMilliseconds
-            ? Math.round(resumeMilliseconds / 1000)
-            : seconds
-        remainingMilliseconds = resumeMilliseconds
-            ? resumeMilliseconds
-            : seconds * 1000
-
-        tickerHandles[0] = setTimeout(
+        timeoutHandler = setTimeout(
             finished,
             resumeMilliseconds ? resumeMilliseconds : seconds * 1000
         )
 
-        tickerHandles[1] = setInterval(() => {
-            remainingMilliseconds -= 100
+        secondIntervalDelayHandler = setTimeout(() => {
+            secondsIntervalHandler = setInterval(() => {
+                console.log('seconds change')
+                remainingSeconds--
+                if (fadeOnSecondChange) fadeOut()
+                dispatch('secondChange', { remainingSeconds })
+            }, 1000)
+        }, remainingMilliseconds % 1000)
+
+        millisecondsIntervalHandler = setInterval(() => {
+            remainingMilliseconds -= intervalDuration
             percentageCompleted =
                 ((milliseconds -
                     (remainingMilliseconds - transitionDelayCompensation)) /
                     milliseconds) *
                 100
+        }, intervalDuration)
 
-            if (remainingMilliseconds % 1000 === 0) {
-                remainingSeconds-- // Should not display zero
-                if (fadeOnSecondChange) fadeOut()
-                dispatch('secondChange', { remainingSeconds })
-            }
-        }, 100)
-    }
+        function setInitialProgress() {
+            percentageCompleted =
+                (100 / milliseconds) * transitionDelayCompensation
 
-    function resume() {
-        start(remainingMilliseconds)
+            remainingSeconds = resumeMilliseconds
+                ? Math.round(resumeMilliseconds / 1000)
+                : seconds
+
+            remainingMilliseconds = resumeMilliseconds
+                ? resumeMilliseconds
+                : seconds * 1000
+        }
     }
 
     function stop() {
-        clearTickers()
+        clearTimeHandlers()
     }
 
     function finished() {
-        clearTickers()
+        clearTimeHandlers()
         percentageCompleted = 100
         dispatch('finished')
     }
 
     function fadeOut() {
         transparentText = false
-        clearTimeout(tickerHandles[3])
-        tickerHandles[2] = setTimeout(() => {
+        setTimeout(() => {
             transparentText = true
         }, 500)
     }
 
-    function clearTickers() {
-        tickerHandles.forEach((element) => {
-            clearInterval(element)
-            clearTimeout(element)
-        })
+    function clearTimeHandlers() {
+        clearInterval(millisecondsIntervalHandler)
+        clearInterval(secondsIntervalHandler)
+        clearTimeout(secondIntervalDelayHandler)
+        clearTimeout(timeoutHandler)
     }
 
     onMount(() => {
@@ -106,7 +114,8 @@
     })
 
     onDestroy(() => {
-        clearTickers()
+        console.log('destroy')
+        clearTimeHandlers()
     })
 
     $: percentageTweened.set(percentageCompleted)
