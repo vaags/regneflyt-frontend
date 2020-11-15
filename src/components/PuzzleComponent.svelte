@@ -148,6 +148,7 @@
                         {#if puzzle.timeout}
                             <TimeoutComponent
                                 seconds="{3}"
+                                countToZero="{false}"
                                 fadeOnSecondChange="{true}"
                                 on:finished="{() => (puzzle = generatePuzzle(puzzle, true))}" />
                         {:else}

@@ -28,6 +28,7 @@
     <p class="text-center my-12 text-5xl md:text-6xl">
         <TimeoutComponent
             seconds="{3}"
+            countToZero="{false}"
             fadeOnSecondChange="{true}"
             on:finished="{startQuiz}" />
     </p>

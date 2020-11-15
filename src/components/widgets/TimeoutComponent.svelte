@@ -10,6 +10,7 @@
     export let showMinutes: boolean = false
     export let showProgressBar: boolean = false
     export let hidden: boolean = false
+    export let countToZero: boolean = true
 
     const millisecondIntervalDuration = 100
     const percentageTweened = tweened(0, {
@@ -97,6 +98,8 @@
 
             remainingSeconds = resumeMilliseconds
                 ? Math.floor(resumeMilliseconds / 1000)
+                : countToZero
+                ? seconds - 1
                 : seconds
 
             remainingMilliseconds = resumeMilliseconds ?? milliseconds
