@@ -11,9 +11,9 @@
     export let showProgressBar: boolean = false
     export let hidden: boolean = false
 
-    const intervalDuration = 100
+    const millisecondIntervalDuration = 100
     const percentageTweened = tweened(0, {
-        duration: intervalDuration,
+        duration: millisecondIntervalDuration,
     })
 
     const dispatch = createEventDispatcher()
@@ -30,7 +30,7 @@
     let percentageCompleted: number = 0
     let timestampStart: number
     let timestampStop: number
-    const transitionDelayCompensation = intervalDuration // Because of transition delay (tweening), internal time keeping must be 100 ms ahead of actual time left.
+    const transitionDelayCompensation = millisecondIntervalDuration // Because of transition delay (tweening), internal time keeping must be 100 ms ahead of actual time left.
 
     $: if (state && internalState !== state) {
         switch (state) {
@@ -57,25 +57,27 @@
             resumeMilliseconds ? resumeMilliseconds : seconds * 1000
         )
 
+        // Decrementers must be delayed to account for completion and pauses in-between seconds
         const secondDecrementDelay = remainingMilliseconds % 1000
-        const millisecondDecrementDelay = remainingMilliseconds % 100
+        const millisecondDecrementDelay =
+            remainingMilliseconds % millisecondIntervalDuration
 
         secondIntervalDelayHandler = setTimeout(() => {
             if (secondDecrementDelay > 0) decrementSecond()
             secondsIntervalHandler = setInterval(() => {
                 decrementSecond()
             }, 1000)
-        }, secondDecrementDelay) // Must be delayed to account for completion and pauses in-between seconds
+        }, secondDecrementDelay)
 
         millisecondIntervalDelayHandler = setTimeout(() => {
             if (millisecondDecrementDelay > 0) decrementMillisecond()
             millisecondsIntervalHandler = setInterval(() => {
                 decrementMillisecond()
-            }, intervalDuration)
+            }, millisecondIntervalDuration)
         }, millisecondDecrementDelay)
 
         function decrementMillisecond() {
-            remainingMilliseconds -= intervalDuration
+            remainingMilliseconds -= millisecondIntervalDuration
             percentageCompleted =
                 ((milliseconds -
                     (remainingMilliseconds - transitionDelayCompensation)) /
@@ -104,7 +106,8 @@
     function stop() {
         timestampStop = Date.now()
 
-        const millisecondRest = (timestampStop - timestampStart) % 100
+        const millisecondRest =
+            (timestampStop - timestampStart) % millisecondIntervalDuration
         remainingMilliseconds -= millisecondRest // Remove the time passed since the last millisecond decrement (for more accurate timing when resuming after pause)
         clearTimeHandlers()
     }

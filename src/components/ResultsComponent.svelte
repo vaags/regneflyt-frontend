@@ -105,6 +105,14 @@
     {/if}
 {/if}
 
+{#if highscorePosition && apiRequestComplete}
+    <CardComponent heading="Topp 10">
+        <HighscoreTableComponent
+            highlightRowNumber="{apiRequestComplete ? highscorePosition : undefined}"
+            highScores="{highScores}" />
+    </CardComponent>
+{/if}
+
 <CardComponent heading="Resultater">
     {#if !puzzleSet?.length}
         <AlertComponent color="yellow">
@@ -180,13 +188,5 @@
         </table>
     {/if}
 </CardComponent>
-
-{#if highScores}
-    <CardComponent heading="Topp 10">
-        <HighscoreTableComponent
-            highlightRowNumber="{apiRequestComplete ? highscorePosition : undefined}"
-            highScores="{highScores}" />
-    </CardComponent>
-{/if}
 
 <ButtonComponent on:click="{resetQuiz}" color="green">Tilbake</ButtonComponent>
