@@ -106,11 +106,13 @@
 {/if}
 
 {#if highscorePosition && apiRequestComplete}
-    <CardComponent heading="Topp 10">
-        <HighscoreTableComponent
-            highlightRowNumber="{apiRequestComplete ? highscorePosition : undefined}"
-            highScores="{highScores}" />
-    </CardComponent>
+    <div transition:slide="{appSettings.transitionDuration}">
+        <CardComponent heading="Topp 10">
+            <HighscoreTableComponent
+                highlightRowNumber="{apiRequestComplete ? highscorePosition : undefined}"
+                highScores="{highScores}" />
+        </CardComponent>
+    </div>
 {/if}
 
 <CardComponent heading="Resultater">
