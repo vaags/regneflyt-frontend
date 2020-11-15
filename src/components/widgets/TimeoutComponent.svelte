@@ -22,11 +22,14 @@
     let millisecondsIntervalHandler: number // Used to update progress bar and "seconds left"-indicator on set intervals
     let secondsIntervalHandler: number // Used to update progress bar and "seconds left"-indicator on set intervals
     let secondIntervalDelayHandler: number
+    let millisecondIntervalDelayHandler: number
     const milliseconds = seconds * 1000
     let remainingSeconds = seconds
     let remainingMilliseconds: number
     let transparentText: boolean = false
     let percentageCompleted: number = 0
+    let timestampStart: number
+    let timestampStop: number
     const transitionDelayCompensation = intervalDuration // Because of transition delay (tweening), internal time keeping must be 100 ms ahead of actual time left.
 
     $: if (state && internalState !== state) {
@@ -45,6 +48,7 @@
     }
 
     function start(resumeMilliseconds: number | undefined) {
+        timestampStart = Date.now()
         clearTimeHandlers()
         setInitialProgress()
 
@@ -53,38 +57,55 @@
             resumeMilliseconds ? resumeMilliseconds : seconds * 1000
         )
 
-        secondIntervalDelayHandler = setTimeout(() => {
-            secondsIntervalHandler = setInterval(() => {
-                remainingSeconds--
-                if (fadeOnSecondChange) fadeOut()
-                dispatch('secondChange', { remainingSeconds })
-            }, 1000)
-        }, remainingMilliseconds % 1000) // Must be delayed to account for completion and pauses in-between seconds
+        const secondDecrementDelay = remainingMilliseconds % 1000
+        const millisecondDecrementDelay = remainingMilliseconds % 100
 
-        millisecondsIntervalHandler = setInterval(() => {
+        secondIntervalDelayHandler = setTimeout(() => {
+            if (secondDecrementDelay > 0) decrementSecond()
+            secondsIntervalHandler = setInterval(() => {
+                decrementSecond()
+            }, 1000)
+        }, secondDecrementDelay) // Must be delayed to account for completion and pauses in-between seconds
+
+        millisecondIntervalDelayHandler = setTimeout(() => {
+            if (millisecondDecrementDelay > 0) decrementMillisecond()
+            millisecondsIntervalHandler = setInterval(() => {
+                decrementMillisecond()
+            }, intervalDuration)
+        }, millisecondDecrementDelay)
+
+        function decrementMillisecond() {
             remainingMilliseconds -= intervalDuration
             percentageCompleted =
                 ((milliseconds -
                     (remainingMilliseconds - transitionDelayCompensation)) /
                     milliseconds) *
                 100
-        }, intervalDuration)
+        }
+
+        function decrementSecond() {
+            remainingSeconds--
+            if (fadeOnSecondChange) fadeOut()
+            dispatch('secondChange', { remainingSeconds })
+        }
 
         function setInitialProgress() {
             percentageCompleted =
                 (100 / milliseconds) * transitionDelayCompensation
 
             remainingSeconds = resumeMilliseconds
-                ? Math.round(resumeMilliseconds / 1000)
+                ? Math.floor(resumeMilliseconds / 1000)
                 : seconds
 
-            remainingMilliseconds = resumeMilliseconds
-                ? resumeMilliseconds
-                : seconds * 1000
+            remainingMilliseconds = resumeMilliseconds ?? milliseconds
         }
     }
 
     function stop() {
+        timestampStop = Date.now()
+
+        const millisecondRest = (timestampStop - timestampStart) % 100
+        remainingMilliseconds -= millisecondRest // Remove the time passed since the last millisecond decrement (for more accurate timing when resuming after pause)
         clearTimeHandlers()
     }
 
@@ -106,6 +127,7 @@
         clearInterval(secondsIntervalHandler)
         clearTimeout(secondIntervalDelayHandler)
         clearTimeout(timeoutHandler)
+        clearTimeout(millisecondIntervalDelayHandler)
     }
 
     onMount(() => {
