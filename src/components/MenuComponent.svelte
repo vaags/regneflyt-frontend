@@ -56,10 +56,6 @@
         dispatch('getReady', { quiz })
     }
 
-    function toggleShowHighscores() {
-        dispatch('toggleShowHighscores')
-    }
-
     function getPuzzlePreview() {
         puzzle = getPuzzle(quiz, appSettings.operatorSigns, puzzle)
     }
@@ -333,9 +329,6 @@
         Start
     </ButtonComponent>
     <div class="float-right">
-        <ButtonComponent on:click="{toggleShowHighscores}" color="gray">
-            Topp 10
-        </ButtonComponent>
         {#if quiz.showSettings}
             <ButtonComponent
                 on:click="{toggleSharePanel}"

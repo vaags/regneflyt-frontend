@@ -3,14 +3,7 @@
     import CardComponent from './widgets/CardComponent.svelte'
     import TimeoutComponent from './widgets/TimeoutComponent.svelte'
 
-    export let apiRequestComplete: boolean
     const dispatch = createEventDispatcher()
-
-    let timeoutReached: boolean = false
-
-    $: if (timeoutReached && apiRequestComplete) {
-        dispatch('evaluateQuiz')
-    }
 </script>
 
 <CardComponent heading="Tiden er ute&hellip;">
@@ -20,6 +13,6 @@
             hidden="{true}"
             seconds="{3}"
             fadeOnSecondChange="{true}"
-            on:finished="{() => (timeoutReached = true)}" />
+            on:finished="{() => dispatch('evaluateQuiz')}" />
     </p>
 </CardComponent>

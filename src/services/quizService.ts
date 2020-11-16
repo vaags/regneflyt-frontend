@@ -10,7 +10,7 @@ export function getQuiz(): Quiz {
         title: getStringParam('title'),
         showSettings: getBoolParam('showSettings'),
         duration: getFloatParam('duration') || 0.5,
-        puzzleTimeLimit: getIntParam('timeLimit') ?? 3,
+        puzzleTimeLimit: getIntParam('timeLimit') ?? 5,
         operatorSettings: [
             {
                 operator: Operator.Addition,

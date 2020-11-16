@@ -1,6 +1,6 @@
 import type { AppSettings } from "../models/AppSettings";
 
-export function getAppSettings(isProduction: string, apiEndpoint: string, apiKey: string): AppSettings {
+export function getAppSettings(isProduction: string): AppSettings {
     return {
         isProduction: isProduction === 'true',
         transitionDuration: {
@@ -14,10 +14,7 @@ export function getAppSettings(isProduction: string, apiEndpoint: string, apiKey
             'Alle',
         ],
         operatorSigns: ['&#43;', '&#8722;', '&#215;', '&#247;', '&#8704'],
-        displayGreeting: true,
-        apiEndpoint: apiEndpoint,
-        apiKey: apiKey,
-        showHighscores: false,
+        displayGreeting: true
     }
 }
 

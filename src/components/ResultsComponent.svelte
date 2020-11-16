@@ -2,118 +2,24 @@
     import type { Puzzle } from '../models/Puzzle'
     import { createEventDispatcher, onMount } from 'svelte'
     import CardComponent from './widgets/CardComponent.svelte'
-    import { slide } from 'svelte/transition'
     import ButtonComponent from './widgets/ButtonComponent.svelte'
     import AlertComponent from './widgets/AlertComponent.svelte'
     import HiddenValueCompontent from './widgets/HiddenValueComponent.svelte'
     import type { QuizScores } from '../models/QuizScores'
     import type { AppSettings } from '../models/AppSettings'
-    import { postData } from '../services/apiService'
-    import type { Highscore } from '../models/Highscore'
-    import HighscoreTableComponent from './widgets/HighscoreTableComponent.svelte'
 
     const dispatch = createEventDispatcher()
 
-    export let highscorePosition: number | undefined
     export let puzzleSet: Puzzle[]
     export let quizScores: QuizScores
     export let appSettings: AppSettings
-    export let highScores: Highscore[]
-    export let userHighScore: Highscore
 
-    let titleDom: any
-    let apiRequestComplete: boolean = false
-    let apiIsPosting: boolean = false
-    let apiError: boolean = false
     let showCorrectAnswer: boolean = false
-
-    async function postHighscore() {
-        apiError = false
-        apiIsPosting = true
-        apiRequestComplete = false
-
-        highScores = await postData(
-            appSettings.apiEndpoint,
-            appSettings.apiKey,
-            userHighScore
-        )
-
-        if (!highScores) {
-            apiError = true
-        } else {
-            apiRequestComplete = true
-            dispatch('setHighscores', { highScores })
-        }
-
-        apiIsPosting = false
-    }
-
-    onMount(() => {
-        if (highscorePosition) titleDom.focus()
-    })
 
     function resetQuiz() {
         dispatch('resetQuiz')
     }
 </script>
-
-{#if highscorePosition}
-    {#if apiRequestComplete}
-        <div class="mb-4" transition:slide="{appSettings.transitionDuration}">
-            <AlertComponent>Ditt navn er lagret!</AlertComponent>
-        </div>
-    {:else}
-        <form transition:slide="{appSettings.transitionDuration}">
-            <CardComponent heading="Gratulerer!">
-                <div class="mb-4">
-                    <AlertComponent>
-                        Du fikk
-                        {quizScores.totalScore.toLocaleString()}
-                        poeng, og er nummer
-                        {highscorePosition}
-                        i listen over de 10 beste! 🤩 Skriv inn initialene dine
-                        under for å vise det fram.
-                    </AlertComponent>
-                </div>
-                <label>Initialer<br />
-                    <input
-                        type="text"
-                        maxlength="3"
-                        bind:this="{titleDom}"
-                        class="form-input w-20 uppercase"
-                        bind:value="{userHighScore.name}" />
-                </label>
-            </CardComponent>
-            {#if apiError}
-                <div class="mb-3">
-                    <AlertComponent color="red">
-                        Det oppstod en feil ved lagring. Prøv igjen.
-                    </AlertComponent>
-                </div>
-            {/if}
-            <div class="mb-3">
-                <ButtonComponent
-                    on:click="{() => postHighscore()}"
-                    disabled="{!userHighScore.name || apiIsPosting}"
-                    color="{!userHighScore.name ? 'gray' : 'green'}">
-                    {#if apiIsPosting}
-                        <span class="animate-pulse">⚙️</span>
-                    {:else}Lagre{/if}
-                </ButtonComponent>
-            </div>
-        </form>
-    {/if}
-{/if}
-
-{#if highscorePosition && apiRequestComplete}
-    <div transition:slide="{appSettings.transitionDuration}">
-        <CardComponent heading="Topp 10">
-            <HighscoreTableComponent
-                highlightRowNumber="{apiRequestComplete ? highscorePosition : undefined}"
-                highScores="{highScores}" />
-        </CardComponent>
-    </div>
-{/if}
 
 <CardComponent heading="Resultater">
     {#if !puzzleSet?.length}

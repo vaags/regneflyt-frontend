@@ -6,7 +6,4 @@ export type AppSettings = {
     operatorLabels: string[],
     operatorSigns: string[],
     displayGreeting: boolean,
-    apiEndpoint: string,
-    apiKey: string,
-    showHighscores: boolean
 }

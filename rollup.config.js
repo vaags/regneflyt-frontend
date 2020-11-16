@@ -40,9 +40,7 @@ export default {
 	},
 	plugins: [
 		replace({
-			IS_PRODUCTION: production,
-			API_KEY: production ? process.env.API_KEY : 'regneflyt',
-			API_ENDPOINT: production ? process.env.API_ENDPOINT : 'https://localhost:44311/api/score'
+			IS_PRODUCTION: production
 		}),
 		svelte({
 			// enable run-time checks when not in production
