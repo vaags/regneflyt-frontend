@@ -46,8 +46,9 @@
                                     <HiddenValueCompontent
                                         value="{puzzle.timeout ? '?' : part.userDefinedValue}"
                                         showHiddenValue="{showCorrectAnswer}"
-                                        hiddenValue="{part.generatedValue}" />
-                                {:else}<span>{part.generatedValue}</span>{/if}
+                                        hiddenValue="{part.generatedValue}"
+                                        strong="{true}" />
+                                {:else}{part.generatedValue}{/if}
                                 {#if i === 0}
                                     <span>
                                         {@html appSettings.operatorSigns[puzzle.operator]}
