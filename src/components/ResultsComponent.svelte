@@ -40,7 +40,7 @@
                 {#each puzzleSet as puzzle, i}
                     <tr>
                         <td class="border-t py-2 text-gray-600">{i + 1}</td>
-                        <td class="border-t px-4 py-2 whitespace-no-wrap">
+                        <td class="border-t px-4 py-2 whitespace-nowrap">
                             {#each puzzle.parts as part, i}
                                 {#if puzzle.unknownPuzzlePart === i}
                                     <HiddenValueCompontent
@@ -65,7 +65,7 @@
                                 <span title="Timeout">⌛</span>
                             {:else}<span title="Galt">❌</span>{/if}
                         </td>
-                        <td class="border-t px-3 py-2 whitespace-no-wrap">
+                        <td class="border-t px-3 py-2 whitespace-nowrap">
                             {Math.round(puzzle.duration * 10) / 10}
                             s
                         </td>

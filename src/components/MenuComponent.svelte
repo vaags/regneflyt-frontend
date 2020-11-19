@@ -162,7 +162,7 @@
                                     <label class="mr-4" for="partOneMin">
                                         Fra og med
                                         <select
-                                            class="form-select block"
+                                            class="block rounded"
                                             bind:value="{quiz.operatorSettings[operator].minValue}">
                                             {#each minValues as v}
                                                 <option value="{v}">{v}</option>
@@ -172,7 +172,7 @@
                                     <label for="partOneMax">
                                         Til og med
                                         <select
-                                            class="form-select block"
+                                            class="block rounded"
                                             bind:value="{quiz.operatorSettings[operator].maxValue}">
                                             {#each maxValues as v}
                                                 <option value="{v}">{v}</option>
@@ -243,7 +243,7 @@
     {/if}
     <CardComponent
         heading="{quiz.title || 'Forhåndsvisning'}"
-        label="{quiz.title ? 'Forhåndsvisning' : ''}">
+        label="{quiz.title ? 'Forhåndsvisning' : undefined}">
         {#if validationError}
             <div transition:slide|local="{appSettings.transitionDuration}">
                 <AlertComponent color="yellow">
@@ -270,9 +270,7 @@
             <div class="flex flex-row">
                 <label class="mr-4">
                     Totalt
-                    <select
-                        class="form-select block"
-                        bind:value="{quiz.duration}">
+                    <select class="block rounded" bind:value="{quiz.duration}">
                         <option value="{0.5}">30 sek</option>
                         <option value="{1}">1 min</option>
                         <option value="{3}">3 min</option>
@@ -283,7 +281,7 @@
                 <label>
                     Per oppgave
                     <select
-                        class="form-select block"
+                        class="block rounded"
                         bind:value="{quiz.puzzleTimeLimit}">
                         <option value="{2}">2 sek</option>
                         <option value="{3}">3 sek</option>
@@ -333,7 +331,7 @@
             <ButtonComponent
                 on:click="{toggleSharePanel}"
                 disabled="{validationError}"
-                color="{validationError ? 'red' : showSharePanel ? 'purple' : 'blue'}">
+                color="{validationError ? 'red' : showSharePanel ? 'gray' : 'blue'}">
                 Del
             </ButtonComponent>
         {:else}
