@@ -114,7 +114,7 @@
                 <label class="flex items-center py-1">
                     <input
                         type="radio"
-                        class="form-radio h-5 w-5 text-blue-700 border-gray-500"
+                        class="h-5 w-5 text-blue-700"
                         bind:group="{quiz.selectedOperator}"
                         value="{operator}" />
                     <span class="ml-2">{appSettings.operatorLabels[i]}</span>
@@ -123,7 +123,7 @@
             <label class="flex items-center py-1">
                 <input
                     type="radio"
-                    class="form-radio h-5 w-5 text-blue-700 border-gray-500"
+                    class="h-5 w-5 text-blue-700"
                     bind:group="{quiz.selectedOperator}"
                     value="{4}" />
                 <span class="ml-2">Alle</span>
@@ -146,7 +146,7 @@
                                             class="inline-flex items-center py-1">
                                             <input
                                                 type="checkbox"
-                                                class="text-blue-700 h-5 w-5 rounded"
+                                                class="h-5 w-5 rounded text-blue-700"
                                                 bind:group="{quiz.operatorSettings[operator].possibleValues}"
                                                 value="{i + 1}" />
                                             <span class="ml-2">{i + 1}</span>
@@ -193,7 +193,7 @@
                                 <label class="inline-flex items-center mt-4">
                                     <input
                                         type="checkbox"
-                                        class="text-blue-700 h-5 w-5 border-gray-500"
+                                        class="h-5 w-5 text-blue-700"
                                         bind:checked="{quiz.allowNegativeAnswer}" />
                                     <span class="ml-2">Tillat negative svar</span>
                                 </label>
@@ -208,8 +208,7 @@
                 <label class="flex items-center py-1">
                     <input
                         type="radio"
-                        class="form-radio h-5 w-5 text-blue-700 border-gray-500
-                            mr-2"
+                        class="h-5 w-5 mr-2 text-blue-700"
                         bind:group="{quiz.puzzleMode}"
                         value="{puzzleMode}" />
                     <span>

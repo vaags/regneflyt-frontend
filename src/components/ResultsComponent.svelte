@@ -30,7 +30,7 @@
         <label class="inline-flex items-center my-4">
             <input
                 type="checkbox"
-                class="text-blue-700 h-5 w-5 border-gray-500"
+                class="h-5 w-5 rounded text-blue-700"
                 bind:checked="{showCorrectAnswer}" />
             <span class="ml-2">Vis fasit</span>
         </label>

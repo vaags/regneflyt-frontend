@@ -157,7 +157,7 @@
             <div class="w-full">
                 <div class="w-full bg-white border rounded border-gray-500">
                     <div
-                        class="transition-colors text-base text-white
+                        class="transition-colors text-base text-gray-50
                         duration-200 {percentageCompleted === 100 ? 'bg-blue-800' : 'bg-blue-500'}
                         text-center leading-none"
                         style="width: {$percentageTweened}%">
