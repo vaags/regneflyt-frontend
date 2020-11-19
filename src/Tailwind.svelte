@@ -22,11 +22,5 @@
         text-align: center;
     }
 
-    /* Forms */
-
-    .form-select {
-        @apply border-gray-400;
-    }
-
     @tailwind utilities;
 </style>

@@ -1,5 +1,5 @@
 <script lang="ts">
-    export let color = 'blue'
+    export let color: string = 'blue'
     export let disabled: boolean = false
 </script>
 
@@ -35,23 +35,13 @@
     }
 
     .btn-yellow {
-        @apply bg-yellow-600;
-        @apply border-yellow-700;
+        @apply bg-yellow-500;
+        @apply border-yellow-600;
     }
 
     .btn-yellow:hover {
-        @apply bg-yellow-700;
-        @apply border-yellow-800;
-    }
-
-    .btn-purple {
-        @apply bg-purple-600;
-        @apply border-purple-700;
-    }
-
-    .btn-purple:hover {
-        @apply bg-purple-700;
-        @apply border-purple-800;
+        @apply bg-yellow-600;
+        @apply border-yellow-700;
     }
 
     .btn-gray {
@@ -68,7 +58,7 @@
 <button
     disabled="{disabled}"
     on:click|preventDefault
-    class="text-white font-light text-3xl px-4 border-b-2 rounded btn-{color} transition-colors
+    class="text-gray-50 font-light text-3xl px-4 py-1 border-b-2 rounded btn-{color} transition-colors
         duration-200 ease-out focus:outline-none">
     <slot />
 </button>

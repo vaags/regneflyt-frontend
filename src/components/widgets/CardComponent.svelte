@@ -4,7 +4,7 @@
     export let label: string | undefined = undefined
 </script>
 
-<div class="mb-2 rounded px-4 py-3 bg-gray-100 md:mb-3 md:px-5 md:py-4">
+<div class="mb-2 rounded px-4 py-3 bg-gray-100 md:mb-3 md:px-5 md:py-5">
     {#if label !== undefined}
         <LabelComponent>{label}</LabelComponent>
     {:else}
