@@ -146,8 +146,7 @@
                                             class="inline-flex items-center py-1">
                                             <input
                                                 type="checkbox"
-                                                class="form-checkbox text-blue-700
-                                                h-5 w-5 border-gray-500"
+                                                class="text-blue-700 h-5 w-5 rounded"
                                                 bind:group="{quiz.operatorSettings[operator].possibleValues}"
                                                 value="{i + 1}" />
                                             <span class="ml-2">{i + 1}</span>
@@ -194,8 +193,7 @@
                                 <label class="inline-flex items-center mt-4">
                                     <input
                                         type="checkbox"
-                                        class="form-checkbox text-blue-700 h-5 w-5
-                                            border-gray-500"
+                                        class="text-blue-700 h-5 w-5 border-gray-500"
                                         bind:checked="{quiz.allowNegativeAnswer}" />
                                     <span class="ml-2">Tillat negative svar</span>
                                 </label>
@@ -302,7 +300,7 @@
                         maxlength="50"
                         bind:this="{titleDom}"
                         on:keyup="{() => (shareLinkCopied = false)}"
-                        class="form-input
+                        class="rounded
                             w-3/4 block"
                         bind:value="{shareTitle}" />
                 </label>
@@ -312,7 +310,7 @@
                         {shareLinkCopied ? 'Kopiert!' : 'Trykk for å kopiere'}
                     </LabelComponent>
                     <textarea
-                        class="form-textarea w-full font-mono text-xs"
+                        class="rounded w-full font-mono text-xs"
                         rows="4"
                         bind:this="{textAreaDom}"
                         value="{window.location.protocol + '//' + window.location.host + window.location.pathname + window.location.search}&title={encodeURIComponent(shareTitle)}&showSettings=false"></textarea>
