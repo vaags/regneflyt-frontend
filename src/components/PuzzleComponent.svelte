@@ -111,7 +111,7 @@
     <CardComponent heading="Oppgave {puzzleNumber}">
         <div
             slot="label"
-            class="float-right {quizAlmostFinished ? 'text-yellow-700 font-semibold' : 'text-gray-700'}">
+            class="float-right text-lg {quizAlmostFinished ? 'text-yellow-700 font-semibold' : 'text-gray-700'}">
             <TimeoutComponent
                 seconds="{seconds}"
                 state="{quizTimeoutState}"
@@ -119,7 +119,7 @@
                 on:finished="{quizTimeout}"
                 showMinutes="{true}" />
         </div>
-        <div class="my-8 text-center text-3xl md:text-4xl">
+        <div class="mt-4 text-center text-4xl md:text-5xl">
             <div>
                 {#each puzzle.parts as part, i}
                     {#if puzzle.unknownPuzzlePart === i}
@@ -139,7 +139,7 @@
                 {/each}
             </div>
             {#if quiz.puzzleTimeLimit}
-                <div class="mt-12">
+                <div class="mt-9 text-lg">
                     <TimeoutComponent
                         state="{puzzleTimeoutState}"
                         showProgressBar="{true}"

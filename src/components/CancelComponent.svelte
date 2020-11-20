@@ -23,19 +23,15 @@
 <div class="text-right float-right">
     {#if showWarning}
         <p class="mb-2 text-gray-100">Ønsker du å avbryte?</p>
-        <span class="mr-1">
-            <ButtonComponent on:click="{abortQuiz}" color="red">
-                Ja
-            </ButtonComponent>
-        </span>
+        <ButtonComponent on:click="{abortQuiz}" color="red" margin="{true}">
+            Ja
+        </ButtonComponent>
         <ButtonComponent on:click="{toggleWarning}">Nei</ButtonComponent>
     {:else}
         {#if showCancelButton}
-            <span class="mr-1">
-                <ButtonComponent on:click="{completeQuiz}">
-                    Fullfør
-                </ButtonComponent>
-            </span>
+            <ButtonComponent on:click="{completeQuiz}" margin="{true}">
+                Fullfør
+            </ButtonComponent>
         {/if}
         <ButtonComponent on:click="{toggleWarning}" color="gray">
             Avbryt

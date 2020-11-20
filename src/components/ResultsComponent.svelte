@@ -1,6 +1,6 @@
 <script lang="ts">
     import type { Puzzle } from '../models/Puzzle'
-    import { createEventDispatcher, onMount } from 'svelte'
+    import { createEventDispatcher } from 'svelte'
     import CardComponent from './widgets/CardComponent.svelte'
     import ButtonComponent from './widgets/ButtonComponent.svelte'
     import AlertComponent from './widgets/AlertComponent.svelte'
@@ -16,6 +16,10 @@
 
     let showCorrectAnswer: boolean = false
 
+    function getReady() {
+        dispatch('getReady')
+    }
+
     function resetQuiz() {
         dispatch('resetQuiz')
     }
@@ -27,14 +31,14 @@
             Ingen fullførte oppgaver ble funnet.
         </AlertComponent>
     {:else}
-        <label class="inline-flex items-center my-4">
+        <label class="inline-flex items-center my-4 text-lg">
             <input
                 type="checkbox"
                 class="h-5 w-5 rounded text-blue-700"
                 bind:checked="{showCorrectAnswer}" />
             <span class="ml-2">Vis fasit</span>
         </label>
-        <table class="table-auto w-full">
+        <table class="table-auto w-full text-lg">
             <tbody>
                 {#each puzzleSet as puzzle, i}
                     <tr>
@@ -97,4 +101,9 @@
     {/if}
 </CardComponent>
 
-<ButtonComponent on:click="{resetQuiz}" color="green">Tilbake</ButtonComponent>
+<ButtonComponent on:click="{getReady}" color="green" margin="{true}">
+    Start
+</ButtonComponent>
+<div class="float-right">
+    <ButtonComponent on:click="{resetQuiz}">Hjem</ButtonComponent>
+</div>

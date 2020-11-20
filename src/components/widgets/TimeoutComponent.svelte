@@ -148,7 +148,7 @@
 </script>
 
 {#if !hidden && internalState}
-    <span
+    <div
         class="{fadeOnSecondChange ? 'transition duration-1000 ease-out' : ''}
         {transparentText ? 'opacity-0' : ''}">
         {#if showMinutes}
@@ -157,7 +157,7 @@
             <div class="w-full">
                 <div class="w-full bg-white border rounded border-gray-500">
                     <div
-                        class="transition-colors text-base text-gray-50
+                        class="transition-colors text-gray-50
                         duration-200 {percentageCompleted === 100 ? 'bg-blue-800' : 'bg-blue-500'}
                         text-center leading-none"
                         style="width: {$percentageTweened}%">
@@ -166,5 +166,5 @@
                 </div>
             </div>
         {:else}{remainingSeconds}{/if}
-    </span>
+    </div>
 {/if}

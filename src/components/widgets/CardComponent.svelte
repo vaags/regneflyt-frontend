@@ -11,7 +11,7 @@
         <slot name="label" />
     {/if}
     {#if heading}
-        <h2 class="mb-4 text-2xl -mt-1 font-light md:text-3xl md:mb-4 md:-mt-2">
+        <h2 class="mb-5 text-3xl -mt-1 font-light md:text-4xl md:-mt-2 md:mb-6">
             {heading}
         </h2>
     {/if}

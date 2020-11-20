@@ -98,11 +98,9 @@
 
 {#if appSettings.displayGreeting}
     <CardComponent>
-        <p class="text-sm">
-            Regneflyt er et mattespill som trener deg i hoderegning.
-        </p>
+        <p>Regneflyt er et mattespill som trener deg i hoderegning.</p>
         {#if quiz.showSettings}
-            <p class="mt-2 text-sm">Velg hvordan du vil trene nedenfor.</p>
+            <p class="mt-2">Velg hvordan du vil trene nedenfor.</p>
         {/if}
     </CardComponent>
 {/if}
@@ -117,16 +115,17 @@
                         class="h-5 w-5 text-blue-700"
                         bind:group="{quiz.selectedOperator}"
                         value="{operator}" />
-                    <span class="ml-2">{appSettings.operatorLabels[i]}</span>
+                    <span
+                        class="ml-2 text-lg">{appSettings.operatorLabels[i]}</span>
                 </label>
             {/each}
             <label class="flex items-center py-1">
                 <input
                     type="radio"
-                    class="h-5 w-5 text-blue-700"
+                    class="h-5 w-5 text-lg text-blue-700"
                     bind:group="{quiz.selectedOperator}"
                     value="{4}" />
-                <span class="ml-2">Alle</span>
+                <span class="ml-2 text-lg">Alle</span>
             </label>
         </CardComponent>
         {#each Object.values(Operator) as operator}
@@ -149,7 +148,8 @@
                                                 class="h-5 w-5 rounded text-blue-700"
                                                 bind:group="{quiz.operatorSettings[operator].possibleValues}"
                                                 value="{i + 1}" />
-                                            <span class="ml-2">{i + 1}</span>
+                                            <span
+                                                class="ml-2 text-lg">{i + 1}</span>
                                         </label>
                                     </div>
                                 {/each}
@@ -158,20 +158,22 @@
                             <div
                                 transition:slide|local="{appSettings.transitionDuration}">
                                 <div class="flex flex-row">
-                                    <label class="mr-4" for="partOneMin">
+                                    <label
+                                        class="mr-6 text-lg"
+                                        for="partOneMin">
                                         Fra og med
                                         <select
-                                            class="block rounded"
+                                            class="block rounded text-lg"
                                             bind:value="{quiz.operatorSettings[operator].minValue}">
                                             {#each minValues as v}
                                                 <option value="{v}">{v}</option>
                                             {/each}
                                         </select>
                                     </label>
-                                    <label for="partOneMax">
+                                    <label for="partOneMax" class="text-lg">
                                         Til og med
                                         <select
-                                            class="block rounded"
+                                            class="block rounded text-lg"
                                             bind:value="{quiz.operatorSettings[operator].maxValue}">
                                             {#each maxValues as v}
                                                 <option value="{v}">{v}</option>
@@ -190,10 +192,11 @@
                                 {/if}
                             </div>
                             {#if operator === Operator.Subtraction}
-                                <label class="inline-flex items-center mt-4">
+                                <label
+                                    class="inline-flex items-center mt-4 text-lg">
                                     <input
                                         type="checkbox"
-                                        class="h-5 w-5 text-blue-700"
+                                        class="h-5 w-5 text-blue-700 rounded"
                                         bind:checked="{quiz.allowNegativeAnswer}" />
                                     <span class="ml-2">Tillat negative svar</span>
                                 </label>
@@ -205,7 +208,7 @@
         {/each}
         <CardComponent heading="Oppgaveform">
             {#each Object.values(PuzzleMode) as puzzleMode}
-                <label class="flex items-center py-1">
+                <label class="flex items-center py-1 text-lg">
                     <input
                         type="radio"
                         class="h-5 w-5 mr-2 text-blue-700"
@@ -227,7 +230,7 @@
     {/if}
     {#if !appSettings.isProduction && quiz.showSettings && !validationError}
         <CardComponent heading="Poeng">
-            <ul>
+            <ul class="text-lg">
                 {#each operatorSettings as settings}
                     <li>
                         {appSettings.operatorLabels[settings.operator]}
@@ -249,7 +252,7 @@
             </div>
         {:else}
             <div
-                class="text-2xl md:text-3xl text-center"
+                class="text-3xl md:text-4xl text-center mb-1"
                 transition:slide|local="{appSettings.transitionDuration}">
                 <PuzzlePreviewComponent puzzle="{puzzle}" />
                 <button
@@ -265,9 +268,11 @@
     {#if quiz.showSettings}
         <CardComponent heading="Spilletid">
             <div class="flex flex-row">
-                <label class="mr-4">
+                <label class="mr-4 text-lg">
                     Totalt
-                    <select class="block rounded" bind:value="{quiz.duration}">
+                    <select
+                        class="block rounded text-lg"
+                        bind:value="{quiz.duration}">
                         <option value="{0.5}">30 sek</option>
                         <option value="{1}">1 min</option>
                         <option value="{3}">3 min</option>
@@ -275,10 +280,10 @@
                         <option value="{10}">10 min</option>
                     </select>
                 </label>
-                <label>
+                <label class="text-lg">
                     Per oppgave
                     <select
-                        class="block rounded"
+                        class="block rounded text-lg"
                         bind:value="{quiz.puzzleTimeLimit}">
                         <option value="{2}">2 sek</option>
                         <option value="{3}">3 sek</option>
@@ -293,18 +298,17 @@
     {#if showSharePanel}
         <div transition:slide|local="{appSettings.transitionDuration}">
             <CardComponent heading="Deling">
-                <label>Tittel
+                <label class="text-lg">Tittel
                     <input
                         type="text"
                         maxlength="50"
                         bind:this="{titleDom}"
                         on:keyup="{() => (shareLinkCopied = false)}"
-                        class="rounded
-                            w-3/4 block"
+                        class="rounded w-3/4 block text-lg"
                         bind:value="{shareTitle}" />
                 </label>
                 <label class="block mt-4">
-                    Lenke
+                    <span class="text-lg">Lenke</span>
                     <LabelComponent on:click="{copyShareLinkToClipboard}">
                         {shareLinkCopied ? 'Kopiert!' : 'Trykk for å kopiere'}
                     </LabelComponent>

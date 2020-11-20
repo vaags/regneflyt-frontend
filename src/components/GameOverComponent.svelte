@@ -7,7 +7,7 @@
 </script>
 
 <CardComponent heading="Tiden er ute&hellip;">
-    <p class="text-center font-light my-16 text-5xl md:text-6xl animate-bounce">
+    <p class="text-center font-light my-16 text-6xl md:text-7xl animate-bounce">
         ⌛
         <TimeoutComponent
             hidden="{true}"

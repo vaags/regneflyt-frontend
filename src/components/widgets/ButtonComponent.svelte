@@ -1,6 +1,7 @@
 <script lang="ts">
     export let color: string = 'blue'
     export let disabled: boolean = false
+    export let margin: boolean = false
 </script>
 
 <style>
@@ -58,7 +59,7 @@
 <button
     disabled="{disabled}"
     on:click|preventDefault
-    class="text-gray-50 font-light text-3xl px-4 py-1 border-b-2 rounded btn-{color} transition-colors
+    class="text-gray-50 font-light text-3xl md:text-4xl px-4 py-1 border-b-2 {margin ? 'mr-1' : ''} rounded btn-{color} transition-colors
         duration-200 ease-out focus:outline-none">
     <slot />
 </button>
