@@ -139,7 +139,7 @@
                 {/each}
             </div>
             {#if quiz.puzzleTimeLimit}
-                <div class="mt-9 text-lg">
+                <div class="mt-8 mb-1 text-lg">
                     <TimeoutComponent
                         state="{puzzleTimeoutState}"
                         showProgressBar="{true}"
