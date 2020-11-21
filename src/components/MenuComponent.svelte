@@ -135,7 +135,7 @@
                     class="mb-3">
                     <CardComponent
                         heading="{operator === Operator.Multiplication ? 'Multiplikand' : operator === Operator.Division ? 'Divisor' : 'Intervall'}"
-                        label="{appSettings.operatorLabels[operator]}">
+                        label="{isAllOperators ? appSettings.operatorLabels[operator] : undefined}">
                         {#if operator === Operator.Multiplication || operator === Operator.Division}
                             <div
                                 transition:slide|local="{appSettings.transitionDuration}">
