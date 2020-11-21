@@ -28,9 +28,7 @@ export function getQuizScoreSum(quiz: Quiz, puzzleSet: Puzzle[]): QuizScores {
     }
 
     function setCorrectAnswerCountAndPercentage() {
-        const boolReducer = (accumulator: any, currentValue: any) => accumulator + (currentValue ? 1 : 0);
-
-        quizScores.correctAnswerCount = puzzleSet.map((p) => p.isCorrect).reduce(boolReducer);
+        quizScores.correctAnswerCount = puzzleSet.map((p) => p.isCorrect).filter(Boolean).length;
 
         quizScores.correctAnswerPercentage = Math.round(
             (quizScores.correctAnswerCount / puzzleSet.length) * 100

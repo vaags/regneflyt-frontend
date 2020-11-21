@@ -1,5 +1,5 @@
 export type QuizScores = {
-    correctAnswerCount: any
+    correctAnswerCount: number
     correctAnswerPercentage: number
     totalScore: number
 }

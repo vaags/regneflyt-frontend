@@ -36,13 +36,13 @@
     }
 
     .btn-yellow {
-        @apply bg-yellow-500;
-        @apply border-yellow-600;
+        @apply bg-yellow-600;
+        @apply border-yellow-700;
     }
 
     .btn-yellow:hover {
-        @apply bg-yellow-600;
-        @apply border-yellow-700;
+        @apply bg-yellow-700;
+        @apply border-yellow-800;
     }
 
     .btn-gray {

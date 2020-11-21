@@ -25,7 +25,7 @@
 </script>
 
 <CardComponent heading="Gjør deg klar&hellip;">
-    <p class="text-center my-12 text-6xl md:text-7xl">
+    <p class="text-center my-10 text-6xl md:text-7xl">
         <TimeoutComponent
             seconds="{3}"
             countToZero="{false}"
