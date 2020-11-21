@@ -1,5 +1,5 @@
 
-const cacheName = 'stale-with-revalidate'
+const cacheName = 'network-first'
 
 // import workbox 	
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/5.1.4/workbox-sw.js')
