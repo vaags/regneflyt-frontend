@@ -119,7 +119,7 @@
                 on:finished="{quizTimeout}"
                 showMinutes="{true}" />
         </div>
-        <div class="mt-4 text-center text-4xl md:text-5xl">
+        <div class="mt-4 mb-1 text-center text-4xl md:text-5xl">
             <div>
                 {#each puzzle.parts as part, i}
                     {#if puzzle.unknownPuzzlePart === i}
@@ -139,7 +139,7 @@
                 {/each}
             </div>
             {#if quiz.puzzleTimeLimit}
-                <div class="mt-8 mb-1 text-lg">
+                <div class="mt-8 text-lg">
                     <TimeoutComponent
                         state="{puzzleTimeoutState}"
                         showProgressBar="{true}"

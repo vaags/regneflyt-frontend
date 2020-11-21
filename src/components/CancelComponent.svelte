@@ -22,7 +22,7 @@
 
 <div class="text-right float-right">
     {#if showWarning}
-        <p class="mb-2 text-gray-100">Ønsker du å avbryte?</p>
+        <p class="mb-2 text-gray-100 text-lg">Ønsker du å avbryte?</p>
         <ButtonComponent on:click="{abortQuiz}" color="red" margin="{true}">
             Ja
         </ButtonComponent>
