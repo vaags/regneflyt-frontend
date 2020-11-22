@@ -65,7 +65,7 @@
     <h1
         class="text-2xl md:text-3xl font-light text-orange-500 mb-1 md:mb-2 text-right">
         Regneflyt
-        <small class="text-sm md:text-base text-gray-400">1.41</small>
+        <small class="text-sm md:text-base text-gray-400">1.42</small>
     </h1>
     {#if quiz.state === QuizState.AboutToStart}
         <GetReadyComponent
