@@ -61,8 +61,9 @@
     })
 </script>
 
-<main class="container max-w-xl mx-auto px-2 md:px-3 pt-2 pb-2 md:pb-5">
-    <h1 class="text-2xl md:text-3xl font-light text-orange-500 mb-2 text-right">
+<main class="container max-w-xl mx-auto px-2 md:px-3 py-1 md:py-2 md:pb-5">
+    <h1
+        class="text-2xl md:text-3xl font-light text-orange-500 mb-1 md:mb-2 text-right">
         Regneflyt
         <small class="text-sm md:text-base text-gray-400">1.41</small>
     </h1>
