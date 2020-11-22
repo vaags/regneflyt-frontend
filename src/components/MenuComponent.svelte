@@ -130,7 +130,9 @@
         </CardComponent>
         {#each Object.values(Operator) as operator}
             {#if operator === quiz.selectedOperator || isAllOperators}
-                <div transition:slide|local="{appSettings.transitionDuration}">
+                <div
+                    transition:slide|local="{appSettings.transitionDuration}"
+                    class="mb-2 md:mb-3">
                     <CardComponent
                         heading="{operator === Operator.Multiplication ? 'Multiplikand' : operator === Operator.Division ? 'Divisor' : 'Intervall'}"
                         label="{isAllOperators ? appSettings.operatorLabels[operator] : undefined}">
