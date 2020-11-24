@@ -3,7 +3,6 @@ const dev = mode === 'development'
 
 module.exports = {
   plugins: [
-    require('postcss-import'),
     require('tailwindcss'),
     require('autoprefixer'),
     // Minify if prod

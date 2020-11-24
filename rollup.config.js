@@ -50,7 +50,7 @@ export default {
 			css: css => {
 				css.write('bundle.css');
 			},
-			preprocess: sveltePreprocess({ postcss: true }),
+			preprocess: sveltePreprocess({ postcss: true, sourceMap: !production }),
 		}),
 
 		// If you have external dependencies installed from
