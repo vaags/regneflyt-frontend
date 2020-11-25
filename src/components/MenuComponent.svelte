@@ -33,11 +33,13 @@
     $: isMultiplication = quiz.selectedOperator === Operator.Multiplication
     $: isDivision = quiz.selectedOperator === Operator.Division
     $: isAllOperators = quiz.selectedOperator === 4
-    $: hasInvalidRange =
+    $: hasInvalidAdditionRange =
         quiz.operatorSettings[Operator.Addition].maxValue <
-            quiz.operatorSettings[Operator.Addition].minValue ||
+        quiz.operatorSettings[Operator.Addition].minValue
+    $: hasInvalidSubtractionRange =
         quiz.operatorSettings[Operator.Subtraction].maxValue <
-            quiz.operatorSettings[Operator.Subtraction].minValue
+        quiz.operatorSettings[Operator.Subtraction].minValue
+    $: hasInvalidRange = hasInvalidAdditionRange || hasInvalidSubtractionRange
 
     $: missingPossibleValues =
         (isMultiplication || isDivision || isAllOperators) &&
@@ -51,8 +53,6 @@
     $: !validationError && quiz && updateQuizSettings()
 
     function getReady() {
-        if (validationError) return
-
         dispatch('getReady', { quiz })
     }
 
@@ -137,60 +137,52 @@
                         heading="{operator === Operator.Multiplication ? 'Multiplikand' : operator === Operator.Division ? 'Divisor' : 'Intervall'}"
                         label="{isAllOperators ? appSettings.operatorLabels[operator] : undefined}">
                         {#if operator === Operator.Multiplication || operator === Operator.Division}
-                            <div
-                                transition:slide|local="{appSettings.transitionDuration}">
-                                {#each Array(12) as _, i}
-                                    <div>
-                                        <label
-                                            class="inline-flex items-center py-1">
-                                            <input
-                                                type="checkbox"
-                                                class="h-5 w-5 rounded text-blue-700"
-                                                bind:group="{quiz.operatorSettings[operator].possibleValues}"
-                                                value="{i + 1}" />
-                                            <span
-                                                class="ml-2 text-lg">{i + 1}</span>
-                                        </label>
-                                    </div>
-                                {/each}
-                            </div>
-                        {:else}
-                            <div
-                                transition:slide|local="{appSettings.transitionDuration}">
-                                <div class="flex flex-row">
+                            {#each Array(12) as _, i}
+                                <div>
                                     <label
-                                        class="mr-6 text-lg"
-                                        for="partOneMin">
-                                        Fra og med
-                                        <select
-                                            class="block rounded text-lg"
-                                            bind:value="{quiz.operatorSettings[operator].minValue}">
-                                            {#each minValues as v}
-                                                <option value="{v}">{v}</option>
-                                            {/each}
-                                        </select>
-                                    </label>
-                                    <label for="partOneMax" class="text-lg">
-                                        Til og med
-                                        <select
-                                            class="block rounded text-lg"
-                                            bind:value="{quiz.operatorSettings[operator].maxValue}">
-                                            {#each maxValues as v}
-                                                <option value="{v}">{v}</option>
-                                            {/each}
-                                        </select>
+                                        class="inline-flex items-center py-1">
+                                        <input
+                                            type="checkbox"
+                                            class="h-5 w-5 rounded text-blue-700"
+                                            bind:group="{quiz.operatorSettings[operator].possibleValues}"
+                                            value="{i + 1}" />
+                                        <span
+                                            class="ml-2 text-lg">{i + 1}</span>
                                     </label>
                                 </div>
-                                {#if hasInvalidRange}
-                                    <div
-                                        transition:slide|local="{appSettings.transitionDuration}"
-                                        class="mt-4">
-                                        <AlertComponent color="red">
-                                            Intervallet er ugyldig.
-                                        </AlertComponent>
-                                    </div>
-                                {/if}
+                            {/each}
+                        {:else}
+                            <div class="flex flex-row">
+                                <label class="mr-6 text-lg" for="partOneMin">
+                                    Fra og med
+                                    <select
+                                        class="block rounded text-lg"
+                                        bind:value="{quiz.operatorSettings[operator].minValue}">
+                                        {#each minValues as v}
+                                            <option value="{v}">{v}</option>
+                                        {/each}
+                                    </select>
+                                </label>
+                                <label for="partOneMax" class="text-lg">
+                                    Til og med
+                                    <select
+                                        class="block rounded text-lg"
+                                        bind:value="{quiz.operatorSettings[operator].maxValue}">
+                                        {#each maxValues as v}
+                                            <option value="{v}">{v}</option>
+                                        {/each}
+                                    </select>
+                                </label>
                             </div>
+                            {#if (operator === Operator.Addition && hasInvalidAdditionRange) || (operator === Operator.Subtraction && hasInvalidSubtractionRange)}
+                                <div
+                                    transition:slide|local="{appSettings.transitionDuration}"
+                                    class="mt-4">
+                                    <AlertComponent color="red">
+                                        Intervallet er ugyldig.
+                                    </AlertComponent>
+                                </div>
+                            {/if}
                             {#if operator === Operator.Subtraction}
                                 <label
                                     class="inline-flex items-center mt-4 text-lg">
@@ -228,7 +220,7 @@
             {/each}
         </CardComponent>
     {/if}
-    {#if !appSettings.isProduction && quiz.showSettings && !validationError}
+    <!-- {#if !appSettings.isProduction && quiz.showSettings && !validationError}
         <CardComponent heading="Poeng">
             <ul class="text-lg">
                 {#each operatorSettings as settings}
@@ -240,12 +232,12 @@
                 {/each}
             </ul>
         </CardComponent>
-    {/if}
+    {/if} -->
     <CardComponent
         heading="{quiz.title || 'Forhåndsvisning'}"
         label="{quiz.title ? 'Forhåndsvisning' : undefined}">
         {#if validationError}
-            <div transition:slide|local="{appSettings.transitionDuration}">
+            <div transition:slide="{appSettings.transitionDuration}">
                 <AlertComponent color="yellow">
                     Kan ikke vise forhåndsvisning.
                 </AlertComponent>
@@ -296,7 +288,7 @@
         </CardComponent>
     {/if}
     {#if showSharePanel}
-        <div transition:slide|local="{appSettings.transitionDuration}">
+        <div transition:slide="{appSettings.transitionDuration}">
             <CardComponent heading="Deling">
                 <label class="text-lg">Tittel
                     <input
