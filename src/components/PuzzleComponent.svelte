@@ -9,11 +9,12 @@
     import type { Quiz } from '../models/Quiz'
     import type { Puzzle } from '../models/Puzzle'
     import { TimerState } from '../models/constants/TimerState'
+    import type { AppSettings } from '../models/AppSettings'
 
     export let quiz: Quiz
     export let showWarning: boolean
     export let seconds: number
-    export let operatorSigns: string[]
+    export let appSettings: AppSettings
 
     const dispatch = createEventDispatcher()
     let quizSecondsLeft: number = seconds
@@ -39,7 +40,7 @@
     ) {
         puzzleNumber++
 
-        let puzzle = getPuzzle(quiz, operatorSigns, previousPuzzle)
+        let puzzle = getPuzzle(quiz, appSettings.operatorSigns, previousPuzzle)
         puzzle.timeout = false
         puzzleTimeoutState = TimerState.Started
 

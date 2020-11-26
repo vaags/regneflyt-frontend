@@ -5,7 +5,6 @@
     import MenuComponent from './components/MenuComponent.svelte'
     import ResultsComponent from './components/ResultsComponent.svelte'
     import QuizComponent from './components/QuizComponent.svelte'
-    import GetReadyComponent from './components/GetReadyComponent.svelte'
     import GameOverComponent from './components/GameOverComponent.svelte'
     import type { Puzzle } from './models/Puzzle'
     import { getQuizScoreSum } from './services/scoreService'
@@ -63,24 +62,21 @@
 
 <main class="container max-w-xl mx-auto px-2 md:px-3 pt-1 pb-2 md:pt-2 md:pb-5">
     <h1
-        class="text-2xl md:text-3xl font-light text-orange-500 mb-1 md:mb-2 text-right">
+        class="text-2xl md:text-3xl font-light text-orange-500 mb-0.5 md:mb-1 text-right">
         Regneflyt
-        <small class="text-sm md:text-base text-gray-400">1.45</small>
+        <small class="text-sm md:text-base text-gray-400">1.46</small>
     </h1>
-    {#if quiz.state === QuizState.AboutToStart}
-        <GetReadyComponent
-            appSettings="{appSettings}"
-            on:startQuiz="{startQuiz}"
-            on:completeQuiz="{completeQuiz}"
-            on:abortQuiz="{abortQuiz}" />
-    {:else if quiz.state === QuizState.Started}
+    {#if quiz.state === QuizState.AboutToStart || quiz.state === QuizState.Started}
         <QuizComponent
             quiz="{quiz}"
+            on:startQuiz="{startQuiz}"
             on:abortQuiz="{abortQuiz}"
             on:completeQuiz="{completeQuiz}"
             appSettings="{appSettings}" />
     {:else if quiz.state === QuizState.Completed}
-        <GameOverComponent on:evaluateQuiz="{evaluateQuiz}" />
+        <GameOverComponent
+            on:evaluateQuiz="{evaluateQuiz}"
+            appSettings="{appSettings}" />
     {:else if quiz.state === QuizState.Evaluated}
         <ResultsComponent
             quizScores="{quizScores}"

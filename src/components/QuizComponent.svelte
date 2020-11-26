@@ -1,17 +1,26 @@
 <script lang="ts">
-    import { createEventDispatcher } from 'svelte'
+    import { createEventDispatcher, onMount } from 'svelte'
+    import { fade } from 'svelte/transition'
     import PuzzleComponent from './PuzzleComponent.svelte'
     import type { Quiz } from '../models/Quiz'
     import type { Puzzle } from '../models/Puzzle'
     import type { AppSettings } from '../models/AppSettings'
     import CancelComponent from './CancelComponent.svelte'
+    import { QuizState } from '../models/constants/QuizState'
+    import CardComponent from './widgets/CardComponent.svelte'
+    import TimeoutComponent from './widgets/TimeoutComponent.svelte'
 
     export let quiz: Quiz
     export let appSettings: AppSettings
 
     const dispatch = createEventDispatcher()
+    let showComponent: boolean
     let showWarning = false
     let puzzleSet: Puzzle[] = []
+
+    function startQuiz() {
+        dispatch('startQuiz')
+    }
 
     function abortQuiz() {
         dispatch('abortQuiz')
@@ -24,17 +33,39 @@
     function addPuzzle(event: any) {
         puzzleSet = [...puzzleSet, event.detail.puzzle]
     }
+
+    onMount(() => {
+        setTimeout(() => {
+            showComponent = true
+        }, appSettings.pageTransitionDuration.duration)
+    })
 </script>
 
-<PuzzleComponent
-    seconds="{quiz.duration * 60}"
-    showWarning="{showWarning}"
-    quiz="{quiz}"
-    operatorSigns="{appSettings.operatorSigns}"
-    on:quizTimeout="{completeQuiz}"
-    on:addPuzzle="{addPuzzle}" />
+{#if showComponent}
+    <div transition:fade="{appSettings.pageTransitionDuration}">
+        {#if quiz.state === QuizState.AboutToStart}
+            <CardComponent heading="Gjør deg klar&hellip;">
+                <p class="text-center my-11 text-6xl md:text-7xl">
+                    <TimeoutComponent
+                        seconds="{3}"
+                        countToZero="{false}"
+                        fadeOnSecondChange="{true}"
+                        on:finished="{startQuiz}" />
+                </p>
+            </CardComponent>
+        {:else}
+            <PuzzleComponent
+                seconds="{quiz.duration * 60}"
+                showWarning="{showWarning}"
+                quiz="{quiz}"
+                appSettings="{appSettings}"
+                on:quizTimeout="{completeQuiz}"
+                on:addPuzzle="{addPuzzle}" />
+        {/if}
 
-<CancelComponent
-    showCancelButton="{!appSettings.isProduction}"
-    on:abortQuiz="{abortQuiz}"
-    on:completeQuiz="{completeQuiz}" />
+        <CancelComponent
+            showCancelButton="{!appSettings.isProduction}"
+            on:abortQuiz="{abortQuiz}"
+            on:completeQuiz="{completeQuiz}" />
+    </div>
+{/if}
