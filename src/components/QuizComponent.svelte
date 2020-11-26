@@ -44,17 +44,15 @@
 {#if showComponent}
     <div transition:fade="{appSettings.pageTransitionDuration}">
         {#if quiz.state === QuizState.AboutToStart}
-            <div transition:fade|local="{appSettings.pageTransitionDuration}">
-                <CardComponent heading="Gjør deg klar&hellip;">
-                    <p class="text-center my-11 text-6xl md:text-7xl">
-                        <TimeoutComponent
-                            seconds="{3}"
-                            countToZero="{false}"
-                            fadeOnSecondChange="{true}"
-                            on:finished="{startQuiz}" />
-                    </p>
-                </CardComponent>
-            </div>
+            <CardComponent heading="Gjør deg klar&hellip;">
+                <p class="text-center my-11 text-6xl md:text-7xl">
+                    <TimeoutComponent
+                        seconds="{3}"
+                        countToZero="{false}"
+                        fadeOnSecondChange="{true}"
+                        on:finished="{startQuiz}" />
+                </p>
+            </CardComponent>
         {:else}
             <PuzzleComponent
                 seconds="{quiz.duration * 60}"
