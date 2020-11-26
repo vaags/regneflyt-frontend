@@ -6,6 +6,9 @@
     import type { Puzzle } from '../models/Puzzle'
     import type { AppSettings } from '../models/AppSettings'
     import CancelComponent from './CancelComponent.svelte'
+    import { QuizState } from '../models/constants/QuizState'
+    import CardComponent from './widgets/CardComponent.svelte'
+    import TimeoutComponent from './widgets/TimeoutComponent.svelte'
 
     export let quiz: Quiz
     export let appSettings: AppSettings
@@ -14,6 +17,10 @@
     let showComponent: boolean
     let showWarning = false
     let puzzleSet: Puzzle[] = []
+
+    function startQuiz() {
+        dispatch('startQuiz')
+    }
 
     function abortQuiz() {
         dispatch('abortQuiz')
@@ -36,13 +43,27 @@
 
 {#if showComponent}
     <div transition:fade="{appSettings.pageTransitionDuration}">
-        <PuzzleComponent
-            seconds="{quiz.duration * 60}"
-            showWarning="{showWarning}"
-            quiz="{quiz}"
-            operatorSigns="{appSettings.operatorSigns}"
-            on:quizTimeout="{completeQuiz}"
-            on:addPuzzle="{addPuzzle}" />
+        {#if quiz.state === QuizState.AboutToStart}
+            <div transition:fade|local="{appSettings.pageTransitionDuration}">
+                <CardComponent heading="Gjør deg klar&hellip;">
+                    <p class="text-center my-11 text-6xl md:text-7xl">
+                        <TimeoutComponent
+                            seconds="{3}"
+                            countToZero="{false}"
+                            fadeOnSecondChange="{true}"
+                            on:finished="{startQuiz}" />
+                    </p>
+                </CardComponent>
+            </div>
+        {:else}
+            <PuzzleComponent
+                seconds="{quiz.duration * 60}"
+                showWarning="{showWarning}"
+                quiz="{quiz}"
+                appSettings="{appSettings}"
+                on:quizTimeout="{completeQuiz}"
+                on:addPuzzle="{addPuzzle}" />
+        {/if}
 
         <CancelComponent
             showCancelButton="{!appSettings.isProduction}"

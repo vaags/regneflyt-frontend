@@ -5,7 +5,6 @@
     import MenuComponent from './components/MenuComponent.svelte'
     import ResultsComponent from './components/ResultsComponent.svelte'
     import QuizComponent from './components/QuizComponent.svelte'
-    import GetReadyComponent from './components/GetReadyComponent.svelte'
     import GameOverComponent from './components/GameOverComponent.svelte'
     import type { Puzzle } from './models/Puzzle'
     import { getQuizScoreSum } from './services/scoreService'
@@ -67,15 +66,10 @@
         Regneflyt
         <small class="text-sm md:text-base text-gray-400">1.46</small>
     </h1>
-    {#if quiz.state === QuizState.AboutToStart}
-        <GetReadyComponent
-            appSettings="{appSettings}"
-            on:startQuiz="{startQuiz}"
-            on:completeQuiz="{completeQuiz}"
-            on:abortQuiz="{abortQuiz}" />
-    {:else if quiz.state === QuizState.Started}
+    {#if quiz.state === QuizState.AboutToStart || quiz.state === QuizState.Started}
         <QuizComponent
             quiz="{quiz}"
+            on:startQuiz="{startQuiz}"
             on:abortQuiz="{abortQuiz}"
             on:completeQuiz="{completeQuiz}"
             appSettings="{appSettings}" />
