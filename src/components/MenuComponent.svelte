@@ -10,10 +10,10 @@
     import AlertComponent from './widgets/AlertComponent.svelte'
     import { getPuzzle } from '../services/puzzleService'
     import { setUrlParams } from '../services/quizService'
-    import { getOperatorScoreSettings } from '../services/scoreService'
+    // import { getOperatorScoreSettings } from '../services/scoreService'
     import PuzzlePreviewComponent from './widgets/PuzzlePreviewComponent.svelte'
     import type { AppSettings } from '../models/AppSettings'
-    import type { OperatorSettings } from '../models/OperatorSettings'
+    // import type { OperatorSettings } from '../models/OperatorSettings'
     import { PuzzleMode } from '../models/constants/PuzzleMode'
 
     export let appSettings: AppSettings
@@ -30,7 +30,7 @@
     let shareLinkCopied: boolean
     let shareTitle: string
 
-    let operatorSettings: OperatorSettings[]
+    // let operatorSettings: OperatorSettings[]
 
     $: isMultiplication = quiz.selectedOperator === Operator.Multiplication
     $: isDivision = quiz.selectedOperator === Operator.Division
@@ -59,8 +59,8 @@
     }
 
     function updateQuizSettings(updatePuzzlePreview: boolean = true) {
-        if (!appSettings.isProduction)
-            operatorSettings = getOperatorScoreSettings(quiz)
+        // if (!appSettings.isProduction)
+        //     operatorSettings = getOperatorScoreSettings(quiz)
         if (updatePuzzlePreview) getPuzzlePreview()
         if (quiz.showSettings) setUrlParams(quiz)
     }
