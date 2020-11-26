@@ -29,6 +29,7 @@
         quiz = event.detail?.quiz ?? quiz
         quiz.state = QuizState.AboutToStart
         appSettings.displayGreeting = false
+        appSettings.menuFade = true
         animateScroll.scrollToTop()
         fakeInputFocus(fakeInput)
     }

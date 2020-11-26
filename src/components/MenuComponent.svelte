@@ -19,7 +19,7 @@
     export let appSettings: AppSettings
     export let quiz: Quiz
 
-    let showComponent: boolean
+    let showComponent: boolean = true
     let puzzle = getPuzzle(quiz, appSettings.operatorSigns)
     const dispatch = createEventDispatcher()
     let showSharePanel: boolean
@@ -91,10 +91,15 @@
     }
 
     onMount(() => {
-        if (quiz.showSettings) updateQuizSettings()
-        setTimeout(() => {
+        if (appSettings.menuFade) {
+            showComponent = false
+            setTimeout(() => {
+                showComponent = true
+            }, appSettings.pageTransitionDuration.duration)
+        } else {
             showComponent = true
-        }, appSettings.pageTransitionDuration.duration)
+        }
+        if (quiz.showSettings) updateQuizSettings()
     })
 
     const minValues = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90]
