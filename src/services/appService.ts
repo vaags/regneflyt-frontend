@@ -6,6 +6,9 @@ export function getAppSettings(isProduction: string): AppSettings {
         transitionDuration: {
             duration: 200,
         },
+        pageTransitionDuration: {
+            duration: 100
+        },
         operatorLabels: [
             'Addisjon',
             'Subtraksjon',
