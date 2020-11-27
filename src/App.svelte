@@ -18,6 +18,7 @@
     import { QuizState } from './models/constants/QuizState'
 
     export let isProduction: string
+    export let version: string
 
     let quizScores: QuizScores
     let appSettings = getAppSettings(isProduction)
@@ -65,7 +66,7 @@
     <h1
         class="text-2xl md:text-3xl font-light text-orange-500 mb-0.5 md:mb-1 text-right">
         Regneflyt
-        <small class="text-sm md:text-base text-gray-400">1.47</small>
+        <small class="text-xs md:text-sm text-gray-400">{version}</small>
     </h1>
     {#if quiz.state === QuizState.AboutToStart || quiz.state === QuizState.Started}
         <QuizComponent

@@ -17,7 +17,8 @@ export function getAppSettings(isProduction: string): AppSettings {
             'Alle',
         ],
         operatorSigns: ['&#43;', '&#8722;', '&#215;', '&#247;', '&#8704'],
-        displayGreeting: true
+        displayGreeting: true,
+        menuFade: false
     }
 }
 
