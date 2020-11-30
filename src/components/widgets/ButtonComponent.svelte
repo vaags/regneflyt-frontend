@@ -1,5 +1,6 @@
 <script lang="ts">
-    export let color: string = 'blue'
+    import type { ButtonColor } from '../../models/Color'
+    export let color: ButtonColor = 'blue'
     export let disabled: boolean = false
     export let margin: boolean = false
 </script>

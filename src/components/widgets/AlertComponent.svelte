@@ -1,5 +1,6 @@
 <script lang="ts">
-    export let color = 'blue'
+    import type { AlertColor } from '../../models/Color'
+    export let color: AlertColor = 'blue'
 </script>
 
 <style>
