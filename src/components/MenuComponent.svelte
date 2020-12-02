@@ -261,7 +261,7 @@
                     </div>
                 {:else}
                     <div
-                        class="text-3xl md:text-4xl text-center mb-1"
+                        class="text-3xl md:text-4xl text-center mb-1 mt-4"
                         transition:slide|local="{appSettings.transitionDuration}">
                         <PuzzlePreviewComponent puzzle="{puzzle}" />
                         <button

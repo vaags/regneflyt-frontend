@@ -12,7 +12,7 @@
                 {heading}
             </h2>
         {/if}
-        <div class="flex-grow text-right {!heading ? 'mb-4' : ''}">
+        <div class="flex-grow text-right">
             {#if label !== undefined}
                 <LabelComponent>{label}</LabelComponent>
             {:else}
