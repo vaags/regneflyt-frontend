@@ -60,7 +60,7 @@
 <button
     disabled="{disabled}"
     on:click|preventDefault
-    class="text-gray-50 font-light text-3xl md:text-4xl px-4 py-1 border-b-2 {margin ? 'mr-1' : ''} rounded btn-{color} transition-colors
+    class="text-gray-50 font-light text-3xl md:text-4xl px-4 py-1 border-b-2 {margin ? 'mr-1' : ''} rounded-tl-md rounded-br-md btn-{color} transition-colors
         duration-200 ease-out focus:outline-none">
     <slot />
 </button>

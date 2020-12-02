@@ -251,9 +251,7 @@
             </ul>
         </CardComponent>
     {/if} -->
-            <CardComponent
-                heading="{quiz.title || 'Forhåndsvisning'}"
-                label="{quiz.title ? 'Forhåndsvisning' : undefined}">
+            <CardComponent heading="{quiz.title}" label="Forhåndsvisning">
                 {#if validationError}
                     <div
                         transition:slide|local="{appSettings.transitionDuration}">
@@ -320,10 +318,12 @@
                         </label>
                         <label class="block mt-4">
                             <span class="text-lg">Lenke</span>
-                            <LabelComponent
-                                on:click="{copyShareLinkToClipboard}">
-                                {shareLinkCopied ? 'Kopiert!' : 'Trykk for å kopiere'}
-                            </LabelComponent>
+                            <span class="float-right">
+                                <LabelComponent
+                                    on:click="{copyShareLinkToClipboard}">
+                                    {shareLinkCopied ? 'Kopiert!' : 'Trykk for å kopiere'}
+                                </LabelComponent>
+                            </span>
                             <textarea
                                 class="rounded w-full font-mono text-xs"
                                 rows="4"
