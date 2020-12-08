@@ -109,7 +109,7 @@
 {#if showComponent}
     <div transition:fade="{appSettings.pageTransitionDuration}">
         {#if appSettings.displayGreeting}
-            <CardComponent>
+            <CardComponent isInfo="{true}">
                 <p>Regneflyt er et mattespill som trener deg i hoderegning.</p>
                 {#if quiz.showSettings}
                     <p class="mt-2">Velg hvordan du vil trene nedenfor.</p>
@@ -251,7 +251,10 @@
             </ul>
         </CardComponent>
     {/if} -->
-            <CardComponent heading="{quiz.title}" label="Forhåndsvisning">
+            <CardComponent
+                isInfo="{true}"
+                heading="{quiz.title}"
+                label="Forhåndsvisning">
                 {#if validationError}
                     <div
                         transition:slide|local="{appSettings.transitionDuration}">
