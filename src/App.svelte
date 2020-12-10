@@ -62,34 +62,38 @@
     })
 </script>
 
-<main class="container max-w-xl mx-auto px-2 md:px-3 pt-1 md:pt-2 pb-2 md:pb-5">
-    <h1
-        class="text-2xl md:text-3xl font-light text-orange-500 mb-0.5 md:mb-1 text-right">
-        Regneflyt
-        <small class="text-xs md:text-sm text-gray-400">{version}</small>
-    </h1>
-    {#if quiz.state === QuizState.AboutToStart || quiz.state === QuizState.Started}
-        <QuizComponent
-            quiz="{quiz}"
-            on:startQuiz="{startQuiz}"
-            on:abortQuiz="{abortQuiz}"
-            on:completeQuiz="{completeQuiz}"
-            appSettings="{appSettings}" />
-    {:else if quiz.state === QuizState.Completed}
-        <GameOverComponent
-            on:evaluateQuiz="{evaluateQuiz}"
-            appSettings="{appSettings}" />
-    {:else if quiz.state === QuizState.Evaluated}
-        <ResultsComponent
-            quizScores="{quizScores}"
-            appSettings="{appSettings}"
-            puzzleSet="{puzzleSet}"
-            on:getReady="{getReady}"
-            on:resetQuiz="{resetQuiz}" />
-    {:else}
-        <MenuComponent
-            quiz="{quiz}"
-            on:getReady="{getReady}"
-            appSettings="{appSettings}" />
-    {/if}
-</main>
+<div class="container max-w-xl mx-auto px-2 md:px-3 pt-1 md:pt-2 pb-2 md:pb-5">
+    <header>
+        <h1 class="font-light text-right">
+            <span
+                class="text-3xl md:text-4xl tracking-tight text-orange-500">Regneflyt</span>
+            <small class="text-xs md:text-sm text-gray-400">{version}</small>
+        </h1>
+    </header>
+    <main class="relative">
+        {#if quiz.state === QuizState.AboutToStart || quiz.state === QuizState.Started}
+            <QuizComponent
+                quiz="{quiz}"
+                on:startQuiz="{startQuiz}"
+                on:abortQuiz="{abortQuiz}"
+                on:completeQuiz="{completeQuiz}"
+                appSettings="{appSettings}" />
+        {:else if quiz.state === QuizState.Completed}
+            <GameOverComponent
+                on:evaluateQuiz="{evaluateQuiz}"
+                appSettings="{appSettings}" />
+        {:else if quiz.state === QuizState.Evaluated}
+            <ResultsComponent
+                quizScores="{quizScores}"
+                appSettings="{appSettings}"
+                puzzleSet="{puzzleSet}"
+                on:getReady="{getReady}"
+                on:resetQuiz="{resetQuiz}" />
+        {:else}
+            <MenuComponent
+                quiz="{quiz}"
+                on:getReady="{getReady}"
+                appSettings="{appSettings}" />
+        {/if}
+    </main>
+</div>
