@@ -5,6 +5,8 @@ module.exports = {
   darkMode: false,
   theme: {
     colors: {
+      black: '#000',
+      white: '#fff',
       gray: colors.warmGray,
       orange: colors.orange,
       red: colors.red,
