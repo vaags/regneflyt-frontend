@@ -20,7 +20,7 @@
 
 {#if showComponent}
     <div transition:fade="{appSettings.pageTransitionDuration}">
-        <CardComponent heading="Tiden er ute&hellip;" isInfo="{true}">
+        <CardComponent heading="Tiden er ute&hellip;">
             <p
                 class="text-center font-light my-16 text-6xl md:text-7xl animate-bounce">
                 ⌛

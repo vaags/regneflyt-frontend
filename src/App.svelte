@@ -84,6 +84,7 @@
                 appSettings="{appSettings}" />
         {:else if quiz.state === QuizState.Evaluated}
             <ResultsComponent
+                quiz="{quiz}"
                 quizScores="{quizScores}"
                 appSettings="{appSettings}"
                 puzzleSet="{puzzleSet}"

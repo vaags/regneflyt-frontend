@@ -87,7 +87,7 @@
     }
 
     function getReady() {
-        dispatch('getReady', { quiz })
+        dispatch('getReady', { quiz: { ...quiz, previousScore: undefined } })
     }
 
     onMount(() => {

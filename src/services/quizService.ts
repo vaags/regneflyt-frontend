@@ -46,7 +46,8 @@ export function getQuiz(): Quiz {
             (getIntParam('operator') as Operator) ?? 0,
         allowNegativeAnswer: getBoolParam('negatives'),
         puzzleMode:
-            (getIntParam('puzzleMode') as PuzzleMode) || PuzzleMode.Normal
+            (getIntParam('puzzleMode') as PuzzleMode) || PuzzleMode.Normal,
+        previousScore: undefined
     }
 }
 

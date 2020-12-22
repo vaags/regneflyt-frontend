@@ -8,18 +8,20 @@
     import HiddenValueCompontent from './widgets/HiddenValueComponent.svelte'
     import type { QuizScores } from '../models/QuizScores'
     import type { AppSettings } from '../models/AppSettings'
+    import type { Quiz } from '../models/Quiz';
 
     const dispatch = createEventDispatcher()
 
     export let puzzleSet: Puzzle[]
     export let quizScores: QuizScores
     export let appSettings: AppSettings
+    export let quiz: Quiz
 
     let showComponent: boolean
     let showCorrectAnswer: boolean = false
 
     function getReady() {
-        dispatch('getReady')
+        dispatch('getReady', { quiz: { ...quiz, previousScore: quizScores.totalScore } })
     }
 
     function resetQuiz() {
@@ -102,16 +104,17 @@
                             <td class="border-t-2 px-4 py-2">
                                 {quizScores.correctAnswerPercentage}
                                 %
-                                <span class="text-sm">
+                                <div class="text-sm">
                                     ({quizScores.correctAnswerCount}
                                     av
                                     {puzzleSet.length})
-                                </span>
+                                </div>
                             </td>
-                            <td class="border-t-2 px-3 py-2" colspan="{2}">
-                                <span
-                                    class="text-xl">{quizScores.totalScore.toLocaleString()}</span>
-                                poeng
+                            <td class="border-t-2 px-3 py-2 text-xl" colspan="{2}">
+                                {quizScores.totalScore.toLocaleString()} poeng
+                                {#if quiz.previousScore !== undefined}
+                                    <span class="ml-2 text-xl">{quizScores.totalScore > quiz.previousScore ? "⬆" : quizScores.totalScore < quiz.previousScore ? "⬇" : ""}</span>
+                                {/if}
                             </td>
                         </tr>
                     </tbody>
