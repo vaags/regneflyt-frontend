@@ -163,33 +163,30 @@
                                         </div>
                                     {/each}
                                 {:else}
-                                    <div class="flex flex-row">
+                                    <div
+                                        class="flex flex-row place-items-center">
                                         <label
-                                            class="mr-6 text-lg"
-                                            for="partOneMin">
-                                            Fra og med
-                                            <select
-                                                class="block rounded text-lg"
-                                                bind:value="{quiz.operatorSettings[operator].minValue}">
-                                                {#each minValues as v}
-                                                    <option value="{v}">
-                                                        {v}
-                                                    </option>
-                                                {/each}
-                                            </select>
+                                            class="mr-4 text-lg"
+                                            for="partOneMin">Fra</label>
+                                        <select
+                                            class="rounded text-lg"
+                                            bind:value="{quiz.operatorSettings[operator].minValue}">
+                                            {#each minValues as v}
+                                                <option value="{v}">{v}</option>
+                                            {/each}
+                                        </select>
+                                        <label
+                                            for="partOneMax"
+                                            class="mx-4 text-lg">
+                                            til
                                         </label>
-                                        <label for="partOneMax" class="text-lg">
-                                            Til og med
-                                            <select
-                                                class="block rounded text-lg"
-                                                bind:value="{quiz.operatorSettings[operator].maxValue}">
-                                                {#each maxValues as v}
-                                                    <option value="{v}">
-                                                        {v}
-                                                    </option>
-                                                {/each}
-                                            </select>
-                                        </label>
+                                        <select
+                                            class=" rounded text-lg"
+                                            bind:value="{quiz.operatorSettings[operator].maxValue}">
+                                            {#each maxValues as v}
+                                                <option value="{v}">{v}</option>
+                                            {/each}
+                                        </select>
                                     </div>
                                     {#if (operator === Operator.Addition && hasInvalidAdditionRange) || (operator === Operator.Subtraction && hasInvalidSubtractionRange)}
                                         <div
