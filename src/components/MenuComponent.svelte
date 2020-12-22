@@ -214,25 +214,49 @@
                     {/if}
                 {/each}
                 <CardComponent heading="Oppgaveform">
-                    {#each Object.values(PuzzleMode) as puzzleMode}
-                        <label class="flex items-center py-1 text-lg">
-                            <input
-                                type="radio"
-                                class="h-5 w-5 mr-2 text-blue-700"
-                                bind:group="{quiz.puzzleMode}"
-                                value="{puzzleMode}" />
-                            <span>
-                                {#if puzzleMode === PuzzleMode.Normal}
-                                    Normal
-                                    <span class="text-sm">(Svaret er ukjent)</span>
-                                {:else if puzzleMode === PuzzleMode.Alternate}
-                                    Omvendt
-                                    <span class="text-sm">(Første eller andre
-                                        ledd er ukjent)</span>
-                                {:else}Tilfeldig{/if}
-                            </span>
-                        </label>
-                    {/each}
+                    <div class="flex flex-row justify-between items-center">
+                        <div>
+                            {#each Object.values(PuzzleMode) as puzzleMode}
+                                <label class="flex items-center py-1 text-lg">
+                                    <input
+                                        type="radio"
+                                        class="h-5 w-5 mr-2 text-blue-700"
+                                        bind:group="{quiz.puzzleMode}"
+                                        value="{puzzleMode}" />
+                                    <span>
+                                        {#if puzzleMode === PuzzleMode.Normal}
+                                            Normal
+                                        {:else if puzzleMode === PuzzleMode.Alternate}
+                                            Omvendt
+                                        {:else}Tilfeldig{/if}
+                                    </span>
+                                </label>
+                            {/each}
+                        </div>
+                        <div>
+                            {#if validationError}
+                                <div
+                                    transition:slide|local="{appSettings.transitionDuration}">
+                                    <AlertComponent color="yellow">
+                                        Kan ikke vise forhåndsvisning.
+                                    </AlertComponent>
+                                </div>
+                            {:else}
+                                <div
+                                    class="text-xl md:text-2xl bg-blue-100 py-2 px-4 border border-gray-500 rounded"
+                                    transition:slide|local="{appSettings.transitionDuration}">
+                                    <PuzzlePreviewComponent puzzle="{puzzle}" />
+                                    <button
+                                        type="button"
+                                        class="cursor-pointer focus:outline-none ml-3 float-right"
+                                        title="Nytt oppgave-eksempel"
+                                        on:click="{() => getPuzzlePreview()}">
+                                        🎲
+                                    </button>
+                                </div>
+                            {/if}
+                        </div>
+                    </div>
                 </CardComponent>
             {/if}
             <!-- {#if !appSettings.isProduction && quiz.showSettings && !validationError}
@@ -248,18 +272,11 @@
             </ul>
         </CardComponent>
     {/if} -->
-            <CardComponent
-                isInfo="{true}"
-                heading="{quiz.title}"
-                label="Forhåndsvisning">
-                {#if validationError}
-                    <div
-                        transition:slide|local="{appSettings.transitionDuration}">
-                        <AlertComponent color="yellow">
-                            Kan ikke vise forhåndsvisning.
-                        </AlertComponent>
-                    </div>
-                {:else}
+            {#if !quiz.showSettings}
+                <CardComponent
+                    isInfo="{true}"
+                    heading="{quiz.title}"
+                    label="Forhåndsvisning">
                     <div
                         class="text-3xl md:text-4xl text-center mb-1 mt-4"
                         transition:slide|local="{appSettings.transitionDuration}">
@@ -272,9 +289,8 @@
                             🎲
                         </button>
                     </div>
-                {/if}
-            </CardComponent>
-            {#if quiz.showSettings}
+                </CardComponent>
+            {:else}
                 <CardComponent heading="Spilletid">
                     <div class="flex flex-row">
                         <label class="mr-4 text-lg">
