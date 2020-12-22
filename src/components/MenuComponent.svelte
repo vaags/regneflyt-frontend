@@ -164,7 +164,7 @@
                                     {/each}
                                 {:else}
                                     <div
-                                        class="flex flex-row place-items-center">
+                                        class="flex flex-row place-items-center mb-1">
                                         <label
                                             class="mr-4 text-lg"
                                             for="partOneMin">Fra</label>
