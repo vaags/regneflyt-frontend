@@ -166,7 +166,7 @@
                                     <div
                                         class="flex flex-row place-items-center mb-1">
                                         <label
-                                            class="mr-4 text-lg"
+                                            class="mr-3 text-lg"
                                             for="partOneMin">Fra</label>
                                         <select
                                             class="rounded text-lg"
@@ -177,7 +177,7 @@
                                         </select>
                                         <label
                                             for="partOneMax"
-                                            class="mx-4 text-lg">
+                                            class="mx-3 text-lg">
                                             til
                                         </label>
                                         <select
