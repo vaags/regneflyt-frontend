@@ -1,6 +1,6 @@
 {
   "name": "regneflyt",
-  "version": "1.58.0",
+  "version": "1.59.0",
   "scripts": {
     "build": "NODE_ENV=production rollup -c",
     "dev": "rollup -c -w",
