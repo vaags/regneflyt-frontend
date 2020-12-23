@@ -275,10 +275,7 @@
         </CardComponent>
     {/if} -->
             {#if !quiz.showSettings}
-                <CardComponent
-                    isInfo="{true}"
-                    heading="{quiz.title}"
-                    label="Forhåndsvisning">
+                <CardComponent heading="{quiz.title}" label="Forhåndsvisning">
                     <div
                         class="text-3xl md:text-4xl text-center mb-1 mt-4"
                         transition:slide|local="{appSettings.transitionDuration}">
@@ -294,7 +291,7 @@
                 </CardComponent>
             {:else}
                 <CardComponent heading="Spilletid">
-                    <div class="flex flex-row">
+                    <div class="flex flex-row mb-1">
                         <label class="mr-4 text-lg">
                             Totalt
                             <select

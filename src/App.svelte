@@ -70,7 +70,7 @@
             <small class="font-light text-xs text-gray-400">{version}</small>
         </h1>
     </header>
-    <main class="relative">
+    <main>
         {#if quiz.state === QuizState.AboutToStart || quiz.state === QuizState.Started}
             <QuizComponent
                 quiz="{quiz}"
