@@ -170,6 +170,7 @@
                                             for="partOneMin">Fra</label>
                                         <select
                                             class="rounded text-lg"
+                                            id="partOneMin"
                                             bind:value="{quiz.operatorSettings[operator].minValue}">
                                             {#each minValues as v}
                                                 <option value="{v}">{v}</option>
@@ -181,7 +182,8 @@
                                             til
                                         </label>
                                         <select
-                                            class=" rounded text-lg"
+                                            class="rounded text-lg"
+                                            id="partOneMax"
                                             bind:value="{quiz.operatorSettings[operator].maxValue}">
                                             {#each maxValues as v}
                                                 <option value="{v}">{v}</option>
@@ -248,7 +250,7 @@
                                     <PuzzlePreviewComponent puzzle="{puzzle}" />
                                     <button
                                         type="button"
-                                        class="cursor-pointer focus:outline-none ml-3 float-right"
+                                        class="cursor-pointer focus:outline-none ml-3"
                                         title="Nytt oppgave-eksempel"
                                         on:click="{() => getPuzzlePreview()}">
                                         🎲

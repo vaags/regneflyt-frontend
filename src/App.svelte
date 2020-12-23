@@ -64,10 +64,10 @@
 
 <div class="container max-w-xl mx-auto px-2 md:px-3 pt-1 md:pt-2 pb-2 md:pb-5">
     <header>
-        <h1 class="font-light text-right">
+        <h1 class="text-right -mb-1">
             <span
-                class="text-3xl md:text-4xl tracking-tight text-orange-500">Regneflyt</span>
-            <small class="text-xs md:text-sm text-gray-400">{version}</small>
+                class="font-handwriting text-3xl md:text-4xl text-orange-500">Regneflyt</span>
+            <small class="font-light text-xs text-gray-400">{version}</small>
         </h1>
     </header>
     <main class="relative">
