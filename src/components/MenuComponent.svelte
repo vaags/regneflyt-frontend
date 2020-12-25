@@ -10,10 +10,8 @@
     import AlertComponent from './widgets/AlertComponent.svelte'
     import { getPuzzle } from '../services/puzzleService'
     import { setUrlParams } from '../services/quizService'
-    // import { getOperatorScoreSettings } from '../services/scoreService'
     import PuzzlePreviewComponent from './widgets/PuzzlePreviewComponent.svelte'
     import type { AppSettings } from '../models/AppSettings'
-    // import type { OperatorSettings } from '../models/OperatorSettings'
     import { PuzzleMode } from '../models/constants/PuzzleMode'
 
     export let appSettings: AppSettings
@@ -117,7 +115,7 @@
             </CardComponent>
         {/if}
         <form>
-            {#if quiz.showSettings}
+          {#if quiz.showSettings}
                 <CardComponent heading="Regneart">
                     {#each Object.values(Operator) as operator, i}
                         <label class="flex items-center py-1">
@@ -261,19 +259,6 @@
                     </div>
                 </CardComponent>
             {/if}
-            <!-- {#if !appSettings.isProduction && quiz.showSettings && !validationError}
-        <CardComponent heading="Poeng">
-            <ul class="text-lg">
-                {#each operatorSettings as settings}
-                    <li>
-                        {appSettings.operatorLabels[settings.operator]}
-                        :
-                        {settings.score}
-                    </li>
-                {/each}
-            </ul>
-        </CardComponent>
-    {/if} -->
             {#if !quiz.showSettings}
                 <CardComponent heading="{quiz.title}" label="Forhåndsvisning">
                     <div

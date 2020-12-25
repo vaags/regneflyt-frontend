@@ -55,6 +55,7 @@
 
     function resetQuiz() {
         quiz.state = QuizState.Initial
+        animateScroll.scrollToTop()
     }
 
     onMount(() => {
