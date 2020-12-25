@@ -22,28 +22,6 @@ export function getAppSettings(isProduction: string): AppSettings {
     }
 }
 
-export function addAnalytics() {
-    // Simple Web Analytics tracking code
-    // https://simple-web-analytics.com/app
-    if (
-        !sessionStorage.getItem('_swa') &&
-        document.referrer.indexOf(
-            location.protocol + '//' + location.host
-        ) !== 0
-    ) {
-        fetch(
-            'https://simple-web-analytics.com/track?' +
-            new URLSearchParams({
-                referrer: document.referrer,
-                screen: screen.width + 'x' + screen.height,
-                site: 'regneflyt',
-                utcoffset: '0',
-            })
-        )
-    }
-    sessionStorage.setItem('_swa', '1')
-}
-
 export function fakeInputFocus(fakeInput: any) {
     // Hack to get Safari / Ios to focus
     // create invisible dummy input to receive the focus first

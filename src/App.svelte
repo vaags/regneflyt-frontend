@@ -10,11 +10,7 @@
     import { getQuizScoreSum } from './services/scoreService'
     import type { QuizScores } from './models/QuizScores'
     import { getQuiz } from './services/quizService'
-    import {
-        addAnalytics,
-        fakeInputFocus,
-        getAppSettings,
-    } from './services/appService'
+    import { fakeInputFocus, getAppSettings } from './services/appService'
     import { QuizState } from './models/constants/QuizState'
 
     export let isProduction: string
@@ -57,10 +53,6 @@
         quiz.state = QuizState.Initial
         animateScroll.scrollToTop()
     }
-
-    onMount(() => {
-        if (appSettings.isProduction) addAnalytics()
-    })
 </script>
 
 <div class="container max-w-xl mx-auto px-2 md:px-3 pt-1 md:pt-2 pb-2 md:pb-5">
