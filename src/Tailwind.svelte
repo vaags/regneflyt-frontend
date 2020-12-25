@@ -12,5 +12,6 @@
 
     .font-handwriting {
         font-family: 'ArchitectsDaughter';
+        font-display: auto;
     }
 </style>
