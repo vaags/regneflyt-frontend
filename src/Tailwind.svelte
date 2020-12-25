@@ -8,10 +8,10 @@
     @font-face {
         font-family: 'ArchitectsDaughter';
         src: url('/assets/ArchitectsDaughter-Regular.ttf') format('TrueType');
+        font-display: swap;
     }
 
     .font-handwriting {
-        font-family: 'ArchitectsDaughter';
-        font-display: auto;
+        font-family: 'ArchitectsDaughter', sans-serif;
     }
 </style>
