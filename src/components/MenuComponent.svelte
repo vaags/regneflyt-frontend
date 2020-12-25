@@ -165,23 +165,23 @@
                                         class="flex flex-row place-items-center mb-1">
                                         <label
                                             class="mr-3 text-lg"
-                                            for="partOneMin">Fra</label>
+                                            for="partOneMin-{operator}">Fra</label>
                                         <select
                                             class="rounded text-lg"
-                                            id="partOneMin"
+                                            id="partOneMin-{operator}"
                                             bind:value="{quiz.operatorSettings[operator].minValue}">
                                             {#each minValues as v}
                                                 <option value="{v}">{v}</option>
                                             {/each}
                                         </select>
                                         <label
-                                            for="partOneMax"
+                                            for="partOneMax-{operator}"
                                             class="mx-3 text-lg">
                                             til
                                         </label>
                                         <select
                                             class="rounded text-lg"
-                                            id="partOneMax"
+                                            id="partOneMax-{operator}"
                                             bind:value="{quiz.operatorSettings[operator].maxValue}">
                                             {#each maxValues as v}
                                                 <option value="{v}">{v}</option>
