@@ -1,6 +1,6 @@
 <script lang="ts">
     import * as animateScroll from 'svelte-scrollto'
-    import { createEventDispatcher, onMount, onDestroy, tick } from 'svelte'
+    import { createEventDispatcher, onMount, tick } from 'svelte'
     import { slide, fade } from 'svelte/transition'
     import ButtonComponent from './widgets/ButtonComponent.svelte'
     import CardComponent from './widgets/CardComponent.svelte'
