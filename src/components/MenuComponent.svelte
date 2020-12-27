@@ -131,7 +131,7 @@
         <form>
             {#if quiz.showSettings}
                 <div transition:slide|local="{appSettings.transitionDuration}">
-                    <CardComponent heading="Regneart">
+                    <CardComponent heading="Velg regneart">
                         {#each Object.values(Operator) as operator, i}
                             <label class="flex items-center py-1">
                                 <input
