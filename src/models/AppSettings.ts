@@ -8,6 +8,5 @@ export type AppSettings = {
     }
     operatorLabels: string[],
     operatorSigns: string[],
-    displayGreeting: boolean,
     menuFade: boolean
 }

@@ -7,7 +7,7 @@ import type { OperatorSettings } from "../models/OperatorSettings";
 
 export function getPuzzle(quiz: Quiz, operatorSigns: string[], previousPuzzle: Puzzle | undefined = undefined): Puzzle {
 
-    const activeOperator: Operator = getOperator(quiz)
+    const activeOperator: Operator = getOperator(quiz.selectedOperator)
 
     return {
         parts: getPuzzleParts(quiz.operatorSettings[activeOperator], previousPuzzle?.parts, quiz.allowNegativeAnswer),
@@ -20,12 +20,14 @@ export function getPuzzle(quiz: Quiz, operatorSigns: string[], previousPuzzle: P
     }
 }
 
-function getOperator(quiz: Quiz): Operator {
-    if (quiz.selectedOperator === 4) {
+function getOperator(operator: Operator | 4 | undefined): Operator {
+    if (operator === undefined)
+        throw ('Cannot get operator: parameter is undefined')
+    if (operator === 4) {
         return Math.ceil(Math.random() * 4) - 1 as Operator;
     }
 
-    return quiz.selectedOperator
+    return operator
 }
 
 function getPuzzleParts(settings: OperatorSettings, previousParts: PuzzlePart[] | undefined, allowNegativeAnswer: boolean): PuzzlePart[] {
@@ -33,13 +35,13 @@ function getPuzzleParts(settings: OperatorSettings, previousParts: PuzzlePart[] 
 
     switch (settings.operator) {
         case Operator.Addition:
-            parts[0].generatedValue = getRandomNumber(settings.minValue, settings.maxValue, previousParts?.[0].generatedValue)
-            parts[1].generatedValue = getRandomNumber(settings.minValue, settings.maxValue, previousParts?.[1].generatedValue)
+            parts[0].generatedValue = getRandomNumber(settings.range.min, settings.range.max, previousParts?.[0].generatedValue)
+            parts[1].generatedValue = getRandomNumber(settings.range.min, settings.range.max, previousParts?.[1].generatedValue)
             parts[2].generatedValue = parts[0].generatedValue + parts[1].generatedValue
             break;
         case Operator.Subtraction:
-            parts[0].generatedValue = getRandomNumber(settings.minValue, settings.maxValue, previousParts?.[0].generatedValue)
-            parts[1].generatedValue = getRandomNumber(settings.minValue, settings.maxValue, previousParts?.[1].generatedValue)
+            parts[0].generatedValue = getRandomNumber(settings.range.min, settings.range.max, previousParts?.[0].generatedValue)
+            parts[1].generatedValue = getRandomNumber(settings.range.min, settings.range.max, previousParts?.[1].generatedValue)
             if (!allowNegativeAnswer && parts[1].generatedValue > parts[0].generatedValue) {
                 [parts[0], parts[1]] = [parts[1], parts[0]]
             }

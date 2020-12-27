@@ -1,9 +1,9 @@
 import type { Operator } from "./constants/Operator"
+import type { NumberRange } from "./NumberRange"
 
 export type OperatorSettings = {
     operator: Operator
-    minValue: number
-    maxValue: number
+    range: NumberRange
     possibleValues: Array<number>
     score: number
 }

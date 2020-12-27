@@ -14,36 +14,45 @@ export function getQuiz(): Quiz {
         operatorSettings: [
             {
                 operator: Operator.Addition,
-                minValue: getIntParam('addMin') || 0,
-                maxValue: getIntParam('addMax') || 19,
+                range: {
+                    min: getIntParam('addMin') || 0,
+                    max: getIntParam('addMax') || 19,
+
+                },
                 possibleValues: [],
                 score: 0
             },
             {
                 operator: Operator.Subtraction,
-                minValue: getIntParam('subMin') || 0,
-                maxValue: getIntParam('subMax') || 19,
+                range: {
+                    min: getIntParam('subMin') || 0,
+                    max: getIntParam('subMax') || 19,
+                },
                 possibleValues: [],
                 score: 0
             },
             {
                 operator: Operator.Multiplication,
-                minValue: 0,
-                maxValue: 0,
+                range: {
+                    min: 0,
+                    max: 0,
+                },
                 possibleValues: getNumArrayParam('mulValues') || [7],
                 score: 0
             },
             {
                 operator: Operator.Division,
-                minValue: 0,
-                maxValue: 0,
+                range: {
+                    min: 0,
+                    max: 0,
+                },
                 possibleValues: getNumArrayParam('divValues') || [5],
                 score: 0
             },
         ],
         state: QuizState.Initial,
         selectedOperator:
-            (getIntParam('operator') as Operator) ?? 0,
+            (getIntParam('operator') as Operator) ?? undefined,
         allowNegativeAnswer: getBoolParam('negatives'),
         puzzleMode:
             (getIntParam('puzzleMode') as PuzzleMode) || PuzzleMode.Normal,
@@ -55,12 +64,12 @@ export function setUrlParams(quiz: Quiz) {
     let parameters = {
         duration: quiz.duration.toString(),
         timeLimit: quiz.puzzleTimeLimit.toString(),
-        operator: quiz.selectedOperator.toString(),
+        operator: quiz.selectedOperator?.toString() || '',
         negatives: quiz.allowNegativeAnswer.toString(),
-        addMin: quiz.operatorSettings[Operator.Addition].minValue?.toString(),
-        addMax: quiz.operatorSettings[Operator.Addition].maxValue?.toString(),
-        subMin: quiz.operatorSettings[Operator.Subtraction].minValue?.toString(),
-        subMax: quiz.operatorSettings[Operator.Subtraction].maxValue?.toString(),
+        addMin: quiz.operatorSettings[Operator.Addition].range.min?.toString(),
+        addMax: quiz.operatorSettings[Operator.Addition].range.max?.toString(),
+        subMin: quiz.operatorSettings[Operator.Subtraction].range.min?.toString(),
+        subMax: quiz.operatorSettings[Operator.Subtraction].range.max?.toString(),
         mulValues:
             quiz.operatorSettings[Operator.Multiplication].possibleValues?.toString() ||
             '',
