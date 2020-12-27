@@ -115,7 +115,7 @@
             </CardComponent>
         {/if}
         <form>
-          {#if quiz.showSettings}
+            {#if quiz.showSettings}
                 <CardComponent heading="Regneart">
                     {#each Object.values(Operator) as operator, i}
                         <label class="flex items-center py-1">
@@ -143,7 +143,7 @@
                             transition:slide|local="{appSettings.transitionDuration}"
                             class="mb-1 md:mb-2">
                             <CardComponent
-                                heading="{operator === Operator.Multiplication ? 'Multiplikand' : operator === Operator.Division ? 'Divisor' : 'Intervall'}"
+                                heading="{operator === Operator.Multiplication ? 'Multiplikand' : operator === Operator.Division ? 'Divisor' : 'Tallområde'}"
                                 label="{isAllOperators ? appSettings.operatorLabels[operator] : undefined}">
                                 {#if operator === Operator.Multiplication || operator === Operator.Division}
                                     {#each Array(12) as _, i}
