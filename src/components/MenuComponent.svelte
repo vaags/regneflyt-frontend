@@ -296,7 +296,7 @@
                                             bind:group="{quiz.duration}"
                                             value="{d}" />
                                         <span
-                                            class="ml-2">{d === 0.5 ? '30 sekunder' : d === 1 ? d + ' minutt' : d + ' minutter'}</span>
+                                            class="ml-2 text-lg">{d === 0.5 ? '30 sekunder' : d === 1 ? d + ' minutt' : d + ' minutter'}</span>
                                     </label>
                                 {/each}
                                 <label class="flex mt-3 items-center py-1">
@@ -304,8 +304,8 @@
                                         type="checkbox"
                                         class="h-5 w-5 rounded text-blue-700"
                                         bind:checked="{quiz.puzzleTimeLimit}" />
-                                    <span class="ml-2">Tidsbegrensning per
-                                        oppgave</span>
+                                    <span class="ml-2 text-lg">Tidsbegrensning
+                                        per oppgave</span>
                                 </label>
                             </CardComponent>
                         </div>
