@@ -65,8 +65,8 @@
         puzzle = getPuzzle(quiz, appSettings.operatorSigns, puzzle)
     }
 
-    function updateQuizSettings(updatePuzzlePreview: boolean = true) {
-        if (updatePuzzlePreview) getPuzzlePreview()
+    function updateQuizSettings() {
+        getPuzzlePreview()
         if (quiz.showSettings) setUrlParams(quiz)
     }
 
@@ -109,6 +109,7 @@
 
     const minValues = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90]
     const maxValues = [9, 19, 29, 39, 49, 59, 69, 79, 89, 99]
+    const durationValues = [0.5, 1, 3, 5]
 </script>
 
 {#if showComponent}
@@ -287,36 +288,25 @@
                                 </div>
                             </CardComponent>
                             <CardComponent heading="Spilletid">
-                                <div class="flex flex-row mb-1">
-                                    <label class="mr-4 text-lg">
-                                        Totalt
-                                        <select
-                                            class="block rounded text-lg"
-                                            bind:value="{quiz.duration}">
-                                            <option value="{0.5}">
-                                                30 sek
-                                            </option>
-                                            <option value="{1}">1 min</option>
-                                            <option value="{3}">3 min</option>
-                                            <option value="{5}">5 min</option>
-                                            <option value="{10}">10 min</option>
-                                        </select>
+                                {#each Object.values(durationValues) as d}
+                                    <label class="flex items-center py-1">
+                                        <input
+                                            type="radio"
+                                            class="h-5 w-5 text-blue-700"
+                                            bind:group="{quiz.duration}"
+                                            value="{d}" />
+                                        <span
+                                            class="ml-2">{d === 0.5 ? '30 sekunder' : d === 1 ? d + ' minutt' : d + ' minutter'}</span>
                                     </label>
-                                    <label class="text-lg">
-                                        Per oppgave
-                                        <select
-                                            class="block rounded text-lg"
-                                            bind:value="{quiz.puzzleTimeLimit}">
-                                            <option value="{2}">2 sek</option>
-                                            <option value="{3}">3 sek</option>
-                                            <option value="{5}">5 sek</option>
-                                            <option value="{10}">10 sek</option>
-                                            <option value="{0}">
-                                                Ubegrenset
-                                            </option>
-                                        </select>
-                                    </label>
-                                </div>
+                                {/each}
+                                <label class="flex mt-3 items-center py-1">
+                                    <input
+                                        type="checkbox"
+                                        class="h-5 w-5 rounded text-blue-700"
+                                        bind:checked="{quiz.puzzleTimeLimit}" />
+                                    <span class="ml-2">Tidsbegrensning per
+                                        oppgave</span>
+                                </label>
                             </CardComponent>
                         </div>
                     </div>

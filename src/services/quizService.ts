@@ -10,7 +10,7 @@ export function getQuiz(): Quiz {
         title: getStringParam('title'),
         showSettings: getBoolParam('showSettings'),
         duration: getFloatParam('duration') || 0.5,
-        puzzleTimeLimit: getIntParam('timeLimit') ?? 5,
+        puzzleTimeLimit: !!getIntParam('timeLimit'), // Saved as int for backward compatibility
         operatorSettings: [
             {
                 operator: Operator.Addition,
@@ -63,7 +63,7 @@ export function getQuiz(): Quiz {
 export function setUrlParams(quiz: Quiz) {
     let parameters = {
         duration: quiz.duration.toString(),
-        timeLimit: quiz.puzzleTimeLimit.toString(),
+        timeLimit: quiz.puzzleTimeLimit ? '3' : '0', // Saved as int for backward compatibility
         operator: quiz.selectedOperator?.toString() || '',
         negatives: quiz.allowNegativeAnswer.toString(),
         addMin: quiz.operatorSettings[Operator.Addition].range.min?.toString(),

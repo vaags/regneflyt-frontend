@@ -23,7 +23,7 @@ export function getQuizScoreSum(quiz: Quiz, puzzleSet: Puzzle[]): QuizScores {
         const scoreSettings = getOperatorScoreSettings(quiz);
 
         quizScores.totalScore = puzzleSet
-            .map((p) => getPuzzleScore(p, scoreSettings))
+            .map((p) => getPuzzleScore(p, scoreSettings, quiz.puzzleTimeLimit))
             .reduce((a, b) => a + b);
     }
 
@@ -36,17 +36,18 @@ export function getQuizScoreSum(quiz: Quiz, puzzleSet: Puzzle[]): QuizScores {
     }
 }
 
-function getPuzzleScore(puzzle: Puzzle, scoreSettings: OperatorSettings[]) {
+function getPuzzleScore(puzzle: Puzzle, scoreSettings: OperatorSettings[], puzzleTimeLimit: boolean) {
     const operatorScore = scoreSettings[puzzle.operator].score
 
     if (puzzle.isCorrect) {
-        return puzzle.duration < 3 ? operatorScore * 2 : operatorScore
+        let score = puzzle.duration <= 3 ? operatorScore * 2 : operatorScore
+        return puzzleTimeLimit ? score * 2 : score
     } else {
-        return operatorScore * -1
+        return puzzleTimeLimit ? (operatorScore * 2) * -1 : operatorScore * -1
     }
 }
 
-export function getOperatorScoreSettings(quiz: Quiz): OperatorSettings[] {
+function getOperatorScoreSettings(quiz: Quiz): OperatorSettings[] {
     const puzzleModeMultiplier = getPuzzleModeMultiplier(quiz.puzzleMode)
     const allOperatorsMultiplier = quiz.selectedOperator === 4 ? 1.5 : 1
 

@@ -144,7 +144,7 @@
                     <TimeoutComponent
                         state="{puzzleTimeoutState}"
                         showProgressBar="{true}"
-                        seconds="{quiz.puzzleTimeLimit}"
+                        seconds="{3}"
                         on:finished="{timeOutPuzzle}">
                         {#if puzzle.timeout}
                             <TimeoutComponent

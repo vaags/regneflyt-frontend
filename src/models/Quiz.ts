@@ -6,7 +6,7 @@ import type { QuizState } from "./constants/QuizState"
 export type Quiz = {
     title: string | undefined
     duration: number
-    puzzleTimeLimit: number
+    puzzleTimeLimit: boolean
     operatorSettings: OperatorSettings[]
     state: QuizState
     selectedOperator: Operator | 4 | undefined
