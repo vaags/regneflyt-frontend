@@ -1,8 +1,12 @@
 import type { AppSettings } from "../models/AppSettings";
 
 export function getAppSettings(isProduction: string): AppSettings {
+    const isProductionBool = isProduction === 'true'
+
     return {
-        isProduction: isProduction === 'true',
+        isProduction: isProductionBool,
+        separatorPageDuration: isProductionBool ? 3 : 1,
+        puzzleTimeLimitDuration: 3,
         transitionDuration: {
             duration: 200,
         },

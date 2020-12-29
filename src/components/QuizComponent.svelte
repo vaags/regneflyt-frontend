@@ -47,7 +47,7 @@
             <CardComponent heading="Gjør deg klar&hellip;">
                 <p class="text-center my-10 text-6xl md:text-7xl">
                     <TimeoutComponent
-                        seconds="{3}"
+                        seconds="{appSettings.separatorPageDuration}"
                         countToZero="{false}"
                         fadeOnSecondChange="{true}"
                         on:finished="{startQuiz}" />

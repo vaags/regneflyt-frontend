@@ -154,12 +154,12 @@
         {#if showMinutes}
             <TimeComponent seconds="{remainingSeconds}" />
         {:else if showProgressBar}
-            <div class="w-full">
+            <div class="w-1/4 mx-auto">
                 <div class="w-full bg-white border rounded border-gray-500">
                     <div
                         class="transition-colors text-gray-50
-                        duration-200 {percentageCompleted === 100 ? 'bg-blue-800' : 'bg-blue-500'}
-                        text-center leading-none"
+                            duration-200 {percentageCompleted === 100 ? 'bg-blue-600' : 'bg-blue-400'}
+                            text-center leading-none"
                         style="width: {$percentageTweened}%">
                         <slot />
                     </div>

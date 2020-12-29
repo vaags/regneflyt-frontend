@@ -26,7 +26,7 @@
                 ⌛
                 <TimeoutComponent
                     hidden="{true}"
-                    seconds="{3}"
+                    seconds="{appSettings.separatorPageDuration}"
                     fadeOnSecondChange="{true}"
                     on:finished="{() => dispatch('evaluateQuiz')}" />
             </p>
