@@ -99,21 +99,21 @@
                         {/each}
                         <tr>
                             <td
-                                class="border-t-2 px-2 md:px-3 py-2 text-xl"
+                                class="border-t-2 pr-2 md:pr-3 py-2 text-xl md:text-2xl"
                                 colspan="{2}">
                                 {quizScores.totalScore.toLocaleString()}
                                 poeng
                                 {#if quiz.previousScore !== undefined}
                                     <span
-                                        class="ml-2 text-xl">{quizScores.totalScore > quiz.previousScore ? '⬆' : quizScores.totalScore < quiz.previousScore ? '⬇' : ''}</span>
+                                        class="ml-2">{quizScores.totalScore > quiz.previousScore ? '⬆' : quizScores.totalScore < quiz.previousScore ? '⬇' : ''}</span>
                                 {/if}
                             </td>
                             <td
-                                class="border-t-2 px-3 md:px-4 py-2"
+                                class="border-t-2 px-3 text-xl md:text-2xl md:px-4 py-2"
                                 colspan="{3}">
                                 {quizScores.correctAnswerPercentage}
                                 %
-                                <span class="text-sm">
+                                <span class="text-sm md:text-base">
                                     ({quizScores.correctAnswerCount}
                                     av
                                     {puzzleSet.length})
