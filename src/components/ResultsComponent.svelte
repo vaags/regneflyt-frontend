@@ -45,7 +45,7 @@
                     Ingen fullførte oppgaver ble funnet.
                 </AlertComponent>
             {:else}
-                <label class="inline-flex items-center my-4 text-lg">
+                <label class="inline-flex items-center mb-4 text-lg">
                     <input
                         type="checkbox"
                         class="h-5 w-5 rounded text-blue-700"

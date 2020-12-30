@@ -271,8 +271,12 @@
                                             </div>
                                         {:else}
                                             <div
-                                                class="text-xl md:text-2xl bg-blue-100 py-1 md:py-2 px-2 md:px-4 border border-gray-500 rounded"
+                                                class="relative text-xl md:text-2xl pt-7 pb-1 md:pb-2 px-2 md:px-4 border border-blue-800 rounded-tl rounded-br"
                                                 transition:slide|local="{appSettings.transitionDuration}">
+                                                <div
+                                                    class="absolute w-full right-0 top-0 text-xs text-white py-1 px-2 bg-blue-800 text-right">
+                                                    Forhåndsvisning
+                                                </div>
                                                 <PuzzlePreviewComponent
                                                     puzzle="{puzzle}" />
                                                 <button
