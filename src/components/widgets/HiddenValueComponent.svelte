@@ -9,6 +9,6 @@
     type="button"
     title="{showHiddenValue ? 'Vis opprinnelig verdi' : 'Vis skjult verdi'}"
     on:click="{() => (showHiddenValue = !showHiddenValue)}"
-    class="cursor-pointer focus:outline-none {strong ? 'font-semibold' : ''} {showHiddenValue ? 'text-green-700' : 'text-blue-700'}">
+    class="cursor-pointer focus:outline-none {strong ? 'font-semibold' : ''} {showHiddenValue ? 'text-green-600' : 'text-blue-800'}">
     {showHiddenValue ? hiddenValue : value}
 </button>
