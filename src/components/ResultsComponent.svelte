@@ -8,7 +8,7 @@
     import HiddenValueCompontent from './widgets/HiddenValueComponent.svelte'
     import type { QuizScores } from '../models/QuizScores'
     import type { AppSettings } from '../models/AppSettings'
-    import type { Quiz } from '../models/Quiz';
+    import type { Quiz } from '../models/Quiz'
 
     const dispatch = createEventDispatcher()
 
@@ -21,7 +21,9 @@
     let showCorrectAnswer: boolean = false
 
     function getReady() {
-        dispatch('getReady', { quiz: { ...quiz, previousScore: quizScores.totalScore } })
+        dispatch('getReady', {
+            quiz: { ...quiz, previousScore: quizScores.totalScore },
+        })
     }
 
     function resetQuiz() {
@@ -58,7 +60,7 @@
                                     {i + 1}
                                 </td>
                                 <td
-                                    class="border-t px-4 py-2 whitespace-nowrap">
+                                    class="border-t px-3 md:px-4 py-2 whitespace-nowrap">
                                     {#each puzzle.parts as part, i}
                                         {#if puzzle.unknownPuzzlePart === i}
                                             <HiddenValueCompontent
@@ -76,7 +78,7 @@
                                         {/if}
                                     {/each}
                                 </td>
-                                <td class="border-t px-3 py-2">
+                                <td class="border-t px-2 md:px-3 py-2">
                                     {#if puzzle.isCorrect}
                                         <span title="Riktig">✔</span>
                                     {:else if puzzle.timeout}
@@ -84,11 +86,11 @@
                                     {:else}<span title="Galt">❌</span>{/if}
                                 </td>
                                 <td
-                                    class="border-t px-3 py-2 whitespace-nowrap">
+                                    class="border-t px-2 md:px-3 py-2 whitespace-nowrap">
                                     {Math.round(puzzle.duration * 10) / 10}
                                     s
                                 </td>
-                                <td class="border-t px-3 py-2">
+                                <td class="border-t px-2 md:px-3 py-2">
                                     {#if puzzle.isCorrect && puzzle.duration < 3}
                                         ⭐
                                     {/if}
@@ -97,24 +99,25 @@
                         {/each}
                         <tr>
                             <td
-                                class="border-t-2 py-2 text-gray-600"
+                                class="border-t-2 px-2 md:px-3 py-2 text-xl"
                                 colspan="{2}">
-                                Sum
+                                {quizScores.totalScore.toLocaleString()}
+                                poeng
+                                {#if quiz.previousScore !== undefined}
+                                    <span
+                                        class="ml-2 text-xl">{quizScores.totalScore > quiz.previousScore ? '⬆' : quizScores.totalScore < quiz.previousScore ? '⬇' : ''}</span>
+                                {/if}
                             </td>
-                            <td class="border-t-2 px-4 py-2">
+                            <td
+                                class="border-t-2 px-3 md:px-4 py-2"
+                                colspan="{3}">
                                 {quizScores.correctAnswerPercentage}
                                 %
-                                <div class="text-sm">
+                                <span class="text-sm">
                                     ({quizScores.correctAnswerCount}
                                     av
                                     {puzzleSet.length})
-                                </div>
-                            </td>
-                            <td class="border-t-2 px-3 py-2 text-xl" colspan="{2}">
-                                {quizScores.totalScore.toLocaleString()} poeng
-                                {#if quiz.previousScore !== undefined}
-                                    <span class="ml-2 text-xl">{quizScores.totalScore > quiz.previousScore ? "⬆" : quizScores.totalScore < quiz.previousScore ? "⬇" : ""}</span>
-                                {/if}
+                                </span>
                             </td>
                         </tr>
                     </tbody>

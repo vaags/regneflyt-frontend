@@ -53,7 +53,7 @@
     }
 </script>
 
-<div class="container max-w-xl mx-auto px-2 md:px-3 pt-1 md:pt-2 pb-2 md:pb-5">
+<div class="container mx-auto max-w-lg px-1 md:px-3 py-1 md:py-2">
     <header>
         <h1 class="text-right -mb-1">
             <span

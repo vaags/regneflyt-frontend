@@ -271,13 +271,13 @@
                                             </div>
                                         {:else}
                                             <div
-                                                class="text-xl md:text-2xl bg-blue-100 py-2 px-4 border border-gray-500 rounded"
+                                                class="text-xl md:text-2xl bg-blue-100 py-1 md:py-2 px-2 md:px-4 border border-gray-500 rounded"
                                                 transition:slide|local="{appSettings.transitionDuration}">
                                                 <PuzzlePreviewComponent
                                                     puzzle="{puzzle}" />
                                                 <button
                                                     type="button"
-                                                    class="cursor-pointer focus:outline-none ml-3"
+                                                    class="cursor-pointer focus:outline-none ml-1 md:ml-3"
                                                     title="Nytt oppgave-eksempel"
                                                     on:click="{() => getPuzzlePreview()}">
                                                     🎲

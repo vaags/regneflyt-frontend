@@ -48,7 +48,7 @@
     disabled="{disabled}"
     bind:value
     bind:this="{ref}"
-    class="border {displayError ? 'border-red-600' : ''} rounded w-28 py-2
+    class="border {displayError ? 'border-red-600' : ''} rounded w-24 py-2
         px-3 leading-tight focus:outline-none text-4xl md:text-5xl"
     type="number"
     pattern="[0-9]*"
