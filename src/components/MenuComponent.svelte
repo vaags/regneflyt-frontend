@@ -241,7 +241,7 @@
                         <div>
                             <CardComponent heading="Oppgaveform">
                                 <div
-                                    class="flex flex-row justify-between items-center">
+                                    class="flex flex-row justify-between items-end">
                                     <div>
                                         {#each Object.values(PuzzleMode) as puzzleMode}
                                             <label
@@ -272,18 +272,13 @@
                                             </div>
                                         {:else}
                                             <div
+                                                on:click="{() => getPuzzlePreview()}"
+                                                class="cursor-default"
                                                 transition:slide|local="{appSettings.transitionDuration}">
                                                 <SubCardComponent
                                                     heading="Forhåndsvisning">
                                                     <PuzzlePreviewComponent
                                                         puzzle="{puzzle}" />
-                                                    <button
-                                                        type="button"
-                                                        class="cursor-pointer focus:outline-none ml-1 md:ml-3"
-                                                        title="Nytt oppgave-eksempel"
-                                                        on:click="{() => getPuzzlePreview()}">
-                                                        🎲
-                                                    </button>
                                                 </SubCardComponent>
                                             </div>
                                         {/if}
