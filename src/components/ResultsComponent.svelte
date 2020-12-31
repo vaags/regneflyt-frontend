@@ -12,6 +12,7 @@
     import CheckmarkIconComponent from './icons/CheckmarkComponent.svelte'
     import CrossIconComponent from './icons/CrossComponent.svelte'
     import ClockIconComponent from './icons/ClockComponent.svelte'
+    import StarComponent from './icons/StarComponent.svelte'
 
     const dispatch = createEventDispatcher()
 
@@ -98,7 +99,7 @@
                                 </td>
                                 <td class="border-t px-2 md:px-3 py-2">
                                     {#if puzzle.isCorrect && puzzle.duration < 3}
-                                        ⭐
+                                        <StarComponent title="Bonuspoeng" />
                                     {/if}
                                 </td>
                             </tr>

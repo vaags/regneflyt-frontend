@@ -16,6 +16,16 @@ module.exports = {
       blue: colors.lightBlue,
       yellow: colors.amber
     },
+    rotate: {
+      '-180': '-180deg',
+      '-90': '-90deg',
+      '-45': '-45deg',
+      '0': '0',
+      '45': '45deg',
+      '25.5': '25.5deg',
+      '90': '90deg',
+      '180': '180deg',
+    },
     extend: {},
   },
   variants: {
