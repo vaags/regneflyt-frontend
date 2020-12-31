@@ -7,7 +7,7 @@
         {heading}
     </div>
     <div
-        class="py-1 px-2 border border-t-0 border-gray-500 bg-white rounded-br text-xl md:text-2xl">
+        class="py-1 px-2 border border-t-0 border-gray-500 rounded-br text-xl md:text-2xl">
         <slot />
     </div>
 </div>

@@ -9,6 +9,9 @@
     import type { QuizScores } from '../models/QuizScores'
     import type { AppSettings } from '../models/AppSettings'
     import type { Quiz } from '../models/Quiz'
+    import CheckmarkIconComponent from './icons/CheckmarkComponent.svelte'
+    import CrossIconComponent from './icons/CrossComponent.svelte'
+    import ClockIconComponent from './icons/ClockComponent.svelte'
 
     const dispatch = createEventDispatcher()
 
@@ -80,10 +83,13 @@
                                 </td>
                                 <td class="border-t px-2 md:px-3 py-2">
                                     {#if puzzle.isCorrect}
-                                        <span title="Riktig">✔</span>
+                                        <CheckmarkIconComponent
+                                            title="Riktig" />
                                     {:else if puzzle.timeout}
-                                        <span title="Timeout">⌛</span>
-                                    {:else}<span title="Galt">❌</span>{/if}
+                                        <ClockIconComponent title="Timeout" />
+                                    {:else}
+                                        <CrossIconComponent title="Galt" />
+                                    {/if}
                                 </td>
                                 <td
                                     class="border-t px-2 md:px-3 py-2 whitespace-nowrap">
