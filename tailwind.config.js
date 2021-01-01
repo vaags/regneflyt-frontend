@@ -19,6 +19,8 @@ module.exports = {
     extend: {
       rotate: {
         '25.5': '25.5deg',
+        '35': '35deg',
+        '-35': '-35deg',
       }
     },
   },
