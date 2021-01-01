@@ -15,6 +15,8 @@
         border-right: 0.3em solid transparent;
         border-bottom: 0.7em solid rgb(251, 191, 36);
         border-left: 0.3em solid transparent;
+        transform: scale(0.85);
+        margin-left: 0.4em;
     }
     div:before,
     div:after {
