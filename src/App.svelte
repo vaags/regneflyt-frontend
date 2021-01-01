@@ -47,8 +47,9 @@
         quiz.state = QuizState.Evaluated
     }
 
-    function resetQuiz() {
+    function resetQuiz(event: any) {
         quiz.state = QuizState.Initial
+        quiz.previousScore = event.detail.previousScore
         animateScroll.scrollToTop()
     }
 </script>

@@ -13,6 +13,8 @@
     import CrossIconComponent from './icons/CrossComponent.svelte'
     import ClockIconComponent from './icons/ClockComponent.svelte'
     import StarComponent from './icons/StarComponent.svelte'
+    import ArrowUpComponent from './icons/ArrowUpComponent.svelte'
+    import ArrowDownComponent from './icons/ArrowDownComponent.svelte'
 
     const dispatch = createEventDispatcher()
 
@@ -31,7 +33,7 @@
     }
 
     function resetQuiz() {
-        dispatch('resetQuiz')
+        dispatch('resetQuiz', { previousScore: quizScores.totalScore })
     }
 
     onMount(() => {
@@ -85,11 +87,11 @@
                                 <td class="border-t px-2 md:px-3 py-2">
                                     {#if puzzle.isCorrect}
                                         <CheckmarkIconComponent
-                                            title="Riktig" />
+                                            label="Riktig" />
                                     {:else if puzzle.timeout}
-                                        <ClockIconComponent title="Timeout" />
+                                        <ClockIconComponent label="Timeout" />
                                     {:else}
-                                        <CrossIconComponent title="Galt" />
+                                        <CrossIconComponent label="Galt" />
                                     {/if}
                                 </td>
                                 <td
@@ -99,7 +101,7 @@
                                 </td>
                                 <td class="border-t px-2 md:px-3 py-2">
                                     {#if puzzle.isCorrect && puzzle.duration < 3}
-                                        <StarComponent title="Bonuspoeng" />
+                                        <StarComponent label="Bonuspoeng" />
                                     {/if}
                                 </td>
                             </tr>
@@ -108,12 +110,23 @@
                             <td
                                 class="border-t-2 pr-2 md:pr-3 py-2 text-xl md:text-2xl"
                                 colspan="{2}">
-                                {quizScores.totalScore.toLocaleString()}
-                                poeng
-                                {#if quiz.previousScore !== undefined}
-                                    <span
-                                        class="ml-2">{quizScores.totalScore > quiz.previousScore ? '⬆' : quizScores.totalScore < quiz.previousScore ? '⬇' : ''}</span>
-                                {/if}
+                                <div class="flex flex-row">
+                                    <div class="mr-3">
+                                        {quizScores.totalScore.toLocaleString()}
+                                        poeng
+                                    </div>
+                                    <div>
+                                        {#if quiz.previousScore !== undefined}
+                                            {#if quizScores.totalScore > quiz.previousScore}
+                                                <ArrowUpComponent
+                                                    label="Bedre enn forrige runde" />
+                                            {:else if quizScores.totalScore < quiz.previousScore}
+                                                <ArrowDownComponent
+                                                    label="Dårligere enn forrige runde" />
+                                            {/if}
+                                        {/if}
+                                    </div>
+                                </div>
                             </td>
                             <td
                                 class="border-t-2 px-3 text-xl md:text-2xl md:px-4 py-2"
