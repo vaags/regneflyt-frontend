@@ -13,7 +13,7 @@
         /* margin-right: 0.9em; */
         /* margin-bottom: 1.2em; */
         border-right: 0.3em solid transparent;
-        border-bottom: 0.7em solid rgb(251, 191, 36);
+        border-bottom: 0.7em solid rgb(245, 158, 11);
         border-left: 0.3em solid transparent;
         transform: scale(0.85);
         margin-left: 0.4em;
@@ -28,7 +28,7 @@
         /* top: 0.6em; */
         /* left: -1em; */
         border-right: 1em solid transparent;
-        border-bottom: 0.7em solid rgb(251, 191, 36);
+        border-bottom: 0.7em solid rgb(245, 158, 11);
         border-left: 1em solid transparent;
         /* transform: rotate(-35deg); */
     }
