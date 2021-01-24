@@ -10,8 +10,9 @@
     afterUpdate(() => {
         minutes = Math.floor(seconds / 60)
         remainingSeconds = seconds - minutes * 60
-        time =
-            getTrailingZero(minutes) + ':' + getTrailingZero(remainingSeconds)
+        time = `${getTrailingZero(minutes)}:${getTrailingZero(
+            remainingSeconds
+        )}`
     })
 
     function getTrailingZero(number: number) {
