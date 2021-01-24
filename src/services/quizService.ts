@@ -11,6 +11,7 @@ export function getQuiz(): Quiz {
         showSettings: getBoolParam('showSettings'),
         duration: getFloatParam('duration') || 0.5,
         puzzleTimeLimit: !!getIntParam('timeLimit'), // Saved as int for backward compatibility
+        difficulty: undefined,
         operatorSettings: [
             {
                 operator: Operator.Addition,

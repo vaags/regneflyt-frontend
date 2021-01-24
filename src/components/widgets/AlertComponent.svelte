@@ -1,7 +1,10 @@
 <script lang="ts">
-    import type { AlertColor } from '../../models/Color'
-    export let color: AlertColor = 'blue'
+    export let color: 'red' | 'blue' | 'yellow' = 'blue'
 </script>
+
+<p class="border-l-4 p-4 alert-{color} text-lg" role="alert">
+    <slot />
+</p>
 
 <style>
     .alert-blue {
@@ -22,7 +25,3 @@
         @apply text-red-800;
     }
 </style>
-
-<p class="border-l-4 p-4 alert-{color} text-lg" role="alert">
-    <slot />
-</p>

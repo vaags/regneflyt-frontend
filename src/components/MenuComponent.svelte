@@ -16,6 +16,7 @@
     import QuizDurationPanel from './panels/QuizDurationPanel.svelte'
     import SharedQuizPanel from './panels/SharedQuizPanel.svelte'
     import SharePanel from './panels/SharePanel.svelte'
+    import DifficultyPanel from './panels/DifficultyPanel.svelte'
 
     export let appSettings: AppSettings
     export let quiz: Quiz
@@ -69,6 +70,14 @@
         dispatch('getReady', { quiz })
     }
 
+    function setDifficultyLevel(event: any) {
+        quiz.difficulty = event.detail.level
+        // TODO: Set difficulty settings
+        if (quiz.difficulty !== '?') {
+            console.log('TODO: set difficulty', quiz.difficulty)
+        }
+    }
+
     onMount(() => {
         if (appSettings.menuFade) {
             showComponent = false
@@ -96,6 +105,13 @@
                     bind:selectedOperator="{quiz.selectedOperator}"
                 />
                 {#if quiz.selectedOperator !== undefined}
+                    <DifficultyPanel
+                        transitionDuration="{appSettings.transitionDuration}"
+                        level="{quiz.difficulty}"
+                        on:setDifficultyLevel="{setDifficultyLevel}"
+                    />
+                {/if}
+                {#if quiz.selectedOperator !== undefined && typeof quiz.difficulty === 'string'}
                     <div
                         transition:slide|local="{appSettings.transitionDuration}"
                     >

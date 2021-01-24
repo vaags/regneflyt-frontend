@@ -1,9 +1,24 @@
 <script lang="ts">
-    import type { ButtonColor } from '../../models/Color'
-    export let color: ButtonColor = 'blue'
+    export let color: 'red' | 'blue' | 'yellow' | 'green' | 'gray' = 'blue'
     export let disabled: boolean = false
     export let margin: boolean = false
+    export let selected: boolean = false
 </script>
+
+<button
+    disabled="{disabled}"
+    on:click|preventDefault
+    class="text-gray-100 hover:text-white font-light text-3xl md:text-3xl px-4 py-1 {selected
+        ? 'border-t-2 border-r-4 rounded-tr-md rounded-bl-md'
+        : 'border-b-2 border-l-4 rounded-tl-md rounded-br-md'} {margin
+        ? 'mr-1'
+        : ''} btn-{color} transition-colors
+        duration-200 ease-out focus:outline-none {disabled
+        ? 'opacity-50'
+        : ''}"
+>
+    <slot />
+</button>
 
 <style>
     .btn-blue {
@@ -56,11 +71,3 @@
         @apply border-gray-700;
     }
 </style>
-
-<button
-    disabled="{disabled}"
-    on:click|preventDefault
-    class="text-gray-100 hover:text-white font-light text-3xl md:text-3xl px-4 py-1 border-b-2 border-l-4 {margin ? 'mr-1' : ''} rounded-tl-md rounded-br-md btn-{color} transition-colors
-        duration-200 ease-out focus:outline-none {disabled ? 'opacity-50' : ''}">
-    <slot />
-</button>
