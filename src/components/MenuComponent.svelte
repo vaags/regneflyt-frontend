@@ -138,6 +138,7 @@
                     puzzle="{puzzle}"
                     title="{quiz.title}"
                     transitionDuration="{appSettings.transitionDuration}"
+                    on:getPuzzlePreview="{() => getPuzzlePreview()}"
                 />
             {/if}
             {#if showSharePanel}
