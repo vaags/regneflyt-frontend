@@ -17,6 +17,7 @@
     import QuizPreviewPanel from './panels/QuizPreviewPanel.svelte'
     import SharePanel from './panels/SharePanel.svelte'
     import DifficultyPanel from './panels/DifficultyPanel.svelte'
+    import { PuzzleMode } from '../models/constants/PuzzleMode'
 
     export let appSettings: AppSettings
     export let quiz: Quiz
@@ -72,14 +73,27 @@
 
     function setDifficultyLevel(event: any) {
         quiz.difficulty = event.detail.level
-        // TODO: Set difficulty settings
-        if (typeof quiz.difficulty === 'number') {
-            console.log('TODO: set difficulty', quiz.difficulty)
-            if (typeof quiz.selectedOperator === 'number') {
-                quiz.operatorSettings[
+
+        if (quiz.selectedOperator === undefined || quiz.difficulty === '?')
+            return
+
+        quiz.puzzleMode =
+            quiz.difficulty > 3 ? PuzzleMode.Random : PuzzleMode.Normal
+
+        quiz.duration = quiz.difficulty > 2 ? 1 : 0.5
+
+        if (quiz.selectedOperator === 4) {
+            Object.values(Operator).forEach((operator) => {
+                quiz.operatorSettings[operator] = getOperatorSettings(
+                    quiz.difficulty,
                     quiz.selectedOperator
-                ] = getOperatorSettings(quiz.difficulty, quiz.selectedOperator)
-            }
+                )
+            })
+        } else {
+            quiz.operatorSettings[quiz.selectedOperator] = getOperatorSettings(
+                quiz.difficulty,
+                quiz.selectedOperator
+            )
         }
     }
 
@@ -142,8 +156,6 @@
                             {/if}
                         {/each}
                         <PuzzleTypePanel
-                            validationError="{validationError}"
-                            transitionDuration="{appSettings.transitionDuration}"
                             bind:quizPuzzleMode="{quiz.puzzleMode}"
                         />
                         <QuizDurationPanel
@@ -158,6 +170,7 @@
                     puzzle="{puzzle}"
                     title="{quiz.title}"
                     transitionDuration="{appSettings.transitionDuration}"
+                    validationError="{validationError}"
                     on:getPuzzlePreview="{() => getPuzzlePreview()}"
                 />
             {/if}

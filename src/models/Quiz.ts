@@ -14,5 +14,5 @@ export type Quiz = {
     puzzleMode: PuzzleMode
     showSettings: boolean
     previousScore: number | undefined
-    difficulty: number | string | undefined
+    difficulty: number | string
 }

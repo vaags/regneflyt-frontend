@@ -13,7 +13,7 @@ export function getQuiz(): Quiz {
         showSettings: getBoolParam('showSettings'),
         duration: getFloatParam('duration') ?? 0.5,
         puzzleTimeLimit: !!getIntParam('timeLimit'), // Saved as int for backward compatibility
-        difficulty: undefined,
+        difficulty: '',
         operatorSettings: [
             {
                 operator: Operator.Addition,
@@ -62,7 +62,7 @@ export function getQuiz(): Quiz {
     }
 }
 
-export function getOperatorSettings(difficulty: number, operator: Number): OperatorSettings {
+export function getOperatorSettings(difficulty: number | string, operator: number | undefined): OperatorSettings {
     switch (operator) {
         case Operator.Addition:
             return {
