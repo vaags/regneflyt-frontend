@@ -1,20 +1,13 @@
 <script lang="ts">
-    import { createEventDispatcher } from 'svelte'
     import { slide } from 'svelte/transition'
     import { PuzzleMode } from '../../models/constants/PuzzleMode'
     import type { TransitionDuration } from '../../models/TransitionDuration'
     import AlertComponent from '../widgets/AlertComponent.svelte'
     import CardComponent from '../widgets/CardComponent.svelte'
-    import SubCardComponent from '../widgets/SubCardComponent.svelte'
-    import PuzzlePreviewComponent from '../widgets/PuzzlePreviewComponent.svelte'
-    import type { Puzzle } from '../../models/Puzzle'
 
     export let quizPuzzleMode: PuzzleMode
     export let validationError: boolean
     export let transitionDuration: TransitionDuration
-    export let puzzle: Puzzle | undefined
-
-    const dispatch = createEventDispatcher()
 </script>
 
 <CardComponent heading="Oppgaveform">
@@ -44,16 +37,6 @@
                     <AlertComponent color="yellow">
                         Kan ikke vise forhåndsvisning.
                     </AlertComponent>
-                </div>
-            {:else}
-                <div
-                    on:click="{() => dispatch('getPuzzlePreview')}"
-                    class="cursor-default"
-                    transition:slide|local="{transitionDuration}"
-                >
-                    <SubCardComponent heading="Forhåndsvisning">
-                        <PuzzlePreviewComponent puzzle="{puzzle}" />
-                    </SubCardComponent>
                 </div>
             {/if}
         </div>

@@ -5,7 +5,7 @@
     import { Operator } from '../models/constants/Operator'
     import type { Quiz } from '../models/Quiz'
     import { getPuzzle } from '../services/puzzleService'
-    import { setUrlParams } from '../services/quizService'
+    import { setUrlParams, getOperatorSettings } from '../services/quizService'
     import type { AppSettings } from '../models/AppSettings'
     import type { Puzzle } from '../models/Puzzle'
     import type { NumberRange } from '../models/NumberRange'
@@ -14,7 +14,7 @@
     import OperatorSettingsPanel from './panels/OperatorSettingsPanel.svelte'
     import PuzzleTypePanel from './panels/PuzzleTypePanel.svelte'
     import QuizDurationPanel from './panels/QuizDurationPanel.svelte'
-    import SharedQuizPanel from './panels/SharedQuizPanel.svelte'
+    import QuizPreviewPanel from './panels/QuizPreviewPanel.svelte'
     import SharePanel from './panels/SharePanel.svelte'
     import DifficultyPanel from './panels/DifficultyPanel.svelte'
 
@@ -73,8 +73,13 @@
     function setDifficultyLevel(event: any) {
         quiz.difficulty = event.detail.level
         // TODO: Set difficulty settings
-        if (quiz.difficulty !== '?') {
+        if (typeof quiz.difficulty === 'number') {
             console.log('TODO: set difficulty', quiz.difficulty)
+            if (typeof quiz.selectedOperator === 'number') {
+                quiz.operatorSettings[
+                    quiz.selectedOperator
+                ] = getOperatorSettings(quiz.difficulty, quiz.selectedOperator)
+            }
         }
     }
 
@@ -111,7 +116,7 @@
                         on:setDifficultyLevel="{setDifficultyLevel}"
                     />
                 {/if}
-                {#if quiz.selectedOperator !== undefined && typeof quiz.difficulty === 'string'}
+                {#if quiz.selectedOperator !== undefined && quiz.difficulty === '?'}
                     <div
                         transition:slide|local="{appSettings.transitionDuration}"
                     >
@@ -137,11 +142,9 @@
                             {/if}
                         {/each}
                         <PuzzleTypePanel
-                            puzzle="{puzzle}"
                             validationError="{validationError}"
                             transitionDuration="{appSettings.transitionDuration}"
                             bind:quizPuzzleMode="{quiz.puzzleMode}"
-                            on:getPuzzlePreview="{() => getPuzzlePreview()}"
                         />
                         <QuizDurationPanel
                             bind:duration="{quiz.duration}"
@@ -149,13 +152,16 @@
                         />
                     </div>
                 {/if}
-            {:else}
-                <SharedQuizPanel
+            {/if}
+            {#if quiz.selectedOperator !== undefined && quiz.difficulty !== undefined}
+                <QuizPreviewPanel
                     puzzle="{puzzle}"
                     title="{quiz.title}"
                     transitionDuration="{appSettings.transitionDuration}"
+                    on:getPuzzlePreview="{() => getPuzzlePreview()}"
                 />
             {/if}
+
             {#if showSharePanel}
                 <SharePanel
                     transitionDuration="{appSettings.transitionDuration}"
