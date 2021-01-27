@@ -26,6 +26,7 @@
     let puzzle: Puzzle | undefined
     const dispatch = createEventDispatcher()
     let showSharePanel: boolean
+    const customDifficultyId = 'x'
 
     $: isMultiplication = quiz.selectedOperator === Operator.Multiplication
     $: isDivision = quiz.selectedOperator === Operator.Division
@@ -73,14 +74,21 @@
 
     function setDifficultyLevel(event: any) {
         quiz.difficulty = event.detail.level
+        quiz.title = ''
 
-        if (quiz.selectedOperator === undefined || quiz.difficulty === '?')
+        if (
+            quiz.selectedOperator === undefined ||
+            quiz.difficulty === customDifficultyId
+        )
             return
 
         quiz.puzzleMode =
             quiz.difficulty > 3 ? PuzzleMode.Random : PuzzleMode.Normal
 
         quiz.duration = quiz.difficulty > 2 ? 1 : 0.5
+        // quiz.title = `${
+        //     appSettings.operatorLabels[quiz.selectedOperator]
+        // } - Nivå ${quiz.difficulty}`
 
         if (quiz.selectedOperator === 4) {
             Object.values(Operator).forEach((operator) => {
@@ -130,7 +138,7 @@
                         on:setDifficultyLevel="{setDifficultyLevel}"
                     />
                 {/if}
-                {#if quiz.selectedOperator !== undefined && quiz.difficulty === '?'}
+                {#if quiz.selectedOperator !== undefined && quiz.difficulty === customDifficultyId}
                     <div
                         transition:slide|local="{appSettings.transitionDuration}"
                     >
@@ -165,7 +173,7 @@
                     </div>
                 {/if}
             {/if}
-            {#if quiz.selectedOperator !== undefined && quiz.difficulty !== undefined}
+            {#if quiz.selectedOperator !== undefined && (quiz.difficulty || !quiz.showSettings)}
                 <QuizPreviewPanel
                     puzzle="{puzzle}"
                     title="{quiz.title}"

@@ -13,7 +13,7 @@ export function getQuiz(): Quiz {
         showSettings: getBoolParam('showSettings'),
         duration: getFloatParam('duration') ?? 0.5,
         puzzleTimeLimit: !!getIntParam('timeLimit'), // Saved as int for backward compatibility
-        difficulty: '',
+        difficulty: getIntParam('difficulty') || getStringParam('difficulty') || '',
         operatorSettings: [
             {
                 operator: Operator.Addition,
@@ -122,14 +122,19 @@ export function getOperatorSettings(difficulty: number | string, operator: numbe
             case 4:
                 return {
                     min: 20,
-                    max: 59
+                    max: 49
                 }
             case 5:
                 return {
                     min: 30,
-                    max: 79
+                    max: 69
                 }
             case 6:
+                return {
+                    min: 40,
+                    max: 79
+                }
+            case 7:
                 return {
                     min: 40,
                     max: 99
@@ -152,6 +157,8 @@ export function getOperatorSettings(difficulty: number | string, operator: numbe
             case 5:
                 return [12]
             case 6:
+                return [8, 9]
+            case 7:
                 return [12, 8, 7, 9]
             default:
                 throw ('Invalid difficulty provided')
@@ -189,7 +196,7 @@ export function setUrlParams(quiz: Quiz) {
 function getIntParam(param: string): number | undefined {
     const value = urlParams.get(param)
 
-    return value != null ? parseInt(value) : undefined
+    return value != undefined ? parseInt(value) : undefined
 }
 
 function getStringParam(param: string): string | undefined {
