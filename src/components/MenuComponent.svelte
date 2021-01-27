@@ -49,7 +49,8 @@
     $: validationError =
         missingPossibleValues ||
         hasInvalidRange ||
-        quiz.selectedOperator === undefined
+        quiz.selectedOperator === undefined ||
+        (!quiz.difficulty && quiz.showSettings) // For backwards-compatibility: Show start button for shared quiz, even with no difficulty-setting
 
     $: if (!validationError && quiz) {
         updateQuizSettings()
@@ -86,9 +87,6 @@
             quiz.difficulty > 3 ? PuzzleMode.Random : PuzzleMode.Normal
 
         quiz.duration = quiz.difficulty > 2 ? 1 : 0.5
-        // quiz.title = `${
-        //     appSettings.operatorLabels[quiz.selectedOperator]
-        // } - Nivå ${quiz.difficulty}`
 
         if (quiz.selectedOperator === 4) {
             Object.values(Operator).forEach((operator) => {
