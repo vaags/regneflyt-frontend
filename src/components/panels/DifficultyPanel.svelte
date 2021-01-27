@@ -8,7 +8,7 @@
     export let level: number | string | undefined = undefined
 
     const dispatch = createEventDispatcher()
-    const levels = [1, 2, 3, 4, 5, 6, 7, 'x']
+    const levels = [1, 2, 3, 4, 5, 6, 'x']
 
     function setDifficultyLevel(selectedLevel: number | string | undefined) {
         level = selectedLevel
@@ -18,14 +18,16 @@
 
 <div transition:slide|local="{transitionDuration}" class="mb-1 md:mb-2">
     <CardComponent heading="Vanskelighetsgrad">
-        <div class="text-lg flex flex-wrap border border-gray-500">
+        <div
+            class="text-lg flex flex-wrap border border-gray-500 rounded divide-x divide-gray-500 mb-1 bg-white"
+        >
             {#each levels as l}
                 <label
                     class="flex-1 
                     py-2 text-center cursor-pointer transition-colors duration-200
                     {level ===
                     l
-                        ? 'bg-blue-700 text-gray-100'
+                        ? 'bg-blue-700  text-gray-100'
                         : ''}"
                 >
                     {l === 'x' ? '?' : l}
@@ -35,7 +37,7 @@
                         name="difficulty"
                         value="{l}"
                         bind:group="{level}"
-                        on:click="{() => setDifficultyLevel(l)}"
+                        on:change="{() => setDifficultyLevel(l)}"
                     />
                 </label>
             {/each}

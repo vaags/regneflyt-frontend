@@ -122,19 +122,14 @@ export function getOperatorSettings(difficulty: number | string, operator: numbe
             case 4:
                 return {
                     min: 20,
-                    max: 49
+                    max: 59
                 }
             case 5:
                 return {
                     min: 30,
-                    max: 69
-                }
-            case 6:
-                return {
-                    min: 40,
                     max: 79
                 }
-            case 7:
+            case 6:
                 return {
                     min: 40,
                     max: 99
@@ -157,8 +152,6 @@ export function getOperatorSettings(difficulty: number | string, operator: numbe
             case 5:
                 return [12]
             case 6:
-                return [8, 9]
-            case 7:
                 return [12, 8, 7, 9]
             default:
                 throw ('Invalid difficulty provided')
