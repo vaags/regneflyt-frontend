@@ -8,12 +8,19 @@ import type { NumberRange } from "../models/NumberRange";
 const urlParams = new URLSearchParams(window.location.search)
 
 export function getQuiz(): Quiz {
+    let showSettings = getBoolParam('showSettings')
+    let difficulty = getIntParam('difficulty') || getStringParam('difficulty') || ''
+
+    if (!showSettings && !difficulty) {
+        difficulty = 'x' // For backwards compatibility. (Previously there was only custom difficulty.)
+    }
+
     return {
         title: getStringParam('title'),
-        showSettings: getBoolParam('showSettings'),
+        showSettings: showSettings,
         duration: getFloatParam('duration') ?? 0.5,
-        puzzleTimeLimit: !!getIntParam('timeLimit'), // Saved as int for backward compatibility
-        difficulty: getIntParam('difficulty') || getStringParam('difficulty') || '',
+        puzzleTimeLimit: !!getIntParam('timeLimit'), // Saved as int for backwards compatibility
+        difficulty: difficulty,
         operatorSettings: [
             {
                 operator: Operator.Addition,
