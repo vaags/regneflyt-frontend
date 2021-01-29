@@ -5,7 +5,10 @@
     import { Operator } from '../models/constants/Operator'
     import type { Quiz } from '../models/Quiz'
     import { getPuzzle } from '../services/puzzleService'
-    import { setUrlParams, getOperatorSettings } from '../services/quizService'
+    import {
+        setUrlParams,
+        getQuizDifficultySettings,
+    } from '../services/quizService'
     import type { AppSettings } from '../models/AppSettings'
     import type { Puzzle } from '../models/Puzzle'
     import type { NumberRange } from '../models/NumberRange'
@@ -17,7 +20,6 @@
     import QuizPreviewPanel from './panels/QuizPreviewPanel.svelte'
     import SharePanel from './panels/SharePanel.svelte'
     import DifficultyPanel from './panels/DifficultyPanel.svelte'
-    import { PuzzleMode } from '../models/constants/PuzzleMode'
 
     export let appSettings: AppSettings
     export let quiz: Quiz
@@ -26,7 +28,6 @@
     let puzzle: Puzzle | undefined
     const dispatch = createEventDispatcher()
     let showSharePanel: boolean
-    const customDifficultyId = 'x'
 
     $: isMultiplication = quiz.selectedOperator === Operator.Multiplication
     $: isDivision = quiz.selectedOperator === Operator.Division
@@ -74,37 +75,7 @@
     }
 
     function setDifficultyLevel(event: any) {
-        quiz.difficulty = event.detail.level
-        quiz.title = ''
-
-        if (
-            quiz.selectedOperator === undefined ||
-            quiz.difficulty === customDifficultyId
-        )
-            return
-
-        quiz.puzzleMode =
-            quiz.difficulty > 3 ? PuzzleMode.Random : PuzzleMode.Normal
-
-        quiz.duration = quiz.difficulty > 2 ? 1 : 0.5
-
-        quiz.puzzleTimeLimit = quiz.difficulty > 1
-
-        quiz.allowNegativeAnswer = quiz.difficulty > 2
-
-        if (quiz.selectedOperator === 4) {
-            Object.values(Operator).forEach((operator) => {
-                quiz.operatorSettings[operator] = getOperatorSettings(
-                    quiz.difficulty,
-                    quiz.selectedOperator
-                )
-            })
-        } else {
-            quiz.operatorSettings[quiz.selectedOperator] = getOperatorSettings(
-                quiz.difficulty,
-                quiz.selectedOperator
-            )
-        }
+        quiz = getQuizDifficultySettings(quiz, event.detail.level)
     }
 
     onMount(() => {
@@ -140,7 +111,7 @@
                         on:setDifficultyLevel="{setDifficultyLevel}"
                     />
                 {/if}
-                {#if quiz.selectedOperator !== undefined && quiz.difficulty === customDifficultyId}
+                {#if quiz.selectedOperator !== undefined && quiz.difficulty === 'x'}
                     <div
                         transition:slide|local="{appSettings.transitionDuration}"
                     >

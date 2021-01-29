@@ -6,13 +6,14 @@ import type { OperatorSettings } from "../models/OperatorSettings";
 import type { NumberRange } from "../models/NumberRange";
 
 const urlParams = new URLSearchParams(window.location.search)
+const customDifficultyId = 'x'
 
 export function getQuiz(): Quiz {
     let showSettings = getBoolParam('showSettings')
     let difficulty = getIntParam('difficulty') || getStringParam('difficulty') || ''
 
     if (!showSettings && !difficulty) {
-        difficulty = 'x' // For backwards compatibility. (Previously there was only custom difficulty.)
+        difficulty = customDifficultyId // For backwards compatibility. (Previously there was only custom difficulty.)
     }
 
     return {
@@ -69,7 +70,29 @@ export function getQuiz(): Quiz {
     }
 }
 
-export function getOperatorSettings(difficulty: number | string, operator: number | undefined): OperatorSettings {
+export function getQuizDifficultySettings(quiz: Quiz, difficulty: string | number): Quiz {
+    quiz.difficulty = difficulty
+    quiz.title = ''
+
+    if (quiz.selectedOperator === undefined || quiz.difficulty === customDifficultyId)
+        return quiz
+
+    quiz.puzzleMode = quiz.difficulty > 3 ? PuzzleMode.Random : PuzzleMode.Normal
+    quiz.duration = quiz.difficulty > 2 ? 1 : 0.5
+    quiz.puzzleTimeLimit = quiz.difficulty > 1
+    quiz.allowNegativeAnswer = quiz.difficulty > 2
+
+    Object.values(Operator).forEach((operator) => {
+        quiz.operatorSettings[operator] = getOperatorSettings(
+            quiz.difficulty,
+            operator
+        )
+    })
+
+    return quiz
+}
+
+function getOperatorSettings(difficulty: number | string, operator: number | undefined): OperatorSettings {
     switch (operator) {
         case Operator.Addition:
             return {
