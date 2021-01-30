@@ -3,6 +3,5 @@
     "semi": false,
     "singleQuote": true,
     "trailingComma": "es5",
-    "svelteStrictMode": true,
-    "plugins": ["prettier-plugin-svelte"]
+    "svelteStrictMode": true
   }

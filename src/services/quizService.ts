@@ -1,16 +1,17 @@
-import type { Quiz } from "../models/Quiz"
-import { Operator } from "../models/constants/Operator"
-import { PuzzleMode } from "../models/constants/PuzzleMode";
-import { QuizState } from "../models/constants/QuizState";
-import type { OperatorSettings } from "../models/OperatorSettings";
-import type { NumberRange } from "../models/NumberRange";
+import type { Quiz } from '../models/Quiz'
+import { Operator } from '../models/constants/Operator'
+import { PuzzleMode } from '../models/constants/PuzzleMode'
+import { QuizState } from '../models/constants/QuizState'
+import type { OperatorSettings } from '../models/OperatorSettings'
+import type { NumberRange } from '../models/NumberRange'
 
 const urlParams = new URLSearchParams(window.location.search)
 const customDifficultyId = 'x'
 
 export function getQuiz(): Quiz {
     let showSettings = getBoolParam('showSettings')
-    let difficulty = getIntParam('difficulty') || getStringParam('difficulty') || ''
+    let difficulty =
+        getIntParam('difficulty') || getStringParam('difficulty') || ''
 
     if (!showSettings && !difficulty) {
         difficulty = customDifficultyId // For backwards compatibility. (Previously there was only custom difficulty.)
@@ -30,7 +31,7 @@ export function getQuiz(): Quiz {
                     max: getIntParam('addMax') ?? 19,
                 },
                 possibleValues: [],
-                score: 0
+                score: 0,
             },
             {
                 operator: Operator.Subtraction,
@@ -39,7 +40,7 @@ export function getQuiz(): Quiz {
                     max: getIntParam('subMax') ?? 19,
                 },
                 possibleValues: [],
-                score: 0
+                score: 0,
             },
             {
                 operator: Operator.Multiplication,
@@ -48,7 +49,7 @@ export function getQuiz(): Quiz {
                     max: 0,
                 },
                 possibleValues: getNumArrayParam('mulValues') ?? [7],
-                score: 0
+                score: 0,
             },
             {
                 operator: Operator.Division,
@@ -57,27 +58,33 @@ export function getQuiz(): Quiz {
                     max: 0,
                 },
                 possibleValues: getNumArrayParam('divValues') ?? [5],
-                score: 0
+                score: 0,
             },
         ],
         state: QuizState.Initial,
-        selectedOperator:
-            (getIntParam('operator') as Operator) ?? undefined,
+        selectedOperator: (getIntParam('operator') as Operator) ?? undefined,
         allowNegativeAnswer: getBoolParam('negatives'),
         puzzleMode:
             (getIntParam('puzzleMode') as PuzzleMode) ?? PuzzleMode.Normal,
-        previousScore: undefined
+        previousScore: undefined,
     }
 }
 
-export function getQuizDifficultySettings(quiz: Quiz, difficulty: string | number): Quiz {
+export function getQuizDifficultySettings(
+    quiz: Quiz,
+    difficulty: string | number
+): Quiz {
     quiz.difficulty = difficulty
     quiz.title = ''
 
-    if (quiz.selectedOperator === undefined || quiz.difficulty === customDifficultyId)
+    if (
+        quiz.selectedOperator === undefined ||
+        quiz.difficulty === customDifficultyId
+    )
         return quiz
 
-    quiz.puzzleMode = quiz.difficulty > 3 ? PuzzleMode.Random : PuzzleMode.Normal
+    quiz.puzzleMode =
+        quiz.difficulty > 3 ? PuzzleMode.Random : PuzzleMode.Normal
     quiz.duration = quiz.difficulty > 2 ? 1 : 0.5
     quiz.puzzleTimeLimit = quiz.difficulty > 1
     quiz.allowNegativeAnswer = quiz.difficulty > 2
@@ -92,21 +99,24 @@ export function getQuizDifficultySettings(quiz: Quiz, difficulty: string | numbe
     return quiz
 }
 
-function getOperatorSettings(difficulty: number | string, operator: number | undefined): OperatorSettings {
+function getOperatorSettings(
+    difficulty: number | string,
+    operator: number | undefined
+): OperatorSettings {
     switch (operator) {
         case Operator.Addition:
             return {
                 operator: Operator.Addition,
                 range: getRange(),
                 possibleValues: [],
-                score: 0
+                score: 0,
             }
         case Operator.Subtraction:
             return {
                 operator: Operator.Subtraction,
                 range: getRange(),
                 possibleValues: [],
-                score: 0
+                score: 0,
             }
         case Operator.Multiplication:
             return {
@@ -116,7 +126,7 @@ function getOperatorSettings(difficulty: number | string, operator: number | und
                     max: 0,
                 },
                 possibleValues: getPossibleValues(),
-                score: 0
+                score: 0,
             }
         case Operator.Division:
             return {
@@ -126,10 +136,10 @@ function getOperatorSettings(difficulty: number | string, operator: number | und
                     max: 0,
                 },
                 possibleValues: getPossibleValues(),
-                score: 0
+                score: 0,
             }
         default:
-            throw ('Cannot recognize operator')
+            throw 'Cannot recognize operator'
     }
 
     function getRange(): NumberRange {
@@ -137,35 +147,35 @@ function getOperatorSettings(difficulty: number | string, operator: number | und
             case 1:
                 return {
                     min: 0,
-                    max: 9
+                    max: 9,
                 }
             case 2:
                 return {
                     min: 0,
-                    max: 19
+                    max: 9,
                 }
             case 3:
                 return {
-                    min: 10,
-                    max: 39
+                    min: 0,
+                    max: 19,
                 }
             case 4:
                 return {
-                    min: 20,
-                    max: 59
+                    min: 10,
+                    max: 29,
                 }
             case 5:
                 return {
-                    min: 30,
-                    max: 79
+                    min: 20,
+                    max: 49,
                 }
             case 6:
                 return {
-                    min: 40,
-                    max: 99
+                    min: 30,
+                    max: 69,
                 }
             default:
-                throw ('Invalid difficulty provided')
+                throw 'Invalid difficulty provided'
         }
     }
 
@@ -184,7 +194,7 @@ function getOperatorSettings(difficulty: number | string, operator: number | und
             case 6:
                 return [12, 8, 7, 9]
             default:
-                throw ('Invalid difficulty provided')
+                throw 'Invalid difficulty provided'
         }
     }
 }
@@ -197,23 +207,22 @@ export function setUrlParams(quiz: Quiz) {
         negatives: quiz.allowNegativeAnswer.toString(),
         addMin: quiz.operatorSettings[Operator.Addition].range.min?.toString(),
         addMax: quiz.operatorSettings[Operator.Addition].range.max?.toString(),
-        subMin: quiz.operatorSettings[Operator.Subtraction].range.min?.toString(),
-        subMax: quiz.operatorSettings[Operator.Subtraction].range.max?.toString(),
+        subMin: quiz.operatorSettings[
+            Operator.Subtraction
+        ].range.min?.toString(),
+        subMax: quiz.operatorSettings[
+            Operator.Subtraction
+        ].range.max?.toString(),
         mulValues:
-            quiz.operatorSettings[Operator.Multiplication].possibleValues?.toString() ??
-            '',
-        divValues:
-            quiz.operatorSettings[3].possibleValues?.toString() ??
-            '',
+            quiz.operatorSettings[
+                Operator.Multiplication
+            ].possibleValues?.toString() ?? '',
+        divValues: quiz.operatorSettings[3].possibleValues?.toString() ?? '',
         puzzleMode: quiz.puzzleMode.toString(),
-        difficulty: quiz.difficulty?.toString() ?? ''
+        difficulty: quiz.difficulty?.toString() ?? '',
     }
 
-    window.history.replaceState(
-        null,
-        '',
-        `?${new URLSearchParams(parameters)}`
-    )
+    window.history.replaceState(null, '', `?${new URLSearchParams(parameters)}`)
 }
 
 function getIntParam(param: string): number | undefined {
