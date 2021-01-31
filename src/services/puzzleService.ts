@@ -53,7 +53,7 @@ function getPuzzleParts(
             let rnd1 = getRandomNumber(
                 settings.range.min,
                 settings.range.max,
-                previousParts?.[0].generatedValue
+                0
             )
             let rnd2 = getRandomNumber(
                 settings.range.min,
@@ -72,7 +72,7 @@ function getPuzzleParts(
             let rnd1 = getRandomNumber(
                 settings.range.min,
                 settings.range.max,
-                previousParts?.[0].generatedValue
+                0
             )
             let rnd2 = getRandomNumber(
                 settings.range.min,

@@ -163,22 +163,22 @@ function getOperatorSettings(
                 }
             case 3:
                 return {
-                    min: 11,
+                    min: 10,
                     max: 30,
                 }
             case 4:
                 return {
-                    min: 21,
+                    min: 20,
                     max: 40,
                 }
             case 5:
                 return {
-                    min: 31,
+                    min: 30,
                     max: 70,
                 }
             case 6:
                 return {
-                    min: 51,
+                    min: 50,
                     max: 100,
                 }
             default:
@@ -200,22 +200,22 @@ function getOperatorSettings(
                 }
             case 3:
                 return {
-                    min: -11,
+                    min: -10,
                     max: 20,
                 }
             case 4:
                 return {
-                    min: -21,
+                    min: -20,
                     max: 30,
                 }
             case 5:
                 return {
-                    min: -31,
+                    min: -30,
                     max: 40,
                 }
             case 6:
                 return {
-                    min: -41,
+                    min: -40,
                     max: 50,
                 }
             default:
