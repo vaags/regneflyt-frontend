@@ -133,7 +133,6 @@
                                     bind:rangeMax="{quiz.operatorSettings[
                                         operator
                                     ].range.max}"
-                                    bind:allowNegativeAnswer="{quiz.allowNegativeAnswer}"
                                 />
                             {/if}
                         {/each}

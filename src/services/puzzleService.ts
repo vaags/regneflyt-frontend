@@ -15,8 +15,7 @@ export function getPuzzle(
     return {
         parts: getPuzzleParts(
             quiz.operatorSettings[activeOperator],
-            previousPuzzle?.parts,
-            quiz.allowNegativeAnswer
+            previousPuzzle?.parts
         ),
         operator: activeOperator,
         operatorLabel: operatorSigns[activeOperator],
@@ -42,8 +41,7 @@ function getOperator(operator: Operator | 4 | undefined): Operator {
 
 function getPuzzleParts(
     settings: OperatorSettings,
-    previousParts: PuzzlePart[] | undefined,
-    allowNegativeAnswer: boolean
+    previousParts: PuzzlePart[] | undefined
 ): PuzzlePart[] {
     const parts: PuzzlePart[] = Array.from({ length: 3 }, (_) => ({
         userDefinedValue: undefined,
@@ -51,40 +49,45 @@ function getPuzzleParts(
     }))
 
     switch (settings.operator) {
-        case Operator.Addition:
-            parts[0].generatedValue = getRandomNumber(
+        case Operator.Addition: {
+            let rnd1 = getRandomNumber(
                 settings.range.min,
                 settings.range.max,
                 previousParts?.[0].generatedValue
             )
-            parts[1].generatedValue = getRandomNumber(
+            let rnd2 = getRandomNumber(
                 settings.range.min,
                 settings.range.max,
-                previousParts?.[1].generatedValue
+                rnd1
             )
-            parts[2].generatedValue =
-                parts[0].generatedValue + parts[1].generatedValue
+            parts[0].generatedValue = Math.min(rnd1, rnd2)
+            parts[2].generatedValue = Math.max(rnd1, rnd2) // The largest number is the answer
+
+            parts[1].generatedValue =
+                parts[2].generatedValue - parts[0].generatedValue
+
             break
-        case Operator.Subtraction:
-            parts[0].generatedValue = getRandomNumber(
+        }
+        case Operator.Subtraction: {
+            let rnd1 = getRandomNumber(
                 settings.range.min,
                 settings.range.max,
                 previousParts?.[0].generatedValue
             )
-            parts[1].generatedValue = getRandomNumber(
+            let rnd2 = getRandomNumber(
                 settings.range.min,
                 settings.range.max,
-                previousParts?.[1].generatedValue
+                rnd1
             )
-            if (
-                !allowNegativeAnswer &&
-                parts[1].generatedValue > parts[0].generatedValue
-            ) {
-                ;[parts[0], parts[1]] = [parts[1], parts[0]]
-            }
-            parts[2].generatedValue =
-                parts[0].generatedValue - parts[1].generatedValue
+
+            parts[0].generatedValue = Math.max(rnd1, rnd2)
+            parts[2].generatedValue = Math.min(rnd1, rnd2) // The smallest number is the answer
+
+            parts[1].generatedValue =
+                parts[0].generatedValue - parts[2].generatedValue
+
             break
+        }
         case Operator.Multiplication:
             parts[0].generatedValue = getRandomNumberFromArray(
                 settings.possibleValues,
@@ -142,7 +145,7 @@ function getRandomNumberFromArray(
 function getRandomNumber(
     min: number,
     max: number,
-    exclude: number | undefined
+    exclude: number | undefined = undefined
 ) {
     // Adapted from https://stackoverflow.com/a/34184614
     var rnd = Math.floor(

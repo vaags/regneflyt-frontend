@@ -14,10 +14,11 @@
     export let possibleValues: Array<number>
     export let rangeMin: number
     export let rangeMax: number
-    export let allowNegativeAnswer: boolean
 
-    const minValues = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90]
-    const maxValues = [9, 19, 29, 39, 49, 59, 69, 79, 89, 99]
+    const numbers =
+        operator === Operator.Addition
+            ? [1, 10, 20, 30, 40, 50, 60, 70, 80, 90]
+            : [-40, -30, -20, -10, 1, 10, 20, 30, 40, 50]
 </script>
 
 <div
@@ -42,13 +43,14 @@
                             type="checkbox"
                             class="h-5 w-5 rounded text-blue-700"
                             bind:group="{possibleValues}"
-                            value="{i + 1}"
+                            value="{i}"
                         />
-                        <span class="ml-2 text-lg">{i + 1}</span>
+                        <span class="ml-2 text-lg">{i}</span>
                     </label>
                 </div>
             {/each}
         {:else}
+            <p class="text-blue-700"></p>
             <div class="flex flex-row place-items-center mb-1">
                 <label class="mr-3 text-lg" for="partOneMin-{operator}"
                     >Fra</label
@@ -58,9 +60,9 @@
                     id="partOneMin-{operator}"
                     bind:value="{rangeMin}"
                 >
-                    {#each minValues as v}
-                        <option value="{v}">
-                            {v}
+                    {#each numbers as n}
+                        <option value="{n}">
+                            {n}
                         </option>
                     {/each}
                 </select>
@@ -72,9 +74,9 @@
                     id="partOneMax-{operator}"
                     bind:value="{rangeMax}"
                 >
-                    {#each maxValues as v}
-                        <option value="{v}">
-                            {v}
+                    {#each numbers as n}
+                        <option value="{n + 10}">
+                            {n + 10}
                         </option>
                     {/each}
                 </select>
@@ -88,16 +90,6 @@
                         Intervallet er ugyldig.
                     </AlertComponent>
                 </div>
-            {/if}
-            {#if operator === Operator.Subtraction}
-                <label class="inline-flex items-center mt-4 text-lg">
-                    <input
-                        type="checkbox"
-                        class="h-5 w-5 text-blue-700 rounded"
-                        bind:checked="{allowNegativeAnswer}"
-                    />
-                    <span class="ml-2">Tillat negative svar</span>
-                </label>
             {/if}
         {/if}
     </CardComponent>

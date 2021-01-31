@@ -64,7 +64,6 @@ export function getQuiz(): Quiz {
         ],
         state: QuizState.Initial,
         selectedOperator: (getIntParam('operator') as Operator) ?? undefined,
-        allowNegativeAnswer: getBoolParam('negatives'),
         puzzleMode:
             (getIntParam('puzzleMode') as PuzzleMode) ?? PuzzleMode.Normal,
         previousScore: undefined,
@@ -96,7 +95,6 @@ export function getQuizDifficultySettings(
         quiz.difficulty > 3 ? PuzzleMode.Random : PuzzleMode.Normal
     quiz.duration = quiz.difficulty > 2 ? 1 : 0.5
     quiz.puzzleTimeLimit = quiz.difficulty > 1
-    quiz.allowNegativeAnswer = quiz.difficulty > 2
 
     Object.values(Operator).forEach((operator) => {
         quiz.operatorSettings[operator] = getOperatorSettings(
@@ -116,14 +114,14 @@ function getOperatorSettings(
         case Operator.Addition:
             return {
                 operator: Operator.Addition,
-                range: getRange(),
+                range: getAdditionRange(),
                 possibleValues: [],
                 score: 0,
             }
         case Operator.Subtraction:
             return {
                 operator: Operator.Subtraction,
-                range: getRange(),
+                range: getSubtractionRange(),
                 possibleValues: [],
                 score: 0,
             }
@@ -151,37 +149,74 @@ function getOperatorSettings(
             throw 'Cannot recognize operator'
     }
 
-    function getRange(): NumberRange {
+    function getAdditionRange(): NumberRange {
         switch (difficulty) {
             case 1:
                 return {
-                    min: 0,
-                    max: 9,
+                    min: 1,
+                    max: 10,
                 }
             case 2:
                 return {
-                    min: 0,
-                    max: 9,
+                    min: 1,
+                    max: 20,
                 }
             case 3:
                 return {
-                    min: 0,
-                    max: 19,
+                    min: 11,
+                    max: 30,
                 }
             case 4:
                 return {
-                    min: 10,
-                    max: 29,
+                    min: 21,
+                    max: 40,
                 }
             case 5:
                 return {
-                    min: 20,
-                    max: 49,
+                    min: 31,
+                    max: 70,
                 }
             case 6:
                 return {
-                    min: 30,
-                    max: 69,
+                    min: 51,
+                    max: 100,
+                }
+            default:
+                throw 'Invalid difficulty provided'
+        }
+    }
+
+    function getSubtractionRange(): NumberRange {
+        switch (difficulty) {
+            case 1:
+                return {
+                    min: 1,
+                    max: 10,
+                }
+            case 2:
+                return {
+                    min: 1,
+                    max: 20,
+                }
+            case 3:
+                return {
+                    min: -11,
+                    max: 20,
+                }
+            case 4:
+                return {
+                    min: -21,
+                    max: 30,
+                }
+            case 5:
+                return {
+                    min: -31,
+                    max: 40,
+                }
+            case 6:
+                return {
+                    min: -41,
+                    max: 50,
                 }
             default:
                 throw 'Invalid difficulty provided'
@@ -197,9 +232,9 @@ function getOperatorSettings(
             case 3:
                 return [6]
             case 4:
-                return [7]
+                return [7, 9]
             case 5:
-                return [12]
+                return [12, 8, 6]
             case 6:
                 return [12, 8, 7, 9]
             default:
@@ -213,7 +248,6 @@ export function setUrlParams(quiz: Quiz) {
         duration: quiz.duration.toString(),
         timeLimit: quiz.puzzleTimeLimit ? '3' : '0', // Saved as int for backward compatibility
         operator: quiz.selectedOperator?.toString() ?? '',
-        negatives: quiz.allowNegativeAnswer.toString(),
         addMin: quiz.operatorSettings[Operator.Addition].range.min?.toString(),
         addMax: quiz.operatorSettings[Operator.Addition].range.max?.toString(),
         subMin: quiz.operatorSettings[

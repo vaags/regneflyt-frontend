@@ -1,5 +1,4 @@
 import type { AppSettings } from '../models/AppSettings'
-import type { Quiz } from '../models/Quiz'
 
 export function getAppSettings(isProduction: string): AppSettings {
     const isProductionBool = isProduction === 'true'
