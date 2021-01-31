@@ -49,45 +49,39 @@ function getPuzzleParts(
     }))
 
     switch (settings.operator) {
-        case Operator.Addition: {
-            let rnd1 = getRandomNumber(
+        case Operator.Addition:
+            parts[2].generatedValue = getRandomNumber(
                 settings.range.min,
                 settings.range.max,
-                0
+                previousParts?.[2].generatedValue
             )
-            let rnd2 = getRandomNumber(
+
+            parts[0].generatedValue = getRandomNumber(
                 settings.range.min,
-                settings.range.max,
-                rnd1
+                parts[2].generatedValue
             )
-            parts[0].generatedValue = Math.min(rnd1, rnd2)
-            parts[2].generatedValue = Math.max(rnd1, rnd2) // The largest number is the answer
 
             parts[1].generatedValue =
                 parts[2].generatedValue - parts[0].generatedValue
 
             break
-        }
-        case Operator.Subtraction: {
-            let rnd1 = getRandomNumber(
+        case Operator.Subtraction:
+            parts[0].generatedValue = getRandomNumber(
                 settings.range.min,
                 settings.range.max,
-                0
-            )
-            let rnd2 = getRandomNumber(
-                settings.range.min,
-                settings.range.max,
-                rnd1
+                previousParts?.[0].generatedValue
             )
 
-            parts[0].generatedValue = Math.max(rnd1, rnd2)
-            parts[2].generatedValue = Math.min(rnd1, rnd2) // The smallest number is the answer
+            parts[2].generatedValue = getRandomNumber(
+                settings.range.min,
+                parts[0].generatedValue,
+                previousParts?.[2].generatedValue
+            )
 
             parts[1].generatedValue =
                 parts[0].generatedValue - parts[2].generatedValue
 
             break
-        }
         case Operator.Multiplication:
             parts[0].generatedValue = getRandomNumberFromArray(
                 settings.possibleValues,

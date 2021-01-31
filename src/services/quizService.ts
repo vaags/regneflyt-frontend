@@ -195,13 +195,13 @@ function getOperatorSettings(
                 }
             case 2:
                 return {
-                    min: 1,
+                    min: 10,
                     max: 20,
                 }
             case 3:
                 return {
-                    min: -10,
-                    max: 20,
+                    min: 20,
+                    max: 30,
                 }
             case 4:
                 return {
