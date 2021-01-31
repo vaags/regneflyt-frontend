@@ -29,7 +29,7 @@
                 bind:group="{selectedOperator}"
                 value="{4}"
             />
-            <span class="ml-2 text-lg">Alle</span>
+            <span class="ml-2 text-lg">{appSettings.operatorLabels[4]}</span>
         </label>
     </CardComponent>
 </div>

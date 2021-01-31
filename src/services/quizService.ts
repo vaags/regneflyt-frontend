@@ -4,6 +4,7 @@ import { PuzzleMode } from '../models/constants/PuzzleMode'
 import { QuizState } from '../models/constants/QuizState'
 import type { OperatorSettings } from '../models/OperatorSettings'
 import type { NumberRange } from '../models/NumberRange'
+import type { AppSettings } from '../models/AppSettings'
 
 const urlParams = new URLSearchParams(window.location.search)
 const customDifficultyId = 'x'
@@ -70,12 +71,20 @@ export function getQuiz(): Quiz {
     }
 }
 
+export function getQuizTitle(quiz: Quiz, appSettings: AppSettings): string {
+    return (
+        quiz.title ??
+        `${appSettings.operatorLabels[quiz.selectedOperator as number]}: ${
+            quiz.difficulty === 'x' ? 'Egendefinert' : `Nivå ${quiz.difficulty}`
+        }`
+    )
+}
+
 export function getQuizDifficultySettings(
     quiz: Quiz,
     difficulty: string | number
 ): Quiz {
     quiz.difficulty = difficulty
-    quiz.title = ''
 
     if (
         quiz.selectedOperator === undefined ||

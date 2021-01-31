@@ -8,6 +8,7 @@
     import {
         setUrlParams,
         getQuizDifficultySettings,
+        getQuizTitle,
     } from '../services/quizService'
     import type { AppSettings } from '../models/AppSettings'
     import type { Puzzle } from '../models/Puzzle'
@@ -149,7 +150,7 @@
             {#if quiz.selectedOperator !== undefined && (quiz.difficulty || !quiz.showSettings)}
                 <QuizPreviewPanel
                     puzzle="{puzzle}"
-                    title="{quiz.title}"
+                    title="{getQuizTitle(quiz, appSettings)}"
                     transitionDuration="{appSettings.transitionDuration}"
                     validationError="{validationError}"
                     on:getPuzzlePreview="{() => getPuzzlePreview()}"

@@ -1,4 +1,5 @@
-import type { AppSettings } from "../models/AppSettings";
+import type { AppSettings } from '../models/AppSettings'
+import type { Quiz } from '../models/Quiz'
 
 export function getAppSettings(isProduction: string): AppSettings {
     const isProductionBool = isProduction === 'true'
@@ -11,17 +12,17 @@ export function getAppSettings(isProduction: string): AppSettings {
             duration: 200,
         },
         pageTransitionDuration: {
-            duration: 100
+            duration: 100,
         },
         operatorLabels: [
             'Addisjon',
             'Subtraksjon',
             'Multiplikasjon',
             'Divisjon',
-            'Alle',
+            'Alle regnearter',
         ],
         operatorSigns: ['&#43;', '&#8722;', '&#215;', '&#247;', '&#8704'],
-        menuFade: false
+        menuFade: false,
     }
 }
 

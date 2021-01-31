@@ -16,7 +16,7 @@
 </script>
 
 <div transition:slide|local="{transitionDuration}">
-    <CardComponent heading="{title}" label="Forhåndsvisning">
+    <CardComponent heading="{title}">
         {#if validationError}
             <div class="mt-4" transition:slide|local="{transitionDuration}">
                 <AlertComponent color="yellow">
@@ -24,7 +24,7 @@
                 </AlertComponent>
             </div>
         {:else}
-            <div class="text-3xl md:text-4xl text-center mb-1 mt-4">
+            <div class="text-3xl md:text-4xl text-center mb-1">
                 <PuzzlePreviewComponent puzzle="{puzzle}" />
                 <button
                     type="button"

@@ -5,11 +5,13 @@
 </script>
 
 <div
-    class="mb-1 md:mb-2 rounded-tl-md rounded-br-lg px-4 md:px-5 pt-3 md:pt-4 pb-3 md:pb-5 border-b-2 border-l-4 bg-gray-100 border-gray-500">
+    class="mb-1 md:mb-2 rounded-tl-md rounded-br-lg px-4 md:px-5 pt-3 md:pt-4 pb-3 md:pb-5 border-b-2 border-l-4 bg-gray-100 border-gray-500"
+>
     <div class="flex justify-between">
         {#if heading}
             <h2
-                class="font-handwriting text-3xl md:text-4xl mb-5 md:mb-6 text-gray-700">
+                class="font-handwriting text-3xl md:text-4xl mb-5 md:mb-6 text-gray-700"
+            >
                 {heading}
             </h2>
         {/if}
