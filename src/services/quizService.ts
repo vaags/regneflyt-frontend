@@ -205,18 +205,18 @@ function getOperatorSettings(
                 }
             case 4:
                 return {
-                    min: -20,
-                    max: 30,
+                    min: 20,
+                    max: 40,
                 }
             case 5:
                 return {
-                    min: -30,
+                    min: -10,
                     max: 40,
                 }
             case 6:
                 return {
-                    min: -40,
-                    max: 50,
+                    min: -20,
+                    max: 40,
                 }
             default:
                 throw 'Invalid difficulty provided'

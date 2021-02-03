@@ -49,7 +49,7 @@ function getPuzzleParts(
     }))
 
     switch (settings.operator) {
-        case Operator.Addition:
+        case Operator.Addition: {
             parts[2].generatedValue = getRandomNumber(
                 settings.range.min,
                 settings.range.max,
@@ -57,14 +57,16 @@ function getPuzzleParts(
             )
 
             parts[0].generatedValue = getRandomNumber(
-                settings.range.min,
-                parts[2].generatedValue
+                0,
+                parts[2].generatedValue,
+                previousParts?.[0].generatedValue
             )
 
             parts[1].generatedValue =
                 parts[2].generatedValue - parts[0].generatedValue
 
             break
+        }
         case Operator.Subtraction:
             parts[0].generatedValue = getRandomNumber(
                 settings.range.min,
@@ -72,14 +74,14 @@ function getPuzzleParts(
                 previousParts?.[0].generatedValue
             )
 
-            parts[2].generatedValue = getRandomNumber(
+            parts[1].generatedValue = getRandomNumber(
                 settings.range.min,
-                parts[0].generatedValue,
-                previousParts?.[2].generatedValue
+                settings.range.max,
+                previousParts?.[1].generatedValue
             )
 
-            parts[1].generatedValue =
-                parts[0].generatedValue - parts[2].generatedValue
+            parts[2].generatedValue =
+                parts[0].generatedValue - parts[1].generatedValue
 
             break
         case Operator.Multiplication:
