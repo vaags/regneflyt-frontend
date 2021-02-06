@@ -11,6 +11,7 @@
     import { getQuiz } from './services/quizService'
     import { fakeInputFocus, getAppSettings } from './services/appService'
     import { QuizState } from './models/constants/QuizState'
+    import { getRandomNumber } from './services/randomService'
 
     export let isProduction: string
     export let version: string
@@ -20,6 +21,14 @@
     let puzzleSet: Puzzle[]
     let quiz = getQuiz()
     let fakeInput: any
+
+    let random = getRandomNumber(1, 100)
+
+    for (let index = 0; index < 10; index++) {
+        // console.log(randIntIncl(1, 100))
+        // const restoredRandom = getRandomNumber(1, 100, 'hei', random.state)
+        console.log(getRandomNumber(1, 100, undefined, random.state))
+    }
 
     function getReady(event: any) {
         quiz = event.detail?.quiz ?? quiz
