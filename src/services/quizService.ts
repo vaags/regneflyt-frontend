@@ -7,12 +7,11 @@ import type { NumberRange } from '../models/NumberRange'
 import type { AppSettings } from '../models/AppSettings'
 
 const urlParams = new URLSearchParams(window.location.search)
-const customDifficultyId = 'x'
+const customDifficultyId = 0
 
 export function getQuiz(): Quiz {
     let showSettings = getBoolParam('showSettings')
-    let difficulty =
-        getIntParam('difficulty') || getStringParam('difficulty') || ''
+    let difficulty = getIntParam('difficulty')
 
     if (!showSettings && !difficulty) {
         difficulty = customDifficultyId // For backwards compatibility. (Previously there was only custom difficulty.)
@@ -74,14 +73,16 @@ export function getQuizTitle(quiz: Quiz, appSettings: AppSettings): string {
     return (
         quiz.title ??
         `${appSettings.operatorLabels[quiz.selectedOperator as number]}: ${
-            quiz.difficulty === 'x' ? 'Egendefinert' : `Nivå ${quiz.difficulty}`
+            quiz.difficulty === customDifficultyId
+                ? 'Egendefinert'
+                : `Nivå ${quiz.difficulty}`
         }`
     )
 }
 
 export function getQuizDifficultySettings(
     quiz: Quiz,
-    difficulty: string | number
+    difficulty: number
 ): Quiz {
     quiz.difficulty = difficulty
 
@@ -98,7 +99,7 @@ export function getQuizDifficultySettings(
 
     Object.values(Operator).forEach((operator) => {
         quiz.operatorSettings[operator] = getOperatorSettings(
-            quiz.difficulty,
+            quiz.difficulty || 0,
             operator
         )
     })
@@ -107,7 +108,7 @@ export function getQuizDifficultySettings(
 }
 
 function getOperatorSettings(
-    difficulty: number | string,
+    difficulty: number,
     operator: number | undefined
 ): OperatorSettings {
     switch (operator) {

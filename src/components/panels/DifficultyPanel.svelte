@@ -5,12 +5,12 @@
     import CardComponent from '../widgets/CardComponent.svelte'
 
     export let transitionDuration: TransitionDuration
-    export let level: number | string | undefined = undefined
+    export let level: number | undefined = undefined
 
     const dispatch = createEventDispatcher()
-    const levels = [1, 2, 3, 4, 5, 6, 'x']
+    const levels = [1, 2, 3, 4, 5, 6, 0]
 
-    function setDifficultyLevel(selectedLevel: number | string | undefined) {
+    function setDifficultyLevel(selectedLevel: number | undefined) {
         level = selectedLevel
         dispatch('setDifficultyLevel', { level })
     }
@@ -30,7 +30,7 @@
                         ? 'bg-blue-700  text-gray-100'
                         : ''}"
                 >
-                    {l === 'x' ? '?' : l}
+                    {l === 0 ? '?' : l}
                     <input
                         class="sr-only"
                         type="radio"

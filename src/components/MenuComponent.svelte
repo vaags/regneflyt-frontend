@@ -15,12 +15,13 @@
     import type { NumberRange } from '../models/NumberRange'
     import WelcomePanel from './panels/WelcomePanel.svelte'
     import OperatorSelectionPanel from './panels/OperatorSelectionPanel.svelte'
-    import OperatorSettingsPanel from './panels/OperatorSettingsPanel.svelte'
     import PuzzleTypePanel from './panels/PuzzleTypePanel.svelte'
     import QuizDurationPanel from './panels/QuizDurationPanel.svelte'
     import QuizPreviewPanel from './panels/QuizPreviewPanel.svelte'
     import SharePanel from './panels/SharePanel.svelte'
     import DifficultyPanel from './panels/DifficultyPanel.svelte'
+    import MultiplicationDivisionPanel from './panels/MultiplicationDivisionPanel.svelte'
+    import AdditionSubtractionPanel from './panels/AdditionSubtractionPanel.svelte'
 
     export let appSettings: AppSettings
     export let quiz: Quiz
@@ -52,7 +53,7 @@
         missingPossibleValues ||
         hasInvalidRange ||
         quiz.selectedOperator === undefined ||
-        (!quiz.difficulty && quiz.showSettings) // For backwards-compatibility: Show start button for shared quiz, even with no difficulty-setting
+        (quiz.difficulty === undefined && quiz.showSettings) // For backwards-compatibility: Show start button for shared quiz, even with no difficulty-setting
 
     $: if (!validationError && quiz) {
         updateQuizSettings()
@@ -112,28 +113,41 @@
                         on:setDifficultyLevel="{setDifficultyLevel}"
                     />
                 {/if}
-                {#if quiz.selectedOperator !== undefined && quiz.difficulty === 'x'}
+                {#if quiz.selectedOperator !== undefined && quiz.difficulty === 0}
                     <div
                         transition:slide|local="{appSettings.transitionDuration}"
                     >
                         {#each Object.values(Operator) as operator}
                             {#if operator === quiz.selectedOperator || isAllOperators}
-                                <OperatorSettingsPanel
-                                    appSettings="{appSettings}"
-                                    operator="{operator}"
-                                    isAllOperators="{isAllOperators}"
-                                    hasInvalidAdditionRange="{hasInvalidAdditionRange}"
-                                    hasInvalidSubtractionRange="{hasInvalidSubtractionRange}"
-                                    bind:possibleValues="{quiz.operatorSettings[
-                                        operator
-                                    ].possibleValues}"
-                                    bind:rangeMin="{quiz.operatorSettings[
-                                        operator
-                                    ].range.min}"
-                                    bind:rangeMax="{quiz.operatorSettings[
-                                        operator
-                                    ].range.max}"
-                                />
+                                <div
+                                    class="mb-1 md:mb-2"
+                                    transition:slide|local="{appSettings.transitionDuration}"
+                                >
+                                    {#if operator === Operator.Addition || operator === Operator.Subtraction}
+                                        <AdditionSubtractionPanel
+                                            appSettings="{appSettings}"
+                                            operator="{operator}"
+                                            isAllOperators="{isAllOperators}"
+                                            hasInvalidAdditionRange="{hasInvalidAdditionRange}"
+                                            hasInvalidSubtractionRange="{hasInvalidSubtractionRange}"
+                                            bind:rangeMin="{quiz
+                                                .operatorSettings[operator]
+                                                .range.min}"
+                                            bind:rangeMax="{quiz
+                                                .operatorSettings[operator]
+                                                .range.max}"
+                                        />
+                                    {:else}
+                                        <MultiplicationDivisionPanel
+                                            appSettings="{appSettings}"
+                                            operator="{operator}"
+                                            isAllOperators="{isAllOperators}"
+                                            bind:possibleValues="{quiz
+                                                .operatorSettings[operator]
+                                                .possibleValues}"
+                                        />
+                                    {/if}
+                                </div>
                             {/if}
                         {/each}
                         <PuzzleTypePanel
