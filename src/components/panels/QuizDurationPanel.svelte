@@ -1,5 +1,5 @@
 <script lang="ts">
-    import CardComponent from '../widgets/CardComponent.svelte'
+    import PanelComponent from '../widgets/PanelComponent.svelte'
 
     export let duration: number
     export let puzzleTimeLimit: boolean
@@ -7,7 +7,7 @@
     const durationValues = [0.5, 1, 3, 5]
 </script>
 
-<CardComponent heading="Spilletid">
+<PanelComponent heading="Spilletid">
     {#each Object.values(durationValues) as d}
         <label class="flex items-center py-1">
             <input
@@ -33,4 +33,4 @@
         />
         <span class="ml-2 text-lg">Tidsbegrensning per oppgave</span>
     </label>
-</CardComponent>
+</PanelComponent>

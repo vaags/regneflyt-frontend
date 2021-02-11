@@ -5,7 +5,7 @@
     import PuzzleInputComponent from './widgets/PuzzleInputComponent.svelte'
     import TimeoutComponent from './widgets/TimeoutComponent.svelte'
     import { getPuzzle } from '../services/puzzleService'
-    import CardComponent from './widgets/CardComponent.svelte'
+    import PanelComponent from './widgets/PanelComponent.svelte'
     import type { Quiz } from '../models/Quiz'
     import type { Puzzle } from '../models/Puzzle'
     import { TimerState } from '../models/constants/TimerState'
@@ -109,16 +109,20 @@
 </script>
 
 <form>
-    <CardComponent heading="Oppgave {puzzleNumber}">
+    <PanelComponent heading="Oppgave {puzzleNumber}">
         <div
             slot="label"
-            class="float-right text-lg {quizAlmostFinished ? 'text-yellow-700 font-semibold' : 'text-gray-700'}">
+            class="float-right text-lg {quizAlmostFinished
+                ? 'text-yellow-700 font-semibold'
+                : 'text-gray-700'}"
+        >
             <TimeoutComponent
                 seconds="{seconds}"
                 state="{quizTimeoutState}"
                 on:secondChange="{secondChange}"
                 on:finished="{quizTimeout}"
-                showMinutes="{true}" />
+                showMinutes="{true}"
+            />
         </div>
         <div class="mt-4 mb-2 text-center text-4xl md:text-5xl">
             <div class="mb-10">
@@ -128,7 +132,8 @@
                             disabled="{puzzle.timeout}"
                             focus="{!showWarning}"
                             displayError="{displayError}"
-                            bind:value="{part.userDefinedValue}" />
+                            bind:value="{part.userDefinedValue}"
+                        />
                     {:else}
                         <TweenedValueComponent value="{part.generatedValue}" />
                     {/if}
@@ -145,13 +150,16 @@
                         state="{puzzleTimeoutState}"
                         showProgressBar="{true}"
                         seconds="{appSettings.puzzleTimeLimitDuration}"
-                        on:finished="{timeOutPuzzle}">
+                        on:finished="{timeOutPuzzle}"
+                    >
                         {#if puzzle.timeout}
                             <TimeoutComponent
                                 seconds="{appSettings.separatorPageDuration}"
                                 countToZero="{false}"
                                 fadeOnSecondChange="{true}"
-                                on:finished="{() => (puzzle = generatePuzzle(puzzle, true))}" />
+                                on:finished="{() =>
+                                    (puzzle = generatePuzzle(puzzle, true))}"
+                            />
                         {:else}
                             {@html '&nbsp;'}
                         {/if}
@@ -159,12 +167,16 @@
                 </div>
             {/if}
         </div>
-    </CardComponent>
+    </PanelComponent>
     <div class="float-left {puzzle.timeout ? 'animate-pulse' : ''}">
         <ButtonComponent
             disabled="{displayError}"
-            on:click="{() => (puzzle.timeout ? (puzzle = generatePuzzle(puzzle, true)) : completePuzzleIfValid())}"
-            color="{displayError ? 'red' : puzzle.timeout ? 'yellow' : 'green'}">
+            on:click="{() =>
+                puzzle.timeout
+                    ? (puzzle = generatePuzzle(puzzle, true))
+                    : completePuzzleIfValid()}"
+            color="{displayError ? 'red' : puzzle.timeout ? 'yellow' : 'green'}"
+        >
             Neste
         </ButtonComponent>
     </div>

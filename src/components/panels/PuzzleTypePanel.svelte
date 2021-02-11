@@ -1,11 +1,11 @@
 <script lang="ts">
     import { PuzzleMode } from '../../models/constants/PuzzleMode'
-    import CardComponent from '../widgets/CardComponent.svelte'
+    import PanelComponent from '../widgets/PanelComponent.svelte'
 
     export let quizPuzzleMode: PuzzleMode
 </script>
 
-<CardComponent heading="Oppgaveform">
+<PanelComponent heading="Oppgaveform">
     {#each Object.values(PuzzleMode) as puzzleMode}
         <label class="flex items-center py-1 text-lg">
             <input
@@ -23,4 +23,4 @@
             </span>
         </label>
     {/each}
-</CardComponent>
+</PanelComponent>

@@ -1,16 +1,16 @@
 <script lang="ts">
     import { slide } from 'svelte/transition'
     import type { TransitionDuration } from '../../models/TransitionDuration'
-    import CardComponent from '../widgets/CardComponent.svelte'
+    import PanelComponent from '../widgets/PanelComponent.svelte'
 
     export let transitionDuration: TransitionDuration
 </script>
 
 <div transition:slide|local="{transitionDuration}" class="mb-1 md:mb-2">
-    <CardComponent>
+    <PanelComponent>
         <div class="text-blue-800 text-lg">
             <p>Regneflyt er et mattespill som trener deg i hoderegning.</p>
             <p class="mt-2">Velg hvordan du vil trene nedenfor.</p>
         </div>
-    </CardComponent>
+    </PanelComponent>
 </div>

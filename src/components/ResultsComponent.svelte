@@ -2,7 +2,7 @@
     import type { Puzzle } from '../models/Puzzle'
     import { createEventDispatcher, onMount } from 'svelte'
     import { fade } from 'svelte/transition'
-    import CardComponent from './widgets/CardComponent.svelte'
+    import PanelComponent from './widgets/PanelComponent.svelte'
     import ButtonComponent from './widgets/ButtonComponent.svelte'
     import AlertComponent from './widgets/AlertComponent.svelte'
     import HiddenValueCompontent from './widgets/HiddenValueComponent.svelte'
@@ -46,7 +46,7 @@
 
 {#if showComponent}
     <div transition:fade="{appSettings.pageTransitionDuration}">
-        <CardComponent
+        <PanelComponent
             heading="Resultater"
             label="{getQuizTitle(quiz, appSettings)}"
         >
@@ -161,7 +161,7 @@
                     </tbody>
                 </table>
             {/if}
-        </CardComponent>
+        </PanelComponent>
 
         <ButtonComponent on:click="{getReady}" color="green" margin="{true}">
             Start

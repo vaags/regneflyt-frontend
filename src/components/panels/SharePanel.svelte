@@ -1,6 +1,6 @@
 <script lang="ts">
     import * as animateScroll from 'svelte-scrollto'
-    import CardComponent from '../widgets/CardComponent.svelte'
+    import PanelComponent from '../widgets/PanelComponent.svelte'
     import { slide } from 'svelte/transition'
     import { onMount } from 'svelte'
     import LabelComponent from '../widgets/LabelComponent.svelte'
@@ -32,7 +32,7 @@
 </script>
 
 <div transition:slide|local="{transitionDuration}">
-    <CardComponent heading="Deling">
+    <PanelComponent heading="Deling">
         <label class="text-lg"
             >Tittel
             <input
@@ -63,5 +63,5 @@
                     shareTitle
                 )}&showSettings=false"></textarea>
         </label>
-    </CardComponent>
+    </PanelComponent>
 </div>

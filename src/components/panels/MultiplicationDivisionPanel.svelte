@@ -1,6 +1,6 @@
 <script lang="ts">
     import type { AppSettings } from '../../models/AppSettings'
-    import CardComponent from '../widgets/CardComponent.svelte'
+    import PanelComponent from '../widgets/PanelComponent.svelte'
     import { Operator } from '../../models/constants/Operator'
 
     export let appSettings: AppSettings
@@ -10,7 +10,7 @@
     export let possibleValues: Array<number>
 </script>
 
-<CardComponent
+<PanelComponent
     heading="{operator === Operator.Multiplication
         ? 'Multiplikand'
         : 'Divisor'}"
@@ -29,4 +29,4 @@
             </label>
         </div>
     {/each}
-</CardComponent>
+</PanelComponent>

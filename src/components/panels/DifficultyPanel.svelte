@@ -2,7 +2,7 @@
     import { createEventDispatcher } from 'svelte'
     import { slide } from 'svelte/transition'
     import type { TransitionDuration } from '../../models/TransitionDuration'
-    import CardComponent from '../widgets/CardComponent.svelte'
+    import PanelComponent from '../widgets/PanelComponent.svelte'
 
     export let transitionDuration: TransitionDuration
     export let level: number | undefined = undefined
@@ -17,7 +17,7 @@
 </script>
 
 <div transition:slide|local="{transitionDuration}" class="mb-1 md:mb-2">
-    <CardComponent heading="Vanskelighetsgrad">
+    <PanelComponent heading="Vanskelighetsgrad">
         <div
             class="text-lg flex flex-wrap border border-gray-500 rounded divide-x divide-gray-500 mb-1 bg-white"
         >
@@ -42,5 +42,5 @@
                 </label>
             {/each}
         </div>
-    </CardComponent>
+    </PanelComponent>
 </div>

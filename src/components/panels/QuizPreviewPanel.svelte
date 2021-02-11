@@ -1,7 +1,7 @@
 <script lang="ts">
     import { createEventDispatcher } from 'svelte'
     import { slide } from 'svelte/transition'
-    import CardComponent from '../widgets/CardComponent.svelte'
+    import PanelComponent from '../widgets/PanelComponent.svelte'
     import type { TransitionDuration } from '../../models/TransitionDuration'
     import type { Puzzle } from '../../models/Puzzle'
     import PuzzlePreviewComponent from '../widgets/PuzzlePreviewComponent.svelte'
@@ -16,7 +16,7 @@
 </script>
 
 <div transition:slide|local="{transitionDuration}">
-    <CardComponent heading="{title}">
+    <PanelComponent heading="{title}">
         {#if validationError}
             <div class="mt-4" transition:slide|local="{transitionDuration}">
                 <AlertComponent color="yellow">
@@ -36,5 +36,5 @@
                 </button>
             </div>
         {/if}
-    </CardComponent>
+    </PanelComponent>
 </div>

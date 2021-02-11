@@ -1,7 +1,7 @@
 <script lang="ts">
     import { slide } from 'svelte/transition'
     import type { AppSettings } from '../../models/AppSettings'
-    import CardComponent from '../widgets/CardComponent.svelte'
+    import PanelComponent from '../widgets/PanelComponent.svelte'
     import AlertComponent from '../widgets/AlertComponent.svelte'
     import { Operator } from '../../models/constants/Operator'
 
@@ -19,7 +19,7 @@
             : [-40, -30, -20, -10, 0, 10, 20, 30, 40, 50]
 </script>
 
-<CardComponent
+<PanelComponent
     heading="Tallområde"
     label="{isAllOperators ? appSettings.operatorLabels[operator] : undefined}"
 >
@@ -58,4 +58,4 @@
             <AlertComponent color="red">Intervallet er ugyldig.</AlertComponent>
         </div>
     {/if}
-</CardComponent>
+</PanelComponent>
