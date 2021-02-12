@@ -20,8 +20,8 @@
                 >{d === 0.5
                     ? '30 sekunder'
                     : d === 1
-                    ? d + ' minutt'
-                    : d + ' minutter'}</span
+                    ? `${d} minutt`
+                    : `${d} minutter`}</span
             >
         </label>
     {/each}
