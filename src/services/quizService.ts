@@ -211,13 +211,13 @@ function getOperatorSettings(
                 }
             case 5:
                 return {
-                    min: -10,
-                    max: 40,
+                    min: 20,
+                    max: 50,
                 }
             case 6:
                 return {
                     min: -20,
-                    max: 40,
+                    max: 50,
                 }
             default:
                 throw 'Invalid difficulty provided'
@@ -227,13 +227,13 @@ function getOperatorSettings(
     function getPossibleValues(): number[] {
         switch (difficulty) {
             case 1:
-                return [2]
+                return [1, 2]
             case 2:
-                return [3]
+                return [3, 5]
             case 3:
-                return [6]
+                return [6, 4, 10]
             case 4:
-                return [7, 9]
+                return [7, 9, 11]
             case 5:
                 return [12, 8, 6]
             case 6:
