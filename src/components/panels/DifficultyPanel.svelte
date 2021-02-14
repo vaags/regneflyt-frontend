@@ -19,7 +19,7 @@
 <div transition:slide|local="{transitionDuration}" class="mb-1 md:mb-2">
     <PanelComponent heading="Vanskelighetsgrad">
         <div
-            class="text-lg flex flex-wrap border border-gray-500 rounded divide-x divide-gray-500 mb-1 bg-white"
+            class="text-lg flex flex-wrap border border-gray-500 rounded overflow-hidden divide-x divide-gray-500 mb-1 bg-white"
         >
             {#each levels as l}
                 <label
