@@ -158,7 +158,9 @@
             <TimeComponent seconds="{remainingSeconds}" />
         {:else if showProgressBar}
             <div class="w-1/3 mx-auto">
-                <div class="w-full bg-white border rounded border-gray-500">
+                <div
+                    class="w-full bg-white border rounded overflow-hidden border-gray-500"
+                >
                     <div
                         class="transition-colors text-gray-50
                             duration-200 {percentageCompleted ===
