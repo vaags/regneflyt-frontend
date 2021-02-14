@@ -1,7 +1,7 @@
 <script lang="ts">
     import { slide } from 'svelte/transition'
     import type { AppSettings } from '../../models/AppSettings'
-    import CardComponent from '../widgets/CardComponent.svelte'
+    import PanelComponent from '../widgets/PanelComponent.svelte'
     import { Operator } from '../../models/constants/Operator'
 
     export let appSettings: AppSettings
@@ -9,7 +9,7 @@
 </script>
 
 <div transition:slide|local="{appSettings.transitionDuration}">
-    <CardComponent heading="Velg regneart">
+    <PanelComponent heading="Velg regneart">
         {#each Object.values(Operator) as operator, i}
             <label class="flex items-center py-1">
                 <input
@@ -29,7 +29,7 @@
                 bind:group="{selectedOperator}"
                 value="{4}"
             />
-            <span class="ml-2 text-lg">Alle</span>
+            <span class="ml-2 text-lg">{appSettings.operatorLabels[4]}</span>
         </label>
-    </CardComponent>
+    </PanelComponent>
 </div>

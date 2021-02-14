@@ -2,7 +2,7 @@
     import type { Puzzle } from '../models/Puzzle'
     import { createEventDispatcher, onMount } from 'svelte'
     import { fade } from 'svelte/transition'
-    import CardComponent from './widgets/CardComponent.svelte'
+    import PanelComponent from './widgets/PanelComponent.svelte'
     import ButtonComponent from './widgets/ButtonComponent.svelte'
     import AlertComponent from './widgets/AlertComponent.svelte'
     import HiddenValueCompontent from './widgets/HiddenValueComponent.svelte'
@@ -15,6 +15,7 @@
     import StarComponent from './icons/StarComponent.svelte'
     import ArrowUpComponent from './icons/ArrowUpComponent.svelte'
     import ArrowDownComponent from './icons/ArrowDownComponent.svelte'
+    import { getQuizTitle } from '../services/quizService'
 
     const dispatch = createEventDispatcher()
 
@@ -45,7 +46,10 @@
 
 {#if showComponent}
     <div transition:fade="{appSettings.pageTransitionDuration}">
-        <CardComponent heading="Resultater">
+        <PanelComponent
+            heading="Resultater"
+            label="{getQuizTitle(quiz, appSettings)}"
+        >
             {#if !puzzleSet?.length}
                 <AlertComponent color="yellow">
                     Ingen fullførte oppgaver ble funnet.
@@ -55,7 +59,8 @@
                     <input
                         type="checkbox"
                         class="h-5 w-5 rounded text-blue-700"
-                        bind:checked="{showCorrectAnswer}" />
+                        bind:checked="{showCorrectAnswer}"
+                    />
                     <span class="ml-2">Vis fasit</span>
                 </label>
                 <table class="table-auto w-full text-lg">
@@ -66,18 +71,25 @@
                                     {i + 1}
                                 </td>
                                 <td
-                                    class="border-t px-3 md:px-4 py-2 whitespace-nowrap">
+                                    class="border-t px-3 md:px-4 py-2 whitespace-nowrap"
+                                >
                                     {#each puzzle.parts as part, i}
                                         {#if puzzle.unknownPuzzlePart === i}
                                             <HiddenValueCompontent
-                                                value="{puzzle.timeout ? '?' : part.userDefinedValue}"
+                                                value="{puzzle.timeout
+                                                    ? '?'
+                                                    : part.userDefinedValue}"
                                                 showHiddenValue="{showCorrectAnswer}"
                                                 hiddenValue="{part.generatedValue}"
-                                                strong="{true}" />
+                                                strong="{true}"
+                                            />
                                         {:else}{part.generatedValue}{/if}
                                         {#if i === 0}
                                             <span>
-                                                {@html appSettings.operatorSigns[puzzle.operator]}
+                                                {@html appSettings
+                                                    .operatorSigns[
+                                                    puzzle.operator
+                                                ]}
                                             </span>
                                         {:else if i === 1}
                                             <span class="mr-1">=</span>
@@ -87,7 +99,8 @@
                                 <td class="border-t px-2 md:px-3 py-2">
                                     {#if puzzle.isCorrect}
                                         <CheckmarkIconComponent
-                                            label="Riktig" />
+                                            label="Riktig"
+                                        />
                                     {:else if puzzle.timeout}
                                         <ClockIconComponent label="Timeout" />
                                     {:else}
@@ -95,7 +108,8 @@
                                     {/if}
                                 </td>
                                 <td
-                                    class="border-t px-2 md:px-3 py-2 whitespace-nowrap">
+                                    class="border-t px-2 md:px-3 py-2 whitespace-nowrap"
+                                >
                                     {Math.round(puzzle.duration * 10) / 10}
                                     s
                                 </td>
@@ -109,7 +123,8 @@
                         <tr>
                             <td
                                 class="border-t-2 pr-2 md:pr-3 py-2 text-xl md:text-2xl"
-                                colspan="{2}">
+                                colspan="{2}"
+                            >
                                 <div class="flex flex-row">
                                     <div class="mr-3">
                                         {quizScores.totalScore.toLocaleString()}
@@ -119,10 +134,12 @@
                                         {#if quiz.previousScore !== undefined}
                                             {#if quizScores.totalScore > quiz.previousScore}
                                                 <ArrowUpComponent
-                                                    label="Bedre enn forrige runde" />
+                                                    label="Bedre enn forrige runde"
+                                                />
                                             {:else if quizScores.totalScore < quiz.previousScore}
                                                 <ArrowDownComponent
-                                                    label="Dårligere enn forrige runde" />
+                                                    label="Dårligere enn forrige runde"
+                                                />
                                             {/if}
                                         {/if}
                                     </div>
@@ -130,7 +147,8 @@
                             </td>
                             <td
                                 class="border-t-2 px-3 text-xl md:text-2xl md:px-4 py-2"
-                                colspan="{3}">
+                                colspan="{3}"
+                            >
                                 {quizScores.correctAnswerPercentage}
                                 %
                                 <span class="text-sm md:text-base">
@@ -143,7 +161,7 @@
                     </tbody>
                 </table>
             {/if}
-        </CardComponent>
+        </PanelComponent>
 
         <ButtonComponent on:click="{getReady}" color="green" margin="{true}">
             Start

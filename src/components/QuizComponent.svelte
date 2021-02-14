@@ -7,7 +7,7 @@
     import type { AppSettings } from '../models/AppSettings'
     import CancelComponent from './CancelComponent.svelte'
     import { QuizState } from '../models/constants/QuizState'
-    import CardComponent from './widgets/CardComponent.svelte'
+    import PanelComponent from './widgets/PanelComponent.svelte'
     import TimeoutComponent from './widgets/TimeoutComponent.svelte'
 
     export let quiz: Quiz
@@ -44,15 +44,16 @@
 {#if showComponent}
     <div transition:fade="{appSettings.pageTransitionDuration}">
         {#if quiz.state === QuizState.AboutToStart}
-            <CardComponent heading="Gjør deg klar&hellip;">
+            <PanelComponent heading="Gjør deg klar&hellip;">
                 <p class="text-center my-10 text-6xl md:text-7xl">
                     <TimeoutComponent
                         seconds="{appSettings.separatorPageDuration}"
                         countToZero="{false}"
                         fadeOnSecondChange="{true}"
-                        on:finished="{startQuiz}" />
+                        on:finished="{startQuiz}"
+                    />
                 </p>
-            </CardComponent>
+            </PanelComponent>
         {:else}
             <PuzzleComponent
                 seconds="{quiz.duration * 60}"
@@ -60,12 +61,14 @@
                 quiz="{quiz}"
                 appSettings="{appSettings}"
                 on:quizTimeout="{completeQuiz}"
-                on:addPuzzle="{addPuzzle}" />
+                on:addPuzzle="{addPuzzle}"
+            />
         {/if}
 
         <CancelComponent
             showCancelButton="{!appSettings.isProduction}"
             on:abortQuiz="{abortQuiz}"
-            on:completeQuiz="{completeQuiz}" />
+            on:completeQuiz="{completeQuiz}"
+        />
     </div>
 {/if}

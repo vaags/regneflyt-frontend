@@ -5,17 +5,23 @@
     import { Operator } from '../models/constants/Operator'
     import type { Quiz } from '../models/Quiz'
     import { getPuzzle } from '../services/puzzleService'
-    import { setUrlParams } from '../services/quizService'
+    import {
+        setUrlParams,
+        getQuizDifficultySettings,
+        getQuizTitle,
+    } from '../services/quizService'
     import type { AppSettings } from '../models/AppSettings'
     import type { Puzzle } from '../models/Puzzle'
     import type { NumberRange } from '../models/NumberRange'
     import WelcomePanel from './panels/WelcomePanel.svelte'
     import OperatorSelectionPanel from './panels/OperatorSelectionPanel.svelte'
-    import OperatorSettingsPanel from './panels/OperatorSettingsPanel.svelte'
     import PuzzleTypePanel from './panels/PuzzleTypePanel.svelte'
     import QuizDurationPanel from './panels/QuizDurationPanel.svelte'
-    import SharedQuizPanel from './panels/SharedQuizPanel.svelte'
+    import QuizPreviewPanel from './panels/QuizPreviewPanel.svelte'
     import SharePanel from './panels/SharePanel.svelte'
+    import DifficultyPanel from './panels/DifficultyPanel.svelte'
+    import MultiplicationDivisionPanel from './panels/MultiplicationDivisionPanel.svelte'
+    import AdditionSubtractionPanel from './panels/AdditionSubtractionPanel.svelte'
 
     export let appSettings: AppSettings
     export let quiz: Quiz
@@ -46,7 +52,8 @@
     $: validationError =
         missingPossibleValues ||
         hasInvalidRange ||
-        quiz.selectedOperator === undefined
+        quiz.selectedOperator === undefined ||
+        (quiz.difficulty === undefined && quiz.showSettings) // For backwards-compatibility: Show start button for shared quiz, even with no difficulty-setting
 
     $: if (!validationError && quiz) {
         updateQuizSettings()
@@ -67,6 +74,10 @@
 
     function getReady() {
         dispatch('getReady', { quiz })
+    }
+
+    function setDifficultyLevel(event: any) {
+        quiz = getQuizDifficultySettings(quiz, event.detail.level)
     }
 
     onMount(() => {
@@ -96,36 +107,51 @@
                     bind:selectedOperator="{quiz.selectedOperator}"
                 />
                 {#if quiz.selectedOperator !== undefined}
+                    <DifficultyPanel
+                        transitionDuration="{appSettings.transitionDuration}"
+                        level="{quiz.difficulty}"
+                        on:setDifficultyLevel="{setDifficultyLevel}"
+                    />
+                {/if}
+                {#if quiz.selectedOperator !== undefined && quiz.difficulty === 0}
                     <div
                         transition:slide|local="{appSettings.transitionDuration}"
                     >
                         {#each Object.values(Operator) as operator}
                             {#if operator === quiz.selectedOperator || isAllOperators}
-                                <OperatorSettingsPanel
-                                    appSettings="{appSettings}"
-                                    operator="{operator}"
-                                    isAllOperators="{isAllOperators}"
-                                    hasInvalidAdditionRange="{hasInvalidAdditionRange}"
-                                    hasInvalidSubtractionRange="{hasInvalidSubtractionRange}"
-                                    bind:possibleValues="{quiz.operatorSettings[
-                                        operator
-                                    ].possibleValues}"
-                                    bind:rangeMin="{quiz.operatorSettings[
-                                        operator
-                                    ].range.min}"
-                                    bind:rangeMax="{quiz.operatorSettings[
-                                        operator
-                                    ].range.max}"
-                                    bind:allowNegativeAnswer="{quiz.allowNegativeAnswer}"
-                                />
+                                <div
+                                    class="mb-1 md:mb-2"
+                                    transition:slide|local="{appSettings.transitionDuration}"
+                                >
+                                    {#if operator === Operator.Addition || operator === Operator.Subtraction}
+                                        <AdditionSubtractionPanel
+                                            appSettings="{appSettings}"
+                                            operator="{operator}"
+                                            isAllOperators="{isAllOperators}"
+                                            hasInvalidAdditionRange="{hasInvalidAdditionRange}"
+                                            hasInvalidSubtractionRange="{hasInvalidSubtractionRange}"
+                                            bind:rangeMin="{quiz
+                                                .operatorSettings[operator]
+                                                .range.min}"
+                                            bind:rangeMax="{quiz
+                                                .operatorSettings[operator]
+                                                .range.max}"
+                                        />
+                                    {:else}
+                                        <MultiplicationDivisionPanel
+                                            appSettings="{appSettings}"
+                                            operator="{operator}"
+                                            isAllOperators="{isAllOperators}"
+                                            bind:possibleValues="{quiz
+                                                .operatorSettings[operator]
+                                                .possibleValues}"
+                                        />
+                                    {/if}
+                                </div>
                             {/if}
                         {/each}
                         <PuzzleTypePanel
-                            puzzle="{puzzle}"
-                            validationError="{validationError}"
-                            transitionDuration="{appSettings.transitionDuration}"
                             bind:quizPuzzleMode="{quiz.puzzleMode}"
-                            on:getPuzzlePreview="{() => getPuzzlePreview()}"
                         />
                         <QuizDurationPanel
                             bind:duration="{quiz.duration}"
@@ -133,14 +159,17 @@
                         />
                     </div>
                 {/if}
-            {:else}
-                <SharedQuizPanel
+            {/if}
+            {#if quiz.selectedOperator !== undefined && (quiz.difficulty || !quiz.showSettings)}
+                <QuizPreviewPanel
                     puzzle="{puzzle}"
-                    title="{quiz.title}"
+                    title="{getQuizTitle(quiz, appSettings)}"
                     transitionDuration="{appSettings.transitionDuration}"
+                    validationError="{validationError}"
                     on:getPuzzlePreview="{() => getPuzzlePreview()}"
                 />
             {/if}
+
             {#if showSharePanel}
                 <SharePanel
                     transitionDuration="{appSettings.transitionDuration}"

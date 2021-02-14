@@ -37,7 +37,7 @@
         quiz.state = QuizState.Initial
     }
 
-    async function completeQuiz(event: any) {
+    function completeQuiz(event: any) {
         quiz.state = QuizState.Completed
         puzzleSet = event.detail.puzzleSet
         quizScores = getQuizScoreSum(quiz, puzzleSet)
@@ -57,10 +57,14 @@
 <div class="container mx-auto max-w-lg px-1 md:px-3 py-1 md:py-2">
     <header>
         <h1 class="text-right -mb-1">
-            <span
-                class="font-handwriting text-3xl md:text-4xl text-orange-500">Regneflyt</span>
-            <small class="font-light text-xs text-gray-400"><a
-                    href="https://github.com/vaags/regneflyt-frontend">{version}</a></small>
+            <span class="font-handwriting text-3xl md:text-4xl text-orange-500"
+                >Regneflyt</span
+            >
+            <small class="font-light text-xs text-gray-400"
+                ><a href="https://github.com/vaags/regneflyt-frontend"
+                    >{version}</a
+                ></small
+            >
         </h1>
     </header>
     <main>
@@ -70,11 +74,13 @@
                 on:startQuiz="{startQuiz}"
                 on:abortQuiz="{abortQuiz}"
                 on:completeQuiz="{completeQuiz}"
-                appSettings="{appSettings}" />
+                appSettings="{appSettings}"
+            />
         {:else if quiz.state === QuizState.Completed}
             <GameOverComponent
                 on:evaluateQuiz="{evaluateQuiz}"
-                appSettings="{appSettings}" />
+                appSettings="{appSettings}"
+            />
         {:else if quiz.state === QuizState.Evaluated}
             <ResultsComponent
                 quiz="{quiz}"
@@ -82,12 +88,14 @@
                 appSettings="{appSettings}"
                 puzzleSet="{puzzleSet}"
                 on:getReady="{getReady}"
-                on:resetQuiz="{resetQuiz}" />
+                on:resetQuiz="{resetQuiz}"
+            />
         {:else}
             <MenuComponent
                 quiz="{quiz}"
                 on:getReady="{getReady}"
-                appSettings="{appSettings}" />
+                appSettings="{appSettings}"
+            />
         {/if}
     </main>
 </div>

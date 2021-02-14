@@ -149,18 +149,27 @@
 
 {#if !hidden && internalState}
     <div
-        class="{fadeOnSecondChange ? 'transition duration-1000 ease-out' : ''}
-        {transparentText ? 'opacity-0' : ''}">
+        class="{fadeOnSecondChange
+            ? 'transition duration-1000 ease-out'
+            : ''}
+        {transparentText ? 'opacity-0' : ''}"
+    >
         {#if showMinutes}
             <TimeComponent seconds="{remainingSeconds}" />
         {:else if showProgressBar}
             <div class="w-1/3 mx-auto">
-                <div class="w-full bg-white border rounded border-gray-500">
+                <div
+                    class="w-full bg-white border rounded overflow-hidden border-gray-500"
+                >
                     <div
                         class="transition-colors text-gray-50
-                            duration-200 {percentageCompleted === 100 ? 'bg-blue-600' : 'bg-blue-400'}
+                            duration-200 {percentageCompleted ===
+                        100
+                            ? 'bg-red-600'
+                            : 'bg-blue-400'}
                             text-center leading-none"
-                        style="width: {$percentageTweened}%">
+                        style="width: {$percentageTweened}%"
+                    >
                         <slot />
                     </div>
                 </div>
