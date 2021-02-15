@@ -175,30 +175,33 @@
                     transitionDuration="{appSettings.transitionDuration}"
                 />
             {/if}
-            <ButtonComponent
-                on:click="{() => getReady()}"
-                disabled="{validationError}"
-                color="green"
-            >
-                Start
-            </ButtonComponent>
-            <div class="float-right">
-                {#if quiz.showSettings}
-                    <ButtonComponent
-                        on:click="{() => (showSharePanel = !showSharePanel)}"
-                        disabled="{validationError}"
-                        color="{showSharePanel ? 'gray' : 'blue'}"
-                    >
-                        Del
-                    </ButtonComponent>
-                {:else}
-                    <ButtonComponent
-                        color="gray"
-                        on:click="{() => (quiz.showSettings = true)}"
-                    >
-                        Meny
-                    </ButtonComponent>
-                {/if}
+            <div class="mt-2">
+                <ButtonComponent
+                    on:click="{() => getReady()}"
+                    disabled="{validationError}"
+                    color="green"
+                >
+                    Start
+                </ButtonComponent>
+                <div class="float-right">
+                    {#if quiz.showSettings}
+                        <ButtonComponent
+                            on:click="{() =>
+                                (showSharePanel = !showSharePanel)}"
+                            disabled="{validationError}"
+                            color="{showSharePanel ? 'gray' : 'blue'}"
+                        >
+                            Del
+                        </ButtonComponent>
+                    {:else}
+                        <ButtonComponent
+                            color="gray"
+                            on:click="{() => (quiz.showSettings = true)}"
+                        >
+                            Meny
+                        </ButtonComponent>
+                    {/if}
+                </div>
             </div>
         </form>
     </div>
