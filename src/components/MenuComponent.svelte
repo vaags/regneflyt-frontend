@@ -175,7 +175,7 @@
                     transitionDuration="{appSettings.transitionDuration}"
                 />
             {/if}
-            <div class="mt-2">
+            <div class="mt-1 md:mt-2">
                 <ButtonComponent
                     on:click="{() => getReady()}"
                     disabled="{validationError}"

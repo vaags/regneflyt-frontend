@@ -2,20 +2,20 @@
     export let color: 'red' | 'blue' | 'yellow' | 'green' | 'gray' = 'blue'
     export let disabled: boolean = false
     export let margin: boolean = false
-    export let selected: boolean = false
 </script>
 
 <button
-    disabled="{disabled}"
     on:click|preventDefault
-    class="text-gray-100 hover:text-white font-light text-3xl md:text-3xl px-4 py-1 {selected
-        ? 'border-t-2 border-r-4 rounded-tr-md rounded-bl-md'
-        : 'border-b-2 border-l-4 rounded-tl-md rounded-br-md'} {margin
-        ? 'mr-1'
-        : ''} btn-{color} transition-colors
-        duration-200 ease-out focus:outline-none {disabled
-        ? 'opacity-50'
-        : ''}"
+    disabled="{disabled}"
+    type="button"
+    class="
+    text-gray-100 hover:text-white font-light text-3xl px-4 pt-1 pb-1.5 
+     border-b-2 border-r border-l-4 rounded-tl-lg rounded-br-lg
+     focus:outline-none focus:text-white
+        {margin &&
+        'mr-1'} btn-{color} transition-colors
+        duration-200 ease-out {disabled &&
+        'opacity-50'}"
 >
     <slot />
 </button>
@@ -26,7 +26,13 @@
         @apply border-blue-800;
     }
 
-    .btn-blue:hover {
+    .btn-blue:hover,
+    .btn-blue:active {
+        @apply bg-blue-700;
+        @apply border-blue-900;
+    }
+
+    .btn-blue:focus {
         @apply bg-blue-500;
         @apply border-blue-700;
     }
@@ -36,7 +42,13 @@
         @apply border-green-800;
     }
 
-    .btn-green:hover {
+    .btn-green:hover,
+    .btn-green:active {
+        @apply bg-green-700;
+        @apply border-green-900;
+    }
+
+    .btn-green:focus {
         @apply bg-green-500;
         @apply border-green-700;
     }
@@ -46,7 +58,13 @@
         @apply border-red-800;
     }
 
-    .btn-red:hover {
+    .btn-red:hover,
+    .btn-red:active {
+        @apply bg-red-700;
+        @apply border-red-900;
+    }
+
+    .btn-red:focus {
         @apply bg-red-500;
         @apply border-red-700;
     }
@@ -56,7 +74,13 @@
         @apply border-yellow-800;
     }
 
-    .btn-yellow:hover {
+    .btn-yellow:hover,
+    .btn-yellow:active {
+        @apply bg-yellow-700;
+        @apply border-yellow-900;
+    }
+
+    .btn-yellow:focus {
         @apply bg-yellow-500;
         @apply border-yellow-700;
     }
@@ -66,7 +90,13 @@
         @apply border-gray-800;
     }
 
-    .btn-gray:hover {
+    .btn-gray:hover,
+    .btn-gray:active {
+        @apply bg-gray-700;
+        @apply border-gray-900;
+    }
+
+    .btn-gray:focus {
         @apply bg-gray-500;
         @apply border-gray-700;
     }

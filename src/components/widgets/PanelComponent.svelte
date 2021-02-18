@@ -5,7 +5,10 @@
 </script>
 
 <div
-    class="mb-1 md:mb-2 rounded-tl-md rounded-br-lg px-4 md:px-6 py-3 md:py-5 border-b-2 border-l-4 bg-gray-100 border-gray-500"
+    class="mb-1 md:mb-2
+    rounded-tl-lg rounded-br-lg
+    px-4 md:px-6 py-3 md:py-5
+    border-b-2 border-r border-l-4 bg-gray-100 border-gray-500"
 >
     <div class="flex justify-between">
         {#if heading}
