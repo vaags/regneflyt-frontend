@@ -11,9 +11,9 @@
     class="
     text-gray-100 hover:text-white font-light text-3xl px-4 pt-1 pb-1.5 
      border-b-2 border-r border-l-4 rounded-tl-lg rounded-br-lg
-     focus:outline-none focus:text-white
+     outline-none focus:outline-none focus:text-white focus:ring-2 focus:ring-inset
         {margin &&
-        'mr-1'} btn-{color} transition-colors
+        'mr-1'} btn-{color} transition-all
         duration-200 ease-out {disabled &&
         'opacity-50'}"
 >
@@ -33,8 +33,7 @@
     }
 
     .btn-blue:focus {
-        @apply bg-blue-500;
-        @apply border-blue-700;
+        @apply ring-blue-400;
     }
 
     .btn-green {
@@ -49,8 +48,7 @@
     }
 
     .btn-green:focus {
-        @apply bg-green-500;
-        @apply border-green-700;
+        @apply ring-green-400;
     }
 
     .btn-red {
@@ -65,8 +63,7 @@
     }
 
     .btn-red:focus {
-        @apply bg-red-500;
-        @apply border-red-700;
+        @apply ring-red-400;
     }
 
     .btn-yellow {
@@ -81,8 +78,7 @@
     }
 
     .btn-yellow:focus {
-        @apply bg-yellow-500;
-        @apply border-yellow-700;
+        @apply ring-yellow-400;
     }
 
     .btn-gray {
@@ -97,7 +93,6 @@
     }
 
     .btn-gray:focus {
-        @apply bg-gray-500;
-        @apply border-gray-700;
+        @apply ring-gray-400;
     }
 </style>
