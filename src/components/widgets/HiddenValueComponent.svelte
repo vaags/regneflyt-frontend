@@ -8,8 +8,12 @@
 <button
     type="button"
     on:click="{() => (showHiddenValue = !showHiddenValue)}"
-    class="cursor-pointer focus:outline-none {strong ? 'font-semibold' : ''} {showHiddenValue ? 'text-green-700' : 'text-blue-800'}">
+    class="cursor-pointer {strong ? 'font-semibold' : ''} {showHiddenValue
+        ? 'text-green-700'
+        : 'text-blue-800'}"
+>
     {showHiddenValue ? hiddenValue : value}
-    <span
-        class="sr-only">{showHiddenValue ? 'Vis opprinnelig verdi' : 'Vis skjult verdi'}</span>
+    <span class="sr-only"
+        >{showHiddenValue ? 'Vis opprinnelig verdi' : 'Vis skjult verdi'}</span
+    >
 </button>

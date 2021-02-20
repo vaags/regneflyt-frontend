@@ -7,7 +7,6 @@
 <button
     on:click|preventDefault
     disabled="{disabled}"
-    type="button"
     class="
     text-gray-100 hover:text-white font-light text-3xl px-4 pt-1 pb-1.5 
      border-b-2 border-r border-l-4 rounded-tl-lg rounded-br-lg
@@ -33,7 +32,7 @@
     }
 
     .btn-blue:focus {
-        @apply ring-blue-400;
+        @apply ring-blue-300;
     }
 
     .btn-green {
@@ -48,7 +47,7 @@
     }
 
     .btn-green:focus {
-        @apply ring-green-400;
+        @apply ring-green-300;
     }
 
     .btn-red {
@@ -63,7 +62,7 @@
     }
 
     .btn-red:focus {
-        @apply ring-red-400;
+        @apply ring-red-300;
     }
 
     .btn-yellow {
@@ -78,7 +77,7 @@
     }
 
     .btn-yellow:focus {
-        @apply ring-yellow-400;
+        @apply ring-yellow-300;
     }
 
     .btn-gray {
@@ -93,6 +92,6 @@
     }
 
     .btn-gray:focus {
-        @apply ring-gray-400;
+        @apply ring-gray-300;
     }
 </style>

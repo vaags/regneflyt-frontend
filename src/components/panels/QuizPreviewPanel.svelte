@@ -28,7 +28,7 @@
                 <PuzzlePreviewComponent puzzle="{puzzle}" />
                 <button
                     type="button"
-                    class="cursor-pointer focus:outline-none ml-3 float-right"
+                    class="cursor-pointer float-right"
                     title="Nytt oppgave-eksempel"
                     on:click="{() => dispatch('getPuzzlePreview')}"
                 >
