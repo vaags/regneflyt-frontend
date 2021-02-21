@@ -9,7 +9,7 @@
     import { getQuizScoreSum } from './services/scoreService'
     import type { QuizScores } from './models/QuizScores'
     import { getQuiz } from './services/quizService'
-    import { fakeInputFocus, getAppSettings } from './services/appService'
+    import { getAppSettings } from './services/appService'
     import { QuizState } from './models/constants/QuizState'
 
     export let isProduction: string
@@ -19,14 +19,12 @@
     let appSettings = getAppSettings(isProduction)
     let puzzleSet: Puzzle[]
     let quiz = getQuiz()
-    let fakeInput: any
 
     function getReady(event: any) {
         quiz = event.detail?.quiz ?? quiz
         quiz.state = QuizState.AboutToStart
         appSettings.menuFade = true
         animateScroll.scrollToTop()
-        fakeInputFocus(fakeInput)
     }
 
     function startQuiz() {

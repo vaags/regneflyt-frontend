@@ -15,7 +15,6 @@
 
     const dispatch = createEventDispatcher()
     let showComponent: boolean
-    let showWarning = false
     let puzzleSet: Puzzle[] = []
 
     function startQuiz() {
@@ -57,7 +56,6 @@
         {:else}
             <PuzzleComponent
                 seconds="{quiz.duration * 60}"
-                showWarning="{showWarning}"
                 quiz="{quiz}"
                 appSettings="{appSettings}"
                 on:quizTimeout="{completeQuiz}"

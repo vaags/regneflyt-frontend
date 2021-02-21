@@ -1,28 +1,22 @@
 <script lang="ts">
-    import { onMount, afterUpdate } from 'svelte'
+    import { afterUpdate } from 'svelte'
 
     export let value: number | undefined = undefined
     export let displayError: boolean
     export let disabled: boolean = false
-    export let focus: boolean = true
     let ref: any
 
-    function focusInput() {
-        if (focus) {
-            ref.focus()
-        }
+    function autofocus(node: HTMLInputElement) {
+        node.focus()
     }
 
     afterUpdate(() => {
-        focusInput()
-    })
-
-    onMount(() => {
-        focusInput()
+        autofocus(ref)
     })
 </script>
 
 <input
+    use:autofocus
     disabled="{disabled}"
     bind:value
     bind:this="{ref}"
