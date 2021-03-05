@@ -12,7 +12,6 @@
     import type { AppSettings } from '../models/AppSettings'
 
     export let quiz: Quiz
-    export let showWarning: boolean
     export let seconds: number
     export let appSettings: AppSettings
 
@@ -130,7 +129,6 @@
                     {#if puzzle.unknownPuzzlePart === i}
                         <PuzzleInputComponent
                             disabled="{puzzle.timeout}"
-                            focus="{!showWarning}"
                             displayError="{displayError}"
                             bind:value="{part.userDefinedValue}"
                         />
