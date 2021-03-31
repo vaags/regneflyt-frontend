@@ -1,6 +1,6 @@
 // import workbox
 importScripts(
-    'https://storage.googleapis.com/workbox-cdn/releases/5.1.4/workbox-sw.js'
+    'https://storage.googleapis.com/workbox-cdn/releases/6.1.1/workbox-sw.js'
 )
 const { routing, strategies } = workbox
 
