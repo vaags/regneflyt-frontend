@@ -5,9 +5,7 @@ importScripts(
 const { routing, strategies } = workbox
 
 routing.registerRoute(
-    ({ sameOrigin, url }) =>
-        sameOrigin &&
-        (url.pathname.startsWith('/assets/') || url.pathname === '/index.html'),
+    ({ sameOrigin, url }) => sameOrigin && url.pathname.startsWith('/assets/'),
     new strategies.CacheFirst('cache-first')
 )
 
