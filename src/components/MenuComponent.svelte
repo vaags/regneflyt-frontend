@@ -160,7 +160,7 @@
                     </div>
                 {/if}
             {/if}
-            {#if quiz.selectedOperator !== undefined && (quiz.difficulty || !quiz.showSettings)}
+            {#if quiz.selectedOperator !== undefined && (quiz.difficulty !== undefined || !quiz.showSettings)}
                 <QuizPreviewPanel
                     puzzle="{puzzle}"
                     title="{getQuizTitle(quiz, appSettings)}"
