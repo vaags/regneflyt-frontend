@@ -3,6 +3,7 @@ const plugin = require('tailwindcss/plugin')
 const pseudoClasses = ['before', 'after']
 
 module.exports = {
+    mode: 'jit',
     purge: ['./src/**/*.svelte', './public/index.html'],
     darkMode: false,
     theme: {
