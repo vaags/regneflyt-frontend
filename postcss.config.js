@@ -3,7 +3,7 @@ const dev = mode === 'development'
 
 module.exports = {
     plugins: [
-        require('@tailwindcss/jit'),
+        require('tailwindcss'),
         require('autoprefixer'),
         // Minify if prod
         !dev &&
