@@ -27,7 +27,7 @@
     export let quiz: Quiz
 
     let showComponent: boolean = true
-    let puzzle: Puzzle | undefined
+    let puzzle: Puzzle
     const dispatch = createEventDispatcher()
     let showSharePanel: boolean
 

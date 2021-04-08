@@ -9,7 +9,7 @@
 
     export let title: string | undefined
     export let transitionDuration: TransitionDuration
-    export let puzzle: Puzzle | undefined
+    export let puzzle: Puzzle
     export let validationError: boolean
 
     const dispatch = createEventDispatcher()
