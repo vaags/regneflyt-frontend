@@ -1,22 +1,22 @@
 <script lang="ts">
     // ref: https://css.gg/alarm
     export let label: string
+
+    // TODO: Fix size. The clock is larger than the other icons
 </script>
+
+<div
+    class="text-gray-700 ml-1.5 relative inline-block w-2 h-2 rounded-full scale-150"
+    aria-label="{label}"
+></div>
 
 <style>
     div {
         background: linear-gradient(to left, currentColor 5px, transparent 0)
-                no-repeat 4.5px 6px/5px 2px,
-            linear-gradient(to left, currentColor 7px, transparent 0) no-repeat
-                4.5px 2px/2px 6px;
-        /* box-sizing: border-box; */
-        /* position: relative; */
-        /* display: block; */
-        /* width: 16px; */
-        /* height: 16px; */
-        /* border-radius: 100%; */
-        border: 2px solid transparent;
-        /* transform: scale(var(--ggs, 1)); */
+                no-repeat 1.5px 3px/4px 2px,
+            linear-gradient(to left, currentColor 2px, transparent 0) no-repeat
+                1.5px 1px/2px 3px;
+        border: 1px solid transparent;
         box-shadow: 0 0 0 2px;
     }
     div::after,
@@ -25,21 +25,17 @@
         /* display: block; */
         /* box-sizing: border-box; */
         position: absolute;
-        width: 6px;
+        width: 4px;
         height: 2px;
         background: currentColor;
         top: -4px;
     }
     div::before {
-        left: -5px;
+        left: -4px;
         transform: rotate(-42deg);
     }
     div::after {
         transform: rotate(42deg);
-        right: -5px;
+        right: -4px;
     }
 </style>
-
-<div
-    class="text-gray-700 ml-0.5 relative inline-block w-4 h-4 rounded-full scale-150"
-    aria-label="{label}"></div>
