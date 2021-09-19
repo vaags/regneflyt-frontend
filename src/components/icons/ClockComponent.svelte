@@ -1,8 +1,6 @@
 <script lang="ts">
     // ref: https://css.gg/alarm
     export let label: string
-
-    // TODO: Fix size. The clock is larger than the other icons
 </script>
 
 <div
