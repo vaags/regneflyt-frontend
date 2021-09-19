@@ -53,7 +53,7 @@
         clearTimeHandlers()
         setInitialProgress()
 
-        timeoutHandler = setTimeout(
+        timeoutHandler = window.setTimeout(
             finished,
             resumeMilliseconds ? resumeMilliseconds : seconds * 1000
         )
@@ -63,16 +63,16 @@
         const millisecondDecrementDelay =
             remainingMilliseconds % millisecondIntervalDuration
 
-        secondIntervalDelayHandler = setTimeout(() => {
+        secondIntervalDelayHandler = window.setTimeout(() => {
             if (secondDecrementDelay > 0) decrementSecond()
-            secondsIntervalHandler = setInterval(() => {
+            secondsIntervalHandler = window.setInterval(() => {
                 decrementSecond()
             }, 1000)
         }, secondDecrementDelay)
 
-        millisecondIntervalDelayHandler = setTimeout(() => {
+        millisecondIntervalDelayHandler = window.setTimeout(() => {
             if (millisecondDecrementDelay > 0) decrementMillisecond()
-            millisecondsIntervalHandler = setInterval(() => {
+            millisecondsIntervalHandler = window.setInterval(() => {
                 decrementMillisecond()
             }, millisecondIntervalDuration)
         }, millisecondDecrementDelay)
@@ -149,9 +149,7 @@
 
 {#if !hidden && internalState}
     <div
-        class="{fadeOnSecondChange
-            ? 'transition duration-1000 ease-out'
-            : ''}
+        class="{fadeOnSecondChange ? 'transition duration-1000 ease-out' : ''}
         {transparentText ? 'opacity-0' : ''}"
     >
         {#if showMinutes}
@@ -163,8 +161,7 @@
                 >
                     <div
                         class="transition-colors text-gray-50
-                            duration-200 {percentageCompleted ===
-                        100
+                            duration-200 {percentageCompleted === 100
                             ? 'bg-red-600'
                             : 'bg-blue-400'}
                             text-center leading-none"
