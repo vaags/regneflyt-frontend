@@ -1,6 +1,6 @@
 {
     "name": "regneflyt",
-    "version": "2.2.10",
+    "version": "2.3.0",
     "scripts": {
         "build": "NODE_ENV=production rollup -c",
         "dev": "rollup -c -w",
@@ -12,7 +12,7 @@
         "@rollup/plugin-node-resolve": "^13.0.5",
         "@rollup/plugin-replace": "^3.0.0",
         "@rollup/plugin-typescript": "^8.2.5",
-        "@tailwindcss/forms": "^0.3.3",
+        "@tailwindcss/forms": "^0.3.4",
         "@tsconfig/svelte": "^2.0.1",
         "autoprefixer": "^10.3.6",
         "babel-eslint": "^10.1.0",

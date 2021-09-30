@@ -6,6 +6,7 @@
     import type { Puzzle } from '../../models/Puzzle'
     import PuzzlePreviewComponent from '../widgets/PuzzlePreviewComponent.svelte'
     import AlertComponent from '../widgets/AlertComponent.svelte'
+    import LabelComponent from '../widgets/LabelComponent.svelte'
 
     export let title: string | undefined
     export let transitionDuration: TransitionDuration
@@ -16,6 +17,9 @@
 </script>
 
 <div transition:slide|local="{transitionDuration}">
+    <div class="float-right mt-5 mr-5">
+        <LabelComponent>Eksempeloppgave</LabelComponent>
+    </div>
     <PanelComponent heading="{title}">
         {#if validationError}
             <div class="mt-4" transition:slide|local="{transitionDuration}">
