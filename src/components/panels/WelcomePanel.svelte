@@ -10,7 +10,6 @@
     <PanelComponent>
         <div class="text-blue-800 text-lg">
             <p>Regneflyt er et mattespill som trener deg i hoderegning.</p>
-            <p class="mt-2">Velg hvordan du vil trene nedenfor.</p>
         </div>
     </PanelComponent>
 </div>
