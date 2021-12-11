@@ -3,14 +3,12 @@ const plugin = require('tailwindcss/plugin')
 const pseudoClasses = ['before', 'after']
 
 module.exports = {
-    mode: 'jit',
-    purge: ['./src/**/*.svelte', './public/index.html'],
-    darkMode: false,
+    content: ['./src/**/*.svelte', './public/index.html'],
     theme: {
         colors: {
             black: '#000',
             white: '#fff',
-            gray: colors.warmGray,
+            gray: colors.stone,
             orange: colors.orange,
             red: colors.red,
             green: colors.emerald,
@@ -26,20 +24,6 @@ module.exports = {
             spacing: {
                 4.5: '1.125rem',
             },
-        },
-    },
-    variants: {
-        extend: {
-            backgroundColor: pseudoClasses,
-            width: pseudoClasses,
-            height: pseudoClasses,
-            position: pseudoClasses,
-            transform: pseudoClasses,
-            inset: pseudoClasses,
-            rotate: pseudoClasses,
-            borderRadius: pseudoClasses,
-            borderWidth: pseudoClasses,
-            borderColor: pseudoClasses,
         },
     },
     plugins: [
