@@ -8,8 +8,8 @@
     data-after=""
     class="relative text-sm mx-2 inline-block w-0 h-0 mb-2.5
            before:content after:content
-           after:absolute after:top-2 after:w-0 after:-left-3.5 after:transform after:rotate-35
-           before:absolute before:top-2 before:w-0 before:-left-3.5 before:transform before:-rotate-35"
+           after:absolute after:top-2 after:w-0 after:-left-3.5 after:rotate-35
+           before:absolute before:top-2 before:w-0 before:-left-3.5 before:-rotate-35"
     aria-label="{label}"
 ></div>
 
