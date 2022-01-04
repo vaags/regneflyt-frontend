@@ -111,7 +111,7 @@
                                     class="border-t px-2 md:px-3 py-2 whitespace-nowrap"
                                 >
                                     {Math.round(puzzle.duration * 10) / 10}
-                                    s
+                                    <span class="text-sm">sek</span>
                                 </td>
                                 <td class="border-t px-2 md:px-3 py-2">
                                     {#if puzzle.isCorrect && puzzle.duration < 3}
